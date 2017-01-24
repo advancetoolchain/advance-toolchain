@@ -87,7 +87,7 @@ if { "$pyver" == "2.6" } {
 	# Might fail if run from the install dir:  test_idle test_tools.
 	set spawn_cmd "spawn $env(AT_DEST)/bin/python $test_script \
 		-x $common_exclude_tests test_idle test_tools"
-} elseif { "$pyver" == "3.4" | "$pyver" == "3.5" } {
+} elseif { [string match 3.* $pyver] } {
 	# Python unit tests are "embarrassingly parallel", at least up to 6 cores
 	# it seems
 	set CORES [expr min(6, [exec grep -c "processor" /proc/cpuinfo ])]

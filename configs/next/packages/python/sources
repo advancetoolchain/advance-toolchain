@@ -20,7 +20,7 @@
 #
 
 ATSRC_PACKAGE_NAME="Python"
-ATSRC_PACKAGE_VER=3.5.3
+ATSRC_PACKAGE_VER=3.6.0
 ATSRC_PACKAGE_LICENSE="Python Software Foundation License 2"
 ATSRC_PACKAGE_DOCLINK="https://docs.python.org/3.5/"
 ATSRC_PACKAGE_RELFIXES=
@@ -41,17 +41,22 @@ ATSRC_PACKAGE_BUNDLE=toolchain_extra
 atsrc_get_patches ()
 {
 	at_get_patch \
-		https://raw.githubusercontent.com/powertechpreview/powertechpreview/4d47330cf1a7fe6eef11760a6e27ad6c51a005dd/Python%20Fixes/python-3.5.3-getlib64s1.patch \
-		8b45a6457ad1babfb98af0c75f179cda || return ${?}
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/568ca4aea85f216aac118617233e2a5cf2a7fdbb/Python%20Fixes/python-3.6.0-getlib64s1.patch \
+		cd0928dcf78a68377009ae56bafee5cd || return ${?}
+
+	# Patch avoid getentropy() in favor of getrandom() as the later handles
+	# ENOSYS.
 	at_get_patch \
-		https://raw.githubusercontent.com/powertechpreview/powertechpreview/26747dc0bfb0f8f30de9ebad78847a96d3191ba5/Python%20Fixes/python-3.5.1-fix_stack_overflow.patch \
-		5238ce9ddef9e3b2b4084f38dc4a5e45 || return ${?}
+		https://bugs.python.org/file46157/random-2.patch \
+		045ebfb0f800b6eac250e7ed143f718e || return ${?}
 }
 
 atsrc_apply_patches ()
 {
-	patch -p1 < python-3.5.3-getlib64s1.patch || return ${?}
-	patch -p1 < python-3.5.1-fix_stack_overflow.patch || return ${?}
+	patch -p1 < python-3.6.0-getlib64s1.patch || return ${?}
+	# Apply patch to be able to build Python with glibc 2.25.
+	# TODO: Remove it when we update Python to 3.6.1. See Python BZ #29157.
+	patch -p1 < random-2.patch ||return ${?}
 }
 
 atsrc_package_verify_make_log ()
