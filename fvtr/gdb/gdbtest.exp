@@ -1,0 +1,173 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Expect script to test basic gdb commands for use with AT gdb running an AT
+# compiled program.
+#
+proc gdb_basic_test { gdbpath test explib } {
+
+	set rc 0
+	set timeout "10"
+	set gdb_prompt "(gdb)"
+	# The following flags will be set when the correct
+	# expected output occurs.  If the expected output
+	# does not occur then it is considered a failure.
+	#
+	# Valid output from the program
+	set valid_output 0
+	# Source lines are displayed as expected
+	set line_display 0
+	# 'next' command worked
+	set next_worked 0
+	# 'display' command worked
+	set display_worked 0
+	# Shared libs have the correct (AT) path
+	set shared_lib 0
+	# Spawn a gdb session, use -q to avoid the extra initial output
+	spawn $gdbpath -q -nh $test
+
+	# Set a bp on main then check that gdb says it was set
+	expect "$gdb_prompt" { send "break main\n" }
+	expect "Breakpoint"
+
+	# Run the program and check that it stops at the bp
+	expect "$gdb_prompt" { send "run\n" }
+	expect "Starting"
+	expect "Breakpoint 1"
+
+	expect "$gdb_prompt" { send "info shared libc.so\n" }
+	expect "From"
+	expect "$explib*/libc.so" { incr shared_lib }
+
+	expect "$gdb_prompt" { send "step 3\n" }
+	# Verify the line after the step
+	expect "32*init_x" { incr line_display }
+
+	expect "$gdb_prompt" { send "next\n" }
+	# Verify the next command worked
+	expect "34" { incr next_worked }
+
+	expect "$gdb_prompt" { send "display x\n" }
+	# Verify the display worked
+	expect "1:*x = 12" { incr display_worked }
+
+	# Unset the display, set a bp on a source line
+	expect "$gdb_prompt" { send "undisplay 1\n" }
+	expect "$gdb_prompt" { send "break 38\n" }
+	expect "$gdb_prompt" { send "continue\n" }
+
+	# Verify that break on source line worked
+	expect "38*printf" { incr line_display }
+
+	# Continue and verify the program output
+	expect "$gdb_prompt" { send "continue\n" }
+	expect "Results:*=57*=231.00" { incr valid_output }
+	expect "xited normally"
+	expect "$gdb_prompt" { send "quit\n" }
+
+	# If all expected output occurred the following should be set
+	if { $valid_output && $line_display == 2 \
+	     && $shared_lib && $next_worked && $display_worked } {
+		set rc 0
+	} else {
+		set rc 1
+	}
+	if { $valid_output == 0 } {
+		printit "program output not displayed correctly"
+	}
+	if { $line_display < 2 } {
+		printit "source line not displayed correctly\n"
+	}
+	if { $shared_lib == 0 } {
+		printit "shared libs not displayed correctly\n"
+	}
+	if { $next_worked == 0 } {
+		printit "next command did not work";
+	}
+	if { $display_worked == 0 } {
+		printit "display command did not work";
+	}
+	return $rc
+}
+
+#
+# Expect script to test basic gdb commands for use with AT gdb running an AT
+# compiled program.
+#
+proc gdb_python_test { gdbpath test explib pytest } {
+
+	set rc 0
+	set timeout "10"
+	set gdb_prompt "(gdb)"
+	# The following flags will be set when the correct
+	# expected output occurs.  If the expected output
+	# does not occur then it is considered a failure.
+	#
+	# Valid output from the program
+	set opt_python_cmd 0
+	# Source lines are displayed as expected
+	set user_python_fn 0
+	# 'next' command worked
+	# Spawn a gdb session, use -q to avoid the extra initial output
+	spawn $gdbpath -q -nh $test
+
+	# Set a bp on main then check that gdb says it was set
+	expect "$gdb_prompt" { send "break main\n" }
+	expect "Breakpoint"
+
+	# Run the program and check that it stops at the bp
+	expect "$gdb_prompt" { send "run\n" }
+	expect	"Starting"
+	expect "Breakpoint 1"
+
+	expect "$gdb_prompt" { send "break 34\n" }
+	expect "$gdb_prompt" { send "cont\n" }
+
+	expect "34" { send "explore i\n" }
+	expect "'i' is a scalar value of type 'int'." { incr opt_python_cmd }
+	expect "i = 0"
+	expect "$gdb_prompt" { send "break 38\n" }
+	expect "$gdb_prompt" { send "continue\n" }
+	expect "38"
+	expect "$gdb_prompt" { send "explore p\n" }
+	expect "'p' is a pointer to a value of type 'double'" {
+		incr opt_python_cmd
+	}
+	expect "Continue exploring it as a pointer to a single value *:"
+	send "y\n"
+	expect "'*p' is a scalar value of type 'double'."
+	expect "*p = 72"
+	expect "$gdb_prompt" { send "continue\n" }
+	expect "xited normally"
+	expect "$gdb_prompt" { send "source gdb/$pytest\n" }
+	expect "$gdb_prompt" { send "hello-gdb\n" }
+	expect "Hello GDB from Python!" { incr user_python_fn }
+	expect "$gdb_prompt" { send "quit\n" }
+
+	# If all expected output occurred the following should be set
+	if { $opt_python_cmd == 2 && $user_python_fn == 1 } {
+		set rc 0
+	} else {
+		set rc 1
+	}
+	if { $opt_python_cmd < 2 } {
+		printit "Installed python command did not work correctly\n"
+	}
+	if { $user_python_fn == 0 } {
+		printit "User python function did not work correctly\n"
+	}
+	return $rc
+}

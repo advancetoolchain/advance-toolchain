@@ -1,0 +1,65 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Check if the AT timezone is the same of the system.
+# AT configures the timezone when installing runtime and runtime-compat
+# packages.
+
+
+source shared.exp
+source config_parser.exp
+
+if { $env(AT_CROSS_BUILD) == "yes" } {
+	printit "Skipping dynamic linking: this is a cross compiler\t\[SUCCESS\]"
+	exit $ENOSYS
+}
+
+if {[info exists env(AT_WD)]} {
+	printit "Skipping dynamic linking: running test suite on a compatible\
+mode with the build system.\t\[SUCCESS\]"
+	exit $ENOSYS
+}
+
+if { $BLD_ARCH_PPC64LE } {
+	set LD64 /lib64/ld64.so.2
+} else {
+	set LD64 /lib64/ld64.so.1
+}
+set err [catch {exec $LD64 /bin/date "+%z"} sys_tz]
+if { ${err} != 0 } {
+	fvtr_error "Failed to get the system timezone: ${sys_tz}"
+}
+
+set CC [compiler_path]
+set tmp_file [exec mktemp]
+
+compile "${CC} $FULLPATH/timezone.c -o ${tmp_file}"
+set err [catch {exec ${tmp_file}} at_tz]
+if { ${err} != 0 } {
+	fvtr_error "Failed to get AT timezone: ${at_tz}"
+}
+
+file delete -force ${tmp_file}
+
+printit "System timezone\t$sys_tz"
+printit "AT timezone\t\t$at_tz"
+
+if { ${sys_tz} == ${at_tz} } {
+	printit "Both timezones are identical\t\[SUCCESS\]"
+	return $SUCCESS
+}
+
+fvtr_error "AT timezone is different from system's timezone.\t\[FAIL\]"

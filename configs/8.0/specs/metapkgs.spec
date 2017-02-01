@@ -1,0 +1,1 @@
+../../7.1/specs/metapkgs.spec

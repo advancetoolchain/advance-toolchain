@@ -1,0 +1,245 @@
+<h1>Building with Advance Toolchain cross compiler</h1>
+
+<h2>Table of Contents</h2>
+<ol>
+    <li><a href="#intro">Introduction</a></li>
+    <li>
+        <a href="#sample">Building a sample program</a>
+        <ul>
+            <li><a href="#libs">Copy headers and libraries</a></li>
+            <li><a href="#build">Build</a></li>
+        </ul>
+    </li>
+    <li><a href="#faq">Frequently Asked Questions</a></li>
+</ol>
+
+
+<h2 id="intro">Introduction</h2>
+<p>
+A cross compiler is a compiler that runs in a certain processor
+architecture (host architecture) but is able to generate executable
+code to a different processor architecture (target
+architecture) <sup><a id="fnr.1" name="fnr.1" href="#fn.1">1</a></sup>.
+</p>
+
+<p>
+The Advance Toolchain provides cross compilers that run on x86
+and generate code for Power which help teams to start developing for
+Power without having immediate access to a POWER server.
+A cross compiler doesn't completely remove the dependency on the
+target processor because users still have to test and run the
+executable code on a different processor.
+</p>
+
+
+<h2 id="sample">Building a sample program</h2>
+<p>
+GNU wget <sup><a id="fnr.2" name="fnr.2" href="#fn.2">2</a></sup> is a small
+program that highlights the important problems when cross compiling a certain
+software: it depends on libraries provided by the Advance Toolchain cross
+compiler and external libraries.
+</p>
+
+<p>
+In this example, we'll build GNU wget for POWER little-endian, using a
+x86 computer with the Advance Toolchain cross compiler.
+</p>
+
+
+<h3 id="libs">Copy headers and libraries</h3>
+<p>
+Firstly, it is necessary to copy all necessary libraries and headers
+to a certain directory.  In this example I'll use:
+</p>
+<ul>
+    <li>Headers: ${HOME}/wget/include</li>
+    <li>Libraries: ${HOME}/wget/lib</li>
+</ul>
+
+<p>
+In this case, ${HOME} is a shell variable holding the path of my home
+directory.
+</p>
+
+<p>
+For GNU wget, we need to provide some OpenSSL libraries and Zlib.
+Both of them are available in the Advance Toolchain native compiler.
+However, the list of necessary libraries may vary according to the
+project.  If you don't know well the project you can use the following
+tools in order to identify the list of libraries they use:
+</p>
+
+<pre>
+ldd &lt;executable&gt;
+rpm -q --requires -p &lt;package.rpm&gt;
+dpkg-deb -f &lt;package.deb&gt; | grep "Depends:"
+</pre>
+
+<p>
+Usually the list of libraries necessary to build a project is the same
+across all processor architectures.  So, you may use the above
+commands against an executable or package compiled for another processor.
+</p>
+
+<p>
+This is the list of files required in order to build wget:
+</p>
+
+<pre>
+$ ls -1 ${HOME}/wget/include/
+openssl/
+zconf.h
+zlib.h
+$ ls -1 ${HOME}/wget/lib/
+libcrypto.so
+libcrypto.so.1.0.0
+libssl.so
+libssl.so.1.0.0
+libz.so
+libz.so.1
+libz.so.1.2.6
+</pre>
+
+<p>
+Make sure the libraries are really compiled for the target processor.
+If they don't match, you won't be able to use them.
+You may use 'readelf -h' to verify this information:
+</p>
+
+<pre>
+$ /opt/at7.1/bin/powerpc64le-linux-gnu-readelf -h ${HOME}/wget/lib/libz.so.1.2.6
+...
+  Data:                              2's complement, little endian
+...
+  Machine:                           PowerPC64
+...
+</pre>
+<h3 id="build">Build</h3>
+<p>
+With the header files and libraries in place, the system is ready to
+start the build.  So, create a separate build directory:
+</p>
+
+<pre>mkdir ${HOME}/wget/build &amp;&amp; cd ${HOME}/wget/build
+</pre>
+
+<p>
+After entering the separate build directory, it's possible to
+configure the build by running:
+</p>
+
+<pre>CC=/opt/at7.1/bin/powerpc64le-linux-gnu-gcc \
+CFLAGS="-I${HOME}/wget/include" \
+LDFLAGS="-L${HOME}/wget/lib" \
+        ../wget-1.15/configure \
+                --host=powerpc64le-linux \
+                --with-ssl=openssl
+</pre>
+
+<p>
+Where:
+</p>
+<ul>
+    <li>
+        <b>CC</b> specifies which compiler to use. In this case, Advance
+Toolchain 7.1 cross compiler for POWER little endian.
+Cross compilers usually have a prefix in their program name
+to clearly indicate they won't generate executable code for
+the current processor.  In this case, the prefix is
+"powerpc64le-linux-gnu-".  This rule applies to all programs,
+e.g. g++, gdb, ld, as, etc.
+    </li>
+    <li>
+        <b>CFLAGS="-I"</b> indicates where the compiler will find the header files.
+    </li>
+    <li>
+        <b>LDFLAGS="-L"</b> indicates where the linker will find the libraries.
+    </li>
+    <li>
+        <b>../wget-1.15</b> this is the directory where wget source code is
+available. In this case it is the same of
+${HOME}/wget/wget-1.15.
+    </li>
+    <li>
+        <b>--host=powerpc64le-linux</b> indicates this code will run on POWER
+little endian.
+    </li>
+    <li>
+        <b>--with-ssl=openssl</b> forces wget to use OpenSSL.
+    </li>
+</ul>
+
+<p>
+Finally, build wget:
+</p>
+
+<pre>make
+</pre>
+
+<p>
+After running this you'll find the program available at
+${HOME}/wget/build/src/wget.
+</p>
+
+<p>
+You can now copy it to a POWER little endian system <b>with the Advance Toolchain
+runtime package installed</b> and run it.
+</p>
+
+
+<h2 id="faq">Frequently Asked Questions</h2>
+
+<ol>
+  <li><a href="#faq1">Are cross compiler builds slower?</a></li>
+  <li><a href="#faq2">If I build a program using a cross compiler will it be slower than using a native toolchain?</a></li>
+  <li><a href="#faq3">My project doesn't allow to pass flags to the linker or to the compiler. How can I use extra libraries?</a></li>
+</ol>
+
+<h3><a name="faq1">Are cross compiler builds slower?</a></h3>
+<p>
+Not necessarily.  It depends on the code being built and the
+level of optimization in use.
+</p>
+
+<h3><a name="faq2">If I build a program using a cross compiler will it be slower than using a native toolchain?</a></h3>
+<p>
+No.  There are some differences in the metadata of the binaries, but
+it will run at the same speed.
+</p>
+
+<h3><a name="faq3">My project doesn't allow to pass flags to the linker or to the compiler. How can I use extra libraries?</a></h3>
+<p>
+  In this case, it isn't possible to pass -I to the compiler or -L to linker and
+  the only possible solution is to save the headers and libraries in one of the
+  Advance Toolchain directories:
+  <ul>
+    <li>
+      <b>For POWER big endian (ppc or ppc64)</b>: <br>
+      /opt/atX.X/ppc/usr/include<br>
+      /opt/atX.X/ppc/usr/lib (32-bit libraries)<br>
+      /opt/atX.X/ppc/usr/lib64 (64-bit libraries)
+    </li>
+    <li>
+      <b>For POWER little endian (ppc64le)</b>: <br>
+      /opt/atX.X/ppc64le/usr/include<br>
+      /opt/atX.X/ppc64le/usr/lib64
+    </li>
+  </ul>
+  Be careful to not override any Advance Toolchain files while copying the
+  files.
+</p>
+
+
+<h2>Footnotes: </h2>
+
+<p>
+<sup><a id="fn.1" name="fn.1" href="#fnr.1">1</a></sup>
+Wikipedia - Definition of cross compilers:
+<a href="http://en.wikipedia.org/wiki/Cross_compiler">http://en.wikipedia.org/wiki/Cross_compiler</a>
+</p>
+
+<p>
+<sup><a id="fn.2" name="fn.2" href="#fnr.2">2</a></sup>
+GNU wget project page:
+<a href="https://www.gnu.org/software/wget/">https://www.gnu.org/software/wget/</a>
+</p>

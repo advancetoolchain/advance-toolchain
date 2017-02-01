@@ -1,0 +1,203 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Check if the packages have the strings advance-toolchain-runtime,
+# advance-toolchain-devel, advance-toolchain-perf and
+# advance-toolchain-mcore-libs in the Provides information.
+
+source shared.exp
+source config_parser.exp
+
+if { $env(AT_CROSS_BUILD) == "yes" } {
+	printit "Skipping: this is a cross compiler\t\[SUCCESS\]"
+	exit $ENOSYS
+}
+
+# Get the strings in Provides information and filter only the string
+# independent of the version. e.g. "advance-toolchain-runtime".
+# The return code is passed as argument, because if not it would be
+# subscribed with an empty string.
+# package - package name.
+# expected - string expected in Provides.
+# rc - return code.
+proc process_rpm {package expected rc} {
+	if { [catch {eval exec rpm -q --provides ${package} \
+			 | grep -E "advance-toolchain" \
+			 | grep -v "$::env(AT_NAME)"} \
+		    res] } {
+		# When ${res} is "", it means the package doesn't provide
+		# anything extra.
+		if { "${res}" == "" } {
+			printit "Provides for ${package} not found."
+			return 1
+		} else {
+			fvtr_error "Failed to collect provides data: ${res}"
+		}
+	}
+	# Trim is needed here because the string is returned with two white
+	# spaces in the end.
+	set provides [string trim ${res}]
+	# Compare if the string has the exact value expected.
+	if { ![string equal ${expected} ${provides}] } {
+		printit "Provides for ${package} not found."
+		return 1
+	}
+
+	return ${rc}
+}
+
+# Do the same as process_rpm for DEB packages.
+proc process_deb {package expected} {
+	global at_ver_rev
+	global ERROR
+	global ENOSYS
+
+	set at_full_ver [append_at_internal ${at_ver_rev}]
+	set version "(= ${at_full_ver})"
+
+	if { ![info exists ::env(AT_WD)] } {
+		if { ![exec dpkg-query --status ${expected}]} {
+			printit "User didn't install package ${expected}.\
+Can't run this test."
+			return ${ENOSYS}
+		}
+
+		return ${ENOSYS}
+
+		# TODO: Adapt this code to the new dummy package.
+		# Keep in mind that, the package installed may not be of the
+		# same version you're trying to test.
+		# The biggest problem is that dpkg-query doesn't provide a way
+		# to query for a specific version of a package.
+		set depends [string trimleft [exec dpkg-query --status \
+						  ${expected} | grep -E "Provides"] "Provides: "]
+		# We need trim here because the query returns the string with
+		# "Provides:" in the begining.
+		set provides [string trimleft [exec dpkg-query --status \
+				${package} | grep -E "Provides"] "Provides: "]
+		if { ![string equal ${expected} ${provides}] } {
+			printit "Provides for ${package} not found."
+			return ${ERROR}
+		}
+	} else {
+		set deb_path $::env(AT_WD)/debs
+
+		# Get the file name of the dummy package.
+		set dpkg [string replace ${package} 0 \
+				 [string first "_" ${package}]-1 ${expected}]
+		# Remove version and file type from the real package.
+		set rpkg [string replace ${package} \
+				 [string first "_" ${package}] \
+				 [string length ${package}]]
+
+		set depends [string trimleft \
+				    [exec dpkg --info \
+				          ${deb_path}/${dpkg} \
+					 | grep -E "Pre-Depends"] \
+				    "Pre-Depends: "]
+
+		if { [string first "${rpkg} ${version}" ${depends}] < 0 } {
+			printit "Package ${dpkg} doesn't depend on\
+\"${rpkg} ${version}\"" ${ERROR}
+			return ${ERROR}
+		}
+	}
+
+	return 0
+}
+
+# Get each package that needs be checked and compare the string in Provides
+# one by one.
+# packages - list of packages names.
+proc check_rpms {packages} {
+	global at_ver_rev
+	set rc 0
+
+	if { ![info exists ::env(AT_WD)] } {
+		set rpm_path ""
+	} else {
+		set rpm_path "-p $::env(AT_WD)/rpms/$::env(AT_HOST_ARCH)/"
+	}
+
+	# AT 5.0 and 6.0 used to support devel and perf only.
+	set supported_pkgs {devel perf}
+	# AT 7.0 added the provides for runtime and mcore-libs.
+	if { ![regexp "5\..*|6\..*" $::env(AT_MAJOR_VERSION)] } {
+		lappend supported_pkgs runtime mcore-libs
+	}
+	foreach pkg ${supported_pkgs} {
+		set pkg_path [lindex ${packages} \
+				     [lsearch ${packages} \
+					  "*${pkg}-$::env(AT_MAJOR_VERSION)*"]]
+		set pkg_path "${rpm_path}${pkg_path}"
+		# Process the package and compare with the expected string.
+		set rc [process_rpm \
+			    ${pkg_path} \
+			    "advance-toolchain-${pkg} = ${at_ver_rev}" \
+			    ${rc}]
+	}
+
+	return ${rc}
+}
+
+# Do the same as check_rpm for DEB packages.
+proc check_debs {packages} {
+	global at_ver_rev
+	set rc 0
+
+	# This is needed to make sure not to get runtime-compat package.
+	# The files .deb has runtime_at_version in the name but the installed
+	# packages has only runtime.
+	if { ![info exists ::env(AT_WD)] } {
+		set package [lindex ${packages} [lsearch ${packages} \
+				"*runtime"]]
+	} else {
+		set package [lindex ${packages} [lsearch ${packages} \
+				"*runtime_$::env(AT_MAJOR_VERSION)*"]]
+	}
+	set newrc [process_deb ${package} \
+			    "advance-toolchain-runtime"]
+	set rc [set_new_rc ${rc} ${newrc}]
+
+	set package [lindex ${packages} [lsearch ${packages} "*devel_*"]]
+	set newrc [process_deb ${package} \
+			    "advance-toolchain-devel"]
+	set rc [set_new_rc ${rc} ${newrc}]
+
+	set package [lindex ${packages} [lsearch ${packages} "*perf_*"]]
+	set newrc [process_deb ${package} \
+			    "advance-toolchain-perf"]
+	set rc [set_new_rc ${rc} ${newrc}]
+
+	set package [lindex ${packages} [lsearch ${packages} "*mcore-libs_*"]]
+	set newrc [process_deb ${package} \
+			    "advance-toolchain-mcore-libs"]
+	set rc [set_new_rc ${rc} ${newrc}]
+
+	return ${rc}
+}
+
+set system [get_packaging_system]
+set packages [get_packages_list ${system}]
+set at_ver_rev $::env(AT_MAJOR_VERSION)-$::env(AT_REVISION_NUMBER)
+
+if { ${system} == "rpm" } {
+	set rc [check_rpms "${packages}"]
+} else {
+	set rc [check_debs "${packages}"]
+}
+
+exit ${rc}

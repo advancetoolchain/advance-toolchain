@@ -1,0 +1,1259 @@
+<h1><a href="http://ibm.co/AdvanceToolchain">Table of Contents</a></h1>
+<ol>
+  <li>
+    <a href="#introduction">Introduction</a>
+    <ul>
+      <li><a href="#distros">Supported Linux Distributions</a></li>
+    </ul>
+  </li>
+  <li>
+    <a href="#installation">Installation</a>
+    <ul>
+      <li><a href="#yast">Using YaST or Zypper (SLES12)</a></li>
+      <li><a href="#yum">Using YUM and DNF (RHEL6/7 and Fedora 19/22)</a></li>
+      <li><a href="#aptitude">Using Aptitude or apt (Ubuntu 14.04/14.10/16.04 and Debian 8)</a></li>
+      <li><a href="#at_downloader">AT Downloader</a></li>
+      <li><a href="#manual_install">Manual RPM Installation</a></li>
+      <li><a href="#packages_descriptions">Packages Descriptions</a></li>
+      <li><a href="#compatibility-at5">Installation on SLES9 and RHEL4 &mdash; Runtime Compatibility (version 5.x)</a></li>
+      <li><a href="#compatibility-at6">Installation on SLES10, RHEL5/6 &mdash; Runtime Compatibility (version 6.x and beyond)</a></li>
+      <li><a href="#compatibility-old-at">Runtime Compatibility Between Advance Toolchain Versions</a></li>
+      <li><a href="#cross_compiler">Installation of the cross compiler (x86)</a></li>
+    </ul>
+  </li>
+  <li>
+    <a href="#usage">Usage</a>
+    <ul>
+      <li><a href="#manpages">Manual Pages</a></li>
+      <li><a href="#optimization">Optimization Selection</a></li>
+<li><a href="#commonGCC">Common GCC compiler options</a></li>
+<li><a href="#GCColder">GCC options for older Linux distributions</a></li>
+      <li><a href="#hwcap">Platform and Hardware Capabilities Determination</a></li>
+      <li><a href="#relink">Relinking a Pre-built Application with the Advance Toolchain</a></li>
+      <li><a href="#library_path">Library Search Paths</a></li>
+      <li><a href="#tle">Lock Elision support in glibc</a></li>
+      <li><a href="#libhugetlbfs2">Using the Advance Toolchain with libhugetlbfs-2.0 (and later)</a></li>
+      <li><a href="#libhugetlbfs1">Using the Advance Toolchain with libhugetlbfs-1.0</a></li>
+      <li><a href="#pkgatdeprpm">Packaging an application built with Advance Toolchain</a></li>
+      <li><a href="#xlc">Using the Advance Toolchain with IBM XLC and XLF</a></li>
+      <li><a href="#mass">Using the Advance Toolchain with MASS libraries</a></li>
+      <li><a href="#debugging">Debugging</a></li>
+      <li><a href="#timezone">Time zones</a></li>
+      <li><a href="#selinux">SELinux issue</a></li>
+      <li><a href="#golang">Using Go compilers provided by the Advance Toolchain</a></li>
+    </ul>
+  </li>
+  <li><a href="#limitations">Advance Toolchain Limitations and known issues</a></li>
+  <li><a href="#faq">Frequently Asked Questions</a></li>
+  <li><a href="#support">Support</a></li>
+</ol>
+<br>
+<h1><a name="introduction">Introduction</a></h1>
+<p>The IBM Advance Toolchain for Linux on Power is a set of open source development tools and runtime libraries which allows users to take leading edge advantage of IBM's latest POWER hardware features on Linux:</p>
+<ul>
+  <li>POWER8 enablement</li>
+  <li>POWER8 optimized scheduler</li>
+  <li>POWER8 Transactional Memory enablement</li>
+  <li>POWER8 Crypto Operations enablement</li>
+  <li>POWER8 Fusion enablement</li>
+</ul>
+<p>Advance Toolchain 10.0 features:</p>
+<ul>
+  <li>Support for big endian (ppc64) and little endian (ppc64le)</li>
+  <li>POWER8 optimized runtime libraries</li>
+</ul>
+<p>Advance Toolchain 9.0 features:</p>
+<ul>
+  <li>Support for big endian (ppc64) and little endian (ppc64le)</li>
+  <li>POWER7 and POWER8 optimized runtime libraries</li>
+</ul>
+<p>Advance Toolchain 8.0 features:</p>
+<ul>
+  <li>Support for big endian (ppc64) and little endian (ppc64le)</li>
+  <li>POWER7 and POWER8 optimized runtime libraries</li>
+</ul>
+<p>Advance Toolchain 7.1 features:</p>
+<ul>
+  <li>Support for little endian (ppc64le)</li>
+  <li>POWER7 and POWER8 optimized runtime libraries</li>
+</ul>
+<p>Advance Toolchain 7.0 features:</p>
+<ul>
+  <li>POWER7 and POWER8 optimized runtime libraries</li>
+</ul>
+<p>Advance Toolchain 6.0 features:</p>
+<ul>
+  <li>POWER7 optimized runtime libraries</li>
+</ul>
+<p>Advance Toolchain releases up to version 5.0 feature:</p>
+<ul>
+  <li>PPC970, POWER4, POWER5, POWER5+, POWER6, POWER6x and POWER7 optimized runtime libraries</li>
+</ul>
+<p>This self-contained toolchain does not rely on the system toolchain and requires minimum dependencies. Nor does it override the default Linux distribution toolchain (it is installed in <span style="font-family:courier new,courier,monospace;">/opt</span>). The latest release includes current stable versions of the following packages:</p>
+<ul>
+<li>GNU Compiler Collection (gcc, g++ and gfortran), plus individually optimized gcc runtime libraries for supported POWER processors</li>
+<li>GNU C library (glibc), individually optimized for supported POWER processors</li>
+<li>GNU Binary Utilities (binutils)</li>
+<li>Decimal Floating Point Library (libdfp), optimized with hardware DFP support for POWER6, POWER6x and POWER7 but also available in emulation for PPC970, POWER4, POWER5, and POWER5+</li>
+<li>AUXV Library (libauxv)</li>
+<li>GNU Debugger (gdb)</li>
+<li>Performance analysis tools (oprofile, valgrind, itrace)</li>
+<li>Muti-core exploitation libraries (TBB, Userspace RCU, SPHDE), starting in version <b>5.0-3</b></li>
+<li>Plus several support libraries (libhugetlbfs, Boost, zlib, etc)</li>
+</ul>
+
+<p>For more information about AUXV and Optimized Libraries, see this <strong><a href="https://www.ibm.com/developerworks/community/wikis/home?lang=en#!/wiki/W51a7ffcf4dfd_4b40_9d82_446ebc23c550/page/Optimized%20Libraries" id="wikiLink1366232160768" page="Optimized Libraries" wiki="W51a7ffcf4dfd_4b40_9d82_446ebc23c550">technical report</a></strong>.
+</p>
+<br>
+<h2><a name="distros">Supported Linux Distributions</a></h2>
+
+<p>Supported Linux distributions according to the Advance Toolchain version and their respective links for manual download.</p>
+
+<table border="1" cellpadding="2" style="border-collapse: collapse; text-align: center;">
+  <tr>
+    <th>&nbsp;</th>
+    <th>Advance Toolchain 10.0 &sup1;</th>
+    <th>Advance Toolchain 9.0 &sup1;</th>
+    <th>Advance Toolchain 8.0 &sup1;</th>
+  </tr>
+  <tr>
+    <th>Fedora 19</th>
+    <td>&nbsp;</td>
+    <td><a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/redhat/RHEL7/at9.0">Native &amp; Cross-compiler</a></td>
+    <td><a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/redhat/RHEL7/at8.0">Native &amp; Cross-compiler</a></td>
+  </tr>
+  <tr>
+    <th>Fedora 22&sup2;</th>
+    <td><a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/redhat/Fedora22/at10.0">Native &amp; Cross-compiler</a></td>
+    <td><a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/redhat/Fedora22/at9.0">Native &amp; Cross-compiler</a></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <th>RHEL 6</th>
+    <td>&nbsp;</td>
+    <td><a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/redhat/RHEL6/at9.0">Cross-compiler</a></td>
+    <td><a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/redhat/RHEL6/at8.0">Cross-compiler</a></td>
+  </tr>
+  <tr>
+    <th>RHEL 7</th>
+    <td><a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/redhat/RHEL7/at10.0">Native &amp; Cross-compiler</a></td>
+    <td><a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/redhat/RHEL7/at9.0">Native &amp; Cross-compiler</a></td>
+    <td><a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/redhat/RHEL7/at8.0">Native &amp; Cross-compiler</a></td>
+  </tr>
+  <tr>
+    <th>SLES 12</th>
+    <td><a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/suse/SLES_12/at10.0">Native &amp; Cross-compiler</a></td>
+    <td><a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/suse/SLES_12/at9.0">Native &amp; Cross-compiler</a></td>
+    <td><a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/suse/SLES_12/at8.0">Native &amp; Cross-compiler</a></td>
+  </tr>
+  <tr>
+    <th>Ubuntu 14.04</th>
+    <td><a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu/dists/trusty/at10.0">Native &amp; Cross-compiler</a></td>
+    <td><a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu/dists/trusty/at9.0">Native &amp; Cross-compiler</a></td>
+    <td><a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu/dists/trusty/at8.0">Native &amp; Cross-compiler</a></td>
+  </tr>
+  <tr>
+    <th>Ubuntu 14.10</th>
+    <td>&nbsp;</td>
+    <td><a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu/dists/utopic/at9.0">Native &amp; Cross-compiler</a></td>
+    <td><a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu/dists/utopic/at8.0">Native &amp; Cross-compiler</a></td>
+  </tr>
+  <tr>
+    <th>Ubuntu 16.04</th>
+    <td><a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu/dists/xenial/at10.0">Native &amp; Cross-compiler</a></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <th>Debian 8</th>
+    <td><a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/debian/dists/jessie/at10.0">Native &amp; Cross-compiler</a></td>
+    <td><a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/debian/dists/jessie/at9.0">Native &amp; Cross-compiler</a></td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+
+<p>
+  <small>
+    &sup1; All versions of Advance Toolchain since 8.0 supports both big and little endian.<br>
+    &sup2; Advance Toolchain for Fedora 22 supports little endian only.<br>
+  </small>
+</p>
+
+<p>This includes all the service packs and update releases for the mentioned Linux distributions.</p>
+
+<p>In addition, we provide a runtime compatibility package for older Linux distributions, so binaries built by the Advance Toolchain can be run on those.</p>
+
+<p>For more information about each individual release, please refer to the <b>release notes</b> file available at the Advance Toolchain file repositories below.</p>
+<br>
+<h1><a name="installation">Installation</a></h1>
+
+<p>The gpg public keys <span style="font-family:courier new,courier,monospace;">gpg-pubkey-6976a827-5164221b</span> (for <b>RHEL6/7</b>, <b>SLES 12</b> and <b>Ubuntu</b>) and <span style="font-family:courier new,courier,monospace;">gpg-pubkey-3052930d-5175955a</span> (for <b>RHEL6</b>) are provided in the repositories. These public keys can be used to verify the authenticity of both the Advance Toolchain packages and the repository contents. Download the gpg public key for your Linux distribution and import it using the following commands:</p>
+
+<blockquote style="margin-left:40px">
+  <b>RPM based distributions:</b>
+  <pre style="font-family:courier new,courier,monospace;">
+wget ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/redhat/RHEL7/gpg-pubkey-6976a827-5164221b
+rpm --import gpg-pubkey-6976a827-5164221b
+</pre>
+
+  <b>DEB based distributions:</b>
+  <pre style="font-family:courier new,courier,monospace;">
+wget ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu/dists/trusty/6976a827.gpg.key
+sudo apt-key add 6976a827.gpg.key
+</pre>
+</blockquote>
+
+<p><b>Warnings:</b></p>
+
+<ul>
+  <li>RHEL6 requires both gpg public keys.
+  <li>On SLES10 and RHEL5, please install the ncurses package (64-bit) before installing the Advance Toolchain.</li>
+  <li><span style="font-family:courier new,courier,monospace;">atX.X</span> in the instructions below should be replaced by the version you are using (for example, <span style="font-family:courier new,courier,monospace;">at6.0</span>, <span style="font-family:courier new,courier,monospace;">at7.0</span>, etc)</li>
+</ul>
+<br>
+<h2><a name="yast">Using YaST or Zypper (SLES 12)</a></h2>
+
+<h3>YaST</h3>
+
+<p>To install using YaST, execute <span style="font-family:courier new,courier,monospace;">yast2</b> as <b>root</b>. Then follow these steps:</p>
+
+<ol>
+<li>Select <span style="font-family:courier new,courier,monospace;">Add-on Product</span>.</li>
+<li>Select the <span style="font-family:courier new,courier,monospace;">FTP Protocol</span>:
+<blockquote style="margin-left:40px">
+      <span style="font-family:courier new,courier,monospace;">(x) FTP...</span>
+    </blockquote></li>
+<li>Under <span style="font-family:courier new,courier,monospace;">Server Name</span>:
+    <blockquote style="margin-left:40px">
+      <span style="font-family:courier new,courier,monospace;">ftp.unicamp.br</span>
+    </blockquote></li>
+<li>Under <span style="font-family:courier new,courier,monospace;">Directory on Server</span>:
+    <blockquote style="margin-left:40px">
+      <span style="font-family:courier new,courier,monospace;">/pub/linuxpatch/toolchain/at/suse/SLES_12</span>
+    </blockquote>
+</li>
+<li>You will get a warning about there being no product information available at the given location. This is because the <i>repomd</i> based repository does not contain the YaST product information. <b>This is not a bug</b>. Select <span style="font-family:courier new,courier,monospace;">[Continue]</span>.</li>
+<li>Under the <span style="font-family:courier new,courier,monospace;">Software Management</span> interface, search for &quot;<span style="font-family:courier new,courier,monospace;">advance toolchain</span>&quot; and mark the <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-runtime</span>, <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-devel</span>, <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-perf</span> and <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-mcore-libs</span> packages for installation <a href="#packages_descriptions">as necessary</a> and click <span style="font-family:courier new,courier,monospace;">[Accept]</span>.
+    If you are installing a cross compiler, select <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-cross-ppc64</span> or <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-cross-ppc64le</span>.
+  </li>
+</ol>
+
+<h3>Zypper</h3>
+
+<p>To install using Zypper, you first need (as <b>root</b>) to add the Unicamp FTP to the repository list:</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">zypper addrepo ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/suse/SLES_12 "Advance Toolchain"</span>
+</blockquote>
+
+<p>This will create a new repository entry called "Advance Toolchain" pointing to the Unicamp FTP site. Then, execute the following to install:</p>
+
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+zypper install advance-toolchain-atX.X-runtime \
+               advance-toolchain-atX.X-devel \
+               advance-toolchain-atX.X-perf \
+               advance-toolchain-atX.X-mcore-libs
+</pre>
+</blockquote>
+
+<p>Or to install the cross compiler, run:</p>
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+zypper install advance-toolchain-atX.X-cross-ppc64
+</pre>
+</blockquote>
+
+<p>You will be prompted to trust the repository key (<span style="font-family:courier new,courier,monospace;">AdvanceToolchain05</span>). Hit "<span style="font-family:courier new,courier,monospace;">a</span>" for always trusting this key, then "<span style="font-family:courier new,courier,monospace;">y</span>" to confirm packages installation. Optionally, you may also install the <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-mcore-libs</span> package, which contains the multi-core exploitation libraries (versions <b>5.0-3 and above</b>), and the <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-selinux package</span> (versions <b>5.0-7 and above</b>), which enables compatibility with SELinux.</p>
+
+<p><b>Warning:</b> Do not try to install the <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-selinux</span> package if you do not have SELinux installed and enabled.</p>
+
+<p>YaST and Zypper support package upgrades for new revision releases (i.e. <i>6.0-0</i> to <i>6.0-1</i>). For new major releases (i.e. <i>5.0-8</i> to <i>6.0-1</i>), please proceed as in a normal installation.</p>
+
+<p><b>Warning:</b> When upgrading using Zypper on SLES 10, use the following command:</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">zypper update -t package advance-toolchain-at5.0-runtime</span>
+</blockquote>
+
+<p>The <span style="font-family:courier new,courier,monospace;">-t</span> package option is required on SLES 10.</p>
+<br>
+<h2><a name="yum">Using YUM and DNF (RHEL6/7 and Fedora 19/22)</a></h2>
+
+<p>First, if you have never created an Advance Toolchain repository configuration file, you need to do so. Create the following file using the text editor of your choice as <b>root</b>:</p>
+
+<blockquote style="margin-left:40px">
+  <span>/etc/yum.repos.d/atX.X.repo</span>
+</blockquote>
+
+<p>and add the following content:</p>
+
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+# Beginning of configuration file
+[atX.X]
+name=Advance Toolchain Unicamp FTP
+baseurl=ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/redhat/RHEL7
+failovermethod=priority
+enabled=1
+gpgcheck=1
+gpgkey=ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/redhat/RHEL7/gpg-pubkey-6976a827-5164221b
+# End of configuration file
+</pre>
+</blockquote>
+
+<p><b>Notes</b></p>
+
+<ul>
+<li>When installing on RHEL6 point to the RHEL6 <span style="font-family:courier new,courier,monospace;">baseurl</span>, and append the additional <span style="font-family:courier new,courier,monospace;">gpgkey</span>:
+    <blockquote style="margin-left:40px">
+      <pre style="font-family:courier new,courier,monospace;">
+baseurl=ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/redhat/<b>RHEL6</b>
+gpgkey=ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/redhat/<b>RHEL6</b>/gpg-pubkey-6976a827-5164221b
+       <b>ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/redhat/RHEL6/gpg-pubkey-3052930d-5175955a</b>
+</pre></li>
+<li>Fedora 19 uses the same repository of RHEL7.</li><br>
+<li>When installing on Fedora 22, update <span style="font-family:courier new,courier,monospace;">baseurl</span> to the Fedora 22 repository:
+    <blockquote style="margin-left:40px">
+      <pre style="font-family:courier new,courier,monospace;">
+baseurl=ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/redhat/<b>Fedora22</b>
+</pre></li>
+<li>When installing the advanced toolchain cross-compiler on an x86 or amd64 target, the entry <span style="font-family:courier new,courier,monospace;">gpgcheck=1</span> should be changed to <span style="font-family:courier new,courier,monospace;">gpgcheck=0</span> as these packages are not currently signed.</li>
+</ul>
+
+<p>You may check if the repository was added correctly by running <span style="font-family:courier new,courier,monospace;">yum repolist</span>. You will see your new <span style="font-family:courier new,courier,monospace;">atX.X</span> repository listed if the configuration file is correct.</p>
+
+<p>To install, execute <span style="font-family:courier new,courier,monospace;">yum</span> install as <b>root</b>:</p>
+
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+yum install advance-toolchain-atX.X-runtime \
+            advance-toolchain-atX.X-devel \
+            advance-toolchain-atX.X-perf \
+            advance-toolchain-atX.X-mcore-libs
+</pre>
+</blockquote>
+
+<p>Or to install a cross compiler:</p>
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+yum install advance-toolchain-atX.X-cross-ppc64
+</pre>
+</blockquote>
+
+<p>Answer "<span style="font-family:courier new,courier,monospace;">y</span>" when YUM prompts for confirmation. Optionally, you may also install the <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-mcore-libs</span> package, which contains the multi-core exploitation libraries (versions <b>5.0-3 and above</b>), and the <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-selinux</span> package (versions <b>5.0-7 and above</b>), which enables compatibility with SELinux.</p>
+
+<p><b>Warning:</b> Do not try to install the <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-selinux</span> package if you do not have SELinux installed and enabled.</p>
+
+<p>YUM supports package upgrades for new revision releases (i.e. <i>5.0-0</i> to <i>5.0-1</i>). For new major releases (i.e. <i>5.0-8</i> to <i>6.0-1</i>), please proceed as in a normal installation.</p>
+<br>
+<h2><a name="at_downloader">AT Downloader</a></h2>
+
+<p>There is a tool available to download AT called <a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/at_downloader/">AT Downloader</a>.</p>
+<p>The  <a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/at_downloader/">AT Downloader</a> is a script to download the latest version of the AT packages for a supported distribution.</p>
+<p>You can then manually install the AT packages on your systems.</p>
+
+<br>
+<h2><a name="manual_install">Manual RPM installation</a></h2>
+
+<p>If you are installing the rpms manually, you will need to download them from our repositories and install in the following order (due to prerequisites):</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+advance-toolchain-atX.X-runtime-X.X-X<br>
+advance-toolchain-atX.X-devel-X.X-X<br>
+advance-toolchain-atX.X-perf-X.X-X<br>
+advance-toolchain-atX.X-mcore-libs-X.X-X
+  </span>
+</blockquote>
+
+<p>where <span style="font-family:courier new,courier,monospace;">X.X-X</span> is the actual version of the package (i.e. <span style="font-family:courier new,courier,monospace;">6.0-1</span>). Optionally, you may also install the <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-mcore-libs</span> package, which contains the multi-core exploitation libraries (versions <b>5.0-3 and above</b>), and the <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-selinux</span> package (versions <b>5.0-7 and above</b>), which enables compatibility with SELinux. These packages depend on <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-runtime</span>.</p>
+
+<p><b>Warning:</b> Do not try to install the <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-selinux</span> package if you do not have SELinux installed and enabled.</p>
+
+<p>If you are updating your current installation to a new revision release (i.e. <i>7.0-0</i> to <i>7.0-1</i>), you need to update as a batch, so rpm can solve the dependencies:</p>
+
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+rpm -Uvh advance-toolchain-atX.X-runtime-X.X-X.ppc64.rpm \
+         advance-toolchain-atX.X-devel-X.X-X.ppc64.rpm \
+         advance-toolchain-atX.X-perf-X.X-X.ppc64.rpm \
+         advance-toolchain-atX.X-mcore-libs-X.X-X.ppc64.rpm
+</pre>
+</blockquote>
+
+<p>The rpm command should always be run as <b>root</b>. Failure to do so will result in an error similar to this:</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+error: can't create transaction lock on /var/lib/rpm/__db.000
+  </span>
+</blockquote>
+
+<p>In case you installed or updated the Advance Toolchain incorrectly, you might end up with an inconsistent rpm database (i.e. showing that the rpms are installed, but no files present in <span style="font-family:courier new,courier,monospace;">/opt/atX.X</span>). In that case, you will have to force-remove the rpms and install again. To force-remove all the Advance Toolchain rpms:</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+rpm -e --force advance-toolchain-*
+  </span>
+</blockquote>
+
+<p>Then reinstall using any of the procedures described above.</p>
+<br>
+
+<h2><a name="aptitude">Using Aptitude or apt (Ubuntu 14.04/14.10/16.04 and Debian 8)</a></h2>
+<h3>Configure the repositories</h3>
+<p>If you have never configured Advance Toolchain repositories in this system, you need to do so. Add the following line to <span style="font-family:courier new,courier,monospace;">/etc/apt/sources.list</span> using your editor of choice as <b>root</b>.</p>
+
+<p>On i386 or amd64:</p>
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+deb [arch=i386] ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu trusty atX.X
+  </span>
+</blockquote>
+<p>AT 10.0 and above don't support i386, use:</p>
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+deb ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu trusty atX.X
+  </span>
+</blockquote>
+
+<p>On ppc64el:</p>
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+deb ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu trusty atX.X
+  </span>
+</blockquote>
+
+<p><b>Notes</b></p>
+
+<ul>
+<li>When installing on Ubuntu 16.04 (xenial) or Ubuntu 14.10 (utopic), point to its respective repository:
+    <blockquote style="margin-left:40px">
+      <pre style="font-family:courier new,courier,monospace;">
+      deb ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu <b>xenial</b> atX.X
+      deb ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu <b>utopic</b> atX.X
+</pre></li>
+<li>When installing on Debian 8 (jessie), point to its respective repository:
+    <blockquote style="margin-left:40px">
+      <pre style="font-family:courier new,courier,monospace;">
+      deb ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/<b>debian</b> <b>jessie</b> atX.X
+</pre></li>
+</ul>
+
+<h3>Aptitude</h3>
+
+<p>After <a href="#aptitude">configuring the repository</a>, refresh the <span style="font-family:courier new,courier,monospace;">aptitude</span> cache by running:</p>
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+sudo aptitude update
+  </span>
+</blockquote>
+
+<p>Finally, install the Advance Toolchain package running the following command:</p>
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+sudo aptitude install advance-toolchain-atX.X-runtime \
+                      advance-toolchain-atX.X-devel \
+                      advance-toolchain-atX.X-perf \
+                      advance-toolchain-atX.X-mcore-libs
+</pre>
+</blockquote>
+
+<p>Or to install a cross compiler:</p>
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+sudo aptitude install advance-toolchain-atX.X-cross-ppc64
+</pre>
+</blockquote>
+
+<p>Aptitude supports package upgrades for new revision releases (i.e. <i>7.1-0</i> to <i>7.1-1</i>). For new major releases (i.e. <i>7.1-1</i> to <i>8.0-0</i>), please proceed as in a normal installation.</p>
+
+<h3>apt</h3>
+
+<p>After <a href="#aptitude">configuring the repository</a>, refresh the <span style="font-family:courier new,courier,monospace;">apt</span> cache by running:</p>
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+sudo apt-get update
+  </span>
+</blockquote>
+
+<p>Finally, install the Advance Toolchain package running the following command:</p>
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+sudo apt-get install advance-toolchain-atX.X-runtime \
+                     advance-toolchain-atX.X-devel \
+                     advance-toolchain-atX.X-perf \
+                     advance-toolchain-atX.X-mcore-libs
+</pre>
+</blockquote>
+
+<p>Or to install a cross compiler:</p>
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+sudo apt-get install advance-toolchain-atX.X-cross-ppc64
+</pre>
+</blockquote>
+
+<p>APT supports package upgrades for new revision releases (i.e. <i>7.1-0</i> to <i>7.1-1</i>). For new major releases (i.e. <i>7.1-1</i> to <i>8.0-0</i>), please proceed as in a normal installation.</p>
+
+<br>
+<h2><a name="packages_descriptions">Packages Descriptions</a></h2>
+
+<p>In most cases, you do not need to install all of the packages that are provided with the Advance Toolchain. The following list describes when they are needed:</p>
+<ul>
+<li><span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-runtime</span>
+<p>Provides base functionality to run Advance Toolchain applications. This package is always required.</p></li>
+
+<li><span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-runtime-compat</span>
+<p>Substitutes the above package on previous distributions versions. More information about <a href="#compatibility-at5">SLES9 and RHEL4</a> or <a href="#compatibility-at6">SLES10 and RHEL5</a></p></li>
+
+<li><span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-devel</span>
+<p>Provides development tools. This package is only needed when developing applications.</p></li>
+
+<li><span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-perf</span>
+<p>Provides tools for measuring performance. It's only useful on some development environments.</p></li>
+
+<li><span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-mcore-libs</span>
+<p>Provides libraries for multi-thread development, like Boost, SPHDE and Threading Building Blocks. This package is also required on servers running the applications developed with those libraries.</p></li>
+
+<li><span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-runtime-atZZ-compat</span>
+<p>Install this package only if you need to run an application built with the previous version of the Advance Toolchain on top of the current version. More information on <a href="#compatibility-old-at">Runtime Compatibility Between Advance Toolchain Versions</a></p></li>
+
+<li><span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-selinux</span>
+<p>Provides SELinux settings. Only required when developing or running Advance Toolchain applications on a SELinux enabled environment.</p></li>
+
+<li><span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-golang</span>
+<p>Provides Golang for ppc64le, it doesn't have any dependencies with the other packages. The files will be installed into /usr/local/go/.</p></li>
+
+<li><span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-cross-ppc64</span> or <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-cross-ppc64le</span>
+<p>Provide a cross compiler for big endian (ppc64) or little endian (ppc64le).  These packages are available for x86 (i386) or x86-64 (amd64) in order to generate binaries for POWER.</p></li>
+
+<li><span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-cross-common</span>
+<p>Provides files common to both cross compiler packages (ppc64 and ppc64le).  This package is mandatory for cross compiler installation starting from version 8.0.</p></li>
+
+<li><span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-cross-ppc64(le)-runtime-extras</span>
+<p>Provides additional libraries to the cross compiler packages (ppc64 or ppc64le).</p></li>
+
+<li><span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-cross-ppc64(le)-mcore-libs</span>
+<p>Provides the libraries for multi-thread development to the cross compiler (ppc64 or ppc64le).</p></li>
+</ul>
+
+<p style="font-size: 150%; font-weight: bold;">Important Notes</p>
+
+<ul>
+<li><span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-runtime-compat-X.X-X</span>
+  <ul>
+    <li><b>Advance Toolchain 5.x:</b> DO NOT INSTALL on SLES10 and beyond or RHEL5 and beyond. These are intended for runtime compatibility on SLES9 and RHEL4 only (see below). By doing so, you will corrupt your entire Advance Toolcahin installation and you will have to force-remove all the rpms and perform a new installation (see above for instructions on how to do it). If you are getting some strange "Illegal instruction" or "Segmentation fault" errors in runtime when you are absolutely sure those shouldn't be happening, you may want to verify if the compatibility rpm is installed:
+      <blockquote style="margin-left:40px">
+        <span style="font-family:courier new,courier,monospace;">rpm -qa | grep advance-toolchain</span>
+      </blockquote>
+      <p>And check if it returns <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-runtime-compat-X.X-X</span>.</p>
+    </li>
+    <li><b>Advance Toolchain 6.x and 7.x:</b> DO NOT INSTALL on SLES11 and beyond or RHEL6 and beyond, for the same reasons cited above.</li>
+    <li><b>Advance Toolchain 8.x, 9.x and 10.x:</b> DO NOT INSTALL on RHEL7 and beyond, for the same reasons cited above.</li>
+  </ul>
+</li>
+<li>The Advance Toolchain rpms were designed so that you can install multiple versions of it in your machine if necessary. Different versions will install in different paths. (for example, <span style="font-family:courier new,courier,monospace;">/opt/at7.0</span> and <span style="font-family:courier new,courier,monospace;">/opt/at8.0</span> for Advance Toolchain 7.0-x and Advance Toolchain 8.0-y).</li>
+</ul>
+
+<br>
+<h2><a name="compatibility-at5">Installation on SLES9 and RHEL4 &mdash; Runtime Compatibility (version 5.x)</a></h2>
+<p>Users running applications on SLES9 or RHEL4 may install the compatibility rpm <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-runtime-compat-X.X-X</span> in order to get the Advance Toolchain optimized runtime libraries. For SLES9 and RHEL4, optimized libraries are available for:
+
+<ul>
+  <li>PPC970</li>
+  <li>POWER4</li>
+  <li>POWER5</li>
+  <li>POWER5+</li>
+</ul>
+
+<br>
+<h2><a name="compatibility-at6">Installation on SLES10, RHEL5/6 &mdash; Runtime Compatibility (version 6.x and beyond)</a></h2>
+
+<p>Users running applications on SLES10, RHEL5 or RHEL6 may install the compatibility rpm <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-runtime-compat-X.X-X</span> in order to get the Advance Toolchain runtime libraries. There are no optimized libraries for the runtime compatibility rpm starting on version 6.0-0.</p>
+<br>
+<h2><a name="compatibility-old-at">Runtime compatibility between Advance Toolchain versions</a></h2>
+
+<p>Users running applications built with an older version of the Advance Toolchain may install the compatibility rpm advance-toolchain-atX.X-runtime-atZ.Z-compat-X.X-X in order to run these applications on top of a newer version of the Advance Toolchain runtime, for example, using AT 7.0 to run applications built with AT 6.0.</p>
+
+<p>After installing this package, please run:</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">/etc/rc.d/init.d/atX.X-runtime-atZ.Z-compat start</span>
+</blockquote>
+<br>
+<h2><a name="cross_compiler">Using the Cross Compiler (x86)</a></h2>
+
+<p>The cross compiler provides a way to compile programs for POWER using a x86 (i386) or x86-64 (amd64) machine, helping teams to start developing for POWER without having access to a server in the early development phase.  However it does not completely remove the requirement of a POWER server to run a complete test in a proper environment.</p>
+
+<p>For more information about using the cross compiler, visit <a href="/developerworks/community/wikis/home#!/wiki/W51a7ffcf4dfd_4b40_9d82_446ebc23c550/page/Building%20with%20Advance%20Toolchain%20cross%20compiler" id="wikiLink1402662912200" lconnwikimacro="wikilink" lconnwikiparamwikipage="Building with Advance Toolchain cross compiler" page="Building with Advance Toolchain cross compiler" wiki="W51a7ffcf4dfd_4b40_9d82_446ebc23c550">Building with Advance Toolchain cross compiler</a> documentation.</p>
+
+<br>
+<h1><a name="usage">Usage</a></h1>
+
+<p>After completing the installation steps, the Advance Toolchain is ready for usage. Just call the program directly, for example <span style="font-family:courier new,courier,monospace;">/opt/atX.X/bin/gcc</span>.</p>
+
+<p>However, some applications have complex build systems (for example: autotool, make, cmake) in which is necessary to correctly set the environment <span style="font-family:courier new,courier,monospace;">PATH</span>, for example:</p>
+
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+PATH=/opt/atX.X/bin:/opt/atX.X/sbin:$PATH make
+</pre>
+</blockquote>
+<br>
+<h2><a name="manpages">Manual Pages</a></h2>
+
+<p>In order for the system man application to pick up Advance Toolchain installed manual pages, you must export the location of the AT manual pages in the <span style="font-family:courier new,courier,monospace;">MANPATH</span> variable prior to invoking <span style="font-family:courier new,courier,monospace;">man</span>. This is best accomplished with the following commands:</p>
+
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+unset MANPATH
+export MANPATH="/opt/atX.X/share/man:`manpath`"
+man &lt;topic&gt;
+  </pre>
+</blockquote>
+
+<p>Or you may override the current environment <span style="font-family:courier new,courier,monospace;">MANPATH</span> as demonstrated in the following example:</p>
+
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+MANPATH="/opt/atX.X/share/man:`manpath`" man lsauxv
+  </pre>
+</blockquote>
+<br>
+<h2><a name="optimization">Optimization Selection</a></h2>
+
+<p>Directing <span style="font-family:courier new,courier,monospace;">gcc</span> to build an application for a particular CPU can take advantage of processor-specific instruction selection. In some cases, it can significantly improve performance. Building without selecting a particular CPU simply causes gcc to select the default (lowest common denominator) instruction set.</p>
+
+<blockquote style="margin-left:40px">
+-mcpu=power4<br>
+-mcpu=970<br>
+-mcpu=power5<br>
+-mcpu=power5+<br>
+-mcpu=power6<br>
+-mcpu=power6x<br>
+-mcpu=power7<br>
+-mcpu=power8
+</blockquote>
+
+<p><b>Warnings</b></p>
+
+<ul>
+<li>On Advance Toolchain 10.0  the compiler defaults to <span style="font-family:courier new,courier,monospace;">-mcpu=power8 -mtune=power8</span></li>
+<li>On Advance Toolchain 7.x, 8.0, and 9.0, the compiler defaults to <span style="font-family:courier new,courier,monospace;">-mcpu=power7 -mtune=power8</span></li>
+<li>On Advance Toolchain 6.0, the compiler defaults to <span style="font-family:courier new,courier,monospace;">-mcpu=power6 -mtune=power7</span></li>
+<li>When using <span style="font-family:courier new,courier,monospace;">-mcpu=power7</span>, <b>DO NOT disable Altivec</b> (for example, <span style="font-family:courier new,courier,monospace;">-mno-altivec</span>) <b>without also disabling VSX</b> (for example, <span style="font-family:courier new,courier,monospace;">-mno-vsx</span>). The following combination is illegal:
+    <blockquote style="margin-left:40px">
+      <span style="font-family:courier new,courier,monospace;">
+-mcpu=power7 -mno-altivec
+      </span>
+    </blockquote>
+  </li>
+</ul>
+<br>
+<h2><a name="commonGCC">Common GCC options</a></h2>
+
+<ul>
+
+<li><span style="font-family:courier new,courier,monospace;">-fpeel-loops</span>
+<p>Peels the loops so that there is enough information that they do not roll much (from profile feedback). This value also turns on complete loop peeling; complete removal of loops with small constant number of iterations.</p></li>
+
+<li><span style="font-family:courier new,courier,monospace;">-funroll-loops</span>
+<p>Unroll loops whose number of iterations can be determined at compile time or upon entry to the loop. The <span style="font-family:courier new,courier,monospace;">-funroll-loops</span> value implies the use of the <span style="font-family:courier new,courier,monospace;">-frerun-cse-after-loop</span> value. This option makes the code larger, and may or may not make it run faster.</p></li>
+
+<li><span style="font-family:courier new,courier,monospace;">-ftree-vectorize</span>
+<p>Perform loop vectorization on trees. This flag is enabled by default at <span style="font-family:courier new,courier,monospace;">-O3</span>, starting at the GCC 4.3 time frame.</p></li>
+
+<li><span style="font-family:courier new,courier,monospace;">-ffast-math</span>
+<p>Sets the <span style="font-family:courier new,courier,monospace;">-fno-math-errno</span>, <span style="font-family:courier new,courier,monospace;">-funsafe-math-optimizations</span>, <span style="font-family:courier new,courier,monospace;">-ffinite-math-only</span>, <span style="font-family:courier new,courier,monospace;">-fno-rounding-math</span>, <span style="font-family:courier new,courier,monospace;">-fno-signaling-nans</span> and <span style="font-family:courier new,courier,monospace;">-fcx-limited-range</span> values. This option causes the preprocessor macro <span style="font-family:courier new,courier,monospace;">_ FAST_MATH _</span> to be defined. This option is not turned on by any <span style="font-family:courier new,courier,monospace;">-O</span> option because it can result in incorrect output for programs which depend on an exact implementation of IEEE or ISO rules or specifications for math functions. It may, however, yield faster code for programs that do not require the guarantees of these specifications.</p></li>
+
+<li><span style="font-family:courier new,courier,monospace;">-mcmodel=medium</span>
+<p>Generate PowerPC64 code for the medium model: The TOC and other static data may be up to a total of 4G in size.</p></li>
+</ul>
+<br>
+<h2><a name="GCColder">GCC options for older Linux distributions</a></h2>
+<p>The Advance Toolchain shows significant gains over the older (SLES10 SP3) Enterprise Linux Distributions, because these releases use an older GCC-4.1 compiler that is not enabled for POWER7. In addition, these releases are restricted to POWER6 compatibility mode and cannot leverage the new instructions enabled for POWER7 for applications or runtime libraries. There are, however, some best practices that you can use to maximize your performance.</p>
+
+<h3>Best practice for the <span style="font-family:courier new,courier,monospace;">-mcpu</span> and <span style="font-family:courier new,courier,monospace;">-mtune</span> values</h3>
+<ul>
+<li>If your program will be running on the same POWER systems for the foreseeable future, built with the matching <span style="font-family:courier new,courier,monospace;">-mcpu</span> value.</li>
+<li>If your program needs to run on multiple systems, the best strategy is to build with the <span style="font-family:courier new,courier,monospace;">-mcpu</span> set for the oldest supported system. If your program mostly runs on a newer system with the older system for accommodation or backup, then use the <span style="font-family:courier new,courier,monospace;">-mcpu</span> set for the oldest system combined with the <span style="font-family:courier new,courier,monospace;">-mtune</span> value for system that you want to optimize for performance.</li>
+<li>If your program in running in POWER6 compatibility mode on a POWER7 System, use the <span style="font-family:courier new,courier,monospace;">-mcpu=power6</span> and <span style="font-family:courier new,courier,monospace;">-mtune=power7</span> values.</li>
+<li>If your code is organized in dynamic libraries, you can compile and build your libraries multiple times using the -mcpu value for the specific Power platform and then install those libraries into the matching /lib64/power directory. This allows the dynamic linker to automatically select the dynamic library optimized for the specific system.</li>
+</ul>
+
+<h3>Best practice for large programs</h3>
+
+<ul>
+<li>Avoid compiling with the -mminimal-toc value as this adds extra levels of indirection for static data accesses</li>
+<li>Compile with the -mcmodel=medium value to optimize static data access and allow the linker to perform additional optimizations on the final program or library image.</li>
+<li>For programs with static data exceeding 2 GB, you may need to use the -mcmodel=large value.</li>
+</ul>
+<br>
+<h2><a name="hwcap">Platform and Hardware Capabilities Determination</a></h2>
+
+<p>Since around AT 9.0, glibc includes the function <span style="font-family:courier new,courier,monospace;">getauxval</span> which can be used at runtime to query the capabilities of the hardware. Users of Advanced Toolchain 9.0 or newer are encouraged to use this instead of libauxv. A manual page exists which documents this function. libauxv may be removed in a future major release of the Advanced Toolchain.
+
+<p>The following example tests whether the runtime CPU has POWER7 Vector extensions:</p>
+
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+#include &lt;sys/auxv.h&gt;
+#include &lt;stdbool.h&gt;
+#include &lt;stdio.h&gt;
+
+bool
+has_vector(void)
+{
+	unsigned long int hwcap_mask = (unsigned long int) getauxval (AT_HWCAP);
+        bool has_vec = (hwcap_mask & PPC_FEATURE_HAS_VSX) != 0;
+        if (has_vec)
+		printf("CPU has POWER7 vector extensions\n");
+	return has_vec;
+}
+
+  </pre>
+</blockquote>
+
+<p>Advance Toolchain versions 10.0 and below include <span style="font-family:courier new,courier,monospace;">libauxv</span> and <span style="font-family:courier new,courier,monospace;">lsauxv</span>, a system library and application, respectively, which provide a mechanism for querying the system platform information from the kernel's auxiliary vector. The system hardware capabilities (<span style="font-family:courier new,courier,monospace;">hwcap</span>) may be queried through the auxiliary vector as well. For example, the platform can be queried dynamically with the following function:</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+char * platform = (char *) query_auxv (AT_PLATFORM);
+  </span>
+</blockquote>
+
+<p>Information from the hwcap can be queried in the following manner:</p>
+
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+unsigned long int hwcap_mask = (unsigned long int) query_auxv (AT_HWCAP);
+if (hwcap_mask & PPC_FEATURE_HAS_FPU)
+    printf(" HAS_FPU\n");
+  </pre>
+</blockquote>
+
+<p>For more information about using <span style="font-family:courier new,courier,monospace;">libauxv</span> and <span style="font-family:courier new,courier,monospace;">lsauxv</span> can be found in the <span style="font-family:courier new,courier,monospace;">auxv</span> and <span style="font-family:courier new,courier,monospace;">lsauxv</span> manual pages provided by the Advance Toolchain (see <a href="#manpages">Manual Pages</a> above).</p>
+
+<br>
+<h2><a name="relink">Relinking a Pre-built Application with the Advance Toolchain</a></h2>
+
+<p>Locate all of the application's <span style="font-family:courier new,courier,monospace;">.o</span> files. You can also link <span style="font-family:courier new,courier,monospace;">.a</span> files to pick them all up at once. These will be needed for the relink.</p>
+
+<p>Locate the paths to all of the necessary linked shared-object files, for example:</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">/usr/X11R6/lib</span> for <span style="font-family:courier new,courier,monospace;">libXrender</span><br>
+  <span style="font-family:courier new,courier,monospace;">/opt/gnome/lib</span> for <span style="font-family:courier new,courier,monospace;">libgtk-x11-2.0</span>
+</blockquote>
+
+<p>Edit <span style="font-family:courier new,courier,monospace;">/opt/atX.X/etc/ld.so.conf</span> and add the directories to all of the shared object files to the end of this file. Don't forget <span style="font-family:courier new,courier,monospace;">lib64</span> for the 64-bit equivalent libraries if applicable, for example:</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+/opt/gnome/lib/<br>
+/opt/gnome/lib64/<br>
+/usr/X11R6/lib<br>
+/usr/X11R6/lib64/
+  </span>
+</blockquote>
+
+<p>Run the Advance Toolchain's <span style="font-family:courier new,courier,monospace;">ldconfig</span> application to regenerate <span style="font-family:courier new,courier,monospace;">/opt/atX.X/etc/ld.so.cache</span>, for example:</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+sudo /opt/atX.X/sbin/ldconfig
+  </span>
+</blockquote>
+
+<p>The loader uses <span style="font-family:courier new,courier,monospace;">/opt/atX.X/etc/ld.so.cache</span> to find the libraries the application was linked against.</p>
+
+<p>Relink using the Advance Toolchain's compiler:</p>
+
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+/opt/atX.X/bin/gcc -g -O2 -o &lt;application_name&gt; &lt;list_of_dot_o_files&gt; \
+                   &lt;list_of_dot_a_files&gt; -L&lt;path_to_libraries&gt; \
+                   -l&lt;one_for_each_library_needed_for_the_link&gt;
+  </pre>
+</blockquote>
+
+<p>For example:</p>
+
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+/opt/at5.0/bin/gcc -g -O2 -o mandelbrot callbacks.o interface.o \
+    main.o quadmand.o support.o mandel_internals.a \
+    -L/usr/X11R6/lib -L/usr/X11R6/lib64 -L/opt/gnome/lib -lgtk-x11-2.0
+    -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 \
+    -lpangocairo-1.0 -lpango-1.0 -lcairo -lgobject-2.0 -lgmodule-2.0 -ldl \
+    -lglib-2.0 -lfreetype -lfontconfig \
+    -lXrender -lX11 -lXext -lpng12 -lz -lglitz -lm -lstdc++ -lpthread \
+    -lgthread-2.0
+  </pre>
+</blockquote>
+
+<p>If ld gives an error like the following then you're missing the path to that library in the link stage. Add it with <span style="font-family:courier new,courier,monospace;">-L&lt;path to library&gt;</span>, e.g.</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+/opt/at5.0/bin/ld: cannot find -lgtk-x11-2.0
+  </span>
+</blockquote>
+
+<p>Add <span style="font-family:courier new,courier,monospace;">-L/opt/gnome/lib/</span> to the <span style="font-family:courier new,courier,monospace;">gnome</span> compilation line. You need to tell the linker where to find all of the libraries.</p>
+
+<p>When running the relinked application, if you get an error like the following:</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+./mandelbrot: error while loading shared libraries: libglib-2.0.so.0: cannot open shared object file: No such file or directory.
+  </span>
+</blockquote>
+
+<p>You need to add the path to the library in question to <span style="font-family:courier new,courier,monospace;">/opt/atX.X/etc/ld.so.conf</span> and re-run <span style="font-family:courier new,courier,monospace;">/opt/atX.X/sbin/ldconfig</span>. The Advance Toolchain's loader needs to know where to find the libraries and uses the generated <span style="font-family:courier new,courier,monospace;">/opt/atX.X/etc/ld.so.cache</span> to find them.</p>
+
+<p>You can verify that the Advance Toolchain libraries were picked up by running the application prefaced with <span style="font-family:courier new,courier,monospace;">LD_DEBUG=libs</span>, e.g.</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+LD_DEBUG=all ./mandelbrot
+  </span>
+</blockquote>
+
+<p><b>Warning:</b> do NOT use <span style="font-family:courier new,courier,monospace;">LD_LIBRARY_PATH</span> to point to the Advance Toolchain libraries if your applications are not relinked with the Advance Toolchain. Doing so can result in <span style="font-family:courier new,courier,monospace;">ld.so</span> and <span style="font-family:courier new,courier,monospace;">libc.so</span> version mismatch and cause runtime failures.</p>
+<br>
+<h2><a name="library_path">Library Search Paths</a></h2>
+
+<p><span style="font-family:courier new,courier,monospace;">/opt/atX.X/etc/ld.so.conf</span> already includes <span style="font-family:courier new,courier,monospace;">/etc/ld.so.conf</span> in the search order, but you may need to re-run <span style="font-family:courier new,courier,monospace;">/opt/atX.X/sbin/ldconfig</span> in order populate <span style="font-family:courier new,courier,monospace;">/opt/atX.X/etc/ld.so.cache</span> with the specialized search paths you have added to <span style="font-family:courier new,courier,monospace;">/etc/ld.so.conf</span> after an Advance Toolchain installation.</p>
+
+<p>If you are running <span style="font-family:courier new,courier,monospace;">ldd</span> against your binary and it is showing that some libraries are not found, you may need to re-run <span style="font-family:courier new,courier,monospace;">/opt/atX.X/sbin/ldconfig</span> to fix that.</p>
+<br>
+<h2><a name="tle">Lock Elision support in glibc</a></h2>
+<p>Transactional Lock Elision (TLE) is a technique, implemented on top of the Hardware Transactional Memory, which allows critical sections of code to be speculatively executed by multiple threads, potentially without serializing. In the ideal case, this allows multiple threads to execute such a section of code in parallel. When a data race does occur, each thread will make several attempts to elide the lock
+before falling back to traditional locking for a period of time. No source modifications are needed to enable this feature, however with profiling, source code can be altered
+to change things such as structure padding and member placement to minimize false sharing conflicts. Such changes are likely beneficial even without TLE.</p>
+
+<p>It should be noted that TLE may not benefit all applications, and the benefits depend largely on how supported mutexes are used. In essence, TLE lets the hardware track any data races which occur while executing a critical section. POWER8 transactional resources are shared among hardware threads per core, thus enabling more threads per core may result in lower performance depending on how much memory is touched within a critical section. TLE is not recommended for applications which make system calls inside the critical section as the kernel does not support system calls from inside a memory transaction.</p>
+
+<p>Advance Toolchain 9.0 and 10.0 has support for Transactional Lock Elision (TLE) on glibc (since Advance Toolchain 9.0-3). TLE is disabled by default, a script to enable it is provided as /opt/atX.X/scripts/tle_on.sh. Note, that the internals of how the script work are subject to change at any time.</p>
+
+<p>Below is a sample program which demonstrates how to use the tle_on.sh script, and how to use it:</p>
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+#include &lt;stdio.h&gt;
+#include &lt;pthread.h&gt;
+#include &lt;htmintrin.h&gt;
+
+int main()
+{
+  pthread_mutex_t t = PTHREAD_MUTEX_INITIALIZER;
+  int elided = 0;
+
+  pthread_mutex_lock (&t);
+  if (_HTM_STATE (__builtin_tcheck ()) == _HTM_TRANSACTIONAL)
+    elided = 1;
+  pthread_mutex_unlock (&t);
+
+  if (elided)
+    puts ("Hurray! We are elided!");
+  else
+    puts ("Shucks! We are not elided!");
+
+  return 0;
+}
+  </pre>
+</blockquote>
+<p>Compiling this with the following command:</p>
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+	/opt/at9.0/bin/gcc tle.c -mhtm -o tle -O2 -pthread
+  </span>
+</blockquote>
+<p>It can be run as follows:</p>
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+	/opt/at9.0/scripts/tle_on.sh -e yes ./tle
+  </span>
+</blockquote>
+<p>or</p>
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+	/opt/at9.0/scripts/tle_on.sh ./tle
+  </span>
+</blockquote>
+<p>Likewise</p>
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+	/opt/at9.0/scripts/tle_on.sh -h
+  </span>
+</blockquote>
+<p>Will print the help information for the script.</p>
+<br>
+<h2><a name="libhugetlbfs2">Using the Advance Toolchain with libhugetlbfs-2.0 (and later)</a></h2>
+
+<p>The Advance Toolchain provides its own 32-bit and 64-bit versions of libhugetlbfs 2.x. Please refer to the Advance Toolchain's libhugetlbfs man page for more information on using libhugetlbfs-2.0:</p>
+
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+unset MANPATH
+export MANPATH="/opt/atX.X/share/man:`manpath`"
+man libhugetlbfs
+  </pre>
+</blockquote>
+
+<br>
+<h2><a name="libhugetlbfs1">Using the Advance Toolchain with libhugetlbfs-1.0</a></h2>
+
+<p><b>Warning:</b> Libhugetlbfs 1.0 is deprecated for new users. Please use libhugetlbfs 2.0 (or later) that's provided directly by the Advance Toolchain. If you must use libhugetlbfs 1.0 follow these instructions.</p>
+
+<p>The <span style="font-family:courier new,courier,monospace;">/opt/atX.X/scripts/createldhuge.sh</span> script is provided (until Advance Toolchain 8.0), which copies <span style="font-family:courier new,courier,monospace;">/opt/atX.X/bin/ld</span> to <span style="font-family:courier new,courier,monospace;">/opt/atX.X/bin/ld.orig</span> and creates a wrapper script in <span style="font-family:courier new,courier,monospace;">/opt/atX.X/bin/ld</span>. You only need to run this if you want the Advance Toolchain to work with libhugetlbfs.</p>
+
+<p>The new <span style="font-family:courier new,courier,monospace;">/opt/atX.X/bin/ld</span> is a wrapper script which detects whether the <span style="font-family:courier new,courier,monospace;">--hugetlbfs-link</span> or <span style="font-family:courier new,courier,monospace;">--hugetlbsf-align</span> switches have been passed to the linker. If so then it sets a script-local LD environment variable to <span style="font-family:courier new,courier,monospace;">/opt/atX.X/bin/ld.orig</span> and invokes the system's <span style="font-family:courier new,courier,monospace;">ld.hugetlbfs</span>, e.g.</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+LD="/opt/atX.X/bin/ld.orig" /usr/share/libhugetlbfs/ld.hugetlbfs *switches*
+  </span>
+</blockquote>
+
+<p>If it doesn't detect the <span style="font-family:courier new,courier,monospace;">hugetlbfs-link</span>/<span style="font-family:courier new,courier,monospace;">hugetlbfs-align</span> switch, then it simply forwards the linker invocation to <span style="font-family:courier new,courier,monospace;">/opt/atX.X/bin/ld.orig</span> directly.</p>
+
+<p>If libhugetlbfs support is desired, the first thing to do is backup the original Advance Toolchain linker just in case there are problems and you need to restore it manually.</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+cp -p /opt/atX.X/bin/ld /opt/atX.X/bin/ld.backup
+  </span>
+</blockquote>
+
+<p>The scripts in <span style="font-family:courier new,courier,monospace;">/opt/atX.X/scripts/</span> will do the rest of the work for you:</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+createldhuge.sh
+restoreld.sh
+  </span>
+</blockquote>
+
+<p>Invoke <span style="font-family:courier new,courier,monospace;">createldhuge.sh</span> to create the wrapper <span style="font-family:courier new,courier,monospace;">ld</span>:</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+sudo sh createldhuge.sh /&lt;prefix-to-libhugetlbfs&gt;/share/libhugetlbfs/ld.hugetlbfs /opt/atX.X
+  </span>
+</blockquote>
+
+<p>This <b>MUST</b> be executed as sudo (or root) for the <span style="font-family:courier new,courier,monospace;">ld</span> wrapper script to be created properly.</p>
+
+<p>When/If you want to restore the original Advance Toolchain linker, simply run:</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+sudo sh restoreld.sh.
+  </span>
+</blockquote>
+
+<p>The Advance Toolchain <span style="font-family:courier new,courier,monospace;">gcc</span> always ignores the <span style="font-family:courier new,courier,monospace;">-B/&lt;prefix-to-libhugetlbfs&gt;/share/libhugetlbfs</span> directive because it has been built to always invoke <span style="font-family:courier new,courier,monospace;">/opt/atX.X/bin/ld</span> directly. You can use the <span style="font-family:courier new,courier,monospace;">gcc</span> invocation you have always used, e.g.</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+/opt/atX.X/bin/gcc temp.c -v -o temp -B/&lt;prefix-to-libhugetlbfs&gt;/share/libhugetlbfs/ -Wl,--hugetlbfs-link=BDT
+  </span>
+</blockquote>
+
+<p><b>Note</b>: If you invoke <span style="font-family:courier new,courier,monospace;">/opt/atX.X/bin/ld --hugetlbfs-link=BDT</span> directly, you'll need to supply a <span style="font-family:courier new,courier,monospace;">-m*</span> flag which is normally provided by <span style="font-family:courier new,courier,monospace;">gcc</span> directly (see <span style="font-family:courier new,courier,monospace;">man ld</span> for supported emulations).</p>
+
+<br>
+<h2><a name="pkgatdeprpm">Packaging an application built with the Advance Toolchain using RPM</a></h2>
+
+<p>Due to a limitation in the way that RPM generates dependency lists, the symbols from the Advance Toolchain may collide with the ones provided by the Linux distribution. There are two ways to prevent this:</p>
+<ul>
+<li>Manually set your dependencies, using the steps below:
+<ul>
+<li>Change your spec file, adding the entry <span style="font-family:courier new,courier,monospace;">Autoreq: 0</span> to disable the auto requirements check;</li>
+<li>Perform the build of your application as usual and then check every component manually for its dependencies (usually using <span style="font-family:courier new,courier,monospace;">ldd</span> to find out shared library dependencies);</li>
+<li>Use the shared library list obtained in the previous step and replace the Advance Toolchain entries found by a single <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-runtime</span>, where <span style="font-family:courier new,courier,monospace;">X.X</span> is the Advance Toolchain version being used for the build;<br>
+<b>Note</b>: If any libraries from the Advance Toolchain mcore-libs package have being used, their entries must be replaced by a single <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-mcore-libs</span> entry instead;</li>
+<li>Add an entry of <span style="font-family:courier new,courier,monospace;">Requires: &lt;list-found&gt;</span> on your spec file, replacing the "&lt;list-found&gt;" with the list assembled in the previous step;</li>
+    </ul>
+    <span style="font-weight: bold";>Note:</span> These steps are only required for the first build to adjust your spec file for packaging, unless changes in the build system, or other packaging spec defined changes occur (in which case, it must be revised to guarantee its functionality).</li>
+<li>Use a script to get personalized require dependency filters, using the steps below:
+<ul>
+  <li>
+    The <span style="font-family:courier new,courier,monospace;">/opt/atX.X/scripts/find_dependencies.sh</span> script is provided (since Advance Toolchain 9.0-2) to help set the dependencies. Since RPM version 4.8, you can replace the macro that checks for dependencies. This script accept a list of files as input and provide a list of found dependencies as output, it looks for standard dependencies found inside the Advance Toolchain install path and replace them by a single output of <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-runtime</span>, or <span style="font-family:courier new,courier,monospace;">advance-toolchain-atX.X-mcore-libs</span> if the dependency found was a multi core library provided by Advance Toolchain.
+  </li>
+  <li>
+    RPM by default points the <span style="font-family:courier new,courier,monospace;">%__find_requires</span> macro to its standard script located on <span style="font-family:courier new,courier,monospace;">/usr/lib/rpm/find_requires</span>, to use the find_dependencies.sh script you need to change your spec file, redefining the macro required using the following entries:<br>
+    <span style="font-family:courier new,courier,monospace;">%define __find_requires /opt/atx.x/scripts/find_dependencies.sh &lt;/full/path/to/files&gt;</span><br>
+    <span style="font-family:courier new,courier,monospace;">%define _use_internal_dependency_generator 0</span><br>
+    Take a look at <a href="http://www.rpm.org/wiki/PackagerDocs/Dependencies">this link</a> for more information about RPM dependencies.</li>
+    </ul>
+  </li>
+</ul>
+<p><span style="font-weight: bold";>Note:</span> The second method is best used with RPM version 4.8 or later. With earlier RPM versions, the first method is recommended.</p>
+<br>
+<h2><a name="xlc">Using the Advance Toolchain with IBM XLC and XLF</a></h2>
+
+<p>When compiling binaries using XLC or XLF, the user must add the <span style="font-family:courier new,courier,monospace;">-F &lt;path_to_cfg_file&gt;</span> option to the compiler command line. The Advance Toolchain provides a script that creates those files in <span style="font-family:courier new,courier,monospace;">/opt/atX.X/scripts</span>. This script is automatically run during installation. If you need to re-run it later (i.e. you installed XLC/XLF after the Advance Toolchain installation), execute the following command:</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+/opt/atX.X/scripts/at-create-ibmcmp-cfg.sh
+  </span>
+</blockquote>
+
+<p>Please notice the absolute path when calling the script. <b>DO NOT</b> call it using a relative path. The script creates the config files in <span style="font-family:courier new,courier,monospace;">/opt/atX.X/scripts</span>.</p>
+
+<p>This procedure does not affect the default XLC/XLF configuration.</p>
+<br>
+
+<h2><a name="mass">Using the Advance Toolchain with MASS libraries</a></h2>
+
+<p>The IBM's Mathematical Acceleration Subsystem (MASS) libraries consist of a set of mathematical functions for C, C++, and Fortran-language applications that are tuned for specific POWER architectures. The libraries are available for <a href="http://www-01.ibm.com/support/docview.wss?uid=swg24011316">ppc64</a> and <a href="http://www-01.ibm.com/support/docview.wss?uid=swg24041805">ppc64le</a>.</p>
+<p>To use it with AT you need to pass the option -mveclibabi=mass to GCC.</p>
+<br>
+
+<h2><a name="debugging">Debugging</a></h2>
+
+<p><span style="font-family:courier new,courier,monospace;">gdb</span> can be asked to output <span style="font-family:courier new,courier,monospace;">_Decimal[32|64|128]</span> formatted floating point registers by default, using its <span style="font-family:courier new,courier,monospace;">printf</span> command.</p>
+
+<p>When using <span style="font-family:courier new,courier,monospace;">objdump</span> to inspect POWER6 code, make sure to use the <span style="font-family:courier new,courier,monospace;">-Mpower6</span> flag:</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+/opt/atX.X/bin/objdump -d -Mpower6 &lt;your_file&gt;
+  </span>
+</blockquote>
+
+<p>The same applies to POWER7 code.</p>
+<br>
+<h2><a name="timezone">Time zones</a></h2>
+
+<p>Since AT 5.0-7 and AT 6.0-1, the Advance Toolchain automatically sets its time zone to the same time zone used by the system. This is done with the symbolic link <span style="font-family:courier new,courier,monospace;">/opt/atX.X/etc/localtime</span> to <span style="font-family:courier new,courier,monospace;">/etc/localtime</span>. To replicate this behavior in the Advance Toolchain 5.0-6, 6.0-0 and earlier versions, it is necessary to replace the old symbolic link:</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+rm -f /opt/atX.X/etc/localtime && ln -s /etc/localtime /opt/atX.X/etc/localtime
+  </span>
+</blockquote>
+
+<p>By doing so, further changes of system's time zone will automatically reflects in Advance Toolchain's time zone.</p>
+
+<p>If necessary, the AT can work with a different time zone. All the available time zones are listed in the directory <span style="font-family:courier new,courier,monospace;">/opt/atX.X/share/zoneinfo</span>.</p>
+
+<p>Firstly, remove the symbolic link <span style="font-family:courier new,courier,monospace;">/opt/atX.X/etc/localtime</span>:</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+rm -f /opt/atX.X/etc/localtime
+  </span>
+</blockquote>
+
+<p>Then, create a symbolic link to the new time zone, i.e.:</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+ln -s /opt/atX.X/share/zoneinfo/Europe/Athens /opt/atX.X/etc/localtime
+  </span>
+</blockquote>
+
+<br>
+<h2><a name="selinux">SELinux issue</a></h2>
+
+<p>There is a bug on RHEL6 that prevents <span style="font-family:courier new,courier,monospace;">restorecon</span> to restore the context of symbolic links. This bug affects AT's time zone settings. While Red Hat works to solve this bug, a workaround is available.</p>
+
+<p>Replace the symbolic link by a hard link:</p>
+
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+rm -f /opt/atX.X/etc/localtime
+ln /etc/localtime /opt/atX.X/etc/localtime
+  </pre>
+</blockquote>
+
+<p>However, if <span style="font-family:courier new,courier,monospace;">/etc</span> and <span style="font-family:courier new,courier,monospace;">/opt</span> are stored in different file systems the only solution available is to copy the system's time zone:</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+rm -f /opt/atX.X/etc/localtime
+cp /etc/localtime /opt/atX.X/etc/localtime
+  </span>
+</blockquote>
+
+<br>
+<h2><a name="golang">Using Go compilers provided by the Advance Toolchain</a></h2>
+
+<p>There are two compilers provided by the Advance Toolchain that can be used to compile Go source code on ppc64le starting in AT 9.0: the Golang compiler and gccgo.</p>
+
+<p>The Advance Toolchain provides an IBM-optimized version of the Go compiler from the Golang community for ppc64le starting on AT 9.0.</p>
+
+<p>It is installed by the package advance-toolchain-golang-at-X.Y-Z.ppc64le.rpm. This package is standalone and does not depend on any of the other packages offered by the Advance Toolchain.</p>
+
+<p>This compiler and runtime is based on the final release versions provided by the Go community, plus the newest bug fixes and performance optimizations relevant to Power. The major version of the compiler (i.e. 1.6, 1.7, etc) is upgraded with every Advance Toolchain major release. Please refer to the Release Notes file for the compiler version and included bug/performance fixes included.</p>
+
+<p>The Go compiler for Golang is installed here:</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+/usr/local/go
+  </span>
+</blockquote>
+
+<p>When <span style="font-family:courier new,courier,monospace;">/usr/local/go/bin</span> is added to $PATH, then this go tool is the default.  Otherwise, the go tool can be invoked directly by doing:</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+/usr/local/go/bin/go
+  </span>
+</blockquote>
+
+<p>The Advance Toolchain also includes gccgo.  When the full install of GCC is done from Advance Toolchain, gccgo is included and the go tool which uses gccgo is in the default path.  If both GCC (including gccgo) and the Golang compiler from Advance Toolchain are installed, and the Go compiler from Golang is to be used instead of gccgo, then the PATH must be set as described above.</p>
+<br>
+
+<h1><a name="limitations">Advance Toolchain Limitations and Known Issues</a></h1>
+
+<ul>
+  <li>The upgrade from 9.0-0 to a newer release need to be forced. The problem was fixed in 9.0-1 and does not affect that, nor newer releases.</li>
+  <li><span style="font-family:courier new,courier,monospace;">oprofile</span>'s <span style="font-family:courier new,courier,monospace;">operf</span> tool running on <b>SLES 11</b>: if running <span style="font-family:courier new,courier,monospace;">operf</span> as the <b>root</b> user, only <span style="font-family:courier new,courier,monospace;">--system-wide</span> or <span style="font-family:courier new,courier,monospace;">--pid</span> modes are supported. This is a permanent restriction.</li>
+<li><span style="font-family:courier new,courier,monospace;">gcc</span> no longer has support for Graphite loop optimizations starting on Advance Toolchain 6.0-0.</li>
+<li><span style="font-family:courier new,courier,monospace;">libdfp</span> has some known limitations as indicated in the <span style="font-family:courier new,courier,monospace;">libdfp README.user</span> documentation.</li>
+<li><span style="font-family:courier new,courier,monospace;">oprofile</span> currently doesn't support profiling using JVMPI.</li>
+<li><span style="font-family:courier new,courier,monospace;">oprofile</span> Java profiling restriction: To use oprofile for profiling Java VMs 1.5 or greater, users generally have two options available when invoking the JVM: <span style="font-family:courier new,courier,monospace;">-agentlib</span> or <span style="font-family:courier new,courier,monospace;">-agentpath</span>. However, when using the Advance Toolchain's oprofile, you must use
+    <blockquote style="margin-left:40px">
+      <span style="font-family:courier new,courier,monospace;">
+-agentpath:/opt/at5.0/lib64/oprofile/libjvmti_oprofile.so
+      </span>
+    </blockquote>
+    for 64-bit JVMs, or
+    <blockquote style="margin-left:40px">
+      <span style="font-family:courier new,courier,monospace;">
+agentpath:/opt/at5.0/lib/oprofile/libjvmti_oprofile.so
+      </span>
+    </blockquote>
+    for 32-bit JVMs.
+  </li>
+<li>Upgrading from 5.0-0, 5.0-1 or 5.0-2 to a newer release is not working. The problem was fixed in 5.0-3 and does not affect that, nor newer releases. If you need to upgrade from 5.0-0, 5.0-1 or 5.0-2, please uninstall the Advance Toolchain and then install the new version.</li>
+</ul>
+<br>
+
+<h1><a name="faq">Frequently Asked Questions</a></h1>
+
+<ol>
+<li><a href="#faq1">How do I find which package provides a specific feature?</a></li>
+<li><a href="#faq2">What does &quot;;undefined reference to sem_*&quot; mean?</a></li>
+<li><a href="#faq3">Why doesn&apos;t the Advance Toolchain find my library?</a></li>
+<li><a href="#faq4">Why does my program fail with &quot;No such file or directory&quot;?</a></li>
+<li><a href="#faq5">Can I set RPATH/RUNPATH with the Advance Toolchain?</a></li>
+<li><a href="#faq6">Can I mix parts of different glibc versions?</a></li>
+<li><a href="#faq7">How to verify if the Advance Toolchain is corrupted?</a></li>
+<li><a href="#faq8">When should I use Advance Toolchain?</a></li>
+</ol>
+<br>
+<h2><a name="faq1">How do I find which package provides a specific feature?</a></h2>
+
+<p>On RHEL based systems you can run:</p>
+
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+yum provides &lt;feature&gt;
+  </span>
+</blockquote>
+
+<p>On SLES you need to run the following command:</p>
+
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+zypper what-provides &lt;feature&gt;
+</pre>
+</blockquote>
+<br>
+<h2><a name="faq2">What does &quot;undefined reference to sem_*&quot; mean?</a></h2>
+
+<p>These kind of errors usually appear when trying to link a multithreaded program without enabling multithreading support (i.e. specify -pthread when calling the linker), e.g.:</p>
+
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+/opt/at7.0/bin/gcc main.c -pthread
+</pre>
+</blockquote>
+<br>
+<h2><a name="faq3">Why doesn&apos;t the Advance Toolchain find my library?</a></h2>
+
+<p>The loader keeps a cache of all libraries available in the library path (<span style="font-family:courier new,courier,monospace;">/opt/atX.X/etc/ld.so.conf</span>). Every time a new library is installed in one of the directories of the library path or when the library path is changed, it is necessary to update this cache by running <span style="font-family:courier new,courier,monospace;">/opt/atX.X/sbin/ldconfig</span> as root.</p>
+<br>
+<h2><a name="faq4">Why does my program fail with &quot;No such file or directory&quot;</a></h2>
+
+<p>The symptom of this issue is: a program built with the Advance Toolchain fails to execute with the error message <span style="font-family:courier new,courier,monospace;">bash: ./program: No such file or directory</span>.</p>
+
+<p>This message is indicating the system was not able to run this program.  Usually this happens because the system wasn&apos;t able to find the correct major version of the Advance Toolchain.  In other words, Bash didn&apos;t find the loader specified in the <span style="font-family:courier new,courier,monospace;">.interp</span> section of the executable.</p>
+
+<p>You can identify which Advance Toolchain version built this program by running <span style="font-family:courier new,courier,monospace;">ldd &lt;program&gt;</span>.  Then, look for <span style="font-family:courier new,courier,monospace;">/opt/<b>atX.X</b>/lib64/ld64.so.2</span>.  Ensure <a href="#installation">to install</a> the latest update of the major version you identified.</p>
+<br>
+<h2><a name="faq5">Can I set RPATH/RUNPATH with the Advance Toolchain?</a></h2>
+
+<p>Yes.  The Advance Toolchain uses the RPATH and RUNPATH tags to identify where its libraries are located, but it is possible to add new directories using the linker paramenter <span style="font-family:courier new,courier,monospace;">-rpath=dir</span>.</p>
+
+<p>By default, the Advance Toolchain will prepend its own lib directory to the RPATH/RUNPATH.  However, in case the user changes this behavior, he or she <b>must</b> ensure the Advance Toolchain lib directory will always appear before a directory with another libc, i.e. /usr/lib, /usr/lib64, /lib or /lib64.  This will guarantee you won't <a href="#faq6">mix parts of different glibc versions</a>.</p>
+<br>
+<h2><a name="faq6">Can I mix parts of different glibc versions?</a></h2>
+
+<p>No.  The GNU C Library has not been designed to support mixing parts of different glibc versions, e.g.: use the loader provided by the Linux distribution and glibc libraries provided by the Advance Toolchain.</p>
+
+<p>When these libraries are mixed up, the program usually aborts complaining about missing symbols in one of the libraries provided by glibc.</p>
+
+<p>To avoid these issues, the user has to:</p>
+
+<ul>
+<li>Ensure the Advance Toolchain lib directories appear before a directory with another libc in the library search path, i.e. /usr/lib, /usr/lib64, /lib or /lib64.  Which includes LD_LIBRARY_PATH, <a href="#faq5">RPATH/RUNPATH</a> and /opt/atX.X/etc/ld.so.conf.</li>
+<li>Force to use the Advance Toolchain loader when forcing the preload of an Advance Toolchain library with a program compiled using the system's toolchain, e.g.: LD_PRELOAD=/opt/atX.X/lib64/libtcmalloc.so /opt/atX.X/lib64/ld-X.XX.so /usr/bin/printenv PATH</li>
+</ul>
+<br>
+<h2><a name="faq7">How to verify if the Advance Toolchain is corrupted?</a></h2>
+
+<p>The package manager provides .</p>
+<dl>
+<dt>On RPM-based systems (RHEL, SLES, Fedora):</dt>
+<dd>Run <span style="font-family:courier new,courier,monospace;">rpm --verify &lt;list of packages&gt;</span>.<p>Replace <span style="font-family:courier new,courier,monospace;">&lt;list of packages&gt;</span> by the list of Advance Toolchain packages installed in the system, for example: <span style="font-family:courier new,courier,monospace;">rpm --verify advance-toolchain-atX.X-runtime advance-toolchain-atX.X-devel advance-toolchain-atX.X-perf advance-toolchain-atX.X-mcore-libs</span></p>
+<p>If this command creates any output, some of the packages are corrupted.  If it returns 0, the installation is fine.</p>
+<dt>On DEB-based systems (Ubuntu):</dt>
+<dd>Run <span style="font-family:courier new,courier,monospace;">debsums &lt;list of packages&gt;</span>.
+<p>Replace <span style="font-family:courier new,courier,monospace;">&lt;list of packages&gt;</span> by the list of Advance Toolchain packages installed in the system, for example: <span style="font-family:courier new,courier,monospace;">debsums advance-toolchain-atX.X-runtime advance-toolchain-atX.X-devel advance-toolchain-atX.X-perf advance-toolchain-atX.X-mcore-libs</span></p>
+<p>This command is going to print the status for each file. If it returns 2, there is at least one corrupted file.  If it returns 0, the installation is fine.</p></dd>
+</dl>
+
+<p>In case the previous commands report any issue, uninstall and install the corrupted package again.</p>
+<br>
+<h2><a name="faq8">When should I use Advance Toolchain?</a></h2>
+
+<p>The Advance Toolchain provides earlier toolchain functionality and a group of optimized libraries. AT is highly recommended when you want to build an optimized CPU-bound application on POWER or want some of the new toolchain functionalities on POWER before they made into a distribution. Also, you must use AT when you link with a library built with AT.</p>
+<p>In some scenarios you will not get many advantages using the Advance Toolchain, and it will be easier to use the distro's toolchain that usually performs quite well. Such cases include when you are building applications that are not CPU-bound and on I/O constrained environments.</p>
+<br>
+<h1><a name="support">Support</a></h1>
+
+<p>Customer support for the Advance Toolchain is provided in one of three ways:</p>
+
+<ul>
+<li>If you are using the Advance Toolchain as directed by an IBM product team (i.e. IBM XL Compiler or PowerVM Lx86), please report the suspected issues to the IBM Support using that product name and entitlement.</li>
+<li>
+    IBM's Support Line for Linux Offerings now provides support for the Advance Toolchain as well. If you have a contract with a Support Line for Linux, place a call to IBM Support, e.g. for United States:
+    <ol>
+      <li>Dial 1-800-426-IBM-SERV.</li>
+      <li>Option #2 (Other business products or solutions).</li>
+      <li>Option #2 (Software).</li>
+      <li>Option #7 (Other OS/Linux).</li>
+    </ol>
+    For other countries <a href="http://www.ibm.com/planetwide/">click here</a>.
+  </li>
+<li>All other users can use an electronic forum that is monitored Monday through Friday. For questions regarding the use of the Advance Toolchain or to report a suspected defect, <a href="https://www.ibm.com/developerworks/community/forums/html/forum?id=a95a744c-e8fd-4228-a57a-1ae837efe457">click here</a>.
+    <ol>
+      <li>Open the Advance Toolchain topic.</li>
+      <li>Select "Post a New Reply".</li>
+      <li>Enter and submit your question or problem.</li>
+      <li>An initial response will be attempted within 2 business days.</li>
+    </ol>
+  </li>
+</ul>
+
+<p>The Advance Toolchain is supported on <a href="#distros">many Linux distributions</a>.</p>

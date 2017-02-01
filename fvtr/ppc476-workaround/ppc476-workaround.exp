@@ -1,0 +1,83 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Check if binutils is carrying the patch that works around a hardware issue
+# with ppc476 icache.
+# Reference: https://github.com/tuliom/at-binutils/commit/21c2b544d5f1ff0b71024138931d0a65d853c8d5
+#
+
+source ./shared.exp
+
+set CC [compiler_path]
+set OBJDUMP [compiler_path objdump]
+
+# This workaround is only necessary on ppc476-tools.
+if { $env(AT_NAME) != "ppc476-tools" } {
+	printit "Skipping ppc476-workaround tests: this is not \
+ppc476-tools\t\[SUCCESS\]"
+	exit $ENOSYS
+}
+
+# Verify if the the hack for the cross boundary pages is available.
+# In this case, if --ppc476-workaround is enabled by default, at the limit
+# of the boundary of the page, the linker will add an unconditional branch
+# to a safe place, instead of the default "nop".
+compile "${CC} $FULLPATH/hello-476.s -o hello-476"
+
+set err [catch {exec ${OBJDUMP} -d hello-476} objdump_out]
+if { ${err} != 0 } {
+	fvtr_error "Couldn't extract information from hello-476."
+}
+
+# As requested by IMD, the default page alignment is 0x1000.
+# Last nop of the page.
+if { [regexp -line "^10000ff8:.*nop" ${objdump_out} line] } {
+	printit "Last nop of the page found."
+} else {
+	fvtr_error "Didn't find the last nop of the page: ${line}"
+}
+# Last instruction of the page.  Replaced by a branch.
+# safeaddr is the address in which the nop is now.
+if { [regexp -line "^10000ffc:.*b\[ \]+(\[0-9\]+)" ${objdump_out} line \
+	     safeaddr] } {
+	printit "Branch in the last instruction of the page found."
+} else {
+	fvtr_error "Didn't find the branch in the last instruction of the page:\
+ ${line}"
+}
+# Fist instruction of the next page.
+if { [regexp -line "^10001000:.*nop" ${objdump_out} line] } {
+	printit "First nop in the first instruction of the next page found."
+} else {
+	fvtr_error "Didn't find the nop in the first instruction of the page: \
+${line}"
+}
+
+# Verify if the jump is fine.
+if { [regexp -line "^${safeaddr}:.*nop" ${objdump_out} line] } {
+	printit "The nop after the branch found."
+} else {
+	fvtr_error "Didn't find the nop after the branch: ${line}"
+}
+# Verify if it's returning to the correct place (0x10001000).
+set nextinstr [format %x [expr 0x${safeaddr} + 4]]
+if { [regexp -line "^${nextinstr}:.*b\[ \]+10001000 " ${objdump_out}] } {
+	printit "The code is returning to the correct place."
+} else {
+	fvtr_error "The code isn't returning to the correct place: ${line}"
+}
+
+file delete hello-476

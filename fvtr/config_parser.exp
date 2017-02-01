@@ -1,0 +1,48 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+#
+# Parse the AT's config file and return a list of the configured variables
+# Parameters:
+#	config_file - the path to the config file
+#	return - return a list of configured variables using the array get
+#		format. So it's possible to convert it to array using
+#		array set.
+#
+proc config_parser {config_file} {
+	set blk_re "\[\[:blank:\]\]"
+	set varname_re "(\[\[:alpha:\]\]\[^\=\[:blank:\]\]*)"
+	set varval_re "(\[^\#\\n\'\"\]*)"
+	set variable_re "${varname_re}${blk_re}*\=${blk_re}*\[\"\'\]?${varval_re}\[\"\'\]?"
+
+	set raw_config [ exec sh ./config_reader.sh $config_file ]
+	set lines [ split $raw_config \n ]
+
+	unset -nocomplain config
+
+	foreach line $lines {
+		set varname {}
+		set varval {}
+
+		set x [ regexp $variable_re $line match varname varval ]
+
+		if { $x == 1 } {
+			set config($varname) $varval
+		}
+	}
+
+	return [array get config]
+}

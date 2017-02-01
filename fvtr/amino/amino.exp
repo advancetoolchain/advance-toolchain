@@ -1,0 +1,48 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Check if AT provides the 3 libraries of Amino for ppc32 and pp64 for both
+#static and shared linking.
+#
+
+source ./shared.exp
+
+set CXX [compiler_path g++]
+set CFLAGS "-O2 -Wall"
+
+set LIBS "-lalg -lstm -lclfalloc"
+
+if { [array names env -exact "AT_AMINO_VER"] == "" } {
+	printit "WARNING: Amino not configured in config file. Ignoring..."
+	exit ${ENOSYS}
+} else {
+	set tmp_file [exec mktemp]
+
+	if { $TARGET32 } {
+		printitnonewline "Testing 32 bit static and dynamic linking..."
+		compile "${CXX} -m32 -static ${CFLAGS} $FULLPATH/test.cpp ${LIBS} -o ${tmp_file}"
+		compile "${CXX} -m32 ${CFLAGS} $FULLPATH/test.cpp ${LIBS} -o ${tmp_file}"
+		printitcont "\t\t\t\t\t\[SUCCESS\]"
+	}
+	if { $TARGET64 } {
+		printitnonewline "Testing 64 bit static and dynamic linking..."
+		compile "${CXX} -m64 -static ${CFLAGS} $FULLPATH/test.cpp ${LIBS} -o ${tmp_file}"
+		compile "${CXX} -m64 ${CFLAGS} $FULLPATH/test.cpp ${LIBS} -o ${tmp_file}"
+		printitcont "\t\t\t\t\t\[SUCCESS\]"
+	}
+
+	file delete -force ${tmp_file}
+}

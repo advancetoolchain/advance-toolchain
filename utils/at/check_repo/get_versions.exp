@@ -1,0 +1,181 @@
+#!/usr/bin/expect
+#
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Check if there are new packages in a repo
+#
+# Parameters:
+#	- $0: Directory with the config and ignore files
+#
+# In this config file you must set the following variables:
+#	server - the hostname of the server
+#	dir    - the directory where the files are stored
+#
+
+source ./shared.exp
+
+set log_file ./get_versions.log
+
+# Default regex for ftp prompt
+set ftp_prompt "ftp>"
+
+proc print_usage {} {
+	global argv0
+	puts "Usage: $argv0 config_dir"
+	puts ""
+	puts "Example:"
+	puts "$argv0 foo/at5.repo/"
+}
+
+# Expect ftp prompt and fail with a message if it isn't replied
+proc expect_prompt {message} {
+	global ftp_prompt
+	expect {
+		$ftp_prompt {}
+		default {
+			send_user "$message"
+			exit 1
+		}
+	}
+}
+
+# Print the available versions in the current directory of the ftp
+proc print_versions {} {
+	global cross
+	global ftp_prompt
+	global ignore
+	global NBLANK
+
+	set prefix "advance-toolchain-"
+	if { $cross } {
+		set suffix ".i686.rpm"
+		set pkg "cross"
+	} else {
+		set suffix ".ppc64.rpm"
+		set pkg "devel"
+	}
+
+	# List packages
+	set pkg_re "${prefix}at(${NBLANK}*)-${pkg}-(${NBLANK}*)${suffix}"
+
+	# Regexp for internal tags, i.e.: alpha1, beta3, etc.
+	set internal_re "\[^-\]*-(.*)"
+
+	send "ls *${pkg}*${suffix}\n"
+	expect -re $ftp_prompt {
+		set file_list $expect_out(buffer)
+	}
+
+	# If the file isn't ignored, print it's version
+	foreach line [split $file_list "\n"] {
+		if {[regexp $pkg_re $line match at_major at_version]} {
+
+			# Check if it's an internal release
+			if {[regexp $internal_re $at_major match \
+				 internal_tag]} {
+				set at_version ${at_version}-${internal_tag}
+			}
+
+			if { ![regexp "${at_version}\\n" $ignore] } {
+				puts $at_version
+			}
+		}
+	}
+}
+
+if { $argc != 1 } {
+	print_usage
+	exit 1
+}
+
+# Check if directory is valid
+if { ![file exists [lindex $argv 0]] } {
+	puts stderr "Error: can't access [lindex $argv 0]"
+}
+
+set config_file [lindex $argv 0]/$config_file
+set ignore_file [lindex $argv 0]/$ignore_file
+
+if { [file exists $config_file] } {
+	source $config_file
+} else {
+	puts stderr "Error: Config file not found"
+	exit 1
+}
+
+log_user 0
+log_file -noappend -a $log_file
+
+# Create the file if it doesn't exist
+if { [file exists $ignore_file] } {
+	set ignore_pipe [open $ignore_file]
+} else {
+	set ignore_pipe [open $ignore_file w+]
+}
+set ignore [read $ignore_pipe]
+close $ignore_pipe
+
+set machine [exec uname -m]
+set cross [regexp "x86" $machine]
+
+proc login_fail {} {
+	send_user "Failed to login\n"
+	exit 1
+}
+
+eval spawn ftp $server
+set ftp_id $spawn_id
+
+expect {
+	"BSO" {
+		puts stderr "Authenticate through the BSO first."
+		exit 1
+	}
+	$ftp_prompt {}
+	"Name " {
+		send "anonymous\n"
+		expect "Password:" {
+			send "anonymous\n"
+		}
+		exp_continue
+	}
+	"Login failed" login_fail
+	default login_fail
+}
+
+# Change to the repo dir
+send "cd $dir\n"
+expect_prompt "Failed to change directory to '$dir'"
+
+# The following command is going to list the directories for each AT version
+set at_dir_re "^d.*(at\[0-9\]+\\.\[0-9\]+)"
+send "ls\n"
+expect -re $ftp_prompt {
+	set file_list $expect_out(buffer)
+}
+foreach line [split $file_list "\n"] {
+	if {[regexp $at_dir_re $line match at_major]} {
+		send "cd $at_major\n"
+		expect_prompt "Failed to change directory to '$at_major'"
+		print_versions
+		send "cd ..\n"
+		expect_prompt "Failed to change directory to '..'"
+	}
+}
+
+send "bye\n"
+
+exit 0

@@ -1,0 +1,92 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Check if AT can compile and run dhrystone benchmark
+# The testcase dry.c must be found in a directory
+# named by env var DHRY_TEST_DIR
+
+
+# The dhrystone.c testcase must exist in a directory
+# named by env var DHRY_TEST_DIR
+
+source ./shared.exp
+
+# Run dhrystone and handle the behavior.
+#
+# Parameters:
+# bin 	The path to the executable.
+#
+proc spawn_dry { bin } {
+	# The argument is the same used by "sh dry.c" (50000 runs).
+	spawn ${bin} 50000
+	expect {
+		# Wait for 1 minute at most.
+		-timeout 60
+		# This string indicates the end of the runs.
+		"Dhrystones per Second:" {
+			printit "\t\t\t  Dhrystone test was successful.\n"
+		}
+		timeout {
+			printit "\t\t\t  Running of dhrystone test timed out.\n"
+			exit 1
+		}
+		default {
+			printit "\t\t\t  Running of dhrystone test failed.\n"
+			exit 1
+		}
+	}
+}
+
+if { [array names env -exact DHRY_TEST_DIR] == "" } {
+	printit "Skipping: Didn't find dhrystone source directory."
+	exit $ENOSYS
+}
+
+if { [file exists $env(DHRY_TEST_DIR)] == 0 } {
+	printit "Directory $env(DHRY_TEST_DIR) not found.  Dhrystone won't be run."
+	exit $ENOSYS
+}
+
+set CC [compiler_path]
+set dry $env(DHRY_TEST_DIR)/dry.c
+
+cd $FULLPATH
+
+printit "Building dhrystone..."
+compile "${CC} -c ${dry} -o dry1.o 2> run.out"
+compile "${CC} -DPASS2 ${dry} dry1.o -o dry2 2> run.out"
+compile "${CC} -c -DREG ${dry} -o dry1.o 2> run.out"
+compile "${CC} -DPASS2 -DREG ${dry} dry1.o -o dry2nr 2> run.out"
+compile "${CC} -c -O ${dry} -o dry1.o 2> run.out"
+compile "${CC} -DPASS2 -O ${dry} dry1.o -o dry2o 2> run.out"
+printit "\t\t\t  Build done.\n"
+
+# Dhrystone can be executed only on native builds.
+if { $env(AT_CROSS_BUILD) == "no" } {
+	printit "Runing dhrystone..."
+	spawn_dry "${FULLPATH}/dry2"
+	spawn_dry "${FULLPATH}/dry2nr"
+	spawn_dry "${FULLPATH}/dry2o"
+}
+
+printit "\n\t\t\t\t\t\[SUCCESS\]"
+file delete -force $FULLPATH/dry2
+file delete -force $FULLPATH/dry2nr
+file delete -force $FULLPATH/dry2o
+file delete -force $FULLPATH/run.out
+file delete -force $FULLPATH/dry1.o
+
+exit 0

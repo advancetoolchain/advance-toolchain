@@ -1,0 +1,157 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Test if AT can link with xlc compiled code, i.e. compile with xlc and link
+# with AT.
+
+source ./shared.exp
+
+set at_dir $env(AT_DEST)
+set rc 0
+
+if {[info exists env(AT_WD)]} {
+	printit "Skipping: running test suite on a compatible mode with the\
+build system.\t\[SUCCESS\]"
+	exit $ENOSYS
+}
+
+# Run the commands to compile with xlf and link with AT
+#
+# Parameters:
+# xlf		The path to xlf binary.
+# cfg		The patch to the xlf configuration file to be used.
+# wordsize	The size of the word in use.  Could be either 32 or 64.
+#
+proc test_xlf { xlf cfg wordsize } {
+	# Define global variables
+	global ERROR
+	global FULLPATH
+	global ENOSYS
+	global at_dir
+	# Set local variables
+	set exe_file [exec mktemp]
+	set rc 0
+
+	# Compile the code using xlf
+	printitcont "Test ${wordsize}-bit compilation with ${xlf}..."
+	if { ${cfg} != "none" } {
+		set err [catch {exec ${xlf} -q${wordsize} -F ${cfg} \
+					    -O2 -o ${exe_file} \
+					    ${FULLPATH}/test.f} msg]
+	} else {
+		set err [catch {exec ${xlf} -q${wordsize} -O2 \
+					    -o ${exe_file} \
+					    ${FULLPATH}/test.f} msg]
+	}
+	if { ${err} > 0 } {
+		# The execution of xlf always returns errors due to messages
+		# printed on stderr.
+		# We can safely print them and continue to the loader test
+		# phase as the next step's going to capture the error if
+		# something unexpected happens.
+		printit "${msg}"
+		# Check the required elf interpreter.
+		set interp [string trim [exec ${at_dir}/bin/readelf -a ${exe_file} | \
+					 grep interpreter | \
+					 cut -f2 -d:]]
+		if { [string match ${at_dir}* "${interp}"] } {
+			printit "${wordsize}-bit linking between xlf and AT successful"
+		} else {
+			printit "${wordsize}-bit linking between xlf and AT failed" $ERROR
+			set rc 1
+		}
+	}
+
+	file delete -force ${exe_file}
+
+	return ${rc}
+}
+
+
+# Begin the XLF test
+printit "Testing the xlf compiler..."
+
+set xlf_dirs [ get_xlf_paths ]
+if { [llength ${xlf_dirs}] == 0 } {
+	printit "Skipping: xlf isn't installed."
+	exit ${ENOSYS}
+}
+
+set at_ver [string toupper [regsub -all \\. [file tail $env(AT_DEST)] \_]]
+
+# Test with all installed versions of XLF
+foreach dir ${xlf_dirs} {
+	# Print initial message
+	printit "Testing ${dir}..."
+	# Set full path of XLF compiler to test
+	set xlf "${dir}/bin/xlf90"
+	# Set the new_install (or xlf_configure -at) generated config file.
+	set xlf_at "${dir}/bin/xlf90_at"
+	# Find the default config file build by AT install
+	set compiler [file tail [file dirname ${dir}]]
+	regsub -all "\\." [file tail ${dir}] "_" xl_ver
+	set xlf_cfg "${at_dir}/scripts/${compiler}-${xl_ver}-${at_ver}.dfp.cfg"
+	# Clean up revious lists if they were defined
+	if { [info exists compilers] } {unset compilers}
+	if { [info exists configures] } {unset configures}
+	# Set the default value (0) for new_install status usage
+	set new_install 0
+
+	if { ! [file exists ${xlf_at}] } {
+		printit "No ${xlf_at} configuration script found. \
+			Skipping it." ${ERROR}
+	} else {
+		# Flag the existence of new_install configuration
+		set new_install 1
+		# Add the information to proceed the tests below
+		lappend compilers ${xlf_at}
+		lappend configures "none"
+	}
+	if { ! [file exists ${xlf_cfg}] } {
+		# Inform the error
+		printit "${xlf_cfg} configuration file does not exist." ${ERROR}
+		if { ${new_install} == 0 } {
+			printit "Can't find *any* XLF configuration file for ${dir} \
+				install." ${ERROR}
+			# Set error and continue
+			set rc 1
+			continue
+		}
+	} else {
+		# Add the standard XLF compiler with AT configuration
+		lappend compilers ${xlf}
+		lappend configures ${xlf_cfg}
+	}
+
+	foreach compiler ${compilers} configure ${configures} {
+		if { ${TARGET32} } {
+			if { [test_xlf ${compiler} ${configure} 32] } {
+				set rc 1
+			}
+		}
+		if { ${TARGET64} } {
+			if { [test_xlf ${compiler} ${configure} 64] } {
+				set rc 1
+			}
+		}
+	}
+}
+
+if { ${rc} == 0 } {
+	printit "Testing the xlf compiler:\t\t\t\t\[SUCCESS\]"
+}
+
+exit ${rc}

@@ -1,0 +1,68 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Check if gccgo can compile a simple program.
+#
+
+set at_dir $env(AT_DEST)
+set rc 0
+
+source ./shared.exp
+
+set GCCGO [compiler_path gccgo]
+set CFLAGS "-O2 -Wall"
+
+if { [regexp "5\..*|6\..*|7.0" $env(AT_MAJOR_VERSION)] } {
+	printit "gccgo is not supported prior to AT 7.1\t\[SUCCESS\]"
+	exit $ENOSYS
+}
+
+printit "Running gccgo tests..."
+
+if { ![file exists $at_dir/bin/$env(AT_TARGET)-gccgo] } {
+	printitcont "Error:  File \
+$at_dir/bin/$env(AT_TARGET)-gccgo is missing."
+	set rc 1
+}
+
+printit "Compiling with: ${GCCGO}..."
+compile "${GCCGO} ${CFLAGS} $FULLPATH/test.go -o $FULLPATH/gotest"
+
+compile "${GCCGO} ${CFLAGS} $FULLPATH/testpkg.go -o $FULLPATH/gopkgtest"
+
+# Can't run the go binary if this is a cross
+if { $env(AT_CROSS_BUILD) != "yes" } {
+	printit "Running gccgo package test..."
+
+	spawn $FULLPATH/gopkgtest
+
+	# Check the output for suspicious strings
+	expect {
+		-re ".*FAIL.*" { fvtr_error "gccgo test failed" }
+		-re ".*fail.*" { fvtr_error "gccgo test failed" }
+		-re ".*error.*" { fvtr_error "gccgo test failed" }
+		eof { }
+	}
+} else {
+	printit "Program not run on cross"
+}
+
+printit "\n\t\t\t\t\t\[SUCCESS\]"
+file delete -force $FULLPATH/gotest
+file delete -force $FULLPATH/gotest.o
+file delete -force $FULLPATH/gopkgtest
+file delete -force $FULLPATH/gopkgtest.o
+exit $rc

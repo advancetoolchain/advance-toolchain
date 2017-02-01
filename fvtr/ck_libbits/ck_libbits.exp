@@ -1,0 +1,66 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Check if all shared libraries are in the correct directory by testing if all
+# shared libraries in $at_dest/lib are 32-bit and $at_dest/lib64 are 64-bit
+
+source shared.exp
+source config_parser.exp
+
+set rc 0
+
+# Check if the variables are already defined on environment before parsing
+# the config file
+set x [catch {set at_dir $env(AT_DEST)}]
+if { $x != 0 } {
+	array set config [ config_parser $argv ]
+	set at_dir $config(AT_DEST)
+}
+
+if { $TARGET32 } {
+	if {[file exists $at_dir/lib/]} {
+		set at_libs32 [ exec find $at_dir/lib/ -name lib*.so* -not -regex "$at_dir/lib\/gcc\/.*" ! -regex ".*\.debug$" ]
+		foreach lib $at_libs32 {
+			set lib_info [ exec file -b -L $lib ]
+
+			if { [regexp "ELF" $lib_info] \
+		     	&& ! [regexp "32-bit" $lib_info] } {
+				set rc 1
+				printit "\t\t\t ${lib} seems misplaced: \"${lib_info}\"."
+			}
+		}
+	}
+}
+
+if { $TARGET64 } {
+	if {[file exists $at_dir/lib64/]} {
+		set at_libs64 [ exec find $at_dir/lib64/ -name lib*.so* -not -regex ".*\.debug$" ]
+		foreach lib $at_libs64 {
+			set lib_info [ exec file -b -L $lib ]
+
+			if { [regexp "ELF" $lib_info] \
+		     	&& ! [regexp "64-bit" $lib_info] } {
+				set rc 1
+				printit "\t\t\t ${lib} seems misplaced: \"${lib_info}\"."
+			}
+		}
+	}
+}
+
+if { $rc == 0 } {
+	printit "Verifying libraries directory:\t\t\t\[SUCCESS\]"
+}
+exit $rc

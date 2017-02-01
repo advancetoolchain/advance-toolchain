@@ -1,0 +1,1 @@
+../../../6.0/packages/amino/amino.mk

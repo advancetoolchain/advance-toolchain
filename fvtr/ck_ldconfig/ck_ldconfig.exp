@@ -1,0 +1,85 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Check if ldconfig is executed after an rpm installation, searching if
+# ld.so.conf has all lib directories installed by the Advance Toolchain.
+#
+# To correctly work, this script requires all environment variables that
+# enables a builds for specific Power processors.
+#
+
+set at_dir $env(AT_DEST)
+set rc 0
+
+source ./shared.exp
+
+# The loader isn't available in the cross compiler
+if { $env(AT_CROSS_BUILD) == "yes" } {
+	printit "Skipping: this is a cross compiler\t\[SUCCESS\]"
+	exit $ENOSYS
+}
+
+printit "Checking if libraries' directories are available in ld.so.conf..."
+
+set dirs {}
+# Basic AT directories
+if { ${TARGET32} } {
+	lappend dirs $env(AT_TARGET)/lib lib
+}
+if { ${TARGET64} } {
+	lappend dirs $env(AT_TARGET)/lib64 lib64
+}
+
+# Processor-optimized directories
+set proc_list [eval concat $env(AT_OPTMD_LIBS)]
+foreach processor ${proc_list} {
+	if { ${TARGET32} } {
+		lappend dirs lib/${processor}
+	}
+	if { ${TARGET64} } {
+		lappend dirs lib64/${processor}
+	}
+}
+
+# Check AT directories
+set ldfile [open $at_dir/etc/ld.so.conf r]
+set ldconfig [split [read $ldfile] \n]
+
+foreach dir $dirs {
+	set dir ${at_dir}/${dir}
+	if { [string first $dir $ldconfig] == -1 } {
+		printit "$dir:\tMissing" $ERROR
+		set rc 1
+	} else {
+		printit "$dir:\tOK"
+	}
+}
+
+# Check includes
+set includes "${at_dir}/etc/ld.so.conf.d/*.conf /etc/ld.so.conf"
+foreach include ${includes} {
+	set inc_phr "include ${include}"
+	if { [string first ${inc_phr} $ldconfig] == -1 } {
+		printit "Include $include is missing in ld.so.conf."
+		set rc 1
+	}
+}
+
+if { $rc == 0 } {
+	printit "Success"
+} else {
+	fvtr_error "Test failed"
+}

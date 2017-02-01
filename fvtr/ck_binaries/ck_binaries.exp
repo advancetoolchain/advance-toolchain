@@ -1,0 +1,141 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Check if some important executables are available, like all wrapper scripts
+# and some links
+#
+
+source shared.exp
+source config_parser.exp
+set rc 0
+
+# Check if the variables are already defined on environment before parsing
+# the config file
+set at_dir $env(AT_DEST)
+
+# Get gcc version in the format: X.Y.Z
+set CC [compiler_path]
+set gcc_ver $env(AT_GCC_VER)
+regexp "($gcc_ver\[^\[:blank:\]\]+)" \
+    [exec $CC --version | head -n 1] gcc_ver
+
+# n_exec - List of filenames without prefix
+# alt_exec - List of filenames starting with alternative prefix (powerpc-linux-)
+# tgt_exec - List of filenames starting with target prefix (powerpc64-linux-)
+#
+# as_exec  = assembler related files
+# alt_exec = set of files
+# n_exec   = alt_exec + another set
+# tgt_exec = n_exec + a different thing
+# plt_exec = as_exec + n_exec
+set as_exec {ar as ld nm objcopy objdump ranlib strip}
+
+set alt_exec $as_exec
+lappend addr2line c++filt size strings
+
+set n_exec $alt_exec
+lappend n_exec c++ g++ gcc gfortran
+
+set tgt_exec $n_exec
+lappend tgt_exec gcc-$gcc_ver
+
+set plt_exec $as_exec
+if { $env(AT_CROSS_BUILD) == "yes" && $env(AT_MAJOR_VERSION) < 8.0 } {
+	lappend plt_exec ld.bfd c++ g++ gcc gfortran
+} else {
+	lappend plt_exec ld.bfd
+}
+
+if { $env(AT_MAJOR_VERSION) >= 9.0 } {
+	lappend plt_exec ld.gold
+}
+
+# Binaries distributed with a different name on cross and non-cross
+set dif_exec {cpp elfedit embedspu gprof readelf}
+if { $env(AT_CROSS_BUILD) == "yes" } {
+	set alt_exec [concat ${alt_exec} ${dif_exec}]
+	set tgt_exec [concat ${tgt_exec} ${dif_exec}]
+} else {
+	set n_exec [concat ${n_exec} ${dif_exec}]
+}
+
+printit "Checking if some binaries are available..."
+# The cross compiler only have prefixed executables
+if { [string match no $env(AT_CROSS_BUILD)] } {
+	foreach exe ${n_exec} {
+		if { [file exists $at_dir/bin/$exe] == 0 } {
+			printitcont "Error:  File $at_dir/bin/$exe is missing."
+			set rc 1
+		}
+	}
+}
+
+foreach exe $tgt_exec {
+	if { ![file exists $at_dir/bin/$env(AT_TARGET)-$exe] } {
+		printitcont "Error:  File \
+$at_dir/bin/$env(AT_TARGET)-$exe is missing."
+		set rc 1
+	}
+
+}
+
+# Check architecture based executables
+foreach exe ${plt_exec} {
+	if { [file exists $at_dir/$env(AT_TARGET)/bin/$exe] == 0 } {
+		printitcont "Error: File $at_dir/$env(AT_TARGET)/bin/$exe is missing."
+		set rc 1
+	}
+}
+
+# We only have files with alternative prefix when building for 32 & 64 bit
+if { $TARGET32 && $TARGET64 } {
+	switch -regexp $env(AT_MAJOR_VERSION) {
+		"\[4567\]\.0" {
+			# AT version < 7.1
+			set exeprefix "powerpc-linux-"
+		}
+		default {
+			# Since AT 7.1
+			set exeprefix "powerpc-linux-gnu-"
+		}
+	}
+
+	foreach exe $alt_exec {
+		printitcont "Checking alt file: $at_dir/bin/${exeprefix}${exe}"
+		if { ![file exists $at_dir/bin/${exeprefix}${exe}] } {
+			printitcont "Error:  File \
+$at_dir/bin/${exeprefix}${exe} is missing."
+			set rc 1
+		}
+	}
+}
+
+if { $rc == 0 } {
+	printit "All binaries are available."
+}
+
+if { $BLD_ARCH_PPC64LE } {
+	set test_exec "${FULLPATH}/le_test"
+	printit "Verifying executables are marked as LE..."
+	compile "${CC} -m64 ${FULLPATH}/test.c -o ${test_exec}"
+	set lerc [built_for_le "${test_exec}"]
+	if { $lerc > 0 } {
+		set rc 1
+		printitcont "Program ${test_exec} not marked as ppc64le"
+	}
+	exec rm -f ${test_exec}
+}
+
+exit $rc

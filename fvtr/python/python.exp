@@ -1,0 +1,131 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Check if the provided Python is functional by running its own tests
+
+source ./shared.exp
+
+# Variable to identify if we're printing environment information.
+#   0 - means we haven't printed yet.
+#   1 - means we need to print.
+set print_env 0
+
+# Print an environment variable, if defined.
+proc print_env_var {var_name} {
+	global print_env
+
+	if { [array names ::env -exact "${var_name}"] != "" } {
+		# Print the environment header one time once.
+		if { ${print_env} == 0} {
+			set print_env 1
+			printit "Environment information:"
+		}
+		printit "\t${var_name}=$::env(${var_name})"
+	}
+}
+
+
+if { [array names env -exact "AT_PYTHON_VER"] == "" } {
+	printit "Python is not configured in the config file." $WARNING
+	printit "Skipping..."
+	exit $ENOSYS
+}
+
+# AT 5.0 and 6.0 doesn't have all the Python fixes implemented on AT >= 7.0,
+# which may cause Python expected failures on Python testcases.
+if { [regexp "5\..*|6\..*" $env(AT_MAJOR_VERSION)] } {
+	printit "This test doesn't work on AT 5.0 or 6.0." $WARNING
+	printit "Skipping..."
+	exit $ENOSYS
+}
+
+printit "Running Python tests..."
+
+# Print environment information, if necessary.
+print_env_var PYTHONEXECUTABLE
+print_env_var PYTHONHOME
+print_env_var PYTHONPATH
+print_env_var PYTHONUSERBASE
+
+set pyver [string range $env(AT_PYTHON_VER) 0 2]
+
+set test_script "$env(AT_DEST)/lib64/python$pyver/test/regrtest.py"
+if { ![file isfile "$test_script"] } {
+	fvtr_error "Can't find $test_script in the installed AT."
+}
+
+# These tests were commonly removed from all python versions due to the fact
+# that other tests make use of the facilities that they check, so we can catch
+# the failure later in any case. In special, test_doctest, test_doctest2,
+# test_tarball and test_venv provides ambiguous results that not always
+# represent a real success or failure.
+set common_exclude_tests "test_doctest test_doctest2 test_asyncio \
+			  test_asyncore test_concurrent_futures	\
+			  test_buffer test_tarball test_venv"
+# The following sets up the python test command so that it excludes tests
+# which should not be run using FVTR.  The exclude test list is different
+# depending on the version of python being used, although some common tests
+# are defined above separately.
+if { "$pyver" == "2.6" } {
+	# Fails if run from the install dir: test_lib2to3, test_distutils.
+	# Unexpected skip: test_tcl.
+	set spawn_cmd "spawn $env(AT_DEST)/bin/python $test_script \
+		-x $common_exclude_tests test_lib2to3 test_tcl test_distutils"
+} elseif { "$pyver" == "2.7" } {
+	# Might fail if run from the install dir:  test_idle test_tools.
+	set spawn_cmd "spawn $env(AT_DEST)/bin/python $test_script \
+		-x $common_exclude_tests test_idle test_tools"
+} elseif { "$pyver" == "3.4" | "$pyver" == "3.5" } {
+	# Python unit tests are "embarrassingly parallel", at least up to 6 cores
+	# it seems
+	set CORES [expr min(6, [exec grep -c "processor" /proc/cpuinfo ])]
+
+	# The following tests fail for python when run using FVTR so exclude
+	# them.
+	set spawn_cmd "spawn $env(AT_DEST)/bin/python3 $test_script \
+		-j$CORES -x $common_exclude_tests test_gdb test_site \
+		test_httpservers test_os test_posix test_compileall"
+} else {
+	set spawn_cmd "spawn $env(AT_DEST)/bin/python $test_script"
+}
+
+set env(TMPDIR) "$FULLPATH/tmp[pid]"
+exec mkdir $env(TMPDIR)
+printit "TMPDIR=\"$env(TMPDIR)\""
+
+printit "Spawn cmd for $pyver:  $spawn_cmd"
+eval $spawn_cmd
+expect {
+	# Wait for 1 hour at most
+	-timeout 3600
+	-re "(test\[s\]* failed|Test Failed)" {
+		fvtr_error "Failed to run Python tests."
+	}
+	"Fatal Python error" {
+		fvtr_error "Python crashed during the tests."
+	}
+	-re "skip\[s\]* unexpected" {
+		fvtr_error "Skipped some tests. Please check if all modules \
+are available"
+	}
+	eof {
+		printit "Python passed all tests!"
+	}
+}
+
+# clean up any droppings
+exec rm -rf $env(TMPDIR)
+
+exit 0

@@ -1,0 +1,85 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Check if AT provides libdfp for ppc32 and ppc64 for both static and shared
+# linking.
+#
+
+source ./shared.exp
+
+# libdfp isn't available in cross compilers
+if { [array names env -exact "AT_LIBDFP_VER"] == "" } {
+	printit "Skipping: libdfp is not available on this build\t\[SUCCESS\]"
+	exit $ENOSYS
+}
+
+if { $env(AT_CROSS_BUILD) == "yes" } {
+	if { $env(AT_BUILD_ARCH) == "ppc64le" } {
+		set includedir "$env(AT_DEST)/$env(AT_BUILD_ARCH)/usr/include"
+	} else {
+		set includedir "$env(AT_DEST)/ppc/usr/include"
+	}
+} else {
+	set includedir "$env(AT_DEST)/include"
+}
+
+set at_dir $env(AT_DEST)
+set CC [compiler_path]
+
+# Passing -I to gcc is usually undesired in FVTR tests. However, the user
+# manual provided by libdfp explicitly states that this is required.
+#
+# Reference: https://github.com/libdfp/libdfp/blob/master/README.user
+set CFLAGS "-O2 -Wall -D__STDC_WANT_DEC_FP__=1 -I${includedir}/dfp"
+
+set STATIC_LIBS "-ldfp -lm"
+
+set rc 0
+set tmp_file [exec mktemp]
+
+if { $TARGET32 } {
+	printit "Testing 32 bit linking..."
+	if [ compile "${CC} -m32 -static ${CFLAGS} $FULLPATH/test.c $STATIC_LIBS -o ${tmp_file}" ] {
+		set rc 1
+	} else {
+		printitcont "\t\t\t Statically linking 32bit libdfp successful"
+	}
+	if [ compile "${CC} -m32 ${CFLAGS} $FULLPATH/test.c -ldfp -o ${tmp_file}" ] {
+		set rc 1
+	} else {
+		printitcont "\t\t\t Dynamic linking 32bit libdfp successful"
+	}
+}
+if { $TARGET64 } {
+	printit "Testing 64 bit linking..."
+	if [ compile "${CC} -m64 -static ${CFLAGS} $FULLPATH/test.c $STATIC_LIBS -o ${tmp_file}" ] {
+		set rc 1
+	} else {
+		printitcont "\t\t\t Statically linking 64bit libdfp successful"
+	}
+	if [ compile "${CC} -m64 ${CFLAGS} $FULLPATH/test.c $STATIC_LIBS -o ${tmp_file}" ] {
+		set rc 1
+	} else {
+		printitcont "\t\t\t Dynamic linking 64bit soft libdfp successful"
+	}
+}
+
+if { $rc == 0 } {
+	printit "Linking libdfp:\t\t\t\t\t\t\[SUCCESS\]"
+}
+
+file delete -force ${tmp_file}
+exit $rc

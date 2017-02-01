@@ -1,0 +1,325 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Check if the AT RPMs require all libraries that the system should provide.
+
+source shared.exp
+source config_parser.exp
+
+proc process_rpm_packages { packages cross_bld at_dest ldd_path } {
+
+	global FULLPATH
+	global env
+	set rc 0
+	set TMP_FILE $FULLPATH/requirements.tmp
+
+	foreach package $packages {
+		# Ignore debuginfo packages.
+                if {[regexp "debuginfo" $package]} {
+                        continue
+                }
+
+                # Ignore golang package.
+                if {[regexp "golang" $package]} {
+                        continue
+                }
+
+		if { ![info exists env(AT_WD)] } {
+			printit "Processing package:  ${package}"
+			set files [exec rpm -ql $package]
+		} else {
+			printit "Processing package:  ${package}"
+			set rpm_path $env(AT_WD)/rpms/$env(AT_HOST_ARCH)/
+			set files [exec rpm -qlp $rpm_path/$package]
+		}
+
+		set requi $FULLPATH/$package.req
+		set diff $FULLPATH/$package.diff
+
+		file delete $TMP_FILE $requi
+
+		exec touch $requi
+		exec touch $TMP_FILE
+
+		foreach file $files {
+			set suffix ""
+
+			# Ignore ld.so, because when you run ldd on ld.so it
+			# outputs errors.
+			if {[regexp "ld\[^\ \]*\.so" $file]} {
+				continue
+			}
+
+			if {![file executable $file] || ![file readable $file]} {
+				continue
+			}
+			set file_info [exec file -b -L $file]
+			if { [string first "dynamically linked" $file_info] < 0 } {
+				continue
+			}
+
+			if { $cross_bld == "yes" } {
+				set readelf_path [exec which readelf]
+				set readelf_info [exec $readelf_path -h $file \
+							| grep Machine]
+				if {[string first "PowerPC" $readelf_info] > 0} {
+					continue
+				}
+			}
+
+			regexp "ELF (\[\[:digit:\]\]+)\-bit" $file_info match wordsize
+			if { $wordsize == 32 } {
+				set suffix ""
+			} elseif { $wordsize == 64 } {
+				set suffix ()(64bit)
+			} else {
+				fvtr_error "Can't recognize ${file} word size: \
+\"${wordsize}\"."
+			}
+
+			# Grab the libraries provided by the system
+			if {[catch {exec $ldd_path $file | \
+					grep -v $at_dest | \
+					awk "/=>/ { print \$1 \"$suffix\" }" >> \
+					$TMP_FILE} error_msg]} {
+				printit "Failed to ldd file $file:
+$error_msg"
+				set rc 1
+			}
+
+			# TODO: Need to add versioned libs to the list
+			# objdump -p operf | awk '/required from/ {sub(/:/, "", $3); lib=$3} (lib!="") && ($4!="") { print lib "(" $4 ")";}' | sort -u
+		}
+		# Ignore some libraries:
+		#   linux-vdso as no package provides it
+		#   libselinux
+		#   linux-gate is sometimes used instead of linux-vdso
+		set ignored "linux-vdso|libselinux|libaudit|linux-gate"
+		catch {exec cat $TMP_FILE | xargs -r -n 1 basename | sort -u | \
+		   grep -vE "${ignored}" > $requi}
+
+		# Compare with the installed rpm packages
+		if { ![info exists ::env(AT_WD)] } {
+			catch {exec rpm -qR $package | grep -E "^lib" | \
+				sort -u > $TMP_FILE}
+		} else {
+			catch {exec rpm -qRp $rpm_path/$package | \
+				grep -E "^lib" | sort -u > $TMP_FILE}
+		}
+		if {[catch {exec diff -wB $TMP_FILE $requi > $diff}]} {
+			printit "Inconsistencies found on package $package\
+requirements."
+			set rc 1
+			catch {exec awk "/^>/ \{print \$2\}" $diff} missing
+			if {$missing != ""} {
+				printit "$package is missing the following \
+requirements: $missing"
+			}
+			catch {exec awk "/^</ \{print \$2\}" $diff} extra
+			if {$extra != ""} {
+				printit "$package has the following extra \
+requirements: $extra"
+			}
+		}
+	}
+	return $rc
+}
+
+proc process_deb_packages { packages cross_bld at_dest ldd_path } {
+
+	global FULLPATH
+	global AT_CROSS_BUILD
+	global env
+
+	set rc 0
+	foreach package $packages {
+		# Ignore debuginfo packages.
+                if {[regexp "dbg" $package]} {
+                        continue
+                }
+
+		# Ignore golang package.
+                if {[regexp "golang" $package]} {
+                        continue
+                }
+
+		printit "Processing package: $package"
+		# Set up a hash of the libraries provided by the
+		# package dependencies
+		if {[array exists pkg_lib_hash] == 1} {
+			unset pkg_lib_hash
+		}
+
+		# Set up a hash of the libraries needed according to
+		# ldd on the files in the package
+		if {[array exists ldd_lib_hash] == 1} {
+			unset ldd_lib_hash
+		}
+
+		# Find the list of files in the package
+		if { ![info exists env(AT_WD)] } {
+			set files [exec dpkg --listfiles $package]
+		} else {
+			set deb_path $env(AT_WD)/debs/
+			set files [exec dpkg -c $deb_path/$package | \
+					tr " " "\n" | grep $at_dest ]
+		}
+
+		# Initialize the hash of libraries found in the dependent
+		# packages for the current package
+		if { ![info exists ::env(AT_WD)] } {
+			set dep_pkgs [exec apt-cache depends $package \
+					  | grep "Depends"]
+		} else {
+			set dep_pkgs [exec dpkg-deb -f $deb_path/$package \
+					  | grep "Depends" \
+					  | sed {s/\(([^,]*)\)//g} \
+					  | tr "," "\n" ]
+			# Filter out dependencies for advance-toolchain
+			# packages since it may not yet be installed in this
+			# mode.
+			set dep_at [lsearch ${dep_pkgs} "*advance-toolchain*"]
+			while { ${dep_at} != -1 } {
+				set dep_pkgs [lreplace ${dep_pkgs} ${dep_at} \
+							${dep_at}]
+				set dep_at [lsearch ${dep_pkgs} \
+							"*advance-toolchain*"]
+			}
+		}
+		foreach pdep $dep_pkgs {
+			if {[regexp "Depends" $pdep match]} {
+				continue
+			}
+			set dep_libs [exec dpkg --listfiles $pdep | \
+				grep -v $at_dest | xargs -r -n 1 basename]
+			foreach dlib $dep_libs {
+				if {[regexp "lib.*\.so" $dlib]} {
+					set pkg_lib_hash($dlib) $dlib
+				}
+			}
+		}
+
+		# Process the files found in the current package
+		foreach file $files {
+			set suffix ""
+
+			# Ignore ld.so, because when you run ldd on ld.so it
+			# outputs errors.
+			if {[regexp "ld\[^\ \]*\.so" $file]} {
+				continue
+			}
+
+			if {![file executable $file] \
+			    || ![file readable $file]} {
+				continue
+			}
+			set file_info [exec file -b -L $file]
+			if { [string first "dynamically linked" $file_info] \
+			     < 0 } {
+				continue
+			}
+
+			# On cross, only use ldd on objects NOT built for
+			# PowerPC
+			if { $cross_bld == "yes" } {
+				set readelf_path [exec which readelf]
+				set readelf_info [exec $readelf_path -h $file \
+							| grep Machine]
+				if {[string first "PowerPC" $readelf_info] > \
+				    0} {
+					continue
+				}
+			}
+
+			# Get the list of libs from ldd of all the files in
+			# the pkg.
+			set req_list [exec $ldd_path $file | grep -v $at_dest \
+					  | xargs -r -n 1 basename ]
+
+			set ignored "linux-vdso|libselinux|libaudit|linux-gate"
+
+			# Find the lib*.so.* in the list of required libs from
+			# ldd save them in a hash by lib name, omitting those
+			# from the ignore list
+			foreach req $req_list {
+				if {[regexp "lib.*\.so" $req]} {
+					if {[string first "$req" $ignored] >= \
+					    0} {
+						continue
+					}
+					set ldd_lib_hash($req) $req
+				}
+			}
+
+		}
+		# Looking through the ldd_lib_hash, make sure that the lib is
+		# provided as part of one of the package's dependent packages
+		set found 1
+		foreach ldd_lib [array names ldd_lib_hash] {
+			set keys [array names pkg_lib_hash]
+			if {[lsearch $keys $ldd_lib] < 0} {
+				if {$found == 1} {
+					printit "Missing dependencies for \
+package: $package"
+					set found 0
+				}
+				printit "  $ldd_lib"
+			}
+		}
+
+		# If a package had a missing dependency, the test fails
+		if {$found == 0} {
+			set rc 1
+		}
+
+	}
+	return $rc
+}
+
+set ldd_path ""
+
+# The cross compiler requires a different ldd
+if { $env(AT_CROSS_BUILD) == "yes" } {
+	set ldd_path [exec which ldd]
+} else {
+	set ldd_path $env(AT_DEST)/bin/ldd
+}
+
+set system [get_packaging_system]
+
+# For AT 7.0-x cross compiler this test will fail on DEB systems if there is
+# more than one release installed. e.g. 7.0-4 and 7.0-4-rc2.
+# This occurs because these DEB packages are generated by converting RPM
+# packages and the package version doesn't contain the internal release name.
+if { $env(AT_MAJOR_VERSION) == "7.0" && $system == "deb" && \
+	$env(AT_CROSS_BUILD) == "yes"} {
+	printit "Skipping: Packages converted from RPM to DEB.\t\[SUCCESS\]"
+	exit $ENOSYS
+}
+
+set packages [get_packages_list ${system}]
+
+if { ${system} == "rpm" } {
+	printit "Processing rpm packages... "
+	set rc [ process_rpm_packages "$packages" "$env(AT_CROSS_BUILD)" \
+		 "$env(AT_DEST)" "$ldd_path"]
+} else {
+	printit "Processing deb packages... "
+	set rc [ process_deb_packages "$packages" "$env(AT_CROSS_BUILD)" \
+		 "$env(AT_DEST)" "$ldd_path"]
+}
+
+exit $rc

@@ -1,0 +1,355 @@
+#!/usr/bin/expect --
+
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Remotely build AT
+#
+# It executes all the necessary steps to remotely build AT in a list of
+# servers, including:
+# - call make pack
+# - send the tarball to the server
+# - remove files from the last build
+# - unpack the tarball created by make pack
+# - start the build
+#
+
+# Set $var to $def_val if not set.
+proc set_def {var def_val} {
+	upvar ${var} x
+
+	if {![info exists x]} {
+		set x ${def_val}
+	}
+}
+
+# Load config file.
+set conf ~/.remote-build.conf
+if {[file exists ${conf}]} {
+	source ${conf}
+}
+
+# Define default value of variables if not previously defined
+# Directory used by the script to save its files.
+set_def tray_dir ~/tmp/at-build-tray
+# Directory where AT will be installed (aka DESTDIR).
+set_def destdir "\${HOME}/opt"
+set_def default_timeout 30; # 30 seconds
+
+# Directory where AT is installed
+# Before start the building, all AT installs with the same version of that
+# specified in the parameters are removed
+set at_dest ~/opt
+set prompt "(%|>|\#|\\\$)\[\[:space:\]\]*$"
+
+# Request passwords once per server
+set ssh_params {-o "ControlMaster=auto" -o "ControlPath=/tmp/ssh-%r@%h:%p"}
+
+# Flush expect buffer.
+proc flush_expect { } {
+	expect * { }
+}
+
+proc print_usage { } {
+	global argv0
+	puts "Usage: $argv0 version servers"
+	puts ""
+	puts "Options:"
+	puts "	--buildarch=		Specify the value of BUILD_ARCH."
+	puts "	--help			Print this message."
+	puts ""
+	puts "Example:"
+	puts "	$argv0 4.0 server1 user@server2"
+	puts "	$argv0 --buildarch=ppc64le 7.1 server1.domain"
+	puts ""
+}
+
+# Detach from current screen session.
+proc dettach_screen { } {
+	# Detach from screen session.
+	send ""
+}
+
+# Default values
+set buildarch ""
+
+# Parse optional arguments
+set argi 0
+while { ${argi} < ${argc} } {
+	set arg [lindex ${argv} ${argi}]
+
+	switch -regexp ${arg} {
+		"--help" {
+			print_usage
+			exit
+		}
+		"--buildarch=[^ ]*" {
+			if { [catch {regexp -- "--buildarch=(\[^ \]*)" ${arg} \
+					 a buildarch}] } {
+				error "Could not parse ${arg}"
+			}
+		}
+		default break
+	}
+
+	incr argi
+}
+
+# Parse mandatory arguments
+if { ${argc} - ${argi} < 2 } {
+	print_usage
+	exit
+}
+set at_version [lindex $argv ${argi}]
+incr argi
+set servers [lrange $argv ${argi} end]
+
+if { ! [file exists configs/${at_version}] } {
+	error "Could not find config set ${at_version}"
+}
+
+puts "AT version: $at_version"
+puts "Servers: $servers"
+
+set timeout $default_timeout
+
+spawn make pack
+expect {
+	"at-*.tgz" {
+		set at_file $expect_out(0,string)
+	}
+	default {
+		send_user "Failed to create the tarball."
+		exit 1
+	}
+}
+
+flush_expect
+send_user "\n"
+
+foreach server $servers {
+	eval spawn ssh ${ssh_params} ${server}
+	# Save this spawn_id for future usage
+	set ssh_spid $spawn_id
+
+	# Deal with credentials
+	expect {
+		-re $prompt { }
+		-re "((assword:\ )|(assphrase))" {
+			stty -echo
+			expect_user -re "(.*)\n"
+			send_user "\n"
+			send "$expect_out(1,string)\r"
+			stty echo
+			exp_continue
+			expect {
+				-re $prompt { }
+			}
+		}
+		"(yes/no)? " {
+			send "yes\n"
+			expect {
+				-re $prompt { }
+			}
+		}
+		default {
+			send_user "Login failed\n"
+			exit
+		}
+	}
+
+	send "mkdir -p ${tray_dir}\n"
+	expect {
+		-re $prompt { }
+		default {
+			send_user "Failed to create directory ${tray_dir}\n"
+			exit 1
+		}
+	}
+
+	send "cd ${tray_dir}\n"
+	expect {
+		-re $prompt { }
+		default {
+			send_user "Failed to change to directory ${tray_dir}\n"
+			exit 1
+		}
+	}
+
+	# Remove files from old builds
+	send "test -x remake.sh; echo $?\n"
+	expect {
+		"1" { }
+		"0" {
+			flush_expect
+
+			send "./remake.sh clean\n"
+			expect {
+				-re $prompt { }
+				# Some servers are very slow and require a lot
+				# of time to clean a previous build.
+				-timeout 600 default {
+					send_user "Failed to clean a previous build.\n"
+					exit 1
+				}
+			}
+		}
+		-re ${prompt} { }
+	}
+
+	flush_expect
+
+	send "rm -rf at-* configs Makefile scripts configs README* screenlog*\n"
+	expect {
+		-re $prompt { }
+		-timeout 300 default {
+			send_user "Failed to remove files from ${tray_dir}\n"
+			exit 1
+		}
+	}
+
+	send_user "\n"
+	flush_expect
+
+	# Indicates when a copy achieved 100%.
+	set scp_complete 0
+	eval spawn scp ${ssh_params} ${at_file} ${server}:${tray_dir}/
+	expect {
+		-re "((assword:\ )|(assphrase))" {
+			stty -echo
+			expect_user -re "(.*)\n"
+			send_user "\n"
+			send "$expect_out(1,string)\r"
+			exp_continue
+		}
+		"denied" {
+			send_user "Login failed\n"
+			exit 1
+		}
+		-timeout 120 timeout {
+			send_user "Timeout!\n"
+			exit 1
+		}
+		"100%" {
+			# An scp isn't complete until it prints 100% in the
+			# output and the command returns (eof).
+			set scp_complete 1
+			exp_continue
+		}
+		eof {
+			# eof before achieving 100% is an error.
+			if { ! ${scp_complete} } {
+				send_user "Failed to copy ${at_file} to \
+${server}.\n"
+				exit 1
+			}
+		}
+	}
+
+	# Recover ssh spawn id
+	set spawn_id $ssh_spid
+	flush_expect
+
+	# Extract AT tarball.
+	send "tar -xzf ${at_file}\n"
+	expect {
+		-re $prompt { }
+		"Error"{
+			send_user "Failed to untar ${at_file}\n"
+			exit 1
+		}
+		default {
+			send_user "Failed to untar ${at_file}\n"
+			exit 1
+		}
+	}
+
+	flush_expect
+
+	# Get cpu information
+	send "grep -c processor /proc/cpuinfo\n"
+	expect {
+		-re "\[0-9\]+\r" {
+			set cores $expect_out(0,string)
+		}
+		default {
+			send_user "Failed to read processor's information.\n"
+			exit 1
+		}
+	}
+
+	flush_expect
+
+	send "uname -m\n"
+	expect {
+		-re "ppc.*" {
+			# Avoid starting too many jobs on our POWER servers in
+			# order to not overload a multi-user server.
+			set cores [expr ${cores} / 2 + 1]
+		}
+		# Use full power on x86
+		"i686" {
+			incr cores
+		}
+		"x86_64" {
+			incr cores
+		}
+		default {
+			send_user "Failed to identify the type of the  processor.\n"
+			exit 1
+		}
+	}
+
+	flush_expect
+
+	send_user "\nUsing -j${cores}\n"
+
+	set screen_parms "-L -S at-build"
+	set parent_cmd "time -p nice -n 19"
+	set make_parms "-j${cores} AT_CONFIGSET=${at_version} \
+DESTDIR=${destdir}"
+	if { ${buildarch} != "" } {
+		append make_parms " BUILD_ARCH=${buildarch}"
+	}
+	# Force the targets for building and FVTR runs.
+	append make_parms " release test"
+	send_user "screen ${screen_parms} ${parent_cmd} make ${make_parms}\n"
+	send "screen ${screen_parms} ${parent_cmd} make ${make_parms}\n"
+	expect {
+		"command not found" {
+			send_user "Something is missing on ${server}.\n"
+			exit 1
+		}
+		"screen is terminating" {
+			send_user "Caught an early build failure on $server.\n"
+			exit 1
+		}
+		-re "failed|Error" {
+			dettach_screen
+			send_user "\n"
+			send_user "Failed to build on $server.\n"
+			send_user "Some processes may still continue to run.\n"
+			exit 1
+		}
+		default { }
+	}
+
+	dettach_screen
+	send_user "\n"
+	send_user "Build is running on ${server}.\n"
+}
+
+send_user "Started builds on: ${servers}\n"
+exit

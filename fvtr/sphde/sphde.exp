@@ -1,0 +1,97 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Tests for SPHDE
+#
+
+source ./shared.exp
+
+set rc 0
+
+set CXX [compiler_path g++]
+set CFLAGS "-O2 -Wall"
+set LIBS "-lsphde -pthread"
+
+if { [array names env -exact "AT_LIBSPHDE_VER"] == "" } {
+	printit "WARNING: SPHDE is not configured in the config file."
+	printit "Skipping..."
+	exit $ENOSYS
+}
+
+#
+# Provide install prefix based on build type
+#
+if { $env(AT_CROSS_BUILD) == "yes" } {
+	if { $env(AT_BUILD_ARCH) == "ppc64le" } {
+		set install_prefix "$env(AT_DEST)/$env(AT_BUILD_ARCH)/usr"
+	} else {
+		set install_prefix "$env(AT_DEST)/ppc/usr"
+	}
+} else {
+	set install_prefix $env(AT_DEST)
+}
+
+#
+# Check if SPHDE executables are available
+#
+if { $TARGET32 } {
+	if { ![file exists $install_prefix/bin/sasutil] } {
+		printit "ERROR: $env(AT_DEST)/bin/sasutil is missing."
+		set rc 1
+	}
+}
+if { $TARGET64 && $env(AT_BUILD_ARCH) == "ppc64le" } {
+	if { ![file exists $install_prefix/bin/sasutil] } {
+		printit "ERROR: $env(AT_DEST)/bin/sasutil is missing."
+		set rc 1
+	}
+}
+if { $TARGET64 && $env(AT_BUILD_ARCH) != "ppc64le" } {
+	if { ![file exists $install_prefix/bin64/sasutil] } {
+		printit "ERROR: $env(AT_DEST)/bin64/sasutil is missing."
+		set rc 1
+	}
+}
+
+#
+# Check if AT is able to build and link against SPHDE library
+# This test checks for important headers and both static and dynamic libs
+#
+set tmp_file [exec mktemp]
+
+if { $TARGET32 } {
+	# To verify that the libraries exist, they are explicitly linked in
+	# even though that is not necessary in practice.
+	printit "Testing 32 bit static linking..."
+	compile "${CXX} -m32 -static ${CFLAGS} ${LIBS} $FULLPATH/test.cpp \
+		 $install_prefix/lib/libsphde.a -o ${tmp_file}"
+	printit "Testing 32 bit dynamic linking..."
+	compile "${CXX} -m32 ${CFLAGS} $FULLPATH/test.cpp \
+		 $install_prefix/lib/libsphde.so -o ${tmp_file}"
+	printit "Successfully built and linked against 32 bit libraries"
+}
+
+if { $TARGET64 } {
+	printit "Testing 64 bit static linking..."
+	compile "${CXX} -m64 -static ${CFLAGS}  ${LIBS} $FULLPATH/test.cpp \
+		 $install_prefix/lib64/libsphde.a -o ${tmp_file}"
+	printit "Testing 64 bit dynamic linking..."
+	compile "${CXX} -m64 ${CFLAGS} $FULLPATH/test.cpp \
+		 $install_prefix/lib64/libsphde.so -o ${tmp_file}"
+	printit "Successfully built and linked against 64 bit libraries"
+}
+
+exec rm -f ${tmp_file}

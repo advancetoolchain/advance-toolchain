@@ -1,0 +1,181 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Check if some Valgrind files are provided
+#
+
+source ./shared.exp
+
+set rc 0
+
+set CC [compiler_path]
+set CFLAGS "-O2 -Wall"
+
+if { [array names env -exact "AT_VALGRIND_VER"] == "" } {
+	printit "WARNING: Valgrind is not configured in the config file."
+	printit "Skipping..."
+	exit ${ENOSYS}
+}
+
+if {![regexp "(\[^\.\]*)\.(\[^\.\]*)\..*" $env(AT_VALGRIND_VER) \
+	  match major minor]} then {
+	fvtr_error "Unrecognized version $env(AT_VALGRIND_VER)"
+}
+
+# Build the sample valgrind test binary
+set test_exec "${FULLPATH}/valgrind_test"
+printit "Building test valgrind executables..."
+if { ${TARGET32} } {
+	compile "${CC} -m32 ${CFLAGS} ${FULLPATH}/valgrind.c -o ${test_exec}-32"
+}
+if { ${TARGET64} } {
+	compile "${CC} -m64 ${CFLAGS} ${FULLPATH}/valgrind.c -o ${test_exec}-64"
+}
+printit "Successfully built test valgrind executables"
+
+# List of executables that should be present
+set exe_list {valgrind valgrind-listener vgi2qt}
+
+# Set arch* strings for later usage.
+switch -regexp $env(AT_BUILD_ARCH) {
+	ppc.*le {
+		# Although ppc32le actually doesn't exist, this code is
+		# already prepared.
+		set arch32 ppc32le
+		set arch64 ppc64le
+	}
+	# Defaults to ppc and ppc64.
+	default {
+		set arch32 ppc32
+		# Starting from version 3.10 Valgrind refer to ppc64 as ppc64be.
+		if { ${major} > 3 || [expr ${major} == 3 && ${minor} >= 10] } {
+			set arch64 ppc64be
+		} else {
+			set arch64 ppc64
+		}
+	}
+}
+
+# List of libraries that should be present.
+set lib_list {}
+if { ${TARGET32} } {
+	lappend lib_list vgpreload_core-${arch32}-linux \
+			 vgpreload_drd-${arch32}-linux \
+			 vgpreload_exp-dhat-${arch32}-linux \
+			 vgpreload_helgrind-${arch32}-linux \
+			 vgpreload_massif-${arch32}-linux \
+			 vgpreload_memcheck-${arch32}-linux
+}
+if { ${TARGET64} } {
+	lappend lib_list vgpreload_core-${arch64}-linux \
+			 vgpreload_drd-${arch64}-linux \
+			 vgpreload_exp-dhat-${arch64}-linux \
+			 vgpreload_helgrind-${arch64}-linux \
+			 vgpreload_massif-${arch64}-linux \
+			 vgpreload_memcheck-${arch64}-linux \
+}
+
+# Some files were included in Valgrind 3.7.
+if {${major} > 3 || [expr ${major} == 3 && ${minor} >= 7]} {
+	lappend exe_list vgdb
+	if { ${TARGET32} } {
+		lappend lib_list vgpreload_exp-sgcheck-${arch32}-linux
+	}
+	if { ${TARGET64} } {
+		lappend lib_list vgpreload_exp-sgcheck-${arch64}-linux
+	}
+}
+
+# Check if expected executables are available.
+foreach exe ${exe_list} {
+	if {![file exists $env(AT_DEST)/bin/${exe}]} {
+		printit "file $env(AT_DEST)/bin/$exe is missing" ${ERROR}
+		set rc 1
+	}
+}
+if { ${rc} == 0} {
+	printit "All executables are available and functional"
+}
+
+
+# Check if all expected libraries are available.
+foreach lib ${lib_list} {
+	if {![file exists $env(AT_DEST)/lib/valgrind/${lib}.so]} {
+		printit "library $env(AT_DEST)/lib/valgrind/${lib}.so \
+is missing" ${ERROR}
+		set rc 1
+	}
+}
+
+# Get normalized plugins list, e.g. helgrind instead of
+# vgpreload_helgrind-ppc32-linux.
+foreach lib ${lib_list} {
+	set tool [string map [list vgpreload_ {} \
+				  -${arch32}-linux {} \
+				  -${arch64}-linux {}] \
+		      ${lib}]
+	# Temporarily ignore exp-sgcheck in order to work around BZ #98458.
+	if {![string equal ${tool} core]
+	    && ![string equal ${tool} exp-sgcheck]} {
+		lappend plugin_list ${tool}
+	}
+}
+set plugins [lsort -unique ${plugin_list}]
+
+# Define which word sizes are supported by this release.
+set wordsize_l {}
+if { ${TARGET32} } {
+	lappend wordsize_l 32
+}
+if { ${TARGET64} } {
+	lappend wordsize_l 64
+}
+
+# Simple validation the plugin tools.
+# Run each plugin and verify if they work with a simple program.
+foreach plugin ${plugins} {
+	foreach archsize ${wordsize_l} {
+		set tool_test "valgrind --tool=${plugin} \
+${test_exec}-${archsize}"
+		set valgrind_test \
+		    [catch {
+			    eval exec \
+				${tool_test} >& \
+				${test_exec}-${plugin}_${archsize}.log } \
+			 test_info]
+		if { ${valgrind_test} != 0 } {
+			printit "problem with library tool ${plugin} \
+on ${archsize} bits." ${ERROR}
+			set rc 1
+		} else {
+			printit "Plugin module ${plugin} ${archsize} bits \
+passed test."
+		}
+	}
+}
+
+# Move possible massif.out output files to valgrind folder
+exec mv {*}[glob ./massif.out*] ${FULLPATH}/
+
+# Confirm the plugins' availability
+if { ${rc} == 0} {
+	printit "All libraries are available"
+	# Remove sample valgrind test binary and logs
+	exec rm -f {*}[glob ${test_exec}*]
+}
+
+# Return final test result
+exit ${rc}

@@ -1,0 +1,81 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Tests for OpenSSL
+#
+
+source ./shared.exp
+
+set rc 0
+
+set CC [compiler_path]
+set CFLAGS "-O2 -Wall"
+
+
+if { [array names env -exact "AT_OPENSSL_VER"] == "" } {
+	printit "WARNING: OpenSSL is not configured in the config file."
+	printit "Skipping..."
+	exit $ENOSYS
+}
+
+if { $env(AT_CROSS_BUILD) == "yes" } {
+	if { $env(AT_BUILD_ARCH) == "ppc64le" } {
+		set install_prefix "$env(AT_DEST)/$env(AT_BUILD_ARCH)/usr"
+	} else {
+		set install_prefix "$env(AT_DEST)/ppc/usr"
+	}
+} else {
+	set install_prefix $env(AT_DEST)
+}
+
+#
+# Check if openssl executable is available
+#
+if { ![file exists $install_prefix/bin/openssl] } {
+	printit "ERROR: $install_prefix/bin/openssl is missing."
+	set rc 1
+}
+
+#
+# We can't provide some libraries due to patent infringements
+# Make sure they aren't there
+#
+foreach header {idea rc5} {
+	if { [file exists $install_prefix/include/openssl/${header}.h] } {
+		printit "ERROR: $install_prefix/include/openssl/${header}.h shouldn't be in the package"
+	}
+}
+
+#
+# Check if AT is able to build and link against basic OpenSSL libraries
+# This test checks for important headers and both static and dynamic libs
+#
+
+set tmp_file [exec mktemp]
+if { $TARGET32 } {
+	printit "Testing 32 bit linking..."
+	compile "${CC} -m32 -static ${CFLAGS} -lcrypto $FULLPATH/test.c $install_prefix/lib/libcrypto.a -o ${tmp_file}"
+	compile "${CC} -m32 ${CFLAGS} $FULLPATH/test.c -lcrypto -o ${tmp_file}"
+	printit "Successfully built and linked against 32 bit libraries"
+}
+if { $TARGET64} {
+	printit "Testing 64 bit linking..."
+	compile "${CC} -m64 -static ${CFLAGS} -lcrypto $FULLPATH/test.c $install_prefix/lib64/libcrypto.a -o ${tmp_file}"
+	compile "${CC} -m64 ${CFLAGS} $FULLPATH/test.c -lcrypto -o ${tmp_file}"
+	printit "Successfully built and linked against 64 bit libraries"
+}
+
+exec rm -f ${tmp_file}

@@ -1,0 +1,1 @@
+../../8.0/arch/default.mk

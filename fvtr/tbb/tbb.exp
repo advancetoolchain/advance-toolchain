@@ -1,0 +1,113 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Tests for TBB
+#
+
+source ./shared.exp
+
+set rc 0
+
+set CXX [compiler_path g++]
+set CFLAGS "-O2 -Wall"
+set TBBLIBS "-ltbb -ltbbmalloc_proxy -ltbbmalloc"
+
+if { [array names env -exact "AT_TBB_VER"] == "" } {
+	# The variable has a different name on old config files.
+	if { [array names env -exact "AT_INTEL_TBB_VER"] == "" } {
+		printit "WARNING: TBB is not configured in the config file."
+		printit "Skipping..."
+		exit $ENOSYS
+	} else {
+		# This allows the test to run with old config files.
+		set env(AT_TBB_VER)  $env(AT_INTEL_TBB_VER)
+	}
+}
+
+# Look for TBB's major and minor version.
+if { [catch {regexp "(\[0-9\]+)\.(\[0-9\]+).*" $env(AT_TBB_VER) match \
+		    major_ver minor_ver} err] } {
+	fvtr_error "Failed to identify TBB major and minor versions from \
+$env(AT_TBB_VER): ${err}"
+}
+
+
+proc memtest {} {
+	global TARGET32
+	global TARGET64
+	global CXX
+	global CFLAGS
+	global TBBLIBS
+	global tmp_file
+	global FULLPATH
+
+	printit "Testing malloc/free usage..."
+	if { $TARGET32 } {
+		printit "Testing dynamic 32 link..."
+		compile "${CXX} -m32 ${CFLAGS} $FULLPATH/mem-test.cpp \
+${TBBLIBS} -o ${tmp_file}"
+		printit "Successfully built and linked 32 bit library"
+	}
+	if { $TARGET64 } {
+		printit "Testing dynamic 64 link..."
+		compile "${CXX} -m64 ${CFLAGS} $FULLPATH/mem-test.cpp \
+${TBBLIBS} -o ${tmp_file}"
+		printit "Successfully built and linked 64 bit library"
+	}
+}
+
+
+#
+# Check if AT is able to build and link against basic TBB libraries
+# This test checks for important headers and dynamic libs as we don't provide
+# static libs.
+#
+proc parallel_test {} {
+	global TARGET32
+	global TARGET64
+	global CXX
+	global CFLAGS
+	global TBBLIBS
+	global tmp_file
+	global FULLPATH
+
+	printit "Testing parallel execution..."
+	if { $TARGET32 } {
+		printit "Testing dynamic 32 link..."
+		compile "${CXX} -m32 ${CFLAGS} $FULLPATH/mem-test.cpp \
+${TBBLIBS} -o ${tmp_file}"
+		printit "Successfully built and linked 32 bit library"
+	}
+	if { $TARGET64 } {
+		printit "Testing dynamic 64 link..."
+		compile "${CXX} -m64 ${CFLAGS} $FULLPATH/mem-test.cpp \
+${TBBLIBS} -o ${tmp_file}"
+		printit "Successfully built and linked 64 bit library"
+	}
+}
+
+printit "Testing TBB..."
+set tmp_file [exec mktemp]
+
+# Run memtest for all TBB versions.
+memtest
+
+# parallel_test is supported by TBB >= 4.2 only.
+if { ${major_ver} >= 4 && ${minor_ver} >= 2 } {
+	parallel_test
+}
+
+exec rm -f ${tmp_file}

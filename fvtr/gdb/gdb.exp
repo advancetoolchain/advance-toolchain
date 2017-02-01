@@ -1,0 +1,96 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Check if the AT GDB provides the correct version and works as expected
+
+source ./shared.exp
+source gdb/gdbtest.exp
+
+if { [array names env -exact "AT_GDB_VER"] == "" } {
+	printit "GDB is not configured in the config file." $WARNING
+	printit "Skipping..."
+	exit $ENOSYS
+}
+
+# AT 5.0 and 6.0 used to use development versions of GDB, instead of stable
+# versions like AT >= 7.0.  Which causes issues when trying to run this
+# testcase, like when testing for GDB version.
+if { [regexp "5\..*|6\..*" $env(AT_MAJOR_VERSION)] } {
+	printit "This test doesn't work on AT 5.0 or 6.0." $WARNING
+	printit "Skipping..."
+	exit $ENOSYS
+}
+
+
+# Get GDB version in the format: X.Y.Z
+set GDB [compiler_path gdb]
+set gdb_ver [exec $GDB --version | head -n 1]
+set rc [string first $env(AT_GDB_VER) ${gdb_ver}]
+
+if { $rc < 0 } {
+	fvtr_error "Expecting \"$env(AT_GDB_VER)\" but saw \"$gdb_ver\"\n"
+	exit 1
+}
+printit "gdb version: $gdb_ver"
+if { $env(AT_CROSS_BUILD) == "yes" } {
+	exit 0
+}
+printit "GDB:  $GDB"
+printit "Running AT GDB tests..."
+
+set CC [compiler_path]
+# This must be unoptimized so the vars can be displayed
+set CFLAGS "-O0 -Wall -g"
+
+set fail 0
+
+if { [string index $env(AT_PYTHON_VER) 0] == "3" } {
+	set pytest "hello3-gdb.py"
+} else {
+	set pytest "hello-gdb.py"
+}
+
+if { $TARGET32} {
+	printit "Starting 32-bit compile..."
+	compile "${CC} -m32 ${CFLAGS} ${FULLPATH}/gdbtest.c -o \
+${FULLPATH}/at-gdbtest-32"
+
+	printit "Running 32 bit gdb testcase"
+	set rc [ gdb_basic_test "$GDB" "${FULLPATH}/at-gdbtest-32" \
+				"$env(AT_DEST)/lib" ]
+	if { $rc > 0 } { incr fail }
+	printit "Running 32 bit gdb python testcase"
+	set rc [ gdb_python_test "$GDB" "${FULLPATH}/at-gdbtest-32" \
+				 "$env(AT_DEST)/lib" "$pytest"]
+	if { $rc > 0 } { incr fail }
+	file delete -force ${FULLPATH}/at-gdbtest-32
+}
+if { $TARGET64 } {
+	printit "Starting 64-bit compile..."
+	compile "${CC} -m64 ${CFLAGS} ${FULLPATH}/gdbtest.c -o \
+${FULLPATH}/at-gdbtest-64"
+
+	printit "Running 64 bit gdb testcase"
+	set rc [ gdb_basic_test "$GDB" "${FULLPATH}/at-gdbtest-64" \
+				"$env(AT_DEST)/lib64" ]
+	if { $rc > 0 } { incr fail }
+
+	printit "Running 64 bit gdb python testcase"
+	set rc [ gdb_python_test "$GDB" "${FULLPATH}/at-gdbtest-64" \
+				 "$env(AT_DEST)/lib64" "$pytest" ]
+	if { $rc > 0 } { incr fail }
+	file delete -force ${FULLPATH}/at-gdbtest-64
+}
+exit $fail

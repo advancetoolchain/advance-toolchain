@@ -1,0 +1,67 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Check if AT provides urcu for ppc32 and pp64 for both static and shared
+# linking.
+#
+
+source ./shared.exp
+
+if { $env(AT_CROSS_BUILD) == "yes" } {
+	if { $env(AT_BUILD_ARCH) == "ppc64le" } {
+		set install_prefix "$env(AT_DEST)/$env(AT_BUILD_ARCH)/usr"
+	} else {
+		set install_prefix "$env(AT_DEST)/ppc/usr"
+	}
+} else {
+	set install_prefix $env(AT_DEST)
+}
+
+set CC [compiler_path]
+set CFLAGS "-O2 -Wall"
+set LIBS "-lurcu -lurcu-cds -pthread"
+
+set STATIC_PARMS32 "-DRCU_MB \
+	-Wl,--whole-archive,$install_prefix/lib/liburcu-mb.a,--no-whole-archive"
+set STATIC_PARMS64 "-DRCU_MB \
+	-Wl,--whole-archive,$install_prefix/lib64/liburcu-mb.a,--no-whole-archive"
+
+if { [array names env -exact "AT_LIBURCU_VER"] == "" } {
+	printit "WARNING: URCU is not configured in the config file."
+	printit "Skipping..."
+	exit $ENOSYS
+}
+
+set tmp_file [exec mktemp]
+
+if { $TARGET32 } {
+	printit "Testing 32 bit static linking..."
+	compile "${CC} -m32 -static ${CFLAGS} ${STATIC_PARMS32} ${LIBS} \
+		 $FULLPATH/test.c -o ${tmp_file}"
+	printit "Testing 32 bit dynamic linking..."
+	compile "${CC} -m32 ${CFLAGS} $FULLPATH/test.c ${LIBS} -o ${tmp_file}"
+	printit "Successfully built and linked against 32 bit libraries"
+}
+if { $TARGET64 } {
+	printit "Testing 64 bit static linking..."
+	compile "${CC} -m64 -static ${CFLAGS} ${STATIC_PARMS64} ${LIBS} \
+		 $FULLPATH/test.c -o ${tmp_file}"
+	printit "Testing 64 bit dynamic linking..."
+	compile "${CC} -m64 ${CFLAGS} $FULLPATH/test.c ${LIBS} -o ${tmp_file}"
+	printit "Successfully built and linked against 64 bit libraries"
+}
+
+exec rm -f ${tmp_file}

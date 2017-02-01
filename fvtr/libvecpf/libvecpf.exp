@@ -1,0 +1,72 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Check if AT provides libvecpf for ppc32 and pp64 for both static and shared
+# linking.
+#
+
+source ./shared.exp
+
+if { [array names env -exact "AT_LIBVECPF_VER"] == "" } {
+	printit "Skipping: libvecpf is not available on this build\t\[SUCCESS\]"
+	exit $ENOSYS
+}
+
+set at_dir $env(AT_DEST)
+set CC [compiler_path]
+set CFLAGS "-O2 -Wall -Wno-format"
+set rc 0
+
+set STATIC_LIBS "-lvecpf -lm"
+
+set tmp_file [exec mktemp]
+
+# To get the program to work with static linking, -Wl,-u,__libvecpf_init is needed
+if { $TARGET32 } {
+	printit "Testing 32 bit linking with vecpf..."
+	if [ compile "${CC} -m32 -maltivec -static ${CFLAGS} $FULLPATH/test.c -Wl,-u,__libvecpf_init $STATIC_LIBS -o ${tmp_file}" ] {
+		set rc 1
+	}  else {
+		printitcont "\t\t\t Statically linking 32bit libvecpf successful"
+	}
+	if [ compile "${CC} -m32 -maltivec ${CFLAGS} $FULLPATH/test.c -lvecpf -o ${tmp_file}" ] {
+                set rc 1
+        }  else {
+                printitcont "\t\t\t Dynamic linking 32bit libvecpf successful"
+        }
+}
+if { $TARGET64 } {
+	printit "Testing 64 bit linking with vecpf..."
+	if [ compile "${CC} -m64 -maltivec -static ${CFLAGS} $FULLPATH/test.c -Wl,-u,__libvecpf_init $STATIC_LIBS -o ${tmp_file}" ] {
+		set rc 1
+	} else {
+		printitcont "\t\t\t Statically linking 64bit libvecpf successful"
+	}
+	if [ compile "${CC} -m64 -maltivec ${CFLAGS} $FULLPATH/test.c -lvecpf -o ${tmp_file}" ] {
+        	set rc 1
+	} else {
+        	printitcont "\t\t\t Dynamic linking 64bit libvecpf successful"
+	}
+}
+	
+printit "Testing shared linking with vecpf..."
+
+if { $rc == 0 } {
+	printit "Linking libvecpf:\t\t\t\t\t\t\[SUCCESS\]"
+}
+
+file delete -force ${tmp_file}
+exit $rc

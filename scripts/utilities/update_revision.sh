@@ -1,0 +1,242 @@
+#!/bin/bash
+#
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# This script opens a config/source file, reads all available repositories
+# and change the ATSRC_PACKAGE_REV to the latest revision.
+# Afterwards it attempts to send the change for review, according to the
+# following rules:
+#  - If there isn't any pending change, then it submits a new commit.
+#  - If there's a pending change and its Code-Review or Verified label is set
+#  "-1", then it aborts.
+#  - If there's a pending change without "-1" label, then it submit a new
+#  commit but reuses the Change-Id. i.e. it updates the pending change with a
+#  new patch set.
+#
+# Remarks: This operation creates another file, so links are discarded to avoid
+# affecting previous releases.
+#
+# Usage:
+#    update_revision <config/package/source> <gerrit_server> <gerrit_port>
+
+# This script requires 1 parameter.
+if [[ ${#} -ne  3 ]]; then
+	echo "update_revision.sh expects 3 parameters.";
+	return 1;
+fi
+
+# TODO: adjust following variables.
+# Assume user access gerrit password-lessly
+GERRIT_USER=$(whoami)
+GERRIT_SERVER=${2}
+GERRIT_PORT=${3}
+
+source ${1};
+
+# If ATSRC_PACKAGE_CO is not defined, we skip the revision check.
+if ! [ -n "${ATSRC_PACKAGE_CO}" ] || ! [ -n "${ATSRC_PACKAGE_REV}" ]; then
+	return 0;
+fi
+
+# This function print a message with identation
+#
+# Parameters:
+#     $1 - identation level. Any interger number greater or equal to zero.
+#     $2 - the message.
+print_msg ()
+{
+	for ((i=0;i<${1};i++)); do
+		echo -n '-'
+	done
+	echo ${2}
+}
+
+# This function returns the latest revision from a git/svn repository
+#
+# Parameters:
+#    $1 - sources config path
+get_latest_revision ()
+{
+	if [[ ${#} -ne  1 ]]; then
+		echo "Function get_latest_revision expects 1 parameter.";
+		return 1;
+	fi
+
+	local isGit=$(echo ${1} | grep -c git:);
+	local hash="";
+
+	if [[ "${isGit}" == 1 ]]; then
+		hash=$(git ls-remote ${1} HEAD | cut -f1)
+		hash=$(git rev-parse --short=12 ${hash});
+	else
+		hash=$(svn info ${1} | grep Revision: | cut -d\  -f2);
+	fi
+
+	echo ${hash};
+}
+
+# This function checks Gerrit for an open change in the topic.
+# If so, it returns the change Id and review label.
+#
+# Parameters:
+#    $1 - the topic name
+# Returns:
+#    "<change_id> <review_status>", where
+#    Or empty string if no open change was found.
+get_topic_status ()
+{
+	local result=$(ssh -p ${GERRIT_PORT} ${GERRIT_USER}@${GERRIT_SERVER} \
+gerrit query status:open project:advance-toolchain topic:${1})
+
+	# If found a change the result starts with"change change_id"
+	if [[ ${result:0:6} = "change" ]]; then
+		change_id=$(echo $result | cut -d" " -f2)
+		result=$(gerrit_cmd query change:${change_id} label:-1)
+		if [[ ${result:0:6} = "change" ]]; then
+			# Review label is -1
+			echo "${change_id} -1"
+		else
+			# TODO: need to return the exact value?
+			echo "${change_id} 0"
+		fi
+	fi
+}
+
+# This function prepares a commit then send for review.
+#
+# Parameters:
+#    $1 - sources config path
+#    $2 - revision ID
+send_to_review ()
+{
+	print_msg 1 "Preparing commit to send for review."
+
+	# Check connection to gerrit
+	#
+	print_msg 2 "Checking connection to Gerrit."
+	ssh -p ${GERRIT_PORT} ${GERRIT_USER}@${GERRIT_SERVER} gerrit version \
+> /dev/null 2>&1
+	if [[ $? -ne 0 ]]; then
+		print_msg 0 "Cannot connect to gerrit server (${GERRIT_SERVER}) on \
+port ${GERRIT_PORT} with user \"${GERRIT_USER}\"."
+		return 1
+	fi
+	print_msg 0 "Connection can be established."
+
+	# Get AT config and package being updated.
+	# Expected a string like "<path-to-AT>/next/valgrind/source"
+	pkg=$(echo ${1} | awk -F "/" '{ print $(NF-1) }')
+	cfg=$(echo ${1} | awk -F "/" '{ print $(NF-3) }')
+	topic=auto-update_${cfg}_${pkg}
+
+	print_msg 2 "Checking for pending auto-update change in Gerrit"
+	# Check if there's a pending auto-update review
+	#  for the same AT configuration and package
+	local topic_status=($(get_topic_status ${topic}))
+	local change_id=${topic_status[0]}
+	if [[ ! -z "${change_id}" ]]; then
+		print_msg 0 "Found pending change with Id: ${change_id}"
+		if [[ "${topic_status[1]}" -eq -1 ]]; then
+			print_msg 0 "Change with review label -1. \
+Aborting the update.";
+			return 0
+		fi
+	else
+		print_msg 0 "Not found any pending change in topic: ${topic}."
+	fi
+
+	# Save current branch and switch to a work branch
+	#
+        current_branch=$(git rev-parse --abbrev-ref HEAD)
+	work_branch=${topic}
+        # -B option resets the branch if it already exist.
+        git checkout -B ${work_branch}
+
+	# Check gerrit's hook exists so that a change-id is generated
+	# Otherwise download the hook script
+	gitdir=$(git rev-parse --git-dir)
+	if [[ ! -f ${gitdir}/hooks/commit-msg ]]; then
+		scp -p -P ${GERRIT_PORT} ${GERRIT_USER}@${GERRIT_SERVER}:\
+hooks/commit-msg ${gitdir}/hooks/
+	fi
+
+        print_msg 2 "Generating a patch";
+        file=$(basename $(dirname ${1}))/$(basename ${1})
+
+        git add ${1}
+        local msg="Update ${pkg} on AT ${cfg}\n\
+Bump to revision ${2}\n\n"
+	if [[ ! -z "${change_id}" ]]; then
+		msg+="Change-Id: ${change_id}"
+		print_msg 0 "Reuse Change-Id of pending change on Gerrit"
+	else
+		print_msg 0 "Generate commit with a new Change-Id"
+	fi
+        echo -e ${msg} | git commit -F -
+
+	# Finally send to gerrit
+	# Use topic branch to keep track of changes
+	print_msg 2 "Sending commit to Gerrit"
+        git push ssh://${GERRIT_USER}@${GERRIT_SERVER}:${GERRIT_PORT}\
+/advance-toolchain HEAD:refs/for/master%topic=${topic}
+
+        # Switch back to original branch
+        git checkout ${current_branch}
+}
+
+# This function updates a revision.
+#
+# Parameters:
+#    $1 - sources config path
+#    $2 - revision ID
+update_revision ()
+{
+	if [[ ${#} -ne  2 ]]; then
+		echo "Function update_revision expects 2 parameter.";
+		return 1;
+	fi
+
+	# TODO: weak check - some revisions have less than 12 chars.
+	if [[ ${2} -eq ${ATSRC_PACKAGE_REV} ]]; then
+		print_msg 0 "Sources at latest revision already. Nothing to be done."
+		return 0;
+	fi
+
+	print_msg 1 "Updating ${1} to the latest revision.";
+	sed -e "s/ATSRC_PACKAGE_REV=.*/ATSRC_PACKAGE_REV=${2}/g" \
+		${1} > ${1}.temp
+	mv ${1}.temp ${1}
+
+	print_msg 0 "Update complete.";
+}
+
+for co in ${ATSRC_PACKAGE_CO}; do
+	# So far, we only update git/svn revision
+	repo=$(echo $co | grep -oE \(git\|svn\):[^\ ]+);
+
+	if [[ -n "${repo}" ]]; then
+		hash=$(get_latest_revision ${repo});
+
+		if [[ -n "${hash}" ]]; then
+			echo ""
+			print_msg 0 "The latest revision of ${repo} is ${hash}"
+			update_revision ${1} ${hash}
+			send_to_review ${1} ${hash}
+			break;
+		else
+			print_msg 0 "Unable to connect to ${repo}"
+		fi
+	fi
+done;

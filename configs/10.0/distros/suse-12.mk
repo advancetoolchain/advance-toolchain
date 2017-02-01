@@ -1,0 +1,1 @@
+../../9.0/distros/suse-12.mk

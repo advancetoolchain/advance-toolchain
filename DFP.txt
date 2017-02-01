@@ -1,0 +1,76 @@
+DFP usage notes:
+
+The Advance Toolchain currently provides Decimal Floating Point compiler
+and library support in a standalone toolchain.
+
+In order to be able to reference DFP defined symbols (including constants
+and functions) one's source code must define the following:
+
+#define __STDC_WANT_DEC_FP__ 1
+
+or build the source with the following define flag:
+-D__STDC_WANT_DEC_FP__=1
+
+GNU99 compatibility is required to pick up some DFP prototypes.  It will
+define __USE_ISOC99.  Use the following compilation flag:
+-std=gnu99
+
+NOTE: -std=gnu99 IS NOT THE SAME AS __USE_ISOC99 though -std=gnu99 DOES
+DEFINE __USE_ISOC99!
+
+NOTE: If you forget to use -std=gnu99 you may notice that you will get very
+screwy results when you call dfp math functions.  If the compiler can't
+find the prototypes (due to missing defines) it will attempt to create a
+default prototype which will have the incorrect return type.
+
+The following include files provide the constants and function prototypes
+provided by DFP but only when __STDC_WANT_DEC_FP__ is defined to '1'.
+
+	/* fe_dec_getround(), fe_dec_setround(), and rounding mode
+	 * enumeration types provided by an implicit #include
+	 * <bits/dfpfenv.h to pic.  */
+	#include <fenv.h>
+
+	/* All math function prototypes for d32/d64/d128, polymorphic
+	 * classification macros, comparison macros, and DEC_NAN and
+	 * DEC_INFINITY macros.  This includes an implicit #include
+	 * <bits/dfpcalls.h> to pick up new DFP only prototypes defined in
+	 * include/bits/dfpcalls.h.  */
+	#include <math.h>
+
+	/* Type dependent floating point macros for DFP support
+	 * traditionally defined in float.h.  */
+	#include <decfloat.h>
+
+The Decimal Floating Point IEEE types are as follows:
+
+	_Decimal32
+	_Decimal64
+	_Decimal128
+
+The printf format flags follow:
+
+	%H - for _Decimal32
+	%D - for _Decimal64
+	%DD - for _Decimal128
+
+The scanf format flags follow:
+
+	%DF - for _Decimal32
+	%DD - for _Decimal64
+	%DL - for _Decimal128
+
+The floating point suffix for DFP constants follows:
+
+	'DF' for _Decimal32, e.g. _Decimal32 d32 = 1.045DF;
+	'DD' for _Decimal64, e.g. _Decimal64 d64 = 1.4738273DD;
+	'DL' for _Decimal128, e.g. _Decimal128 d128 = 1.0823382394823945DL;
+
+NOTE: Assigning a naked constant to a DFP variable will actually be
+performing a binary to decimal conversion and, depending on the precision,
+can assign an incorrect number.  Always use the decimal floating point
+suffix!
+
+A compilation and link for a DFP program will look like the following:
+
+/opt/at05/bin/gcc test_dfp.c -o dfp -D__STDC_WANT_DEC_FP__=1 -std=gnu99 -ldfp

@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+#
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# GLIBC source package and build info
+# ===================================
+#
+
+ATSRC_PACKAGE_NAME="GNU C Library"
+ATSRC_PACKAGE_VER=2.25
+ATSRC_PACKAGE_REV=e6502dfb8894
+ATSRC_PACKAGE_LICENSE="LGPL 2.1"
+ATSRC_PACKAGE_DOCLINK="http://www.gnu.org/software/libc/manual/html_node/index.html"
+ATSRC_PACKAGE_RELFIXES=
+ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}-ibm"
+ATSRC_PACKAGE_PRE="test -d glibc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
+# git://git.linux.ibm.com/toolchain-mirrors/glibc.git is a mirror of the git://sourceware.org/git/glibc.git
+ATSRC_PACKAGE_CO=([0]="git clone git://git.linux.ibm.com/toolchain-mirrors/glibc.git" \
+		  [1]="git clone git://sourceware.org/git/glibc.git")
+ATSRC_PACKAGE_GIT="git checkout -b glibc-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}} ${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_POST="mv glibc glibc-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
+ATSRC_PACKAGE_SRC=${AT_BASE}/sources/glibc-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}
+ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/glibc
+ATSRC_PACKAGE_MAKE_CHECK=
+ATSRC_PACKAGE_PORTS=
+ATSRC_PACKAGE_DISTRIB=yes
+ATSRC_PACKAGE_BUNDLE=main_toolchain
+
+atsrc_get_patches ()
+{
+	# Patch that is applied to every ibm branch
+	# TODO: Apply this to the ibm branch after 2.23 is release and before
+	# AT 10.0 is released.
+	at_get_patch \
+		http://pokgsa.ibm.com/home/g/f/gftg/web/public/patches/glibc/0001-Remove-assert-if-DT_RUNPATH-and-DT_RPATH-flags-are-f.patch \
+		7b746cf156702fb7a566743f3f1966e2 || return ${?}
+
+	# Only enable TLE if:
+	#   * Supported by hardware
+	#   * Not a setuid program
+	#   * Environment contains GLIBC_ELISION_ENABLE=yes
+	at_get_patch \
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/26747dc0bfb0f8f30de9ebad78847a96d3191ba5/GLIBC%20PowerPC%20Backport/2.22/0001-powerpc-Conditionally-enable-TLE.patch \
+		801c05ea780220e8b4cf931af8c86946 || return ${?}
+}
+
+atsrc_apply_patches ()
+{
+	patch -p1 < 0001-Remove-assert-if-DT_RUNPATH-and-DT_RPATH-flags-are-f.patch || return ${?}
+
+	patch -p1 < 0001-powerpc-Conditionally-enable-TLE.patch || return ${?}
+
+	return 0
+}

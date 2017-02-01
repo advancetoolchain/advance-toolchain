@@ -1,0 +1,88 @@
+<li>POWER9 enablement.</li>
+<li>POWER8 Optimized scheduler.</li>
+<li>Requires at least POWER7 for ppc64 and POWER8 for ppc64le.</li>
+<li>POWER8 Transactional Memory enablement.</li>
+<li>POWER8 Crypto Operations enablement.</li>
+<li>POWER8 Fusion enablement.</li>
+<li>POWER8 optimized system libraries.</li>
+<li>GCC creates binaries using --mcpu=power8 --mtune=power9 by default on ppc64le.</li>
+<li>Support for <a href="http://golang.org/">Go Programming Language</a>.</li>
+<li>Support for split stack.</li>
+
+<h3>New features in 10.0-2</h3>
+<ul>
+	<li>The GNU C Library provides a POWER8 implementation for GET|SET_FLOAT_WORD.</li>
+	<li>Valgrind provides fix for <a href="https://bugs.kde.org/show_bug.cgi?id=372195">PowerPC xxsel instruction is not always recognized.</a>.</li>
+	<li>Golang provides performance improvements for memclr, memcmp, floor, ceil and trunc.</li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
+<h3>New features in 10.0-1</h3>
+<ul>
+	<li>POWER9 tuned libraries.</li>
+	<li>The GNU C Library provides:</li>
+	<ul>
+		<li>POWER9 implies fixed.</li>
+		<li>Fixes powerpc <a href="https://sourceware.org/ml/libc-alpha/2016-07/msg00574.html">ifunc-sel.h with GCC 6</a> and <a href="https://sourceware.org/ml/libc-alpha/2016-07/msg00588.html">ifunc-sel.h asm constraints and clobber list</a>.
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=16907">argp.h overwriting GCC keywords with macros</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=20452">objects in libc.a being overwritten in other static libraries</a>.</li>
+	</ul>
+	<li>Binutils provides:</li>
+	<ul>
+		<li>POWER9 support matching final ISA 3.0.</li>
+		<li>Fix for PowerPC64 ELFv1 undefined weak functions.</li>
+		<li>Fix <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=20472">PowerPC64 ifunc confusion</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=20531">powerpc apuinfo for spe parsed incorrectly</a>.</li>
+		<li>New gold option: -z stack-size.</li>
+	</ul>
+	<li>Boost provides 128 bytes of cache line for lockfree data structures.</li>
+	<li>OpenSSL provides fixes for <a href="https://www.openssl.org/news/secadv/20160926.txt">CVE-2016-6309 and CVE-2016-7052</a>.</li>
+	<li>Python fixes <a href="https://bugs.python.org/issue26171">CVE-2016-5636: heap overflow in zipimporter module</a>.</li>
+</ul>
+
+<h3>New features in 10.0-0</h3>
+<ul>
+	<li>Support for Ubuntu 16.04.</li>
+	<li>GCC provides fixes for complex IEEE 128-bit floating point and support for IEEE 128-bit floating point built-ins.</li>
+	<li>GCC creates binaries using --mcpu=power8 --mtune=power8 by default on ppc64le.</li>
+	<li>Valgrind provides a fix for <a href="https://bugs.kde.org/show_bug.cgi?id=362894">missing support for wbit field on mtfsfi instruction</a>.</li>
+	<li>Valgrind Itrace provides a new option to only start instruction tracing when a given function starts.</li>
+	<li>Cross-compiler packages are now signed.</li>
+	<li>OpenSSL provides <a href="https://www.openssl.org/news/secadv/20160503.txt">6 security advisories</a>.</li>
+</ul>
+
+<h3>New features in 9.0-3</h3>
+<ul>
+	<li>GCC provides:</li>
+	<ul>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=70131">PowerPC ISA 2.07 is inefficient at doint (float)(int)x</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=70168">wrong code generation in __sync_val_compare_and_swap on PowerPC</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=69548">libatomic fails to build with -Os on powerpc64-linux</a>.</li>
+		<li>Fix <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=69868">swap optimization on powerpc64le</a>.</li>
+		<li>IEEE 128-bit floating point support.</li>
+		<li>New constraint for ISA 3.0 (power9).</li>
+		<li>Fix for an <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=69461">ICE in lra_set_insn_recog_data</a>.</li>
+		<li>Fix <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67781">code generated on big-endian with -O1 -fexpensive-optimizations</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=68872">--mcpu=powerpc64le pass -mpower8 to gas</a>.</li>
+	</ul>
+	<li>The GNU C Library provides:</li>
+	<ul>
+		<li>Fix <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=18665">CVE-2015-7547: getaddrinfo() stack-based buffer overflow</a>.</li>
+		<li>Fix <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=18985">CVE-2015-8776: out of range data to strftime() causes a segfault</a>.</li>
+		<li>Fix <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=17905">CVE-2015-8779: Multiple unbounded stack allocations in catopen()</a>.</li>
+		<li>Fix <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=19879">CVE-2016-3075: Stack overflow in _nss_dns_getnetbyname_r</a>.</li>
+		<li>Fix <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=19257">resource leak in resolver</a>.</li>
+	</ul>
+	<li>Valgrind provides:</li>
+	<ul>
+		<li>Fix for 128-bit modulo and carry calculations.</li>
+		<li>Itrace options added to dump address information for each DSO loaded into a file.</li>
+	</ul>
+	<li>Boost provides mem_cache_block lockfree.</li>
+	<li>Support for lock elision on glibc.</li>
+	<li>Script provided to help enable lock elision at runtime.</li>
+	<li>OpenSSL provides fixes for <a href="http://openssl.org/news/secadv/20160128.txt">CVE-2016-0701 and CVE-2015-3197</a>.</li>
+	<li>TCMalloc fixes <a href="https://github.com/gperftools/gperftools/issues/786">an occasional deadlock on CEPH</a>.</li>
+</ul>

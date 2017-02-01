@@ -1,0 +1,563 @@
+#! /usr/bin/expect
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+source errno.exp
+
+# Message levels for logging
+set WARNING	0
+set ERROR	1
+
+#
+# Run a gnu compiler and check for known error patterns
+#
+# Arguments:
+#    cmd - a string with the complete command line (compiler and parameters)
+#
+proc compile {cmd} {
+	set gcc_err [catch {eval exec ${cmd}} gcc_info]
+
+	set matched_regexp [regexp " (\[^:\]+): No such file or directory" \
+				$gcc_info match \
+				missing]
+	if { $matched_regexp != 0 } {
+		fvtr_error "File $missing is missing"
+	}
+
+	set matched_regexp [regexp " skipping incompatible (\[^:\]+) when" \
+				$gcc_info match \
+				entire_path]
+	if { $matched_regexp != 0 } {
+		set path_file [file normalize $entire_path]
+		fvtr_error "The library in $path_file is incompatible, \
+consider revising if the build for 32-bit or 64-bit are using the correct \
+libraries."
+	}
+
+
+	if { $gcc_err != 0 } {
+		fvtr_error "Unrecognized error: $gcc_info"
+	}
+	return 0
+}
+
+# Check if a binary is dynamically linked to AT libs, when available.
+#
+# Parameters:
+#    bin - The binary to check
+#    important - Optional. A list of important libraries that the binary must
+#        be linked against.
+#
+proc check_lib_dependencies {bin {important {}}} {
+	global env
+	global ERROR
+
+	set at_dir $env(AT_DEST)
+
+	printit "Verifying $bin dynamic linking..."
+
+	# Recover the platform from auxv
+	set env(LD_SHOW_AUXV) 1
+	set auxv [ exec /bin/true ]
+	array unset env LD_SHOW_AUXV
+	regexp "AT_PLATFORM:\[\[:blank:\]\]+(\[^\\n\]+)" $auxv match platform
+	switch "${platform}" {
+		"power7+" {
+			# POWER7+ has the same instruction set of POWER7, so
+			# it doesn't make sense to build libraries specifically
+			# to POWER7+.  So, force them to use POWER7 libraries.
+			set platform "power7"
+		}
+	}
+
+	regexp "ELF (\[\[:digit:\]\]+)\-bit" [exec file -b -L $bin] match \
+		wordsize
+	if { $wordsize == 32 } {
+		set lib_dir $at_dir/lib
+	} elseif { $wordsize == 64 } {
+		set lib_dir $at_dir/lib64
+	} else {
+		fvtr_error "Can't recognize ${bin} word size: \"${wordsize}\"."
+	}
+
+	set at_libs [ exec find $lib_dir -type f -name '*.so*' ]
+	if {[catch "exec ${at_dir}/bin/ldd $bin" link_info]} {
+		printit "Failed to ldd $bin: $link_info" $ERROR
+		return 1
+	}
+
+	set lib_info [ split $link_info "\n" ]
+
+	# Ignore statically linked files
+	if {[string first "statically linked" $link_info] >= 0} {
+		printit "$bin is statically linked."
+		return 0
+	}
+
+	# Parses each line from ldd separately
+	foreach line $lib_info {
+		set match {}
+		set lib {}
+
+		# ldd normally returns 4 types of lines:
+		#    libx.so => (0x000000000000)
+		#    libx.so => /path/to/libx.so (0x000000000000)
+		#    /path/to/libx.so (0x000000000000)
+		#    libx.so => not found
+
+		# Regular expression for lib name
+		set lib_re "(\[^/\]+).so"
+
+		# Regular expression for ?????(0x???????)
+		set hex_re "\[^\\(\]*\\(0x\[^\\)\]+\\)"
+		set blank "\[\[:blank:\]\]"
+		set assign_re "${blank}+=>${blank}+"
+
+		# Regular expression for system's linked lib
+		#	Could be of type 1 or type 2
+		set system_re "${blank}*${lib_re}.*${assign_re}${hex_re}"
+
+		# Matches the fourth type of line
+		set x [regexp "${blank}+${lib_re}.*not found" $line \
+			   match lib]
+		if { $x != 0 } {
+			# Ignore libselinux
+			if { ${lib} != "libselinux" } {
+				printit "Library ${lib} is missing." $ERROR
+				return 1
+			} else {
+				continue;
+			}
+		}
+
+		# Look for libraries not linked to AT
+		set x [regexp "${blank}+${at_dir}.*/${lib_re}" $line \
+			   match lib]
+		if { $x == 0 } {
+			# Jump if this is the vdso
+			if {[regexp "${blank}+${lib_re}" $line match \
+				 lib2]} {
+				if {[string first "linux-vdso" $lib2] >= 0} {
+					continue
+				}
+			}
+			# Matches system's linked libs
+			set x [regexp $system_re $line match lib]
+			if { $x == 0 } {
+				fvtr_error "Unrecognized pattern from ldd:\
+$line"
+			}
+
+			# Verify if AT provides this lib
+			if { [regexp "${lib}\.so" $at_libs] == 1 } {
+				printit "$bin should use $lib from the AT." \
+				    $ERROR
+				return 1
+			}
+		} else {
+			# Lib already linked to AT
+
+			# Look if it's an important lib
+			set lib_index [lsearch $important $lib]
+			if { $lib_index >= 0 } {
+				set important [lreplace $important $lib_index \
+						   $lib_index]
+			}
+
+			# Check if it is not an optimized lib
+			set x [ regexp "$platform" $match ]
+			if { $x == 0 } {
+				# Check if there is an optimized version
+				set plib [regsub -all "\\\+" ${lib} "\\\+"]
+				set x [regexp \
+					   "${platform}/\[^\\n\]*${plib}\.so" \
+					   $at_libs]
+				if { $x == 1 } {
+					printit "$bin isn't using the\
+$platform optimized version of $lib" $ERROR
+					return 1
+				}
+			}
+		}
+	}
+
+	if { [llength $important] > 0 } {
+		printit \
+		    "Could not find the following AT libraries: $important" \
+		    $ERROR
+		return 1
+	}
+
+	printit "$bin is correctly linked."
+	return 0
+}
+
+
+#
+# Return a list of paths of all XL that were installed in the default directory
+# and that the version is supported by AT.
+#
+proc get_xlc_paths {} {
+	# Mininum xlc version that supports AT is 10.1.
+	set min_major 10
+	set min_minor 1
+
+	# Starting from xlC 13.1, the binaries are stored in /opt/ibm instead
+	# of /opt/ibmcmp.
+	set np_major 13
+	set np_minor 1
+
+	set dirs {}
+	foreach base_xl_d {"/opt/ibm" "/opt/ibmcmp"} {
+		foreach compiler {vac xlc xlC} {
+			set dir ${base_xl_d}/${compiler}
+			if { ! [catch "glob -type d -directory ${dir} *" \
+				      ver_list] } {
+				lappend dirs ${ver_list}
+			}
+		}
+	}
+
+	set ret {}
+
+	foreach dir ${dirs} {
+		set major ""
+		set minor ""
+
+		regexp -line ".*/(\[0-9\]+)\.(\[0-9\])" ${dir} match \
+		       major minor
+
+		# Ignore this entry if it has runtime and binaries installed
+		# in different prefixes.
+		if { [string first "/opt/ibmcmp/" $dir] >= 0 \
+		     && (${major} > ${np_major} \
+			 || (${major} == ${np_major} \
+			     && ${minor} >= ${np_minor})) } {
+			continue
+		}
+
+		# Ignore this entry if it doesn't support AT.
+		if { ${major} > ${min_major} \
+		     || (${major} == ${min_major} \
+			 && ${minor} >= ${min_minor}) } {
+			lappend ret ${dir}
+		}
+	}
+
+	return ${ret}
+}
+
+
+#
+# Return a list of paths of all XL that were installed in the default directory
+# and that the version is supported by AT.
+#
+proc get_xlf_paths {} {
+	# Mininum xlf version that supports AT is 10.1.
+	set min_major 10
+	set min_minor 1
+
+	# Starting from xlf 15.1, the binaries are stored in /opt/ibm instead
+	# of /opt/ibmcmp.
+	set np_major 15
+	set np_minor 1
+
+	set dirs {}
+	foreach base_xl_d {"/opt/ibm" "/opt/ibmcmp"} {
+		foreach compiler {xlf xlf90} {
+			set dir ${base_xl_d}/${compiler}
+			if { ! [catch "glob -type d -directory ${dir} *" \
+				      ver_list] } {
+				lappend dirs ${ver_list}
+			}
+		}
+	}
+
+	set ret {}
+
+	foreach dir ${dirs} {
+		set major ""
+		set minor ""
+
+		regexp -line ".*/(\[0-9\]+)\.(\[0-9\])" ${dir} match \
+		       major minor
+
+		# Ignore this entry if it has runtime and binaries installed
+		# in different prefixes.
+		if { [string first "/opt/ibmcmp/" $dir] >= 0 \
+		     && (${major} > ${np_major} \
+			 || (${major} == ${np_major} \
+			     && ${minor} >= ${np_minor})) } {
+			continue
+		}
+
+		# Ignore this entry if it doesn't support AT.
+		if { ${major} > ${min_major} \
+		     || (${major} == ${min_major} \
+			 && ${minor} >= ${min_minor}) } {
+			lappend ret ${dir}
+		}
+	}
+
+	return ${ret}
+}
+
+
+#
+# Update channel position.  This is necessary when a file is updated by
+# multiple programs.  Tcl isn't able to update the current end of the file
+# and needs some help.
+#
+proc update_output_pos {} {
+	if { $::DIRECTOUTPUT != "stdout" } {
+		seek $::OUTPUT 0 end
+	}
+}
+
+#
+# Outputs a line to a file or console and prepends the current platform
+# and the current test case to the output
+#
+proc printit [list msg [list level $WARNING]] {
+	global OUTPUT
+	global PLATFORM
+	global CURTEST
+
+	global WARNING
+	global ERROR
+
+	switch ${level} {
+		$ERROR {
+			set hdr "Error:"
+		} \
+		default {
+			set hdr ""
+		}
+	}
+
+	update_output_pos
+	puts $OUTPUT "$CURTEST: $PLATFORM: ${hdr} $msg"
+}
+
+proc printitnonewline { msg } {
+	global OUTPUT
+	global PLATFORM
+	global CURTEST
+
+	update_output_pos
+	puts -nonewline $OUTPUT "$CURTEST: $PLATFORM: $msg"
+}
+
+proc printitcont { msg } {
+	global OUTPUT
+
+	update_output_pos
+	puts $OUTPUT "$msg"
+}
+
+proc fvtr_error { msg } {
+	global ERROR
+	printit "$msg" $ERROR
+	exit 1
+}
+
+# Return compiler path
+proc compiler_path { {compiler gcc} } {
+	global env env
+	if { $env(AT_CROSS_BUILD) == "yes" } {
+		set path $env(AT_DEST)/bin/$env(AT_TARGET)-${compiler}
+	} else {
+		set path $env(AT_DEST)/bin/${compiler}
+	}
+
+	return ${path}
+}
+
+#
+# Taking as input an ELF obj, determine if it was built for LE.
+# Returns 0 if it has the LE flags set when using readelf -h
+#
+proc built_for_le {obj} {
+	global env env
+	set at_dir $env(AT_DEST)
+	if { $env(AT_CROSS_BUILD) == "yes" } {
+		set readelf_exe $env(AT_DEST)/bin/$env(AT_TARGET)-readelf
+	} else {
+		set readelf_exe $env(AT_DEST)/bin/readelf
+	}
+
+	set obj_err \
+	    [catch {eval \
+			exec \
+			"$readelf_exe -h ${obj} | grep Flags | grep 0x2"} \
+		 elf_flags]
+
+	if { $obj_err != 0 } {
+		printit "readelf failed: ${obj_err} flags: ${elf_flags}"
+		return 1
+	} else {
+		if { $elf_flags == "" } {
+			printit "${obj} is NOT LE"
+			return 1
+		} else {
+			return 0
+		}
+	}
+}
+
+proc append_at_internal {name} {
+	if { $::env(AT_INTERNAL) != "none" } {
+		append name "-$::env(AT_INTERNAL)"
+	}
+
+	return ${name}
+}
+
+# Collect the distro version in which it's being run.
+proc get_distro {} {
+	set distro ""
+	if {[catch {exec lsb_release -i | cut -d: -f 2 | sed "s/^\[ \t\]*//" \
+		         | tr \[:upper:\] \[:lower:\]} distro]} {
+		printit "lsb_release command failed."
+		fvtr_error "Unable to find the distribution."
+	}
+
+	return ${distro}
+}
+
+proc get_packaging_system {} {
+	set system ""
+
+	set distro [get_distro]
+	# Ubuntu and Debian use DEB packages the others use RPM.
+	switch -regexp ${distro} {
+		"ubuntu|debian" {
+			set system deb
+			# Verify if the dpkg command is working.
+			if {[catch {exec dpkg --version | grep -E "Debian"} \
+					 exists]} {
+				printit "DEB command failed."
+				fvtr_error "Unable to find packages."
+			}
+		}
+		default {
+			set system rpm
+			if {[catch {exec rpm --version | grep -E "RPM"} \
+					 exists]} {
+				printit "RPM command failed."
+				fvtr_error "Unable to find packages."
+			}
+		}
+	}
+
+	return ${system}
+}
+
+proc get_packages_list { system } {
+	set at_ver_rev $::env(AT_MAJOR_VERSION)-$::env(AT_REVISION_NUMBER)
+	printit "Using AT version: ${at_ver_rev}"
+	# Example of $pkg_name: at7.0-rc2
+	set pkg_name [append_at_internal \
+			    "$::env(AT_NAME)$::env(AT_MAJOR_VERSION)"]
+
+	# Get the list of packages.
+	set packages ""
+	# Verifying if is running the test suite on a compatible mode with the
+	# build system.
+	if {[info exists ::env(AT_WD)]} {
+		if { ${system} == "deb" } {
+			set deb_path $::env(AT_WD)/debs/
+			catch {exec ls $deb_path | grep -E "${pkg_name}"} \
+			packages
+		} else {
+			set rpm_path $::env(AT_WD)/rpms/$::env(AT_HOST_ARCH)/
+			catch {exec ls $rpm_path | grep -E "${pkg_name}"} \
+			packages
+		}
+	} else {
+		if { ${system} == "deb" } {
+			set at_ver_rev [append_at_internal ${at_ver_rev}]
+
+			if { [catch {exec dpkg --list | grep -E "${pkg_name}" \
+			      | grep -E " ${at_ver_rev} " | \
+			      awk "{print \$2}"} \
+			packages] } {
+				fvtr_error "Unable to find packages for \
+${pkg_name}."
+			}
+		} else {
+			# Force RPM output format, because it may vary between
+			# versions.
+			if { $::env(AT_INTERNAL) != "none" } {
+				# When there is an internal version then the package
+				# name string is sufficient to uniquely identify it
+				if { [catch {exec rpm -qa \
+					--qf "%{NAME}-%{VERSION}-%{RELEASE}.%{ARCH}\n" | \
+					grep "${pkg_name}" | \
+					grep -- "-${at_ver_rev}\."} \
+				packages] } {
+					fvtr_error "Unable to find packages for \
+${pkg_name}."
+				}
+			} else {
+				# If there is no internal version then be sure to exclude
+				# package names that contain internal version strings like
+				# rc, alpha, beta when grepping.
+				if { [catch {exec rpm -qa \
+					--qf "%{NAME}-%{VERSION}-%{RELEASE}.%{ARCH}\n" | \
+					grep "${pkg_name}" | \
+					grep -- "-${at_ver_rev}\." | \
+					grep -vE "(-rc|-alpha|-beta)"} \
+				packages] } {
+					fvtr_error "Unable to find packages for \
+${pkg_name}."
+					}
+			}
+		}
+	}
+
+	return ${packages}
+}
+
+# Variables used in most testcases
+set FULLPATH [pwd]
+set CURTEST [lindex $argv 0]
+append FULLPATH "/" $CURTEST
+set PLATFORM [lindex $argv 2]
+set DIRECTOUTPUT [lindex $argv 1]
+set BLD_ARCH_PPC [string match "ppc" $env(AT_BUILD_ARCH)]
+set BLD_ARCH_PPC64 [string match "ppc64" $env(AT_BUILD_ARCH)]
+set BLD_ARCH_PPC64LE [string match "ppc64le" $env(AT_BUILD_ARCH)]
+set TARGET32 [ expr $BLD_ARCH_PPC || $BLD_ARCH_PPC64 ]
+set TARGET64 [ expr $BLD_ARCH_PPC64 || $BLD_ARCH_PPC64LE ]
+set BLD_HOST_PPC [string match "ppc" $env(AT_HOST_ARCH)]
+set BLD_HOST_PPC64 [string match "ppc64" $env(AT_HOST_ARCH)]
+set BLD_HOST_PPC64LE [string match "ppc64le" $env(AT_HOST_ARCH)]
+set BLD_HOST_X86_64 [string match "x86_64" $env(AT_HOST_ARCH)]
+set BLD_HOST_I686 [string match "i686" $env(AT_HOST_ARCH)]
+set HOST32 [ expr $BLD_HOST_PPC || $BLD_HOST_I686 ]
+set HOST64 [ expr $BLD_HOST_PPC64 || $BLD_HOST_PPC64LE || $BLD_HOST_X86_64 ]
+
+if { $DIRECTOUTPUT != "stdout" } {
+	set OUTPUT [open $FULLPATH/$DIRECTOUTPUT "a+"]
+	# Don't send spawned processes' output to the user
+	log_user 0
+	# Save them to $OUTPUT
+	log_file -a $FULLPATH/$DIRECTOUTPUT
+} else {
+	set OUTPUT $DIRECTOUTPUT
+}
+
+printit "Start logging..."

@@ -1,0 +1,1 @@
+../../../../configs/6.0/packages/glibc/glibc.mk

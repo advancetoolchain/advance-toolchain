@@ -1,0 +1,273 @@
+#!/usr/bin/expect
+#
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# This script is executed from inside a chroot jail
+# You can run it on a normal system, but it may change your yum/zypper
+# environment. In this case, run it with --manual
+#
+# It expects a chroot with SPEC CPU environment already loaded and
+# XLC installed.
+# As we want a clean install of the OS, it should never install more than 1
+# AT version.
+#
+
+set AT_VER_re "(\[^\\-\]*)-(\[^\\-\]*)-?(.*)"
+set AT_MAJOR_re "(\[^\\.\]*)\.(\[^\\.\]*)"
+set SPEC_DIR "/root/cpu2006"
+
+proc print_usage {} {
+	global argv0
+	puts "Usage: $argv0 \[--manual\] \[gpg_key\] repository at_version"
+	puts "\t--manual\tDownload files manually using wget instead of"
+	puts "\t\t\tzypper/yum. Use this when the repository isn't a proper"
+	puts "\t\t\tyum/zypper repository."
+	puts "\tgpg_key\t\tThe gpg key of the yum/zypper repository."
+	puts ""
+	puts "Example:"
+	puts "$argv0 gpg-pubkey-00f50ac5-45e497dc ftp://example.com/at/RHEL5/ 4.0-5"
+}
+
+if { $argc < 2 || $argc > 4 } {
+	print_usage
+	exit 1
+}
+
+set repo [lindex $argv end-1]
+set at_version [lindex $argv end]
+set manual 0;			# Default disable
+set gpg_key ""
+
+# Set the environment for the SPEC CPU
+set env(SPECPERLLIB) "${SPEC_DIR}/bin:${SPEC_DIR}/bin/lib"
+set env(SPEC) "${SPEC_DIR}"
+set env(PATH) "${SPEC_DIR}/bin:$env(PATH)"
+
+cd /root/
+
+foreach param [lrange $argv 0 end-2] {
+	switch -exact $param {
+		"--manual" {
+			set manual 1
+		}
+		default {
+			set gpg_key $param
+		}
+	}
+}
+
+# Check if AT is already installed and abort
+if { ![catch {exec rpm -qa | grep advance-toolchain} at_list] } {
+	puts stderr "The following advance-toolchain packages are already installed:"
+	puts stderr $at_list
+	puts stderr "Check if you have a clean chroot install."
+	exit 1
+}
+
+# Check processor type
+set machine [exec uname -m]
+set cross [regexp "x86" $machine]
+
+# Extract AT major version
+if { ![regexp "$AT_VER_re" $at_version match at_major at_rev at_int] } {
+	puts stderr "Failed to recognize version $at_version."
+	exit 1
+}
+
+# Extract AT major numbers a.b, i.e: 5.0 -> a=5, b=0
+if { ![regexp $AT_MAJOR_re $at_major match at_major_a at_major_b] } {
+	puts stderr "Failed to recognize AT major version $at_major."
+	exit 1
+}
+
+if {$cross} {
+	set s_pkg_list cross
+	set suffix ".i686.rpm"
+} else {
+	set s_pkg_list {devel runtime perf}
+	# mcore-libs was included in versions 5.0-4 and 6.0-0
+	if { $at_major_a >= 6 ||
+	     [expr $at_major_a == 5 && $at_major_b >= 0 && $at_rev >= 4]} {
+		set s_pkg_list [lappend s_pkg_list mcore-libs]
+	}
+	set suffix ".ppc64.rpm"
+}
+
+# Check if we're in a yum or zypper system
+set has_yum [expr ![catch {exec which yum}]]
+
+# List of package names
+set pkg_list {}
+
+# List of files
+set file_list {}
+
+
+# Check if the source code contains blocked programs and if the source tarball
+# is valid
+puts "Checking the source code..."
+set blocked_list [list openssl]
+set src_list [list binutils gcc gdb glibc gmp tbb libdfp libhugetlbfs \
+		   kernel mpc mpfr oprofile paflib userspace-rcu valgrind]
+# From AT >= 6.0-0 only packages that require a public source code are provided
+# Block all the others.
+if {$at_major_a >= 6} {
+	lappend blocked_list amino boost expat libauxv libsphde \
+	    python tcmalloc zlib
+}
+# Started distributing libvecpf on AT 7.0-4
+if {${at_major_a} > 7 ||
+    [expr ${at_major_a} == 7 && ${at_major_b} > 0] ||
+    [expr ${at_major_a} == 7 && ${at_major_b} == 0 && ${at_rev} >= 4]} {
+	lappend src_list libvecpf
+}
+
+set src_name "advance-toolchain-at${at_major}"
+if { $at_int != "" } {
+	append src_name "-${at_int}"
+}
+append src_name "-src-${at_major}-${at_rev}.tgz"
+
+exec -ignorestderr wget -q ${repo}/at${at_major}/${src_name} \
+		    -O $src_name >@stdout 2>@stderr
+set file_list ""
+if {[catch {exec tar -tzf $src_name} file_list] || $file_list == ""} {
+	puts "src-explosion\t\tfailed"
+	puts stderr "Is the source file corrupted?"
+	exit 1
+}
+set cmp_list {}
+set src_error 0
+foreach f $file_list {
+	set cmp_name [split "$f" "/"]
+	set cmp [lindex $cmp_name 0]
+
+	# Create the list of package components found
+	if {[lsearch $cmp_list "${cmp}"] < 0} {
+		puts "  found ${cmp}"
+		lappend cmp_list $cmp
+
+		# If the package is in the blocked list, then that is
+		# an error
+		if {[lsearch $blocked_list "${cmp}"] >= 0} {
+			puts "Package: ${cmp} should not be included"
+			set src_error 1
+		} else {
+
+			# If the package is in the src rpm but not in the
+			# expected list then the test needs updating
+			if {[lsearch $src_list "${cmp}"] < 0} {
+				puts "Package: ${cmp} not found in expected list"
+				set src_error 1
+			}
+		}
+	}
+}
+set src_found 0
+# check that all the expected source is present in the tarball
+foreach expected_src $src_list {
+	if {[lsearch $cmp_list "${expected_src}"] < 0} {
+		puts "Missing from src rpm: ${expected_src}"
+		set src_error 1
+	}
+}
+if {$src_error > 0} {
+	puts "src-tarball\t\t failed"
+} else {
+	puts "src-tarball\t\tpassed"
+}
+
+# Remove the source tarball
+file delete $src_name
+
+set file_list ""
+
+# Create a list of new versions
+foreach pkg $s_pkg_list {
+	set pkg_name "advance-toolchain-at${at_major}"
+	if {$at_int != ""} {
+		append pkg_name "-${at_int}"
+	}
+
+	append pkg_name "-${pkg}-${at_major}-${at_rev}"
+	set pkg_list [lappend pkg_list $pkg_name]
+	set pkg_file "${pkg_name}${suffix}"
+	set file_list [lappend file_list $pkg_file]
+
+	# Download files manually
+	if {$manual} {
+		puts "Downloading ${pkg_file}..."
+		exec -ignorestderr wget -q ${repo}/at${at_major}/$pkg_file \
+		    -O $pkg_file >@stdout 2>@stderr
+	}
+}
+
+# Install
+if {$manual} {
+	puts "Installing packages: $file_list..."
+	eval exec -ignorestderr rpm --quiet -i $file_list >@stdout 2>@stderr
+} else {
+	if {$has_yum} {
+		set config [open /etc/yum.repos.d/advance-toolchain.repo w]
+		puts $config "# Begin of configuration file"
+		puts $config "\[Advance-Toolchain\]"
+		puts $config "name=Advance Toolchain UIUC/NSCA FTP"
+		puts $config "baseurl=${repo}"
+		puts $config "failovermethod=priority"
+		puts $config "enabled=1"
+		if { $gpg_key != "" } {
+			puts $config "gpgcheck=1";
+			puts $config "gpgkey=${repo}/${gpg_key}"
+		}
+		puts $config "# End of configuration file"
+		close $config
+
+		puts "Installing packages: $pkg_list"
+		eval exec yum -q -y install $pkg_list >@stdout 2>@stderr
+	} else {
+		exec zypper -n addrepo $repo "Advance Toolchain" >@stdout \
+		    2>@stderr
+		puts "Installing packages: $pkg_list"
+		eval exec zypper -n -q --gpg-auto-import-keys install \
+		    $pkg_list >@stdout 2>@stderr
+	}
+}
+
+# Run the tests.
+puts "Testing Advance Toolchain ${at_version}..."
+set saved_dir [pwd]
+if {[catch {cd ./fvtr} errmsg]} {
+	# This shouldn't happen. Something is really wrong here.
+	# Get information
+	puts "Current directory: [pwd]"
+	puts "Available directories: [glob -type d *]"
+	# Force Tcl failure
+	error ${errmsg}
+}
+if { [catch {exec ./fvtr.sh -f ./at-config >@stdout 2>@stderr}] } {
+	puts "Failed to run the FVTR"
+}
+cd $saved_dir
+
+# Uninstall
+puts "Uninstalling packages: $pkg_list"
+eval exec -ignorestderr rpm --quiet -e $pkg_list >@stdout 2>@stderr
+
+# Remove files
+if {$manual} {
+	puts "Removing $file_list"
+	file delete $file_list
+}
