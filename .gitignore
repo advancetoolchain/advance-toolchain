@@ -1,0 +1,4 @@
+*.included
+*.tgz
+*.tar.bz2
+commit.info
