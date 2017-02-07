@@ -42,6 +42,9 @@ function usage () {
 	echo "       tests -  a list of tests to run (optional).  It is going"
 	echo "                to run all tests by default."
 	echo "       Example: fvtr -f ~/advance-toolchain/config.at5.0.sles10 "
+	echo ""
+	echo "   or: fvtr report"
+	echo "       the report subcommand outputs the logs of failed tests"
 	exit 0
 }
 
@@ -59,6 +62,32 @@ runall()
 		TESTS2RUN=$TESTS2RUN" "$temp
 	done
 }
+
+if [[ ${1} = "report" ]];
+then
+	if [ ! -e "report.log" ];
+	then
+		echo "Error: no logs for previous tests were found."
+		exit 1
+	fi
+
+	logname=$(awk 'NR==1' report.log)
+	while read line
+	do
+		testname=$(awk '{print $1}' <<< "$line")
+
+		# Here we generate enough '*' so that "Log file content"
+		# lines have the same length, for readability purposes
+		bar=$(printf "%0.s*" $(seq $((22-${#testname}))))
+
+		echo "*** Log file content (./$testname/$logname): $bar"
+		echo "------------------------------------------------------------------"
+		cat "./$testname/$logname"
+		echo ""
+	done <<< "$(tail --lines=+2 report.log)"
+
+	exit 0
+fi
 
 # We need at least the config file.
 if [[ ${#} -lt 1 ]]; then
@@ -134,6 +163,17 @@ then
 	then
 		rm "$DIRECTOUTPUT"
 	fi
+
+	if [ -e "report.log" ]
+	then
+		rm "report.log"
+	fi
+
+	# In case logs are being generated for each test,
+	# we create a file to save results of all tests,
+	# so fvtr.sh can know, when it is later called,
+	# which tests failed
+	echo "$DIRECTOUTPUT" >> report.log
 else
 	DIRECTOUTPUT="stdout"
 fi
@@ -199,6 +239,12 @@ do
 				*)
 					echo -e "\tfailed"
 					total_failed=$(expr ${total_failed} + 1)
+
+					if [[ $LOUD = "OFF" ]];
+					then
+						echo -e "$i\tfailed" >> report.log
+					fi
+
 					ret=1 ;;
 			esac
 		else
