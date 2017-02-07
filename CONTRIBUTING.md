@@ -50,13 +50,18 @@ using your real name (sorry, no pseudonyms or anonymous contributions.)
 
 2. Fork the repo.
 
-3. Make the changes and run the testcases. We only take pull requests with
-passing tests.
+3. Make sure you follow the [GNU Coding Standards](https://www.gnu.org/prep/standards/standards.html)
+>Exceptions:
+>	* Shell scripts are indented with 1 tab.
 
-4. If it is applicable, improve or add the current testcases to cover for the
-new functionality.
+4. Make the changes and run the testcases (FVTR). We only take pull requests
+with passing tests. To run the testcases use 'make test' with the same build
+options.
 
-5. Push to your fork and submit a pull request.
+5. If it is applicable, improve or add the current testcases on FVTR to cover
+for the new functionality.
 
-After 5. the pull request will be reviewed and checked.  We may suggest some
+6. Push to your fork and submit a pull request.
+
+After 6. the pull request will be reviewed and checked.  We may suggest some
 changes or improvements or alternatives.
