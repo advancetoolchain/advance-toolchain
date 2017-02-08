@@ -47,6 +47,6 @@
 #                       further restricted by distro specific settings)
 AT_NAME := at
 AT_MAJOR_VERSION := 8.0
-AT_REVISION_NUMBER := 7
-AT_INTERNAL := none
+AT_REVISION_NUMBER := 8
+AT_INTERNAL := alpha
 AT_PREVIOUS_VERSION := 7.0
