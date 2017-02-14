@@ -41,7 +41,7 @@ ATSRC_PACKAGE_BUNDLE=toolchain_extra
 atsrc_get_patches ()
 {
 	at_get_patch \
-		https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/Python%20Fixes/python-3.5.3-getlib64s1.patch \
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/4d47330cf1a7fe6eef11760a6e27ad6c51a005dd/Python%20Fixes/python-3.5.3-getlib64s1.patch \
 		8b45a6457ad1babfb98af0c75f179cda || return ${?}
 	at_get_patch \
 		https://raw.githubusercontent.com/powertechpreview/powertechpreview/26747dc0bfb0f8f30de9ebad78847a96d3191ba5/Python%20Fixes/python-3.5.1-fix_stack_overflow.patch \
