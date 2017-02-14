@@ -27,9 +27,9 @@ ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_NAMESUFFIX="with Java Support"
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
 ATSRC_PACKAGE_PRE="test -d oprofile-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
-ATSRC_PACKAGE_CO=([0]="git archive --prefix=oprofile-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}/ --remote=git://git.code.sf.net/p/oprofile/oprofile ${ATSRC_PACKAGE_REV} > oprofile-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}.tar")
-ATSRC_PACKAGE_GIT=
-ATSRC_PACKAGE_POST="tar -xf oprofile-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}.tar"
+ATSRC_PACKAGE_CO=([0]="git clone git://git.code.sf.net/p/oprofile/oprofile oprofile")
+ATSRC_PACKAGE_GIT="git checkout -b oprofile-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}} ${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_POST="mv oprofile oprofile-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
 ATSRC_PACKAGE_SRC="${AT_BASE}/sources/oprofile-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
 ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/oprofile
 ATSRC_PACKAGE_ALOC='https://github.com/powertechpreview/powertechpreview/raw/master/Oprofile%20Patches/oprofile-0.9.8-qt-disable.tar.gz'
