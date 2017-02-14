@@ -20,9 +20,9 @@
 #
 
 ATSRC_PACKAGE_NAME="Python"
-ATSRC_PACKAGE_VER=3.5.1
+ATSRC_PACKAGE_VER=3.5.3
 ATSRC_PACKAGE_LICENSE="Python Software Foundation License 2"
-ATSRC_PACKAGE_DOCLINK="http://docs.python.org/release/3.4/"
+ATSRC_PACKAGE_DOCLINK="https://docs.python.org/3.5/"
 ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
 ATSRC_PACKAGE_PRE="test -d Python-${ATSRC_PACKAGE_VER}"
@@ -41,24 +41,17 @@ ATSRC_PACKAGE_BUNDLE=toolchain_extra
 atsrc_get_patches ()
 {
 	at_get_patch \
-		https://raw.githubusercontent.com/powertechpreview/powertechpreview/26747dc0bfb0f8f30de9ebad78847a96d3191ba5/Python%20Fixes/python-3.5.1-getlib64s1.patch \
-		15ffa7f1c39763b7bf3cca0fd70bf421 || return ${?}
-
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/Python%20Fixes/python-3.5.3-getlib64s1.patch \
+		8b45a6457ad1babfb98af0c75f179cda || return ${?}
 	at_get_patch \
 		https://raw.githubusercontent.com/powertechpreview/powertechpreview/26747dc0bfb0f8f30de9ebad78847a96d3191ba5/Python%20Fixes/python-3.5.1-fix_stack_overflow.patch \
 		5238ce9ddef9e3b2b4084f38dc4a5e45 || return ${?}
-
-	at_get_patch_and_trim \
-		https://hg.python.org/cpython/raw-rev/10dad6da1b28 \
-		python-3.5.1-fix_integer_overflow.patch 37 \
-		d88bc498669a73f70b9aaa18307485c8 || return ${?}
 }
 
 atsrc_apply_patches ()
 {
-	patch -p1 < python-3.5.1-getlib64s1.patch || return ${?}
+	patch -p1 < python-3.5.3-getlib64s1.patch || return ${?}
 	patch -p1 < python-3.5.1-fix_stack_overflow.patch || return ${?}
-	patch -p1 < python-3.5.1-fix_integer_overflow.patch || return ${?}
 }
 
 atsrc_package_verify_make_log ()
