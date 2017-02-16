@@ -35,6 +35,8 @@ CONFIGFILE=""
 
 function usage () {
 	echo "Usage: fvtr [-fl] <configfile> [test1 test2 ...]"
+	echo "       fvtr report"
+	echo ""
 	echo "       -f Force the test(s) to be run"
 	echo "       -l Output is sent to the console"
 
@@ -43,8 +45,14 @@ function usage () {
 	echo "                to run all tests by default."
 	echo "       Example: fvtr -f ~/advance-toolchain/config.at5.0.sles10 "
 	echo ""
-	echo "   or: fvtr report"
-	echo "       the report subcommand outputs the logs of failed tests"
+	echo "       report - prints content of log files that failed. This"
+	echo "                command does not run tests again. Instead, it"
+	echo "                only takes the logs of the last test that was"
+	echo "                ran with fvtr.sh in order to print relevant"
+	echo "                information. It's also important to note that"
+	echo "                this implies that a test must be necessarily"
+	echo "                ran without the -l option in order to enable"
+	echo "                later usage of the report command."
 	exit 0
 }
 
@@ -71,10 +79,21 @@ then
 		exit 1
 	fi
 
+	printcount=0
+
 	logname=$(awk 'NR==1' report.log)
 	while read line
 	do
 		testname=$(awk '{print $1}' <<< "$line")
+
+		# If no tests fail, a blank line is left in report.log,
+		# which we should ignore.
+		if [[ $testname = "" ]];
+		then
+			continue
+		else
+			printcount=$(($printcount+1))
+		fi
 
 		# Here we generate enough '*' so that "Log file content"
 		# lines have the same length, for readability purposes
@@ -85,6 +104,11 @@ then
 		cat "./$testname/$logname"
 		echo ""
 	done <<< "$(tail --lines=+2 report.log)"
+
+	if [[ $printcount = 0 ]];
+	then
+		echo "No tests failed during the last run of the testsuite."
+	fi
 
 	exit 0
 fi
