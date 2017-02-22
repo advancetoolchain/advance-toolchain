@@ -11,6 +11,24 @@
 
 <h3>New features in 10.0-3</h3>
 <ul>
+	<li>GCC provides:</li>
+	<ul>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=70568">Use of VSR when operating on float and integer</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=65479">sanitizer stack trace missing frames past #0</a>.</li>
+		<li>Fix an <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=78900">ICE in gcc.target/powerpc/signbit-3.c</a>.</li>
+	</ul>
+	<li>The GNU C Library provides:</li>
+	<ul>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=20822">write-after-destroy in lock elision</a>.</li>
+		<li>Fix <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=20847">writes past the allocated array bounds in execvpe</a>.</li>
+	</ul>
+	<li>Binutils provides a fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=20886">looping in ppc64_elf_size_stubs</a>.</li>
+	<li>Python provides:</li>
+	<ul>
+		<li><a href="https://bugs.python.org/issue27850">CVE-2016-2183: Remove 3DES from cipher list</a>.</li>
+		<li><a href="https://bugs.python.org/issue27568">CVE-2016-1000110: HTTPoxy flag vulnerability to attacks</a>.</li>
+		<li>Fix TLS stripping vulnerability in smtplib (CVE-2016-0772).</li>
+	</ul>
 	<li>OpenSSL provides fixes for <a href="https://www.openssl.org/news/secadv/20170126.txt">CVE-2016-8610, CVE-2017-3731 and CVE-2017-3732</a>.</li>
 </ul>
 
