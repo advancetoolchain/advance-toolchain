@@ -95,6 +95,7 @@ running SElinux.
 ####################################################
 %package runtime-debuginfo
 Summary: Debug information for package %{name}-runtime
+Requires: advance-toolchain-%{at_major}-runtime = %{at_major_version}-%{at_revision_number}
 Group: Development/Debug
 AutoReqProv: 0
 
@@ -105,6 +106,7 @@ package or when debugging this package.
 
 %package mcore-libs-debuginfo
 Summary: Debug information for package %{name}-mcore-libs
+Requires: advance-toolchain-%{at_major}-mcore-libs = %{at_major_version}-%{at_revision_number}
 Group: Development/Debug
 AutoReqProv: 0
 
@@ -115,6 +117,7 @@ package or when debugging this package.
 
 %package devel-debuginfo
 Summary: Debug information for package %{name}-devel
+Requires: advance-toolchain-%{at_major}-devel = %{at_major_version}-%{at_revision_number}
 Group: Development/Debug
 AutoReqProv: 0
 
@@ -125,6 +128,7 @@ package or when debugging this package.
 
 %package perf-debuginfo
 Summary: Debug information for package %{name}-perf
+Requires: advance-toolchain-%{at_major}-perf = %{at_major_version}-%{at_revision_number}
 Group: Development/Debug
 AutoReqProv: 0
 
