@@ -16,32 +16,30 @@
 #
 # This script opens a config/source file, reads all available repositories
 # and change the ATSRC_PACKAGE_REV to the latest revision.
-# Afterwards it attempts to send the change for review, according to the
-# following rules:
-#  - If there isn't any pending change, then it submits a new commit.
-#  - If there's a pending change and its Code-Review or Verified label is set
-#  "-1", then it aborts.
-#  - If there's a pending change without "-1" label, then it submit a new
-#  commit but reuses the Change-Id. i.e. it updates the pending change with a
-#  new patch set.
+# Afterwards it checks if the sources file on the remote topic branch is
+# different from the sources file in the local topic branch. In case it's
+# not, there's nothing to be done. Otherwise, the script commits and
+# pushes to the remote topic branch on the advance-toolchain fork of the
+# provided user.
 #
-# Remarks: This operation creates another file, so links are discarded to avoid
-# affecting previous releases.
+# Remarks:
+# - This script uses SSH to push to GitHub, therefore you need
+# the appropriate keys of the provided GitHub user.
+# - Since this script automatically switches branches, it's
+# recommended unstaging or stashing changes before running it.
 #
 # Usage:
-#    update_revision <config/package/source> <gerrit_server> <gerrit_port>
+#    update_revision <config/package/source> <github_user>
 
-# This script requires 1 parameter.
-if [[ ${#} -ne  3 ]]; then
-	echo "update_revision.sh expects 3 parameters.";
+# This script requires 2 parameters.
+if [[ ${#} -ne  2 ]]; then
+	echo "update_revision.sh expects 2 parameters.";
 	return 1;
 fi
 
 # TODO: adjust following variables.
-# Assume user access gerrit password-lessly
-GERRIT_USER=$(whoami)
-GERRIT_SERVER=${2}
-GERRIT_PORT=${3}
+# Assume user access GitHub password-lessly
+GITHUB_USER=${2}
 
 source ${1};
 
@@ -87,34 +85,7 @@ get_latest_revision ()
 	echo ${hash};
 }
 
-# This function checks Gerrit for an open change in the topic.
-# If so, it returns the change Id and review label.
-#
-# Parameters:
-#    $1 - the topic name
-# Returns:
-#    "<change_id> <review_status>", where
-#    Or empty string if no open change was found.
-get_topic_status ()
-{
-	local result=$(ssh -p ${GERRIT_PORT} ${GERRIT_USER}@${GERRIT_SERVER} \
-gerrit query status:open project:advance-toolchain topic:${1})
-
-	# If found a change the result starts with"change change_id"
-	if [[ ${result:0:6} = "change" ]]; then
-		change_id=$(echo $result | cut -d" " -f2)
-		result=$(gerrit_cmd query change:${change_id} label:-1)
-		if [[ ${result:0:6} = "change" ]]; then
-			# Review label is -1
-			echo "${change_id} -1"
-		else
-			# TODO: need to return the exact value?
-			echo "${change_id} 0"
-		fi
-	fi
-}
-
-# This function prepares a commit then send for review.
+# This function prepares a commit and pushes it.
 #
 # Parameters:
 #    $1 - sources config path
@@ -123,14 +94,12 @@ send_to_review ()
 {
 	print_msg 1 "Preparing commit to send for review."
 
-	# Check connection to gerrit
+	# Check connection to GitHub
 	#
-	print_msg 2 "Checking connection to Gerrit."
-	ssh -p ${GERRIT_PORT} ${GERRIT_USER}@${GERRIT_SERVER} gerrit version \
-> /dev/null 2>&1
-	if [[ $? -ne 0 ]]; then
-		print_msg 0 "Cannot connect to gerrit server (${GERRIT_SERVER}) on \
-port ${GERRIT_PORT} with user \"${GERRIT_USER}\"."
+	print_msg 2 "Checking connection to GitHub."
+	ssh git@github.com > /dev/null 2>&1
+	if [[ $? -ne 1 ]]; then
+		print_msg 0 "Cannot connect to GitHub."
 		return 1
 	fi
 	print_msg 0 "Connection can be established."
@@ -139,61 +108,58 @@ port ${GERRIT_PORT} with user \"${GERRIT_USER}\"."
 	# Expected a string like "<path-to-AT>/next/valgrind/source"
 	pkg=$(echo ${1} | awk -F "/" '{ print $(NF-1) }')
 	cfg=$(echo ${1} | awk -F "/" '{ print $(NF-3) }')
-	topic=auto-update_${cfg}_${pkg}
 
-	print_msg 2 "Checking for pending auto-update change in Gerrit"
-	# Check if there's a pending auto-update review
-	#  for the same AT configuration and package
-	local topic_status=($(get_topic_status ${topic}))
-	local change_id=${topic_status[0]}
-	if [[ ! -z "${change_id}" ]]; then
-		print_msg 0 "Found pending change with Id: ${change_id}"
-		if [[ "${topic_status[1]}" -eq -1 ]]; then
-			print_msg 0 "Change with review label -1. \
-Aborting the update.";
-			return 0
-		fi
-	else
-		print_msg 0 "Not found any pending change in topic: ${topic}."
-	fi
+	local target_remote=git@github.com:${GITHUB_USER}/advance-toolchain.git
+	local target_branch=auto-update_${cfg}_${pkg}
 
 	# Save current branch and switch to a work branch
 	#
-        current_branch=$(git rev-parse --abbrev-ref HEAD)
-	work_branch=${topic}
-        # -B option resets the branch if it already exist.
-        git checkout -B ${work_branch}
+	current_branch=$(git rev-parse --abbrev-ref HEAD)
+	# -B option resets the branch if it already exists.
+	git checkout -B ${target_branch}
 
-	# Check gerrit's hook exists so that a change-id is generated
-	# Otherwise download the hook script
-	gitdir=$(git rev-parse --git-dir)
-	if [[ ! -f ${gitdir}/hooks/commit-msg ]]; then
-		scp -p -P ${GERRIT_PORT} ${GERRIT_USER}@${GERRIT_SERVER}:\
-hooks/commit-msg ${gitdir}/hooks/
-	fi
+	# Here we check if the new sources file we generated by updating the
+	# revision is different from the sources file at the last commit
+	# on the appropriate branch.
+	# To do that, we run a git diff between our working tree and the
+	# appropriate branch. Since the branch we want to compare to is
+	# remote, we need to add a new temporary remote to the repo.
+	git remote add TMP_DIFF ${target_remote}
+	git fetch TMP_DIFF
 
-        print_msg 2 "Generating a patch";
-        file=$(basename $(dirname ${1}))/$(basename ${1})
+	print_msg 2 "Checking ${pkg} revision on the topic branch"
 
-        git add ${1}
-        local msg="Update ${pkg} on AT ${cfg}\n\
-Bump to revision ${2}\n\n"
-	if [[ ! -z "${change_id}" ]]; then
-		msg+="Change-Id: ${change_id}"
-		print_msg 0 "Reuse Change-Id of pending change on Gerrit"
+	if [[ $(git ls-remote -h ${target_remote} | grep -c ${target_branch}) = 1 ]] \
+		 && git diff --exit-code TMP_DIFF/${target_branch} -- ${1};
+	then
+		print_msg 0 "$pkg revision is already up to date, new commit not necessary"
+
+		git remote remove TMP_DIFF
+
+		git checkout ${current_branch} ${1}
+		git checkout ${current_branch}
+		return 0
 	else
-		print_msg 0 "Generate commit with a new Change-Id"
+		print_msg 0 "$pkg revision is outdated, continuing commit..."
 	fi
-        echo -e ${msg} | git commit -F -
 
-	# Finally send to gerrit
+	git remote remove TMP_DIFF
+
+	print_msg 2 "Generating a patch";
+	file=$(basename $(dirname ${1}))/$(basename ${1})
+
+	git add ${1}
+	local msg="Update ${pkg} on AT ${cfg}\n\
+Bump to revision ${2}\n\n"
+	echo -e ${msg} | git commit -F -
+
+	# Finally send to GitHub
 	# Use topic branch to keep track of changes
-	print_msg 2 "Sending commit to Gerrit"
-        git push ssh://${GERRIT_USER}@${GERRIT_SERVER}:${GERRIT_PORT}\
-/advance-toolchain HEAD:refs/for/master%topic=${topic}
+	print_msg 2 "Sending commit to GitHub"
+	git push --force ${target_remote} HEAD:${target_branch}
 
-        # Switch back to original branch
-        git checkout ${current_branch}
+	# Switch back to original branch
+	git checkout ${current_branch}
 }
 
 # This function updates a revision.
