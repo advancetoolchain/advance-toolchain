@@ -29,17 +29,50 @@
 # recommended unstaging or stashing changes before running it.
 #
 # Usage:
-#    update_revision <config/package/source> <github_user>
+#  update_revision <config/package/source> github <github_user> [PAT]
+#  update_revision <config/package/source> gerrit <gerrit_server> <gerrit_port>
+#
+#  The first parameter specifies which service to open a pull request
+#  on, after updating and commiting the sources file and committing.
+#
+#  If using GitHub, PAT stands for "Personal Access Token", and can be
+#  obtained on GitHub Setttings > Personal access tokens > Generate new
+#  token. For the current features of this script, only the public_repo
+#  scope is required to be enabled. In case you choose to omit your token,
+#  your topic remote branch will still be updated but no pull request
+#  will be opened.
+#
+#  If using Gerrit, after committing it attempts to send the change for
+#  review, according to the following rules:
+#  - If there isn't any pending change, then it submits a new commit.
+#  - If there's a pending change and its Code-Review or Verified label is set
+#  "-1", then it aborts.
+#  - If there's a pending change without "-1" label, then it submit a new
+#  commit but reuses the Change-Id. i.e. it updates the pending change with a
+#  new patch set.
 
-# This script requires 2 parameters.
-if [[ ${#} -ne  2 ]]; then
-	echo "update_revision.sh expects 2 parameters.";
+# This script requires 3 or 4 parameters.
+if [[ ${#} -lt  3 ]] || [[ ${#} -gt 4 ]]; then
+	echo "update_revision.sh expects 3 or 4 parameters.";
 	return 1;
 fi
 
+if [[ $2 -ne "github" ]] && [[ $2 -ne "gerrit" ]];
+then
+	echo "$2 is an invalid service. Please pick 'github' or 'gerrit'."
+	return 1
+fi
+
+service="$2"
+
 # TODO: adjust following variables.
-# Assume user access GitHub password-lessly
-GITHUB_USER=${2}
+# Assume user access GitHub or Gerrit password-lessly
+GITHUB_USER=${3}
+GITHUB_TOKEN=${4}
+
+GERRIT_USER=$(whoami)
+GERRIT_SERVER=${3}
+GERRIT_PORT=${4}
 
 source ${1};
 
@@ -85,6 +118,33 @@ get_latest_revision ()
 	echo ${hash};
 }
 
+# This function checks Gerrit for an open change in the topic.
+# If so, it returns the change Id and review label.
+#
+# Parameters:
+#    $1 - the topic name
+# Returns:
+#    "<change_id> <review_status>", where
+#    Or empty string if no open change was found.
+get_topic_status ()
+{
+	local result=$(ssh -p ${GERRIT_PORT} ${GERRIT_USER}@${GERRIT_SERVER} \
+gerrit query status:open project:advance-toolchain topic:${1})
+
+	# If found a change the result starts with"change change_id"
+	if [[ ${result:0:6} = "change" ]]; then
+		change_id=$(echo $result | cut -d" " -f2)
+		result=$(gerrit_cmd query change:${change_id} label:-1)
+		if [[ ${result:0:6} = "change" ]]; then
+			# Review label is -1
+			echo "${change_id} -1"
+		else
+			# TODO: need to return the exact value?
+			echo "${change_id} 0"
+		fi
+	fi
+}
+
 # This function prepares a commit and pushes it.
 #
 # Parameters:
@@ -94,13 +154,57 @@ send_to_review ()
 {
 	print_msg 1 "Preparing commit to send for review."
 
-	# Check connection to GitHub
+	# Check connection to GitHub or Gerrit
 	#
-	print_msg 2 "Checking connection to GitHub."
-	ssh git@github.com > /dev/null 2>&1
-	if [[ $? -ne 1 ]]; then
-		print_msg 0 "Cannot connect to GitHub."
-		return 1
+	if [[ ${service} = "github" ]];
+	then
+		print_msg 2 "Checking GitHub SSH accessibility."
+		ssh git@github.com > /dev/null 2>&1
+		if [[ $? -ne 1 ]]; then
+			print_msg 0 "Problem accessing GitHub with SSH."
+			return 1
+		else
+			print_msg 0 "SSH is okay."
+		fi
+
+		if [[ ! -z "$GITHUB_TOKEN" ]];
+		then
+			print_msg 2 "Checking if the token provided grants pull request creation \
+rights"
+
+			authtxt=$(curl https://api.github.com/user -si\
+			-H "Authorization: token $GITHUB_TOKEN")
+
+			if [[ $? -ne 0 ]];
+			then
+				print_msg 0 "cURL to GitHub API exited with non zero status."
+				return 1
+			elif [[ $(echo "$authtxt" | grep -c 'Status: 200 OK') -gt 0 ]];
+			then
+				if [[ $(echo "$authtxt" | grep 'X-OAuth-Scopes:'\
+				      | grep -c "public_repo") -gt 0 ]];
+				then
+					print_msg 0 "The token provides the necessary rights!"
+				else
+					print_msg 0 "Please make sure the provided token has the \
+public_repo scope enabled."
+					return 1
+				fi
+			else
+				print_msg 0 "Unexpected error. Here's the status GitHub API returned:"
+				echo "$authtxt" | grep "Status:"
+				return 1
+			fi
+		fi
+	else
+		print_msg 2 "Checking connection to Gerrit."
+		ssh -p ${GERRIT_PORT} ${GERRIT_USER}@${GERRIT_SERVER} gerrit version \
+> /dev/null 2>&1
+		if [[ $? -ne 0 ]]; then
+			print_msg 0 "Cannot connect to gerrit server (${GERRIT_SERVER}) on \
+port ${GERRIT_PORT} with user \"${GERRIT_USER}\"."
+			return 1
+		fi
 	fi
 	print_msg 0 "Connection can be established."
 
@@ -112,11 +216,41 @@ send_to_review ()
 	local target_remote=git@github.com:${GITHUB_USER}/advance-toolchain.git
 	local target_branch=auto-update_${cfg}_${pkg}
 
+	if [[ ${service} = "gerrit" ]];
+	then
+		print_msg 2 "Checking for pending auto-update change in Gerrit"
+		# Check if there's a pending auto-update review
+		#  for the same AT configuration and package
+		local topic_status=($(get_topic_status ${target_branch}))
+		local change_id=${topic_status[0]}
+		if [[ ! -z "${change_id}" ]]; then
+			print_msg 0 "Found pending change with Id: ${change_id}"
+			if [[ "${topic_status[1]}" -eq -1 ]]; then
+				print_msg 0 "Change with review label -1. \
+Aborting the update.";
+				return 0
+			fi
+		else
+			print_msg 0 "Not found any pending change in topic: ${target_branch}."
+		fi
+	fi
+
 	# Save current branch and switch to a work branch
 	#
 	current_branch=$(git rev-parse --abbrev-ref HEAD)
 	# -B option resets the branch if it already exists.
 	git checkout -B ${target_branch}
+
+	if [[ ${service} = "gerrit" ]];
+	then
+		# Check gerrit's hook exists so that a change-id is generated
+		# Otherwise download the hook script
+		gitdir=$(git rev-parse --git-dir)
+		if [[ ! -f ${gitdir}/hooks/commit-msg ]]; then
+			scp -p -P ${GERRIT_PORT} ${GERRIT_USER}@${GERRIT_SERVER}:\
+hooks/commit-msg ${gitdir}/hooks/
+		fi
+	fi
 
 	# Here we check if the new sources file we generated by updating the
 	# revision is different from the sources file at the last commit
@@ -151,12 +285,53 @@ send_to_review ()
 	git add ${1}
 	local msg="Update ${pkg} on AT ${cfg}\n\
 Bump to revision ${2}\n\n"
+
+	if [[ ${service} = "gerrit" ]];
+	then
+		if [[ ! -z "${change_id}" ]]; then
+			msg+="Change-Id: ${change_id}"
+			print_msg 0 "Reuse Change-Id of pending change on Gerrit"
+		else
+			print_msg 0 "Generate commit with a new Change-Id"
+		fi
+	fi
+
 	echo -e ${msg} | git commit -F -
 
-	# Finally send to GitHub
+	# Now we send the commit to the selected service
 	# Use topic branch to keep track of changes
-	print_msg 2 "Sending commit to GitHub"
-	git push --force ${target_remote} HEAD:${target_branch}
+	if [[ ${service} = "github" ]];
+	then
+		print_msg 2 "Sending commit to GitHub"
+		git push --force ${target_remote} HEAD:${target_branch}
+
+		pulljson=$(cat <<EOF
+{
+  "title": "Update ${pkg} on AT ${cfg}",
+  "body": "Bump to revision ${2}",
+  "head": "${GITHUB_USER}:${target_branch}",
+  "base": "master"
+}
+EOF
+		)
+
+		if [[ ! -z "$GITHUB_TOKEN" ]];
+		then
+			pulltxt=$(curl -si \
+			https://api.github.com/repos/advancetoolchain/advance-toolchain/pulls \
+			-H "Authorization: token $GITHUB_TOKEN"\
+			--data "$pulljson")
+
+			if [[ $(echo "$pulltxt" | grep -c 'Status: 201 Created') -eq 0 ]];
+			then
+				print_msg 0 "Pull request creation failed."
+			fi
+		fi
+	else
+		print_msg 2 "Sending commit to Gerrit"
+		git push ssh://${GERRIT_USER}@${GERRIT_SERVER}:${GERRIT_PORT}\
+/advance-toolchain HEAD:refs/for/master%topic=${topic}
+	fi
 
 	# Switch back to original branch
 	git checkout ${current_branch}
