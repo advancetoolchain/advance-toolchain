@@ -23,3 +23,8 @@ if [[ "${1}" == configure ]]; then
 	# Update ld.so.cache
 	[[ -f __AT_DEST__/sbin/ldconfig ]] && __AT_DEST__/sbin/ldconfig
 fi
+
+echo "AT's linker cache file is not automatically updated when a package is \
+installed or modified."
+echo "Please run __AT_DEST__/bin/watch_ldconfig or reboot your system if you \
+want it to be."

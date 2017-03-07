@@ -65,7 +65,7 @@ for f in *; do
 	    -e "s/__DEST_CROSS__/${dest_cross//\//\\/}/g" \
 	    -e "s/__TARGET__/${target}/g" \
 	    -e "s/__BUILD_ARCH__/-${build_arch}/g" \
-	    -e "s/__AT_VER_REV_INTERNAL__/${at_ver_rev_internal}/g" \
+	    -e "s/__AT_VER_REV_INTERNAL__/${at_ver_rev_internal//./}/g" \
 	    -e "s/__TMP_DIR__/${tmp_dir//\//\\/}/g" \
 	    -e "s/__GO_DEST__/${go_dest//\//\\/}/g" \
 	    ${f} > ${deb_d}/${f}
@@ -223,7 +223,7 @@ for pkg in $(awk '/^Package:/ { print $2 }' ${deb_d}/control | grep -v dbg); do
 				fi
 				;;
 			"runtime")
-				echo "/etc/cron.d/${at_ver_rev_internal}_ldconfig"
+				echo "/etc/cron.d/${at_ver_rev_internal//./}_ldconfig"
 				[[ ${addtlehelper} == "yes" ]] && \
 					echo "${at_dest}/scripts/tle_on.sh"
 				;;

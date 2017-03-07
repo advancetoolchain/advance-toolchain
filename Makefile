@@ -1112,10 +1112,11 @@ $(RCPTS)/monitor.rcpt: $(RCPTS)/toolchain.rcpt
 	         $(SCRIPTS_ROOT)/utilities/watch_ldconfig.c -o $(AT_DEST)/bin/watch_ldconfig; \
 	    echo "Monitor sucesfully compiled."; \
 	    echo "Updating the SPEC files"; \
+	    at_ver_rev_internal=$$( echo $(AT_VER_REV_INTERNAL) ); \
 	    group=$$( ls $(DYNAMIC_SPEC)/ | grep "toolchain\$$" ); \
 	    echo "$(AT_DEST)/bin/watch_ldconfig" \
 	          >> $(DYNAMIC_SPEC)/$${group}/ldconfig.filelist; \
-	    echo "/etc/cron.d/$(AT_VER_REV_INTERNAL)_ldconfig" \
+	    echo "/etc/cron.d/$${at_ver_rev_internal//./}_ldconfig" \
 	          >> $(DYNAMIC_SPEC)/$${group}/ldconfig.filelist; \
 	    echo "All done."; \
 	} > $(LOGS)/_watch_ldconfig.log 2>&1

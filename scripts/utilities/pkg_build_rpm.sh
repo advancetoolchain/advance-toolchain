@@ -157,6 +157,7 @@ function pkg_build_rpms()
 			      --define="at_glibc_ver ${at_glibc_version}" \
 			      --define="_min_power_arch ${at_min_power_arch}" \
 			      --define="at_ver_rev_internal ${at_ver_rev_internal}" \
+			      --define="at_ver_alternative ${at_ver_rev_internal//./}" \
 			      --define="_tmpdir ${tmp_dir}" \
 			      --define="_golang /usr/local/go/" \
 			      --target="${host_arch}-linux"
