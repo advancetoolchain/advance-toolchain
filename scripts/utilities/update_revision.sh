@@ -145,64 +145,134 @@ gerrit query status:open project:advance-toolchain topic:${1})
 	fi
 }
 
-# This function prepares a commit and pushes it.
+# This function prepares a commit then send for review on gerrit.
 #
 # Parameters:
 #    $1 - sources config path
 #    $2 - revision ID
-send_to_review ()
+send_to_gerrit ()
 {
 	print_msg 1 "Preparing commit to send for review."
 
-	# Check connection to GitHub or Gerrit
+	# Check connection to gerrit
 	#
-	if [[ ${service} = "github" ]];
-	then
-		print_msg 2 "Checking GitHub SSH accessibility."
-		ssh git@github.com > /dev/null 2>&1
-		if [[ $? -ne 1 ]]; then
-			print_msg 0 "Problem accessing GitHub with SSH."
-			return 1
-		else
-			print_msg 0 "SSH is okay."
-		fi
+	print_msg 2 "Checking connection to Gerrit."
+	ssh -p ${GERRIT_PORT} ${GERRIT_USER}@${GERRIT_SERVER} gerrit version \
+> /dev/null 2>&1
+	if [[ $? -ne 0 ]]; then
+		print_msg 0 "Cannot connect to gerrit server (${GERRIT_SERVER}) on \
+port ${GERRIT_PORT} with user \"${GERRIT_USER}\"."
+		return 1
+	fi
+	print_msg 0 "Connection can be established."
 
-		if [[ ! -z "$GITHUB_TOKEN" ]];
-		then
-			print_msg 2 "Checking if the token provided grants pull request creation \
-rights"
+	# Get AT config and package being updated.
+	# Expected a string like "<path-to-AT>/next/valgrind/source"
+	pkg=$(echo ${1} | awk -F "/" '{ print $(NF-1) }')
+	cfg=$(echo ${1} | awk -F "/" '{ print $(NF-3) }')
+	topic=auto-update_${cfg}_${pkg}
 
-			authtxt=$(curl https://api.github.com/user -si\
-			-H "Authorization: token $GITHUB_TOKEN")
-
-			if [[ $? -ne 0 ]];
-			then
-				print_msg 0 "cURL to GitHub API exited with non zero status."
-				return 1
-			elif [[ $(echo "$authtxt" | grep -c 'Status: 200 OK') -gt 0 ]];
-			then
-				if [[ $(echo "$authtxt" | grep 'X-OAuth-Scopes:'\
-				      | grep -c "public_repo") -gt 0 ]];
-				then
-					print_msg 0 "The token provides the necessary rights!"
-				else
-					print_msg 0 "Please make sure the provided token has the \
-public_repo scope enabled."
-					return 1
-				fi
-			else
-				print_msg 0 "Unexpected error. Here's the status GitHub API returned:"
-				echo "$authtxt" | grep "Status:"
-				return 1
-			fi
+	print_msg 2 "Checking for pending auto-update change in Gerrit"
+	# Check if there's a pending auto-update review
+	#  for the same AT configuration and package
+	local topic_status=($(get_topic_status ${topic}))
+	local change_id=${topic_status[0]}
+	if [[ ! -z "${change_id}" ]]; then
+		print_msg 0 "Found pending change with Id: ${change_id}"
+		if [[ "${topic_status[1]}" -eq -1 ]]; then
+			print_msg 0 "Change with review label -1. \
+Aborting the update.";
+			return 0
 		fi
 	else
-		print_msg 2 "Checking connection to Gerrit."
-		ssh -p ${GERRIT_PORT} ${GERRIT_USER}@${GERRIT_SERVER} gerrit version \
-> /dev/null 2>&1
-		if [[ $? -ne 0 ]]; then
-			print_msg 0 "Cannot connect to gerrit server (${GERRIT_SERVER}) on \
-port ${GERRIT_PORT} with user \"${GERRIT_USER}\"."
+		print_msg 0 "Not found any pending change in topic: ${topic}."
+	fi
+
+	# Save current branch and switch to a work branch
+	#
+        current_branch=$(git rev-parse --abbrev-ref HEAD)
+	work_branch=${topic}
+        # -B option resets the branch if it already exist.
+        git checkout -B ${work_branch}
+
+	# Check gerrit's hook exists so that a change-id is generated
+	# Otherwise download the hook script
+	gitdir=$(git rev-parse --git-dir)
+	if [[ ! -f ${gitdir}/hooks/commit-msg ]]; then
+		scp -p -P ${GERRIT_PORT} ${GERRIT_USER}@${GERRIT_SERVER}:\
+hooks/commit-msg ${gitdir}/hooks/
+	fi
+
+        print_msg 2 "Generating a patch";
+        file=$(basename $(dirname ${1}))/$(basename ${1})
+
+        git add ${1}
+        local msg="Update ${pkg} on AT ${cfg}\n\
+Bump to revision ${2}\n\n"
+	if [[ ! -z "${change_id}" ]]; then
+		msg+="Change-Id: ${change_id}"
+		print_msg 0 "Reuse Change-Id of pending change on Gerrit"
+	else
+		print_msg 0 "Generate commit with a new Change-Id"
+	fi
+        echo -e ${msg} | git commit -F -
+
+	# Finally send to gerrit
+	# Use topic branch to keep track of changes
+	print_msg 2 "Sending commit to Gerrit"
+        git push ssh://${GERRIT_USER}@${GERRIT_SERVER}:${GERRIT_PORT}\
+/advance-toolchain HEAD:refs/for/master%topic=${topic}
+
+        # Switch back to original branch
+        git checkout ${current_branch}
+}
+
+# This function prepares a commit, pushes it and, if a GitHub token
+# is supplied, opens a pull request
+#
+# Parameters:
+#    $1 - sources config path
+#    $2 - revision ID
+send_to_github ()
+{
+	print_msg 1 "Preparing commit to send for review."
+
+	# Check connection to GitHub
+	print_msg 2 "Checking GitHub SSH accessibility."
+	ssh git@github.com > /dev/null 2>&1
+	if [[ $? -ne 1 ]]; then
+		print_msg 0 "Problem accessing GitHub with SSH."
+		return 1
+	else
+		print_msg 0 "SSH is okay."
+	fi
+
+	if [[ ! -z "$GITHUB_TOKEN" ]];
+	then
+		print_msg 2 "Checking if the token provided grants pull request creation \
+rights"
+
+		authtxt=$(curl https://api.github.com/user -si\
+		-H "Authorization: token $GITHUB_TOKEN")
+
+		if [[ $? -ne 0 ]];
+		then
+			print_msg 0 "cURL to GitHub API exited with non zero status."
+			return 1
+		elif [[ $(echo "$authtxt" | grep -c 'Status: 200 OK') -gt 0 ]];
+		then
+			if [[ $(echo "$authtxt" | grep 'X-OAuth-Scopes:'\
+			      | grep -c "public_repo") -gt 0 ]];
+			then
+				print_msg 0 "The token provides the necessary rights!"
+			else
+				print_msg 0 "Please make sure the provided token has the \
+public_repo scope enabled."
+				return 1
+			fi
+		else
+			print_msg 0 "Unexpected error. Here's the status GitHub API returned:"
+			echo "$authtxt" | grep "Status:"
 			return 1
 		fi
 	fi
@@ -216,41 +286,11 @@ port ${GERRIT_PORT} with user \"${GERRIT_USER}\"."
 	local target_remote=git@github.com:${GITHUB_USER}/advance-toolchain.git
 	local target_branch=auto-update_${cfg}_${pkg}
 
-	if [[ ${service} = "gerrit" ]];
-	then
-		print_msg 2 "Checking for pending auto-update change in Gerrit"
-		# Check if there's a pending auto-update review
-		#  for the same AT configuration and package
-		local topic_status=($(get_topic_status ${target_branch}))
-		local change_id=${topic_status[0]}
-		if [[ ! -z "${change_id}" ]]; then
-			print_msg 0 "Found pending change with Id: ${change_id}"
-			if [[ "${topic_status[1]}" -eq -1 ]]; then
-				print_msg 0 "Change with review label -1. \
-Aborting the update.";
-				return 0
-			fi
-		else
-			print_msg 0 "Not found any pending change in topic: ${target_branch}."
-		fi
-	fi
-
 	# Save current branch and switch to a work branch
 	#
 	current_branch=$(git rev-parse --abbrev-ref HEAD)
 	# -B option resets the branch if it already exists.
 	git checkout -B ${target_branch}
-
-	if [[ ${service} = "gerrit" ]];
-	then
-		# Check gerrit's hook exists so that a change-id is generated
-		# Otherwise download the hook script
-		gitdir=$(git rev-parse --git-dir)
-		if [[ ! -f ${gitdir}/hooks/commit-msg ]]; then
-			scp -p -P ${GERRIT_PORT} ${GERRIT_USER}@${GERRIT_SERVER}:\
-hooks/commit-msg ${gitdir}/hooks/
-		fi
-	fi
 
 	# Here we check if the new sources file we generated by updating the
 	# revision is different from the sources file at the last commit
@@ -286,51 +326,37 @@ hooks/commit-msg ${gitdir}/hooks/
 	local msg="Update ${pkg} on AT ${cfg}\n\
 Bump to revision ${2}\n\n"
 
-	if [[ ${service} = "gerrit" ]];
-	then
-		if [[ ! -z "${change_id}" ]]; then
-			msg+="Change-Id: ${change_id}"
-			print_msg 0 "Reuse Change-Id of pending change on Gerrit"
-		else
-			print_msg 0 "Generate commit with a new Change-Id"
-		fi
-	fi
-
 	echo -e ${msg} | git commit -F -
 
-	# Now we send the commit to the selected service
-	# Use topic branch to keep track of changes
-	if [[ ${service} = "github" ]];
-	then
-		print_msg 2 "Sending commit to GitHub"
-		git push --force ${target_remote} HEAD:${target_branch}
+	# Now we send the commit to GitHub
+	print_msg 2 "Sending commit to GitHub"
+	git push --force ${target_remote} HEAD:${target_branch}
 
+
+	if [[ ! -z "$GITHUB_TOKEN" ]];
+	then
 		pulljson=$(cat <<EOF
 {
-  "title": "Update ${pkg} on AT ${cfg}",
-  "body": "Bump to revision ${2}",
-  "head": "${GITHUB_USER}:${target_branch}",
-  "base": "master"
+"title": "Update ${pkg} on AT ${cfg}",
+"body": "Bump to revision ${2}",
+"head": "${GITHUB_USER}:${target_branch}",
+"base": "master"
 }
 EOF
 		)
 
-		if [[ ! -z "$GITHUB_TOKEN" ]];
-		then
-			pulltxt=$(curl -si \
-			https://api.github.com/repos/advancetoolchain/advance-toolchain/pulls \
-			-H "Authorization: token $GITHUB_TOKEN"\
-			--data "$pulljson")
+		pulltxt=$(curl -si \
+		https://api.github.com/repos/advancetoolchain/advance-toolchain/pulls \
+		-H "Authorization: token $GITHUB_TOKEN"\
+		--data "$pulljson")
 
-			if [[ $(echo "$pulltxt" | grep -c 'Status: 201 Created') -eq 0 ]];
-			then
-				print_msg 0 "Pull request creation failed."
-			fi
+		if [[ $(echo "$pulltxt" | grep -c 'Status: 201 Created') -eq 0 ]];
+		then
+			print_msg 0 "Pull request creation failed. cURL message:"
+		  echo -e "$pulltxt"
+		else
+			print_msg 0 "Pull request creation successful!"
 		fi
-	else
-		print_msg 2 "Sending commit to Gerrit"
-		git push ssh://${GERRIT_USER}@${GERRIT_SERVER}:${GERRIT_PORT}\
-/advance-toolchain HEAD:refs/for/master%topic=${topic}
 	fi
 
 	# Switch back to original branch
@@ -374,7 +400,12 @@ for co in ${ATSRC_PACKAGE_CO}; do
 			echo ""
 			print_msg 0 "The latest revision of ${repo} is ${hash}"
 			update_revision ${1} ${hash}
-			send_to_review ${1} ${hash}
+			if [[ ${service} = "github" ]];
+			then
+				send_to_github ${1} ${hash}
+			else
+				send_to_gerrit ${1} ${hash}
+			fi
 			break;
 		else
 			print_msg 0 "Unable to connect to ${repo}"
