@@ -1,1 +1,1 @@
-../../../10.0/packages/paflib/paflib.mk
+../../../11.0/packages/paflib/paflib.mk

@@ -1,1 +1,1 @@
-../../../10.0/packages/golang/golang.mk
+../../../11.0/packages/golang/golang.mk
