@@ -1,1 +1,1 @@
-../../../10.0/packages/libauxv/libauxv.mk
+../../../11.0/packages/libauxv/libauxv.mk

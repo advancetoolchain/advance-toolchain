@@ -1,1 +1,1 @@
-../../10.0/specs/monolithic_compat.spec
+../../11.0/specs/monolithic_compat.spec
