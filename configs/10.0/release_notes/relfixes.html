@@ -22,7 +22,20 @@
 		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=20822">write-after-destroy in lock elision</a>.</li>
 		<li>Fix <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=20847">writes past the allocated array bounds in execvpe</a>.</li>
 	</ul>
-	<li>Binutils provides a fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=20886">looping in ppc64_elf_size_stubs</a>.</li>
+	<li>Binutils provides:</li>
+	<ul>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=20886">looping in ppc64_elf_size_stubs</a>.</li>
+		<li>TOC optimisation for POWER9.</li>
+		<li>Fix ld segfault on script discarding dynamic sections.</li>
+		<li>Gold improvements.</li>
+	</ul>
+	<li>GDB provides:</li>
+	<ul>
+		<li>128-bit IEEE floating-point types support.</li>
+		<li>POWER ISA 3.0/Power9 instructions record/replay support.</li>
+		<li>POWER8/ISA 2.07 atomic sequences (lbarx/stbcx, lharx/sthcx and lqarx/stqcx) single-stepping support.</li>
+	</ul>
+	<li>Oprofile provides support for the POWER 8 NV and NVL variants.</li>
 	<li>Python provides:</li>
 	<ul>
 		<li><a href="https://bugs.python.org/issue27850">CVE-2016-2183: Remove 3DES from cipher list</a>.</li>
