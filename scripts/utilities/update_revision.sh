@@ -16,32 +16,63 @@
 #
 # This script opens a config/source file, reads all available repositories
 # and change the ATSRC_PACKAGE_REV to the latest revision.
-# Afterwards it attempts to send the change for review, according to the
-# following rules:
+# Afterwards it checks if the sources file on the remote topic branch is
+# different from the sources file in the local topic branch. In case it's
+# not, there's nothing to be done. Otherwise, the script commits and
+# pushes to the remote topic branch on the advance-toolchain fork of the
+# provided user.
+#
+# Remarks:
+# - This script uses SSH to push to GitHub, therefore you need
+# the appropriate keys of the provided GitHub user.
+# - Since this script automatically switches branches, it's
+# recommended unstaging or stashing changes before running it.
+#
+# Usage:
+#  update_revision <config/package/source> github <github_user> [PAT]
+#  update_revision <config/package/source> gerrit <gerrit_server> <gerrit_port>
+#
+#  The first parameter specifies which service to open a pull request
+#  on, after updating and commiting the sources file and committing.
+#
+#  If using GitHub, PAT stands for "Personal Access Token", and can be
+#  obtained on GitHub Setttings > Personal access tokens > Generate new
+#  token. For the current features of this script, only the public_repo
+#  scope is required to be enabled. In case you choose to omit your token,
+#  your topic remote branch will still be updated but no pull request
+#  will be opened.
+#
+#  If using Gerrit, after committing it attempts to send the change for
+#  review, according to the following rules:
 #  - If there isn't any pending change, then it submits a new commit.
 #  - If there's a pending change and its Code-Review or Verified label is set
 #  "-1", then it aborts.
 #  - If there's a pending change without "-1" label, then it submit a new
 #  commit but reuses the Change-Id. i.e. it updates the pending change with a
 #  new patch set.
-#
-# Remarks: This operation creates another file, so links are discarded to avoid
-# affecting previous releases.
-#
-# Usage:
-#    update_revision <config/package/source> <gerrit_server> <gerrit_port>
 
-# This script requires 1 parameter.
-if [[ ${#} -ne  3 ]]; then
-	echo "update_revision.sh expects 3 parameters.";
+# This script requires 3 or 4 parameters.
+if [[ ${#} -lt  3 ]] || [[ ${#} -gt 4 ]]; then
+	echo "update_revision.sh expects 3 or 4 parameters.";
 	return 1;
 fi
 
+if [[ $2 -ne "github" ]] && [[ $2 -ne "gerrit" ]];
+then
+	echo "$2 is an invalid service. Please pick 'github' or 'gerrit'."
+	return 1
+fi
+
+service="$2"
+
 # TODO: adjust following variables.
-# Assume user access gerrit password-lessly
+# Assume user access GitHub or Gerrit password-lessly
+GITHUB_USER=${3}
+GITHUB_TOKEN=${4}
+
 GERRIT_USER=$(whoami)
-GERRIT_SERVER=${2}
-GERRIT_PORT=${3}
+GERRIT_SERVER=${3}
+GERRIT_PORT=${4}
 
 source ${1};
 
@@ -114,12 +145,12 @@ gerrit query status:open project:advance-toolchain topic:${1})
 	fi
 }
 
-# This function prepares a commit then send for review.
+# This function prepares a commit then send for review on gerrit.
 #
 # Parameters:
 #    $1 - sources config path
 #    $2 - revision ID
-send_to_review ()
+send_to_gerrit ()
 {
 	print_msg 1 "Preparing commit to send for review."
 
@@ -196,6 +227,142 @@ Bump to revision ${2}\n\n"
         git checkout ${current_branch}
 }
 
+# This function prepares a commit, pushes it and, if a GitHub token
+# is supplied, opens a pull request
+#
+# Parameters:
+#    $1 - sources config path
+#    $2 - revision ID
+send_to_github ()
+{
+	print_msg 1 "Preparing commit to send for review."
+
+	# Check connection to GitHub
+	print_msg 2 "Checking GitHub SSH accessibility."
+	ssh git@github.com > /dev/null 2>&1
+	if [[ $? -ne 1 ]]; then
+		print_msg 0 "Problem accessing GitHub with SSH."
+		return 1
+	else
+		print_msg 0 "SSH is okay."
+	fi
+
+	if [[ ! -z "$GITHUB_TOKEN" ]];
+	then
+		print_msg 2 "Checking if the token provided grants pull request creation \
+rights"
+
+		authtxt=$(curl https://api.github.com/user -si\
+		-H "Authorization: token $GITHUB_TOKEN")
+
+		if [[ $? -ne 0 ]];
+		then
+			print_msg 0 "cURL to GitHub API exited with non zero status."
+			return 1
+		elif [[ $(echo "$authtxt" | grep -c 'Status: 200 OK') -gt 0 ]];
+		then
+			if [[ $(echo "$authtxt" | grep 'X-OAuth-Scopes:'\
+			      | grep -c "public_repo") -gt 0 ]];
+			then
+				print_msg 0 "The token provides the necessary rights!"
+			else
+				print_msg 0 "Please make sure the provided token has the \
+public_repo scope enabled."
+				return 1
+			fi
+		else
+			print_msg 0 "Unexpected error. Here's the status GitHub API returned:"
+			echo "$authtxt" | grep "Status:"
+			return 1
+		fi
+	fi
+	print_msg 0 "Connection can be established."
+
+	# Get AT config and package being updated.
+	# Expected a string like "<path-to-AT>/next/valgrind/source"
+	pkg=$(echo ${1} | awk -F "/" '{ print $(NF-1) }')
+	cfg=$(echo ${1} | awk -F "/" '{ print $(NF-3) }')
+
+	local target_remote=git@github.com:${GITHUB_USER}/advance-toolchain.git
+	local target_branch=auto-update_${cfg}_${pkg}
+
+	# Save current branch and switch to a work branch
+	#
+	current_branch=$(git rev-parse --abbrev-ref HEAD)
+	# -B option resets the branch if it already exists.
+	git checkout -B ${target_branch}
+
+	# Here we check if the new sources file we generated by updating the
+	# revision is different from the sources file at the last commit
+	# on the appropriate branch.
+	# To do that, we run a git diff between our working tree and the
+	# appropriate branch. Since the branch we want to compare to is
+	# remote, we need to add a new temporary remote to the repo.
+	git remote add TMP_DIFF ${target_remote}
+	git fetch TMP_DIFF
+
+	print_msg 2 "Checking ${pkg} revision on the topic branch"
+
+	if [[ $(git ls-remote -h ${target_remote} | grep -c ${target_branch}) = 1 ]] \
+		 && git diff --exit-code TMP_DIFF/${target_branch} -- ${1};
+	then
+		print_msg 0 "$pkg revision is already up to date, new commit not necessary"
+
+		git remote remove TMP_DIFF
+
+		git checkout ${current_branch} ${1}
+		git checkout ${current_branch}
+		return 0
+	else
+		print_msg 0 "$pkg revision is outdated, continuing commit..."
+	fi
+
+	git remote remove TMP_DIFF
+
+	print_msg 2 "Generating a patch";
+	file=$(basename $(dirname ${1}))/$(basename ${1})
+
+	git add ${1}
+	local msg="Update ${pkg} on AT ${cfg}\n\
+Bump to revision ${2}\n\n"
+
+	echo -e ${msg} | git commit -F -
+
+	# Now we send the commit to GitHub
+	print_msg 2 "Sending commit to GitHub"
+	git push --force ${target_remote} HEAD:${target_branch}
+
+
+	if [[ ! -z "$GITHUB_TOKEN" ]];
+	then
+		pulljson=$(cat <<EOF
+{
+"title": "Update ${pkg} on AT ${cfg}",
+"body": "Bump to revision ${2}",
+"head": "${GITHUB_USER}:${target_branch}",
+"base": "master"
+}
+EOF
+		)
+
+		pulltxt=$(curl -si \
+		https://api.github.com/repos/advancetoolchain/advance-toolchain/pulls \
+		-H "Authorization: token $GITHUB_TOKEN"\
+		--data "$pulljson")
+
+		if [[ $(echo "$pulltxt" | grep -c 'Status: 201 Created') -eq 0 ]];
+		then
+			print_msg 0 "Pull request creation failed. cURL message:"
+		  echo -e "$pulltxt"
+		else
+			print_msg 0 "Pull request creation successful!"
+		fi
+	fi
+
+	# Switch back to original branch
+	git checkout ${current_branch}
+}
+
 # This function updates a revision.
 #
 # Parameters:
@@ -233,7 +400,12 @@ for co in ${ATSRC_PACKAGE_CO}; do
 			echo ""
 			print_msg 0 "The latest revision of ${repo} is ${hash}"
 			update_revision ${1} ${hash}
-			send_to_review ${1} ${hash}
+			if [[ ${service} = "github" ]];
+			then
+				send_to_github ${1} ${hash}
+			else
+				send_to_gerrit ${1} ${hash}
+			fi
 			break;
 		else
 			print_msg 0 "Unable to connect to ${repo}"
