@@ -41,6 +41,10 @@ if { $env(AT_BUILD_ARCH) != "ppc64le" } {
 	printit "Golang is only supported on ppc64le.\t\[SUCCESS\]"
 	exit $ENOSYS
 }
+if { ![file isdirectory $go_root] } {
+	printit "Error: go directory $go_root is missing."
+	exit 1
+}
 
 set go $go_root/bin/go
 
