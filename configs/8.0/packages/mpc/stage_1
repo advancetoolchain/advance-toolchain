@@ -42,6 +42,11 @@ atcfg_pre_configure() {
 		prefix=${tmp_dir}
 		libdir=${tmp_dir}/lib
 	fi
+	if [[ ! -e ${ATSRC_PACKAGE_WORK}/configure ]]; then
+		pushd ${ATSRC_PACKAGE_WORK}
+		autoreconf -i
+		popd
+	fi
 }
 
 # Configure command for native builds
