@@ -29,7 +29,13 @@ atcfg_pre_configure() {
 	if [[ "${build_arch}" == ppc64* ]]; then
 		libdir=${at_dest}/lib64
 	fi
+	if [[ ! -e ${ATSRC_PACKAGE_WORK}/configure ]]; then
+		pushd ${ATSRC_PACKAGE_WORK}
+		autoreconf -i
+		popd
+	fi
 }
+
 # Configure command for native builds
 atcfg_configure() {
 	PATH=${at_dest}/bin:${PATH} \
