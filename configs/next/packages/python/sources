@@ -41,8 +41,8 @@ ATSRC_PACKAGE_BUNDLE=toolchain_extra
 atsrc_get_patches ()
 {
 	at_get_patch \
-		https://raw.githubusercontent.com/powertechpreview/powertechpreview/568ca4aea85f216aac118617233e2a5cf2a7fdbb/Python%20Fixes/python-3.6.0-getlib64s1.patch \
-		cd0928dcf78a68377009ae56bafee5cd || return ${?}
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/e9bebfe3c94e612fc348cbab3183a771247ad8b2/Python%20Fixes/python-3.6.0-getlib64s1.patch \
+		c46ccb4d8f043da9966bbce62ae8b9e5 || return ${?}
 
 	# Patch avoid getentropy() in favor of getrandom() as the later handles
 	# ENOSYS.
