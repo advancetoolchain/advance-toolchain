@@ -11,6 +11,7 @@
 
 <h3>New features in 10.0-3</h3>
 <ul>
+	<li><b>Note:</b> -mcpu=power9 is not working correctly due to <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=79752">incorrect code generation for __divkf3</a>. Use -fno-peephole2 to avoid the bug.</li>
 	<li>GCC provides:</li>
 	<ul>
 		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=70568">Use of VSR when operating on float and integer</a>.</li>
