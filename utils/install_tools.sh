@@ -55,8 +55,7 @@ install_cross ()
 {
 	if [[ ${debian} == "yes" ]]; then
 		sudo dpkg -i advance-toolchain-at*common* || return ${?}
-		sudo dpkg -i advance-toolchain-at*cross-ppc64_* \
-			advance-toolchain-at*cross-ppc64le_* || return ${?}
+		ls *at* | egrep "64_|64le_" | xargs sudo dpkg -i || return ${?}
 		sudo dpkg -i advance-toolchain-at*cross-ppc*mcore* \
 			advance-toolchain-at*cross-ppc*extras* || return ${?}
 	else
