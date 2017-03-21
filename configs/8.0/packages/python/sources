@@ -20,7 +20,7 @@
 #
 
 ATSRC_PACKAGE_NAME="Python"
-ATSRC_PACKAGE_VER=3.4.3
+ATSRC_PACKAGE_VER=3.4.6
 ATSRC_PACKAGE_LICENSE="Python Software Foundation License 2"
 ATSRC_PACKAGE_DOCLINK="http://docs.python.org/release/3.4/"
 ATSRC_PACKAGE_RELFIXES=
@@ -41,32 +41,13 @@ ATSRC_PACKAGE_BUNDLE=toolchain
 atsrc_get_patches ()
 {
 	at_get_patch \
-		https://github.com/powertechpreview/powertechpreview/raw/master/Python%20Fixes/python-3.4.3-getlib64s1.tgz \
-		7cf0e3e1546682c57d02a8c80ff3f292 || return ${?}
-
-	at_get_patch \
-		https://bugs.python.org/file38791/dh1024.patch \
-		8bc4f980dcd3f93b7b853f53c32bffec || return ${?}
-
-	at_get_patch \
-		http://bugs.python.org/file40170/fix_stack_overflow.patch \
-		51f3968a6417caa54f425ffd1b7d7784 || return ${?}
-
-	at_get_patch \
-		https://github.com/powertechpreview/powertechpreview/raw/master/Python%20Fixes/python3-imap_tz.tgz \
-		7a7c8e65ae9de6ac1e504dd76b37bc76 || return ${?}
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/b3412449600a3c2b357689a7f7dbfaf9ca567946/Python%20Fixes/python-3.4.6-getlib64.patch \
+		bd2700cb359ba21e1eeac3ba5f2ef9d0 || return ${?}
 }
 
 atsrc_apply_patches ()
 {
-	tar zxf python-3.4.3-getlib64s1.tgz || return ${?}
-	tar zxf python3-imap_tz.tgz || return ${?}
-
-	patch -p1 < python-3.4.3-getlib64s1.patch || return ${?}
-	patch -p1 < 0001-Specify-the-summer-time-value-on-test_imaplib.patch \
-		|| return ${?}
-	patch -p1 < fix_stack_overflow.patch || return ${?}
-	patch -p1 < dh1024.patch || return ${?}
+	patch -p1 < python-3.4.6-getlib64.patch || return ${?}
 }
 
 atsrc_package_verify_make_log ()
