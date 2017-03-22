@@ -133,7 +133,7 @@ gzip -9nvf ${RPM_BUILD_ROOT}%{_infodir}/*.info*
 # Set a cronjob to run AT's ldconfig when the system's ldconfig is executed.
 mkdir -p ${RPM_BUILD_ROOT}/etc/cron.d/
 echo "@reboot root %{_bindir}/watch_ldconfig &" \
-      > ${RPM_BUILD_ROOT}/etc/cron.d/%{at_ver_rev_internal}_ldconfig
+      > ${RPM_BUILD_ROOT}/etc/cron.d/%{at_ver_alternative}_ldconfig
 
 ####################################################
 %pre runtime
