@@ -25,6 +25,7 @@ Requires: __RUNTIME_REQ__
 Group: Development/Libraries
 AutoReqProv: no
 Provides: advance-toolchain-runtime = %{at_major_version}-%{at_revision_number}
+BuildRequires: systemd
 
 %description runtime
 The advance toolchain is a self contained toolchain which provides preview
@@ -183,10 +184,15 @@ mkdir -p ${RPM_BUILD_ROOT}/etc/rc.d/init.d
 rm ${RPM_BUILD_ROOT}%{_infodir}/dir
 # Compress all of the info files.
 gzip -9nvf ${RPM_BUILD_ROOT}%{_infodir}/*.info*
-# Set a cronjob to run AT's ldconfig when the system's ldconfig is executed.
-mkdir -p ${RPM_BUILD_ROOT}/etc/cron.d/
-echo "@reboot root %{_bindir}/watch_ldconfig &" \
-      > ${RPM_BUILD_ROOT}/etc/cron.d/%{at_ver_alternative}_ldconfig
+# Set a systemd service to run AT's ldconfig when the system's ldconfig is \
+# executed.
+mkdir -p ${RPM_BUILD_ROOT}/etc/systemd/system/
+sed -e s:__AT_VER_REV_INTERNAL__:%{at_ver_rev_internal}: \
+    -e s:__AT_DEST__:%{_prefix}: %{_rpmdir}/cachemanager.service \
+    > ${RPM_BUILD_ROOT}/etc/systemd/system/%{at_ver_rev_internal}-cachemanager.service
+mkdir -p ${RPM_BUILD_ROOT}/etc/systemd/system-preset/
+echo "enable at*cachemanager.service" \
+    > ${RPM_BUILD_ROOT}/etc/systemd/system-preset/90-atcachemanager.preset
 
 ####################################################
 %pre runtime
@@ -224,10 +230,8 @@ ln -s /etc/localtime %{_prefix}/etc/localtime
 if [[ -f %{_sbindir}/ldconfig ]]; then
     %{_sbindir}/ldconfig
 fi
-echo "AT's linker cache file is not automatically updated when a package is \
-installed or modified."
-echo "Please run %{_bindir}/watch_ldconfig or reboot your system if you want \
-it to be."
+%systemd_post %{at_ver_rev_internal}-cachemanager.service
+systemctl restart %{at_ver_rev_internal}-cachemanager.service
 
 #---------------------------------------------------
 %post devel
@@ -328,6 +332,9 @@ if [ "$1" = 0 ]; then
     done
 fi
 
+####################################################
+%preun runtime
+%systemd_preun %{at_ver_rev_internal}-cachemanager.service
 
 ####################################################
 %postun runtime
@@ -345,6 +352,7 @@ if file /usr/sbin/ldconfig | grep "bash script" > /dev/null; then
         rm -f /usr/sbin/ldconfig
     fi
 fi
+%systemd_postun_with_restart %{at_ver_rev_internal}-cachemanager.service
 
 #---------------------------------------------------
 %postun devel

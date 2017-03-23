@@ -1107,6 +1107,7 @@ $(RCPTS)/package.rcpt: $(RCPTS)/$(pack-sys).rcpt $(RCPTS)/source_tarball.rcpt
 
 # Build and include the monitor (watch_ldconfig) utility
 $(RCPTS)/monitor.rcpt: $(RCPTS)/toolchain.rcpt
+	# RPM distros use a systemd service and DEB distros use a cronjob.
 	@echo "Preparing the system's ld.so.cache monitor"
 	@+{ $(AT_DEST)/bin/gcc -O2 -DAT_LDCONFIG_PATH=$(AT_DEST)/sbin/ldconfig \
 	         $(SCRIPTS_ROOT)/utilities/watch_ldconfig.c -o $(AT_DEST)/bin/watch_ldconfig; \
@@ -1116,8 +1117,15 @@ $(RCPTS)/monitor.rcpt: $(RCPTS)/toolchain.rcpt
 	    group=$$( ls $(DYNAMIC_SPEC)/ | grep "toolchain\$$" ); \
 	    echo "$(AT_DEST)/bin/watch_ldconfig" \
 	          >> $(DYNAMIC_SPEC)/$${group}/ldconfig.filelist; \
-	    echo "/etc/cron.d/$${at_ver_rev_internal//./}_ldconfig" \
-	          >> $(DYNAMIC_SPEC)/$${group}/ldconfig.filelist; \
+	    if [[ "$(pack-sys)" == "deb" ]]; then \
+	        echo "/etc/cron.d/$${at_ver_rev_internal//./}_ldconfig" \
+	             >> $(DYNAMIC_SPEC)/$${group}/ldconfig.filelist; \
+	    else \
+	        echo "${RPM_BUILD_ROOT}/etc/systemd/system/$(AT_VER_REV_INTERNAL)-cachemanager.service" \
+	             >> $(DYNAMIC_SPEC)/$${group}/ldconfig.filelist; \
+	        echo "${RPM_BUILD_ROOT}/etc/systemd/system-preset/90-atcachemanager.preset" \
+	             >> $(DYNAMIC_SPEC)/$${group}/ldconfig.filelist; \
+	    fi; \
 	    echo "All done."; \
 	} > $(LOGS)/_watch_ldconfig.log 2>&1
 	@touch $@

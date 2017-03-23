@@ -89,6 +89,8 @@ function pkg_build_rpms()
 		rev_number=${at_revision_number}
 	fi
 
+	cp "${utilities}/cachemanager.service" "${rpmdir}"
+
 	# Copy find-debuginfo.sh from the system and patch it to support
 	# debuginfo under /opt.
 	#
