@@ -1,0 +1,12 @@
+[Unit]
+Description=Advance Toolchain __AT_VER_REV_INTERNAL__ ld.so.cache manager
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+ProtectSystem=full
+PrivateDevices=true
+
+ExecStart=__AT_DEST__/bin/watch_ldconfig
+KillSignal=SIGKILL
