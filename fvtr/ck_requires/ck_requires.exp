@@ -175,7 +175,8 @@ proc process_deb_packages { packages cross_bld at_dest ldd_path } {
 		} else {
 			set deb_path $env(AT_WD)/debs/
 			set files [exec dpkg -c $deb_path/$package | \
-					tr " " "\n" | grep $at_dest ]
+					tr " " "\n" | grep $at_dest | \
+					sed "s/^.//" ]
 		}
 
 		# Initialize the hash of libraries found in the dependent
