@@ -41,7 +41,8 @@ runtime_exclude=('/^.*\.a$/d' \
 runtime_include=
 
 # Filters to use on devel package file exclusion (sed ERE)
-devel_exclude=('/^.*\/sbin\/ldconfig$/d')
+devel_exclude=('/^.*\/sbin\/ldconfig$/d' \
+               '/^.*\/bin\/watch_ldconfig$/d')
 
 # Filters to use on devel package file inclusion (grep ERE)
 devel_include=('^.*\.a$' \

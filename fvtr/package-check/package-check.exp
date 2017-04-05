@@ -175,7 +175,7 @@ proc test_at_pkgs { file_list package_name } {
 	#
 
 	# File patterns that shoud not be in the runtime package.
-	set runtime_exclude [join {"(?:^.*/bin/([^ep]|p[^iy]|e[^a]).*$)" \
+	set runtime_exclude [join {"(?:^.*/bin/([^epw]|p[^iy]|e[^a]).*$)" \
 		"(?:^.*/sbin/([^l]|l[^d]).*$)" \
 		"(?:^.*/include/(.*)$)" \
 		"(?:^.*/share/info/(.*)$)" \
