@@ -29,18 +29,23 @@
 # recommended unstaging or stashing changes before running it.
 #
 # Usage:
-#  update_revision <config/package/source> github <github_user> [PAT]
+#  update_revision <config/package/source> github <github_user> [PAT [signature]]
 #  update_revision <config/package/source> gerrit <gerrit_server> <gerrit_port>
 #
 #  The first parameter specifies which service to open a pull request
 #  on, after updating and commiting the sources file and committing.
 #
 #  If using GitHub, PAT stands for "Personal Access Token", and can be
-#  obtained on GitHub Setttings > Personal access tokens > Generate new
+#  obtained on GitHub Settings > Personal access tokens > Generate new
 #  token. For the current features of this script, only the public_repo
 #  scope is required to be enabled. In case you choose to omit your token,
 #  your topic remote branch will still be updated but no pull request
 #  will be opened.
+#    By default, this script will use your local git configuration to
+#  generate a signed-off-by line automatically for commits, which is
+#  required for contributing to AT. You may specify a custom signature
+#  as long as you also specify a PAT. Please follow the standard format,
+#  which is "your name here <your email here>".
 #
 #  If using Gerrit, after committing it attempts to send the change for
 #  review, according to the following rules:
@@ -52,15 +57,15 @@
 #  new patch set.
 
 # This script requires 3 or 4 parameters.
-if [[ ${#} -lt  3 ]] || [[ ${#} -gt 4 ]]; then
-	echo "update_revision.sh expects 3 or 4 parameters.";
-	return 1;
+if [[ ${#} -lt  3 ]] || [[ ${#} -gt 5 ]]; then
+	echo "update_revision.sh expects 3 to 5 parameters.";
+	exit 1;
 fi
 
 if [[ $2 -ne "github" ]] && [[ $2 -ne "gerrit" ]];
 then
 	echo "$2 is an invalid service. Please pick 'github' or 'gerrit'."
-	return 1
+	exit 1;
 fi
 
 service="$2"
@@ -69,6 +74,7 @@ service="$2"
 # Assume user access GitHub or Gerrit password-lessly
 GITHUB_USER=${3}
 GITHUB_TOKEN=${4}
+GITHUB_SIGNATURE=${5}
 
 GERRIT_USER=$(whoami)
 GERRIT_SERVER=${3}
@@ -78,13 +84,30 @@ source ${1};
 
 # If ATSRC_PACKAGE_CO is not defined, we skip the revision check.
 if ! [ -n "${ATSRC_PACKAGE_CO}" ] || ! [ -n "${ATSRC_PACKAGE_REV}" ]; then
-	return 0;
+	exit 0;
 fi
 
-# This function print a message with identation
+if [[ "${service}" = "github" ]];
+then
+	if [[ -z "${GITHUB_SIGNATURE}" ]];
+	then
+		GIT_USER=$(git config --global user.name)
+		GIT_EMAIL=$(git config --global user.email)
+
+		if [[ "${GIT_USER}" = "" ]] || [[ "${GIT_EMAIL}" = "" ]];
+		then
+			echo "Error: Git's user.name or user.email not configured."
+			exit 1;
+		fi
+
+		GITHUB_SIGNATURE="${GIT_USER} <${GIT_EMAIL}>"
+	fi
+fi
+
+# This function print a message with indentation
 #
 # Parameters:
-#     $1 - identation level. Any interger number greater or equal to zero.
+#     $1 - indentation level. Any integer number greater or equal to zero.
 #     $2 - the message.
 print_msg ()
 {
@@ -262,7 +285,7 @@ rights"
 		elif [[ $(echo "$authtxt" | grep -c 'Status: 200 OK') -gt 0 ]];
 		then
 			if [[ $(echo "$authtxt" | grep 'X-OAuth-Scopes:'\
-			      | grep -c "public_repo") -gt 0 ]];
+				| grep -cE -e "public_repo" -e "repo([[:cntrl:]]*$|,)") -gt 0 ]];
 			then
 				print_msg 0 "The token provides the necessary rights!"
 			else
@@ -324,7 +347,9 @@ public_repo scope enabled."
 
 	git add ${1}
 	local msg="Update ${pkg} on AT ${cfg}\n\
-Bump to revision ${2}\n\n"
+Bump to revision ${2}\n\n\
+\
+Signed-off-by: ${GITHUB_SIGNATURE}"
 
 	echo -e ${msg} | git commit -F -
 
