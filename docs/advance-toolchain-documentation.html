@@ -11,6 +11,7 @@
     <ul>
       <li><a href="#yast">Using YaST or Zypper (SLES12)</a></li>
       <li><a href="#yum">Using YUM and DNF (RHEL6/7 and Fedora 19/22)</a></li>
+      <li><a href="#powertools">Using IBM Linux on Power tools repository</a></li>
       <li><a href="#aptitude">Using Aptitude or apt (Ubuntu 14.04/14.10/16.04 and Debian 8)</a></li>
       <li><a href="#at_downloader">AT Downloader</a></li>
       <li><a href="#manual_install">Manual RPM Installation</a></li>
@@ -89,7 +90,9 @@
 <ul>
   <li>PPC970, POWER4, POWER5, POWER5+, POWER6, POWER6x and POWER7 optimized runtime libraries</li>
 </ul>
-<p>This self-contained toolchain does not rely on the system toolchain and requires minimum dependencies. Nor does it override the default Linux distribution toolchain (it is installed in <span style="font-family:courier new,courier,monospace;">/opt</span>). The latest release includes current stable versions of the following packages:</p>
+<p>This self-contained toolchain does not rely on the system toolchain and requires minimum dependencies. Nor does it override the default Linux distribution toolchain (it is installed in <span style="font-family:courier new,courier,monospace;">/opt</span>).</p>
+<p>The Advance Toolchain source code can be found at: <a href="https://github.com/advancetoolchain/advance-toolchain">https://github.com/advancetoolchain/advance-toolchain</a>.</p>
+<p>The latest release includes current stable versions of the following packages:</p>
 <ul>
 <li>GNU Compiler Collection (gcc, g++ and gfortran), plus individually optimized gcc runtime libraries for supported POWER processors</li>
 <li>GNU C library (glibc), individually optimized for supported POWER processors</li>
@@ -238,7 +241,7 @@ sudo apt-key add 6976a827.gpg.key
   </li>
 </ol>
 
-<h3>Zypper</h3>
+<h3><a name="zypper">Zypper</a></h3>
 
 <p>To install using Zypper, you first need (as <b>root</b>) to add the Unicamp FTP to the repository list:</p>
 
@@ -347,11 +350,34 @@ yum install advance-toolchain-atX.X-cross-ppc64
 
 <p>YUM supports package upgrades for new revision releases (i.e. <i>5.0-0</i> to <i>5.0-1</i>). For new major releases (i.e. <i>5.0-8</i> to <i>6.0-1</i>), please proceed as in a normal installation.</p>
 <br>
+
+<h2><a name="powertools">Using IBM Linux on Power tools repository</a></h2>
+
+<p>Advance Toolchain is part of the IBM Linux on Power tools repository, you can get AT's repository configured by installing the ibm-power-repo package:</p>
+<ul>
+	<li>Download the RPM package from <a href="https://www14.software.ibm.com/webapp/set2/sas/f/lopdiags/yum.html">https://www14.software.ibm.com/webapp/set2/sas/f/lopdiags/yum.html</a>.</li>
+	<li>Install the ibm-power-repo RPM package, by running the following command with root user privileges:</li>
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+rpm -ivh ibm-power-repo-latest.noarch.rpm
+  </pre>
+</blockquote>
+	<li>After the installation, run the following command with root user privileges:</li>
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+/opt/ibm/lop/configure
+  </pre>
+</blockquote>
+</ul>
+<p>Then you can install AT by using <a href="#yum">yum</a> or <a href="#zypper">zypper</a> commands.</p>
+<br>
+
 <h2><a name="at_downloader">AT Downloader</a></h2>
 
 <p>There is a tool available to download AT called <a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/at_downloader/">AT Downloader</a>.</p>
-<p>The  <a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/at_downloader/">AT Downloader</a> is a script to download the latest version of the AT packages for a supported distribution.</p>
+<p>The  <a href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/at_downloader/">AT Downloader</a> is a script to download the latest version of <i>all of</i> the AT packages for a supported distribution and create an ISO image if desired.</p>
 <p>You can then manually install the AT packages on your systems.</p>
+<p><b>Note:</b> The preferred method to download AT is configuring the repository (see <a href="#yast">Yast</a>, <a href="#yum">Yum</a>, <a href="#aptitude">Aptitude and <a href="#powertools">IBM Linux on Power tools repository</a>), the intention of this script is to help users that have limited internet access on their power servers.</p>
 
 <br>
 <h2><a name="manual_install">Manual RPM installation</a></h2>
@@ -601,6 +627,13 @@ sudo apt-get install advance-toolchain-atX.X-cross-ppc64
 PATH=/opt/atX.X/bin:/opt/atX.X/sbin:$PATH make
 </pre>
 </blockquote>
+
+<p>On cmake build systems, it is also necessary to set the <span style="font-family:courier new,courier,monospace;">CMAKE_PREFIX_PATH</span> with AT's path, for example:</p>
+<blockquote style="margin-left:40px">
+  <pre style="font-family:courier new,courier,monospace;">
+CMAKE_PREFIX_PATH=/opt/atX.X/
+  </pre>
+</blockquote>
 <br>
 <h2><a name="manpages">Manual Pages</a></h2>
 
@@ -829,6 +862,16 @@ LD_DEBUG=all ./mandelbrot
 <p><span style="font-family:courier new,courier,monospace;">/opt/atX.X/etc/ld.so.conf</span> already includes <span style="font-family:courier new,courier,monospace;">/etc/ld.so.conf</span> in the search order, but you may need to re-run <span style="font-family:courier new,courier,monospace;">/opt/atX.X/sbin/ldconfig</span> in order populate <span style="font-family:courier new,courier,monospace;">/opt/atX.X/etc/ld.so.cache</span> with the specialized search paths you have added to <span style="font-family:courier new,courier,monospace;">/etc/ld.so.conf</span> after an Advance Toolchain installation.</p>
 
 <p>If you are running <span style="font-family:courier new,courier,monospace;">ldd</span> against your binary and it is showing that some libraries are not found, you may need to re-run <span style="font-family:courier new,courier,monospace;">/opt/atX.X/sbin/ldconfig</span> to fix that.</p>
+
+<p>The environment variable LD_LIBRARY_PATH is a colon-separated set of directories where libraries should be searched first before the standard set of directories. This list is used in preference to any runtime or default system linker path.</p>
+<p>We do not recomend the use of LD_LIBRARY_PATH, you can usually rely on the list compiled in path, but if you have to use it (e.g. your build system uses LD_LIBRARY_PATH or has it as part of a wrapper) be sure that a system directory <b>never appears before</b> the Advance Toolchain directory.</p>
+
+<p>Example:</p>
+<blockquote style="margin-left:40px">
+  <span style="font-family:courier new,courier,monospace;">
+LD_LIBRARY_PATH=/opt/atX.X/lib64:/lib64:$LD_LIBRARY_PATH
+  </span>
+</blockquote>
 <br>
 <h2><a name="tle">Lock Elision support in glibc</a></h2>
 <p>Transactional Lock Elision (TLE) is a technique, implemented on top of the Hardware Transactional Memory, which allows critical sections of code to be speculatively executed by multiple threads, potentially without serializing. In the ideal case, this allows multiple threads to execute such a section of code in parallel. When a data race does occur, each thread will make several attempts to elide the lock
@@ -1232,7 +1275,7 @@ zypper what-provides &lt;feature&gt;
 <br>
 <h1><a name="support">Support</a></h1>
 
-<p>Customer support for the Advance Toolchain is provided in one of three ways:</p>
+<p>Customer support for the Advance Toolchain is provided in one of the following ways:</p>
 
 <ul>
 <li>If you are using the Advance Toolchain as directed by an IBM product team (i.e. IBM XL Compiler or PowerVM Lx86), please report the suspected issues to the IBM Support using that product name and entitlement.</li>
@@ -1254,6 +1297,7 @@ zypper what-provides &lt;feature&gt;
       <li>An initial response will be attempted within 2 business days.</li>
     </ol>
   </li>
+<li>Also, if you have a GitHub account you can open an issue in the <a href="https://github.com/advancetoolchain/advance-toolchain/issues">Advance Toolchain repository</a>.</li>
 </ul>
 
 <p>The Advance Toolchain is supported on <a href="#distros">many Linux distributions</a>.</p>
