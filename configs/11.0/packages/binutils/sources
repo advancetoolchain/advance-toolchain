@@ -55,7 +55,5 @@ atsrc_apply_patches ()
 {
 	#Fix error: comparison between pointer and zero character constant
 	#[-Werror=pointer-compare] in stabs.c
-	patch -p1 < fix-incorrect-indirection.patch
-
-	return 0
+	patch -p1 < fix-incorrect-indirection.patch || return ${?}
 }
