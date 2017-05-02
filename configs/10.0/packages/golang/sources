@@ -41,8 +41,7 @@ ATSRC_PACKAGE_BUNDLE=golang
 
 atsrc_get_patches ()
 {
-	# Built with Go 1.5.2 on amd64.
 	at_get_patch \
-		http://ausgsa.ibm.com/projects/p/ppctoolchain/web/public/download/go-linux-ppc64le-bootstrap.tbz \
-		74fa545069655c854bdee70c0536dfa5 || return ${?}
+		https://storage.googleapis.com/golang/go1.8.1.linux-ppc64le.tar.gz \
+		8c74ee3647048c3e18802a901821e270 || return ${?}
 }
