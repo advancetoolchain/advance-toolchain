@@ -42,10 +42,8 @@ ATSRC_PACKAGE_BUNDLE=main_toolchain
 atsrc_get_patches ()
 {
 	# Patch that is applied to every ibm branch
-	# TODO: Apply this to the ibm branch after 2.23 is release and before
-	# AT 10.0 is released.
 	at_get_patch \
-		http://pokgsa.ibm.com/home/g/f/gftg/web/public/patches/glibc/0001-Remove-assert-if-DT_RUNPATH-and-DT_RPATH-flags-are-f.patch \
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/2b67d9b6b6b5f8914e8579ad50ec2c69ddcf6198/GLIBC%20PowerPC%20Backport/2.26/0001-Remove-assert-if-DT_RUNPATH-and-DT_RPATH-flags-are-f.patch \
 		7b746cf156702fb7a566743f3f1966e2 || return ${?}
 
 	# Only enable TLE if:
