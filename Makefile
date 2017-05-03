@@ -1106,18 +1106,19 @@ $(RCPTS)/package.rcpt: $(RCPTS)/$(pack-sys).rcpt $(RCPTS)/source_tarball.rcpt
 	@touch $@
 
 # Build and include the monitor (watch_ldconfig) utility
+# RPM distros use a systemd service and DEB distros use a cronjob.
 $(RCPTS)/monitor.rcpt: $(RCPTS)/toolchain.rcpt
-	# RPM distros use a systemd service and DEB distros use a cronjob.
 	@echo "Preparing the system's ld.so.cache monitor"
 	@+{ $(AT_DEST)/bin/gcc -O2 -DAT_LDCONFIG_PATH=$(AT_DEST)/sbin/ldconfig \
 	         $(SCRIPTS_ROOT)/utilities/watch_ldconfig.c -o $(AT_DEST)/bin/watch_ldconfig; \
 	    echo "Monitor sucesfully compiled."; \
 	    echo "Updating the SPEC files"; \
 	    at_ver_rev_internal=$$( echo $(AT_VER_REV_INTERNAL) ); \
+	    at_major_version=$$( echo $(AT_MAJOR_VERSION) ); \
 	    group=$$( ls $(DYNAMIC_SPEC)/ | grep "toolchain\$$" ); \
 	    echo "$(AT_DEST)/bin/watch_ldconfig" \
 	          >> $(DYNAMIC_SPEC)/$${group}/ldconfig.filelist; \
-	    if [[ "$(pack-sys)" == "deb" ]]; then \
+	    if [[ "$(pack-sys)" == "deb" || $${at_major_version%.*} -lt  9 ]]; then \
 	        echo "/etc/cron.d/$${at_ver_rev_internal//./}_ldconfig" \
 	             >> $(DYNAMIC_SPEC)/$${group}/ldconfig.filelist; \
 	    else \
