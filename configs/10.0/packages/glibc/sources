@@ -21,7 +21,7 @@
 
 ATSRC_PACKAGE_NAME="GNU C Library"
 ATSRC_PACKAGE_VER=2.24
-ATSRC_PACKAGE_REV=3af49a0209be
+ATSRC_PACKAGE_REV=2667457e45fd
 ATSRC_PACKAGE_LICENSE="LGPL 2.1"
 ATSRC_PACKAGE_DOCLINK="http://www.gnu.org/software/libc/manual/html_node/index.html"
 ATSRC_PACKAGE_RELFIXES=
@@ -48,18 +48,11 @@ atsrc_get_patches ()
 	at_get_patch \
 		https://raw.githubusercontent.com/powertechpreview/powertechpreview/26747dc0bfb0f8f30de9ebad78847a96d3191ba5/GLIBC%20PowerPC%20Backport/2.22/0001-powerpc-Conditionally-enable-TLE.patch \
 		801c05ea780220e8b4cf931af8c86946 || return ${?}
-
-	# TODO: Remove this patch after it's backported to glibc 2.24.
-	at_get_patch \
-		http://pokgsa.ibm.com/home/t/u/tulioqm/web/public/patches/glibc/florian-tcmalloc-fix.patch \
-		88204e55e255fc4661da066eefe1dd1f || return ${?}
 }
 
 atsrc_apply_patches ()
 {
 	patch -p1 < 0001-powerpc-Conditionally-enable-TLE.patch || return ${?}
-
-	patch -p1 < florian-tcmalloc-fix.patch || return ${?}
 
 	return 0
 }
