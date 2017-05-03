@@ -230,7 +230,8 @@ ln -s /etc/localtime %{_prefix}/etc/localtime
 if [[ -f %{_sbindir}/ldconfig ]]; then
     %{_sbindir}/ldconfig
 fi
-%systemd_post %{at_ver_rev_internal}-cachemanager.service
+systemctl --no-reload preset %{at_ver_rev_internal}-cachemanager.service \
+    > /dev/null 2>&1 || :
 systemctl restart %{at_ver_rev_internal}-cachemanager.service
 
 #---------------------------------------------------
@@ -334,7 +335,8 @@ fi
 
 ####################################################
 %preun runtime
-%systemd_preun %{at_ver_rev_internal}-cachemanager.service
+systemctl --no-reload disable --now \
+    %{at_ver_rev_internal}-cachemanager.service > /dev/null 2>&1 || :
 
 ####################################################
 %postun runtime
@@ -352,7 +354,8 @@ if file /usr/sbin/ldconfig | grep "bash script" > /dev/null; then
         rm -f /usr/sbin/ldconfig
     fi
 fi
-%systemd_postun_with_restart %{at_ver_rev_internal}-cachemanager.service
+systemctl try-restart %{at_ver_rev_internal}-cachemanager.service >/dev/null \
+    2>&1 || :
 
 #---------------------------------------------------
 %postun devel
