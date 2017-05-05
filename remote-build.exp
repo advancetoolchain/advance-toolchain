@@ -41,17 +41,6 @@ if {[file exists ${conf}]} {
 	source ${conf}
 }
 
-# Define default value of variables if not previously defined
-# Directory used by the script to save its files.
-set_def tray_dir ~/tmp/at-build-tray
-# Directory where AT will be installed (aka DESTDIR).
-set_def destdir "\${HOME}/opt"
-set_def default_timeout 30; # 30 seconds
-
-# Directory where AT is installed
-# Before start the building, all AT installs with the same version of that
-# specified in the parameters are removed
-set at_dest ~/opt
 set prompt "(%|>|\#|\\\$)\[\[:space:\]\]*$"
 
 # Request passwords once per server
@@ -67,8 +56,17 @@ proc print_usage { } {
 	puts "Usage: $argv0 version servers"
 	puts ""
 	puts "Options:"
-	puts "	--buildarch=		Specify the value of BUILD_ARCH."
-	puts "	--help			Print this message."
+	puts "	--buildarch=	Specify the value of BUILD_ARCH."
+	puts "	--help		Print this message."
+	puts "	--trayprefix=	Writes to the variable \$trayprefix."
+	puts "			Default value is '~/tmp/at-build-tray'."
+	puts "	--destprefix=	Writes to the variable \$destprefix."
+	puts "			Default value is '~/opt'."
+	puts "	--atdir=	Writes to the variable \$atdir."
+	puts "			Default value is '.'."
+	puts ""
+	puts "	AT will always be copied to \$trayprefix/\$atdir and installed"
+	puts "	to \$destprefix/\$atdir."
 	puts ""
 	puts "Example:"
 	puts "	$argv0 4.0 server1 user@server2"
@@ -85,6 +83,17 @@ proc dettach_screen { } {
 # Default values
 set buildarch ""
 
+set_def default_timeout 30; # 30 seconds
+
+# trayprefix, destprefix and atdir can be specified in the config file or
+# through parameters. This script will ALWAYS copy the AT files to
+# $trayprefix/$atdir and install to $destprefix/$atdir. The order of
+# preference for these variables is:
+# Parameters > Configuration file > Default values
+set_def trayprefix ~/tmp/at-build-tray
+set_def destprefix ~/opt
+set_def atdir .
+
 # Parse optional arguments
 set argi 0
 while { ${argi} < ${argc} } {
@@ -100,6 +109,27 @@ while { ${argi} < ${argc} } {
 					 a buildarch}] } {
 				error "Could not parse ${arg}"
 			}
+		}
+		"--trayprefix=[^ ]*" {
+			if { [catch {regexp -- "--trayprefix=(\[^ \]*)" ${arg} \
+					 a tmpvar}] } {
+				error "Could not parse ${arg}"
+			}
+		 	set trayprefix $tmpvar
+		}
+		"--destprefix=[^ ]*" {
+			if { [catch {regexp -- "--destprefix=(\[^ \]*)" ${arg} \
+					 a tmpvar}] } {
+				error "Could not parse ${arg}"
+			}
+			set destprefix $tmpvar
+		}
+		"--atdir=[^ ]*" {
+			if { [catch {regexp -- "--atdir=(\[^ \]*)" ${arg} \
+					 a tmpvar}] } {
+				error "Could not parse ${arg}"
+			}
+			set atdir $tmpvar
 		}
 		default break
 	}
@@ -123,6 +153,15 @@ if { ! [file exists configs/${at_version}] } {
 puts "AT version: $at_version"
 puts "Servers: $servers"
 
+# Please note that using "set tray_dir" and "set destdir" implies that
+# if you try to set those on your config file, they will be overridden
+# here, so please use trayprefix, destprefix and atdir to specify the
+# desired paths.
+
+# Directory used by the script to save its files.
+set tray_dir $trayprefix/$atdir
+# Directory where AT will be installed (aka DESTDIR).
+set destdir $destprefix/$atdir
 set timeout $default_timeout
 
 spawn make pack
