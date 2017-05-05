@@ -49,6 +49,11 @@ atsrc_get_patches ()
 		https://sourceware.org/ml/binutils/2017-02/msg00269.html \
 		fix-incorrect-indirection.patch 14 \
 		80e3c4062604f28f186289db0167b592 || return ${?}
+
+	at_get_patch_and_trim \
+		https://sourceware.org/ml/binutils/2017-03/msg00173.html \
+		fix-urcu-rpath-error.patch 22 \
+		432efb927703c670c46475c72d1170a1 || return ${?}
 }
 
 atsrc_apply_patches ()
@@ -56,4 +61,7 @@ atsrc_apply_patches ()
 	#Fix error: comparison between pointer and zero character constant
 	#[-Werror=pointer-compare] in stabs.c
 	patch -p1 < fix-incorrect-indirection.patch || return ${?}
+
+	# Fix liburcu not found error on cross compiler.
+	patch -p1 < fix-urcu-rpath-error.patch || return ${?}
 }
