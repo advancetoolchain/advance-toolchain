@@ -26,7 +26,7 @@ ATSRC_PACKAGE_DOCLINK="https://docs.python.org/3.5/"
 ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
 ATSRC_PACKAGE_PRE="test -d Python-${ATSRC_PACKAGE_VER}"
-ATSRC_PACKAGE_CO=([0]="wget -N --no-check-certificate http://www.python.org/ftp/python/${ATSRC_PACKAGE_VER}/Python-${ATSRC_PACKAGE_VER}.tgz")
+ATSRC_PACKAGE_CO=([0]="wget -N --no-check-certificate https://www.python.org/ftp/python/${ATSRC_PACKAGE_VER}/Python-${ATSRC_PACKAGE_VER}.tgz")
 ATSRC_PACKAGE_POST="tar -zxf Python-${ATSRC_PACKAGE_VER}.tgz"
 ATSRC_PACKAGE_SRC=${AT_BASE}/sources/Python-${ATSRC_PACKAGE_VER}
 ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/python

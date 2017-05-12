@@ -26,7 +26,7 @@ ATSRC_PACKAGE_DOCLINK="http://lttng.org/urcu"
 ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
 ATSRC_PACKAGE_PRE="test -d userspace-rcu-${ATSRC_PACKAGE_VER}"
-ATSRC_PACKAGE_CO=([0]="wget -N http://lttng.org/files/urcu/userspace-rcu-${ATSRC_PACKAGE_VER}.tar.bz2")
+ATSRC_PACKAGE_CO=([0]="wget -N https://lttng.org/files/urcu/userspace-rcu-${ATSRC_PACKAGE_VER}.tar.bz2")
 ATSRC_PACKAGE_POST="tar -xjf userspace-rcu-${ATSRC_PACKAGE_VER}.tar.bz2"
 ATSRC_PACKAGE_SRC="${AT_BASE}/sources/userspace-rcu-${ATSRC_PACKAGE_VER}"
 ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/userspace-rcu

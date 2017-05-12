@@ -26,7 +26,7 @@ ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
 ATSRC_PACKAGE_LICENSE="MIT License"
 ATSRC_PACKAGE_PRE="test -d expat-${ATSRC_PACKAGE_VER}"
-ATSRC_PACKAGE_CO=([0]="wget -N http://downloads.sourceforge.net/project/expat/expat/${ATSRC_PACKAGE_VER}/expat-${ATSRC_PACKAGE_VER}.tar.gz")
+ATSRC_PACKAGE_CO=([0]="wget -N https://downloads.sourceforge.net/project/expat/expat/${ATSRC_PACKAGE_VER}/expat-${ATSRC_PACKAGE_VER}.tar.gz")
 ATSRC_PACKAGE_POST="tar -xzf expat-${ATSRC_PACKAGE_VER}.tar.gz"
 ATSRC_PACKAGE_SRC=${AT_BASE}/sources/expat-${ATSRC_PACKAGE_VER}
 ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/expat

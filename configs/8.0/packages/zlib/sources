@@ -26,8 +26,8 @@ ATSRC_PACKAGE_DOCLINK="http://www.zlib.net/manual.html"
 ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
 ATSRC_PACKAGE_PRE="test -d zlib-${ATSRC_PACKAGE_VER}"
-ATSRC_PACKAGE_CO=([0]="wget -N http://zlib.net/zlib-${ATSRC_PACKAGE_VER}.tar.gz" \
-                  [1]="wget -N http://downloads.sourceforge.net/project/libpng/zlib/${ATSRC_PACKAGE_VER}/zlib-${ATSRC_PACKAGE_VER}.tar.gz")
+ATSRC_PACKAGE_CO=([0]="wget -N https://zlib.net/zlib-${ATSRC_PACKAGE_VER}.tar.gz" \
+                  [1]="wget -N https://downloads.sourceforge.net/project/libpng/zlib/${ATSRC_PACKAGE_VER}/zlib-${ATSRC_PACKAGE_VER}.tar.gz")
 ATSRC_PACKAGE_POST="tar -xzf zlib-${ATSRC_PACKAGE_VER}.tar.gz"
 ATSRC_PACKAGE_SRC="${AT_BASE}/sources/zlib-${ATSRC_PACKAGE_VER}"
 ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/zlib

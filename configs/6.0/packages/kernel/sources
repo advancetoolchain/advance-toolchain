@@ -31,7 +31,7 @@ ATSRC_PACKAGE_DOCLINK="https://www.kernel.org/doc/"
 ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
 ATSRC_PACKAGE_PRE="test -d linux-${ATSRC_PACKAGE_VER}"
-ATSRC_PACKAGE_CO=([0]="wget -N http://www.kernel.org/pub/linux/kernel/${ATSRC_PACKAGE_SRC_PATH}/linux-${ATSRC_PACKAGE_VER}.tar.gz" \
+ATSRC_PACKAGE_CO=([0]="wget -N https://www.kernel.org/pub/linux/kernel/${ATSRC_PACKAGE_SRC_PATH}/linux-${ATSRC_PACKAGE_VER}.tar.gz" \
 		  [1]="wget -N http://kernel.c3sl.ufpr.br/pub/linux/kernel/${ATSRC_PACKAGE_SRC_PATH}/linux-${ATSRC_PACKAGE_VER}.tar.gz")
 ATSRC_PACKAGE_POST="tar -xzf linux-${ATSRC_PACKAGE_VER}.tar.gz"
 ATSRC_PACKAGE_SRC=${AT_BASE}/sources/linux-${ATSRC_PACKAGE_VER}

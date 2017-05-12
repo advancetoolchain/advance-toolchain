@@ -26,7 +26,7 @@ ATSRC_PACKAGE_DOCLINK="http://www.multiprecision.org/index.php?prog=mpc&page=doc
 ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
 ATSRC_PACKAGE_PRE="test -d mpc-${ATSRC_PACKAGE_VER}"
-ATSRC_PACKAGE_CO=([0]="wget -N http://www.multiprecision.org/mpc/download/mpc-${ATSRC_PACKAGE_VER}.tar.gz" \
+ATSRC_PACKAGE_CO=([0]="wget -N https://www.multiprecision.org/mpc/download/mpc-${ATSRC_PACKAGE_VER}.tar.gz" \
 		  [1]="wget -N ftp://ftp.unicamp.br/pub/gnu/mpc/mpc-${ATSRC_PACKAGE_VER}.tar.gz")
 ATSRC_PACKAGE_POST="tar -xzf mpc-${ATSRC_PACKAGE_VER}.tar.gz"
 ATSRC_PACKAGE_SRC=${AT_BASE}/sources/mpc-${ATSRC_PACKAGE_VER}
