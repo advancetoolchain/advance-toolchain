@@ -258,6 +258,11 @@ Bump to revision ${2}\n\n"
 #    $2 - revision ID
 send_to_github ()
 {
+	# Get AT config and package being updated.
+	# Expected a string like "<path-to-AT>/next/valgrind/source"
+	pkg=$(echo ${1} | awk -F "/" '{ print $(NF-1) }')
+	cfg=$(echo ${1} | awk -F "/" '{ print $(NF-3) }')
+
 	print_msg 1 "Preparing commit to send for review."
 
 	# Check connection to GitHub
@@ -298,13 +303,46 @@ public_repo scope enabled."
 			echo "$authtxt" | grep "Status:"
 			return 1
 		fi
+
+		print_msg 2 "Checking if a pull request to update this package \
+already exists, to avoid overwriting."
+
+		searchparamslist=('user:advancetoolchain' \
+		'repo:advance-toolchain' \
+		'state:open' \
+		'type:pr' \
+		'in:title' \
+		"author:$GITHUB_USER" \
+		"Update+${pkg}+on+AT+${cfg}")
+		searchparams=$(printf "+%s" "${searchparamslist[@]}")
+		searchparams=${searchparams:1}
+
+		prexists=$(curl https://api.github.com/search/issues?q=$searchparams \
+		-si -H "Authorization: token $GITHUB_TOKEN")
+
+		if [[ $? -ne 0 ]];
+		then
+			print_msg 0 "cURL to GitHub API exited with non zero status."
+			return 1
+		elif [[ $(echo "$prexists" | grep -c 'Status: 200 OK') -gt 0 ]];
+		then
+			if [[ $(echo "$prexists" | grep -m 1 "total_count" \
+			   | grep -oE "[0-9]+") -gt 0 ]];
+			then
+				print_msg 0 "There already is an open pull request for $pkg on AT \
+$cfg. Aborting operation..."
+				return 1
+			else
+				print_msg 0 "No open pull request for this package and configset \
+exists!"
+			fi
+		else
+			print_msg 0 "Unexpected error. Here's the status GitHub API returned:"
+			echo "$prexists" | grep "Status:"
+			return 1
+		fi
 	fi
 	print_msg 0 "Connection can be established."
-
-	# Get AT config and package being updated.
-	# Expected a string like "<path-to-AT>/next/valgrind/source"
-	pkg=$(echo ${1} | awk -F "/" '{ print $(NF-1) }')
-	cfg=$(echo ${1} | awk -F "/" '{ print $(NF-3) }')
 
 	local target_remote=git@github.com:${GITHUB_USER}/advance-toolchain.git
 	local target_branch=auto-update_${cfg}_${pkg}
@@ -403,7 +441,7 @@ update_revision ()
 	# TODO: weak check - some revisions have less than 12 chars.
 	if [[ ${2} -eq ${ATSRC_PACKAGE_REV} ]]; then
 		print_msg 0 "Sources at latest revision already. Nothing to be done."
-		return 0;
+		exit 0;
 	fi
 
 	print_msg 1 "Updating ${1} to the latest revision.";
