@@ -92,7 +92,7 @@ set_def default_timeout 30; # 30 seconds
 # Parameters > Configuration file > Default values
 set_def trayprefix ~/tmp/at-build-tray
 set_def destprefix ~/opt
-set_def atdir .
+set_def atdir ""
 
 # Parse optional arguments
 set argi 0
