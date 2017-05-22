@@ -26,7 +26,7 @@ ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}-r${ATSRC_PACKA
 ATSRC_PACKAGE_LICENSE="LGPL 2.1"
 ATSRC_PACKAGE_DOCLINK="http://www.gnu.org/software/libc/manual/html_node/index.html"
 ATSRC_PACKAGE_PRE="test -d eglibc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
-ATSRC_PACKAGE_CO=([0]="svn co --revision ${ATSRC_PACKAGE_REV} svn://svn.eglibc.org/branches/eglibc-2_15/libc")
+ATSRC_PACKAGE_CO=([0]="svn co --revision ${ATSRC_PACKAGE_REV} http://www.eglibc.org/svn/branches/eglibc-2_15/libc")
 ATSRC_PACKAGE_GIT=""
 ATSRC_PACKAGE_POST="mv libc eglibc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_SRC=${AT_BASE}/sources/eglibc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}
