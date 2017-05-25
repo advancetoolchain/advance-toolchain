@@ -1,1 +1,42 @@
-../../10.0/release_notes/relfixes.html
+<li>POWER9 enablement.</li>
+<li>POWER8 Optimized scheduler.</li>
+<li>Requires at least POWER7 for ppc64 and POWER8 for ppc64le.</li>
+<li>POWER8 Transactional Memory enablement.</li>
+<li>POWER8 Crypto Operations enablement.</li>
+<li>POWER8 Fusion enablement.</li>
+<li>POWER8 optimized system libraries.</li>
+<li>GCC creates binaries using --mcpu=power8 --mtune=power9 by default on ppc64le.</li>
+<li>Support for <a href="http://golang.org/">Go Programming Language</a>.</li>
+<li>Support for split stack.</li>
+
+<h3>New features in 11.0-0</h3>
+<ul>
+	<li>GCC's POWER9 min/max support disabled.</li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
+<h3>New features in 10.0-4</h3>
+<ul>
+	<li>GCC provides:</li>
+	<ul>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=79752">incorrect code generation for __divkf3</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=79449">builtin expansion of strncmp crossing page boundary</a> and <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=79170">memcmp builtin expansion sequence overflow</a>.</li>
+		<li>Fix ICEs in <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=79951">extract_insn</a>, <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=78543">push_reload</a>, <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=71294">gen_add2_insn</a>, and <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=79947">rs6000_emit_swsqrt</a>.</li>
+		<li>New <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80123">wA constraint</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80246">dxex[q] and diex[q] POWER builtins using wrong types</a>.</li>
+	</ul>
+	<li>Binutils provides:</li>
+	<ul>
+		<li>POWER9 instructions scv and rfscv added.</li>
+		<li>Support for lnia extended mnemonic.</li>
+		<li>-maltivec and -mvsx GAS options mimic GCC's behaviour.</li>
+		<li>PowerPC .gnu.attributes extended.</li>
+	</ul>
+	<li>The GNU C Library provides:</li>
+	<ul>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=18784">CVE-2015-5180: crash with internal QTYPE</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=21253">Larger min stack for -fstack-check</a>.</li>
+	</ul>
+</ul>
