@@ -1,23 +1,23 @@
 #!/bin/bash
 #
 ###############################################################################
-# Copyright (c) 2015 IBM Corporation.
+# Copyright (c) 2015, 2017 IBM Corporation.
 # All rights reserved. This program and the accompanying materials
 # are made available under the terms of the Eclipse Public License v1.0
 # which accompanies this distribution, and is available at
 # http://www.eclipse.org/legal/epl-v10.html
 # Contributors:
 #   IBM Corporation, Raphael Zinsly - initial implementation and documentation.
+#   IBM Corporation, Rafael Sene - filter download by architecture
 ###############################################################################
 #
-# The Advance Toolchain (AT) downloader is a tool to download the latest AT
-# for a supported distribution.
-# This script looks at the official FTP to find the availables distributions
-# and AT's versions.
-# The latest AT from a chosen version will be downloaded.
+# The Advance Toolchain (AT) downloader is an automated script which downloads
+# the latest AT version for any of the supported Linux distribution. It  gets
+# the necessary information regarding the available versions and distributions
+# from its official FTP server and downloads the latest AT from a choosen
+# version.
 #
 echo "Advance Toolchain downloader"
-
 at_url="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/"
 # Initialize the variables.
 pwd=$(pwd)
@@ -74,7 +74,6 @@ MAKEISO=false
 while [[ $# > 0 ]]
 do
 	key="$1"
-
 	case $key in
 		-h|--help)
 			usage
@@ -322,14 +321,31 @@ ${distro}."
 	fi
 fi
 
+# Get the user architecture in order to download only a specific
+# set of packages
+echo "Architecture:"
+user_arch=$(uname -m)
+if [[ ${debian} == yes ]]; then
+	at_archs=($( wget -q -O - ${url} | grep -oE '>binary-[/A-Za-z0-9-]+<' | \
+	awk -F'[-/]' '{print $2}' | sort ))
+else
+	at_archs=($( wget -S --spider ${url} 2>&1 | grep -o -P \
+    	"(?<=${at_major}-${at_minor}).*(?=rpm)" | tr -d . | sort | uniq ))
+fi
+print_directories at_archs
+read -e -p "Choose the architecture (${user_arch})?: " at_arch
+at_arch=$( handle_option at_archs ${at_arch} ${user_arch} )
+
 # Debian systems have a different directory structure.
 if [[ ${debian} == "yes" ]]; then
-	download_url="${url}/binary-ppc64el/*${at_major}-${at_minor}* \
-		      ${url}/binary-i386/*${at_major}-${at_minor}*"
+	if [ ${at_arch} == 'ppc64le' ];then
+		at_arch='ppc64'$(echo "${at_arch: -2}" | rev)
+	fi
+	download_url="${url}/binary-$at_arch/*${at_major}-${at_minor}*"
 	# Set to download DEB packages.
 	extensions="deb"
 else
-	download_url="${url}/*${at_major}-${at_minor}*"
+	download_url="${url}/*${at_major}-${at_minor}*.${at_arch}.*"
 	# Set to download RPM packages.
 	extensions="rpm"
 fi
@@ -341,12 +357,20 @@ if [[ $? -ne 0  ]]; then
 	echo "Error: Not able to access ${output}!"
 	clean_exit 1
 fi
-# Download the packages.
-echo "Downloading AT ${at_major}-${at_minor} on $(pwd) ..."
-wget -A ${extensions} --progress=dot:mega ${download_url} 2>&1 \
-     | grep -E ' =>|[KM] \.| saved '
-if [[ $? -ne 0 ]]; then
-	echo "Error: The packages were not downloaded correctly."
+
+# Check if remote file exists then download it
+if [[ `wget -S --spider ${download_url}  2>&1 | grep -o -P \
+    '(?<=File).*(?=exists)'` ]]; then
+	# Download the packages.
+	echo "Downloading AT ${at_major}-${at_minor} on $(pwd) ..."
+	wget -A ${extensions} --progress=dot:mega ${download_url} 2>&1 \
+	| grep -E ' =>|[KM] \.| saved '
+	if [[ $? -ne 0 ]]; then
+		echo "Error: The packages were not downloaded correctly."
+		clean_exit 1
+	fi
+else
+	echo 'Could not download '${download_url}
 	clean_exit 1
 fi
 
@@ -354,23 +378,23 @@ fi
 echo "Checking the integrity of the files..."
 # Get the list of packages and the checksums from the server.
 if [[ ${debian} == "yes" ]]; then
-	wget -q -O - "${url}/binary-ppc64el/ ${url}/binary-i386/" \
+	wget -q -O - "${url}/binary-$at_arch/" \
 	     | grep deb | awk -F'[/"]' '{print $16}' > ${tmp_file}
-	wget -q -O ${checksums_file} "${url}/binary-ppc64el/Packages  \
-	     ${url}/binary-i386/Packages"
+	wget -q -O ${checksums_file} "${url}/binary-$at_arch/Packages"
 else
 	wget -q -O - ${url} | grep rpm | awk -F'[/"]' '{print $13}' \
 	     > ${tmp_file}
 	wget -q -O ${checksums_file} ${url}/MD5SUMS
 fi
-
 files=$( cat ${tmp_file} | grep ${at_major}-${at_minor} )
 for file in ${files}; do
-	checksum=$( md5sum ${file} | awk '{print $1}' )
-	cat ${checksums_file} | grep ${checksum} > /dev/null 2>&1
-	if [[ $? -ne 0 ]]; then
-		echo "File ${file} corrupted!"
-		clean_exit 1
+	if [[ ${file} == *.${at_arch}.* ]]; then
+		checksum=$( md5sum ${file} | awk '{print $1}' )
+		cat ${checksums_file} | grep ${checksum} > /dev/null 2>&1
+		if [[ $? -ne 0 ]]; then
+			echo "File ${file} corrupted!"
+			clean_exit 1
+		fi
 	fi
 done
 echo "All files are good."
