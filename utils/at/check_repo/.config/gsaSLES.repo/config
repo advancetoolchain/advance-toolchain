@@ -1,7 +1,0 @@
-#!/usr/bin/expect
-
-set server	ausgsa.ibm.com
-set dir		/projects/p/ppctoolchain/web/public/at/suse/SLES_11
-set gpg_key	""
-set manual	1
-set distro	SLES
