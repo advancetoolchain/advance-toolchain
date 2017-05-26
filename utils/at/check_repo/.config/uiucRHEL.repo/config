@@ -1,7 +1,0 @@
-#!/usr/bin/expect
-
-set server	linuxpatch.ncsa.uiuc.edu
-set dir		/toolchain/at/redhat/RHEL5/
-set gpg_key	"gpg-pubkey-00f50ac5-45e497dc"
-set manual	0
-set distro	RHEL

@@ -1,7 +1,0 @@
-#!/usr/bin/expect
-
-set server	ausgsa.ibm.com
-set dir		/projects/p/ppctoolchain/web/public/at/redhat/RHEL5
-set gpg_key	""
-set manual	1
-set distro	RHEL
