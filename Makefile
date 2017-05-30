@@ -1122,9 +1122,11 @@ $(RCPTS)/monitor.rcpt: $(RCPTS)/toolchain.rcpt
 	        echo "/etc/cron.d/$${at_ver_rev_internal//./}_ldconfig" \
 	             >> $(DYNAMIC_SPEC)/$${group}/ldconfig.filelist; \
 	    else \
-	        echo "${RPM_BUILD_ROOT}/etc/systemd/system/$(AT_VER_REV_INTERNAL)-cachemanager.service" \
+		systemd_unit=$$( pkg-config --variable=systemdsystemunitdir systemd ); \
+		systemd_preset=$$( pkg-config --variable=systemdsystempresetdir systemd ); \
+	        echo "${RPM_BUILD_ROOT}/$${systemd_unit}/$(AT_VER_REV_INTERNAL)-cachemanager.service" \
 	             >> $(DYNAMIC_SPEC)/$${group}/ldconfig.filelist; \
-	        echo "${RPM_BUILD_ROOT}/etc/systemd/system-preset/90-atcachemanager.preset" \
+	        echo "${RPM_BUILD_ROOT}/$${systemd_preset}/90-atcachemanager.preset" \
 	             >> $(DYNAMIC_SPEC)/$${group}/ldconfig.filelist; \
 	    fi; \
 	    echo "All done."; \

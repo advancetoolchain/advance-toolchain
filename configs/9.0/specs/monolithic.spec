@@ -186,13 +186,15 @@ rm ${RPM_BUILD_ROOT}%{_infodir}/dir
 gzip -9nvf ${RPM_BUILD_ROOT}%{_infodir}/*.info*
 # Set a systemd service to run AT's ldconfig when the system's ldconfig is \
 # executed.
-mkdir -p ${RPM_BUILD_ROOT}/etc/systemd/system/
+systemd_unit=$(pkg-config --variable=systemdsystemunitdir systemd)
+systemd_preset=$(pkg-config --variable=systemdsystempresetdir systemd)
+mkdir -p ${RPM_BUILD_ROOT}/${systemd_unit}/
 sed -e s:__AT_VER_REV_INTERNAL__:%{at_ver_rev_internal}: \
     -e s:__AT_DEST__:%{_prefix}: %{_rpmdir}/cachemanager.service \
-    > ${RPM_BUILD_ROOT}/etc/systemd/system/%{at_ver_rev_internal}-cachemanager.service
-mkdir -p ${RPM_BUILD_ROOT}/etc/systemd/system-preset/
+    > ${RPM_BUILD_ROOT}/${systemd_unit}/%{at_ver_rev_internal}-cachemanager.service
+mkdir -p ${RPM_BUILD_ROOT}/${systemd_preset}/
 echo "enable at*cachemanager.service" \
-    > ${RPM_BUILD_ROOT}/etc/systemd/system-preset/90-atcachemanager.preset
+    > ${RPM_BUILD_ROOT}/${systemd_preset}/90-atcachemanager.preset
 
 ####################################################
 %pre runtime
