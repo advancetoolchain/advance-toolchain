@@ -215,8 +215,6 @@ function find_dependencies()
 
 	# Create a temporary file
 	tmp_file=$(mktemp)
-	# Set list of ignored files
-	ignored="linux-vdso|libselinux|libaudit|linux-gate"
 	# Set tool for linked libraries verification
 	if [[ "${cross_build}" == "yes" ]]; then
 		ldd_path=$(which ldd)
@@ -258,15 +256,21 @@ function find_dependencies()
 			exit 1
 		fi
 		# Check the dynamically linked executable for AT prefix
-		${ldd_path} "${file}" | grep -v "${at_dest}" | \
-			awk "/=>/ { print \$1 \"${suffix}\" }" | \
-			xargs -r -n 1 basename >> "${tmp_file}"
+		ignored=$( ${ldd_path} "${file}" | grep "${at_dest}" | \
+			awk "{ print \$1 }" )
 		if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
 			echo "Failed to ldd file ${file}" 1>&2
 			exit 1
 		fi
+		# Get the dependencies
+		objdump -p "${file}" | grep "NEEDED" | grep -v "${ignored}" | \
+			awk "{ print \$2 \"${suffix}\" }" >> ${tmp_file}
+		if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
+			echo "Failed to objdump file ${file}" 1>&2
+			exit 1
+		fi
 	done
-	sort -u "${tmp_file}" | grep -vE "${ignored}"
+	sort -u "${tmp_file}"
 	# Remove the temporary file
 	rm -f "${tmp_file}" &> /dev/null
 	# Completed the look for dependencies
