@@ -128,7 +128,7 @@ get_latest_revision ()
 		return 1;
 	fi
 
-	local isGit=$(echo ${1} | grep -c git:);
+	local isGit=$(echo ${1} | grep -ce "git:" -e "\.git$");
 	local hash="";
 
 	if [[ "${isGit}" == 1 ]]; then
@@ -452,9 +452,9 @@ update_revision ()
 	print_msg 0 "Update complete.";
 }
 
-for co in ${ATSRC_PACKAGE_CO}; do
+for co in "${ATSRC_PACKAGE_CO[@]}"; do
 	# So far, we only update git/svn revision
-	repo=$(echo $co | grep -oE \(git\|svn\):[^\ ]+);
+	repo=$(echo $co | grep -oE \(git\|svn\|https\):[^\ ]+);
 
 	if [[ -n "${repo}" ]]; then
 		hash=$(get_latest_revision ${repo});
