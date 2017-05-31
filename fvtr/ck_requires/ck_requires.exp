@@ -19,11 +19,12 @@
 source shared.exp
 source config_parser.exp
 
-proc process_rpm_packages { packages cross_bld at_dest ldd_path } {
+proc process_rpm_packages { packages cross_bld at_dest ldd_path objdump_path } {
 
 	global FULLPATH
 	global env
 	set rc 0
+	set ignored $FULLPATH/ignored.tmp
 	set TMP_FILE $FULLPATH/requirements.tmp
 
 	foreach package $packages {
@@ -49,7 +50,7 @@ proc process_rpm_packages { packages cross_bld at_dest ldd_path } {
 		set requi $FULLPATH/$package.req
 		set diff $FULLPATH/$package.diff
 
-		file delete $TMP_FILE $requi
+		file delete $TMP_FILE $requi $ignored
 
 		exec touch $requi
 		exec touch $TMP_FILE
@@ -91,25 +92,18 @@ proc process_rpm_packages { packages cross_bld at_dest ldd_path } {
 			}
 
 			# Grab the libraries provided by the system
-			if {[catch {exec $ldd_path $file | \
-					grep -v $at_dest | \
-					awk "/=>/ { print \$1 \"$suffix\" }" >> \
-					$TMP_FILE} error_msg]} {
-				printit "Failed to ldd file $file:
-$error_msg"
-				set rc 1
-			}
+			catch {exec $ldd_path $file | sed s://:/: | \
+					  grep $at_dest | awk "{ print \$1 }" \
+					  | xargs -r -n 1 basename >> $ignored}
+			catch {exec $objdump_path -p $file | grep NEEDED \
+					 | grep -vf $ignored | \
+					 awk "{ print \$2 \"$suffix\" }" >> \
+					 $TMP_FILE}
 
 			# TODO: Need to add versioned libs to the list
 			# objdump -p operf | awk '/required from/ {sub(/:/, "", $3); lib=$3} (lib!="") && ($4!="") { print lib "(" $4 ")";}' | sort -u
 		}
-		# Ignore some libraries:
-		#   linux-vdso as no package provides it
-		#   libselinux
-		#   linux-gate is sometimes used instead of linux-vdso
-		set ignored "linux-vdso|libselinux|libaudit|linux-gate"
-		catch {exec cat $TMP_FILE | xargs -r -n 1 basename | sort -u | \
-		   grep -vE "${ignored}" > $requi}
+		catch {exec cat $TMP_FILE | sort -u > $requi}
 
 		# Compare with the installed rpm packages
 		if { ![info exists ::env(AT_WD)] } {
@@ -138,11 +132,13 @@ requirements: $extra"
 	return $rc
 }
 
-proc process_deb_packages { packages cross_bld at_dest ldd_path } {
+proc process_deb_packages { packages cross_bld at_dest ldd_path objdump_path } {
 
 	global FULLPATH
 	global AT_CROSS_BUILD
 	global env
+	set ignored $FULLPATH/ignored.tmp
+	set TMP_FILE $FULLPATH/requirements.tmp
 
 	set rc 0
 	foreach package $packages {
@@ -245,27 +241,28 @@ proc process_deb_packages { packages cross_bld at_dest ldd_path } {
 				}
 			}
 
-			# Get the list of libs from ldd of all the files in
+			# Get the list of libs from objdump of all the files in
 			# the pkg.
-			set req_list [exec $ldd_path $file | grep -v $at_dest \
-					  | xargs -r -n 1 basename ]
-
-			set ignored "linux-vdso|libselinux|libaudit|linux-gate"
+			catch {exec $ldd_path $file | grep $at_dest | \
+					  awk "{ print \$1 }" > $ignored }
+			catch {exec $objdump_path -p $file | grep NEEDED \
+					   | grep -vf $ignored \
+					   | awk "{ print \$2 }" > $TMP_FILE}
+			set req_list [exec cat $TMP_FILE]
 
 			# Find the lib*.so.* in the list of required libs from
 			# ldd save them in a hash by lib name, omitting those
 			# from the ignore list
 			foreach req $req_list {
 				if {[regexp "lib.*\.so" $req]} {
-					if {[string first "$req" $ignored] >= \
-					    0} {
-						continue
-					}
 					set ldd_lib_hash($req) $req
 				}
 			}
 
 		}
+
+		file delete $TMP_FILE $ignored
+
 		# Looking through the ldd_lib_hash, make sure that the lib is
 		# provided as part of one of the package's dependent packages
 		set found 1
@@ -295,8 +292,10 @@ set ldd_path ""
 # The cross compiler requires a different ldd
 if { $env(AT_CROSS_BUILD) == "yes" } {
 	set ldd_path [exec which ldd]
+	set objdump_path [exec which objdump]
 } else {
 	set ldd_path $env(AT_DEST)/bin/ldd
+	set objdump_path $env(AT_DEST)/bin/objdump
 }
 
 set system [get_packaging_system]
@@ -316,11 +315,11 @@ set packages [get_packages_list ${system}]
 if { ${system} == "rpm" } {
 	printit "Processing rpm packages... "
 	set rc [ process_rpm_packages "$packages" "$env(AT_CROSS_BUILD)" \
-		 "$env(AT_DEST)" "$ldd_path"]
+		 "$env(AT_DEST)" "$ldd_path" "$objdump_path"]
 } else {
 	printit "Processing deb packages... "
 	set rc [ process_deb_packages "$packages" "$env(AT_CROSS_BUILD)" \
-		 "$env(AT_DEST)" "$ldd_path"]
+		 "$env(AT_DEST)" "$ldd_path" "$objdump_path"]
 }
 
 exit $rc
