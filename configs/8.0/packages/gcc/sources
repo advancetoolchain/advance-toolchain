@@ -32,7 +32,8 @@ ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_NAMESUFFIX="[C, C++ (g++), fortran, Go]"
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}-ibm-r${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_PRE="test -d gcc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
-ATSRC_PACKAGE_CO=([0]="svn co --revision ${ATSRC_PACKAGE_REV} http://gcc.gnu.org/svn/gcc/branches/ibm/gcc-4_9-branch")
+ATSRC_PACKAGE_CO=([0]="svn co --revision ${ATSRC_PACKAGE_REV} svn://gcc.gnu.org/svn/gcc/branches/ibm/gcc-4_9-branch" \
+		  [1]="svn co --revision ${ATSRC_PACKAGE_REV} http://gcc.gnu.org/svn/gcc/branches/ibm/gcc-4_9-branch")
 ATSRC_PACKAGE_POST="mv gcc-4_9-branch gcc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_SRC=${AT_BASE}/sources/gcc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}
 ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/gcc
