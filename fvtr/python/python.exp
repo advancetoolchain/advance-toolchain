@@ -91,7 +91,9 @@ if { "$pyver" == "2.6" } {
 	# Python unit tests are "embarrassingly parallel", at least up to 6 cores
 	# it seems
 	set CORES [expr min(6, [exec grep -c "processor" /proc/cpuinfo ])]
-
+        # Test for the issue #45
+        printit "Executing sqlite3 importing test."
+        exec $env(AT_DEST)/bin/python3 -c "import sqlite3"
 	# The following tests fail for python when run using FVTR so exclude
 	# them.
 	set spawn_cmd "spawn $env(AT_DEST)/bin/python3 $test_script \

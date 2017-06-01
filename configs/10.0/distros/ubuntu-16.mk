@@ -65,7 +65,8 @@ endef
 ifndef AT_DISTRO_REQ_PKGS
     AT_CROSS_PKGS_REQ :=
     AT_NATIVE_PKGS_REQ := libxslt libpopt-dev libqt4-dev \
-                          libc6-dev libbz2-dev xsltproc docbook-xsl
+                          libc6-dev libbz2-dev xsltproc docbook-xsl \
+                          libsqlite3-dev
     AT_COMMON_PKGS_REQ := zlib1g-dev libncurses5-dev ncurses-term flex bison \
                           texinfo subversion cvs gawk fakeroot debhelper \
                           autoconf rsync curl bc libxml2-utils automake \

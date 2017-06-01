@@ -72,7 +72,7 @@ ifndef AT_DISTRO_REQ_PKGS
     AT_CROSS_PKGS_REQ :=
     AT_NATIVE_PKGS_REQ := \(ibm-java2-ppc64-sdk-5.0\|java-1.5.0-ibm-devel\) \
                           libxslt popt-devel qt-devel readline \
-                          readline-devel
+                          readline-devel sqlite-devel
     AT_COMMON_PKGS_REQ := zlib-devel ncurses-devel flex bison texinfo \
                           createrepo glibc-devel subversion cvs gawk autoconf \
                           rsync curl bc automake imake
