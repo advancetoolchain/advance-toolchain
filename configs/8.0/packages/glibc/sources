@@ -29,7 +29,7 @@ ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}-ibm"
 ATSRC_PACKAGE_PRE="test -d glibc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
 # git://git.linux.ibm.com/toolchain-mirrors/glibc.git is a mirror of the https://sourceware.org/git/glibc.git
 ATSRC_PACKAGE_CO=([0]="git clone git://git.linux.ibm.com/toolchain-mirrors/glibc.git" \
-                  [1]="git clone https://sourceware.org/git/glibc.git")
+                  [1]="git clone git://sourceware.org/git/glibc.git")
 ATSRC_PACKAGE_GIT="git checkout -b glibc-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}} ${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_POST="mv glibc glibc-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
 ATSRC_PACKAGE_SRC=${AT_BASE}/sources/glibc-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}

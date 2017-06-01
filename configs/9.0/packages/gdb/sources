@@ -28,7 +28,7 @@ ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE
 ATSRC_PACKAGE_PRE="test -d gdb-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
 # git.linux.ibm.com is a mirror of sourceware.org.
 ATSRC_PACKAGE_CO=([0]="git clone git://git.linux.ibm.com/binutils-gdb/binutils-gdb.git gdb" \
-		  [1]="git clone https://sourceware.org/git/binutils-gdb.git gdb")
+		  [1]="git clone git://sourceware.org/git/binutils-gdb.git gdb")
 ATSRC_PACKAGE_GIT="git checkout -b gdb-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}} ${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_POST="mv gdb gdb-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
 ATSRC_PACKAGE_SRC="${AT_BASE}/sources/gdb-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"

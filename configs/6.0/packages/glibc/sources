@@ -27,7 +27,7 @@ ATSRC_PACKAGE_DOCLINK="http://www.gnu.org/software/libc/manual/html_node/index.h
 ATSRC_PACKAGE_PRE="test -d glibc-${ATSRC_PACKAGE_VER}"
 # git://git.linux.ibm.com/toolchain-mirrors/glibc.git is a mirror of the https://sourceware.org/git/glibc.git
 ATSRC_PACKAGE_CO=([0]="git clone git://git.linux.ibm.com/toolchain-mirrors/glibc.git" \
-                  [1]="git clone https://sourceware.org/git/glibc.git")
+                  [1]="git clone git://sourceware.org/git/glibc.git")
 ATSRC_PACKAGE_GIT="git checkout -b glibc-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}} origin/ibm/${ATSRC_PACKAGE_VER}/master"
 ATSRC_PACKAGE_POST="mv glibc glibc-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
 ATSRC_PACKAGE_SRC=${AT_BASE}/sources/glibc-${ATSRC_PACKAGE_VER}
@@ -37,7 +37,7 @@ ATSRC_PACKAGE_PATCHES=
 ATSRC_PACKAGE_ALOC=
 ATSRC_PACKAGE_TARS=
 ATSRC_PACKAGE_MAKE_CHECK=
-ATSRC_PACKAGE_PORTS="git clone https://sourceware.org/git/glibc-ports.git"
+ATSRC_PACKAGE_PORTS="git clone git://sourceware.org/git/glibc-ports.git"
 ATSRC_PACKAGE_DISTRIB=yes
 ATSRC_PACKAGE_BUILDCROSS=yes
 ATSRC_PACKAGE_BUNDLE=toolchain
