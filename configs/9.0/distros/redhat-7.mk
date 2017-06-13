@@ -91,7 +91,7 @@ ifndef AT_DISTRO_REQ_PKGS
                           createrepo glibc-devel subversion cvs gawk \
                           rsync curl bc automake libstdc\\+\\+-static \
                           redhat-lsb-core autoconf bzip2-[0-9] libtool-[0-9] \
-                          gzip rpm-build-[0-9] rpm-sign gcc-c++ imake
+                          gzip rpm-build-[0-9] rpm-sign gcc-c++ imake wget
     AT_CROSS_PGMS_REQ :=
     AT_NATIVE_PGMS_REQ :=
     AT_COMMON_PGMS_REQ := git_1.7

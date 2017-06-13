@@ -75,7 +75,7 @@ ifndef AT_DISTRO_REQ_PKGS
                           libbz2-devel
     AT_COMMON_PKGS_REQ := zlib-devel ncurses-devel flex bison texinfo \
                           createrepo subversion cvs gawk autoconf rsync curl \
-                          bc automake rpm-build gcc-c++
+                          bc automake rpm-build gcc-c++ wget
     AT_CROSS_PGMS_REQ :=
     AT_NATIVE_PGMS_REQ :=
     AT_COMMON_PGMS_REQ := git_1.7

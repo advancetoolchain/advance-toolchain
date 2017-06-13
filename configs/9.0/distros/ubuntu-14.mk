@@ -70,7 +70,7 @@ ifndef AT_DISTRO_REQ_PKGS
     AT_COMMON_PKGS_REQ := zlib1g-dev libncurses5-dev ncurses-term flex bison \
                           texinfo subversion cvs gawk fakeroot debhelper \
                           autoconf rsync curl bc libxml2-utils automake \
-                          dpkg-sig xutils-dev
+                          dpkg-sig xutils-dev wget
     AT_CROSS_PGMS_REQ :=
     AT_NATIVE_PGMS_REQ := pkg-config /opt/ibm/java-ppc64le-71/bin/java
     AT_COMMON_PGMS_REQ := git_1.7
