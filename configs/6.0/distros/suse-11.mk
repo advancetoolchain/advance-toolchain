@@ -69,7 +69,7 @@ ifndef AT_DISTRO_REQ_PKGS
                           xorg-x11-util-devel readline readline-devel
     AT_COMMON_PKGS_REQ := zlib-devel ncurses-devel flex bison texinfo \
                           createrepo subversion cvs gawk autoconf rsync curl \
-                          bc automake
+                          bc automake wget
     AT_CROSS_PGMS_REQ :=
     AT_NATIVE_PGMS_REQ :=
     AT_COMMON_PGMS_REQ := git_1.7
