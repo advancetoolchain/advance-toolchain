@@ -75,16 +75,12 @@ atcfg_pre_configure() {
 atcfg_configure() {
 	local base_target=$(find_build_target ${AT_BIT_SIZE})
 
-	# TODO: Remove -Wno-error=array-bounds.
-	#	This has been added in order to workaround an issue created by
-	#	GCC 5.
 	PATH=${at_dest}/bin:${PATH} \
 	AUTOCONF="${autoconf}" \
 	CC="${at_dest}/bin/gcc -m${AT_BIT_SIZE}" \
 	CXX="${at_dest}/bin/g++ -m${AT_BIT_SIZE}" \
 	CFLAGS="-g -O3 \
-		${with_longdouble:+-mlong-double-128} \
-		-Wno-error=array-bounds" \
+		${with_longdouble:+-mlong-double-128}" \
 	CXXFLAGS="-g -O3" \
 	${ATSRC_PACKAGE_WORK}/configure --build=${host} \
 					--host=${base_target} \
