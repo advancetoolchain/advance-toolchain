@@ -37,6 +37,7 @@ atcfg_configure() {
 	if [[ "${cross_build}" == "no" ]]; then
 		# Configure command for native builds
 		#TODO: Enable gotools.
+		# TODO: Re-enable libsanitizer when GCC bug #81066 is fixed.
 		PATH=${at_dest}/bin:${PATH} \
 		CC="${at_dest}/bin/gcc" \
 		CFLAGS="-O2" \
@@ -68,6 +69,7 @@ atcfg_configure() {
 			--enable-gnu-indirect-function \
 			--enable-initfini-array \
 			--enable-linker-build-id \
+			--disable-libsanitizer \
 			--with-system-zlib \
 			--with-gmp-include="${at_dest}/include" \
 			--with-gmp-lib="${at_dest}/lib64" \

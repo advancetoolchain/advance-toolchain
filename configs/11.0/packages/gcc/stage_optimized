@@ -36,6 +36,7 @@ atcfg_pre_configure() {
 
 
 atcfg_configure() {
+	# TODO: Re-enable libsanitizer when GCC bug #81066 is fixed.
 	PATH=${at_dest}/bin:${PATH} \
 	CC="${at_dest}/bin/gcc" \
 	CFLAGS="-O2" \
@@ -65,6 +66,7 @@ atcfg_configure() {
 		--enable-lto \
 		--enable-linker-build-id \
 		--disable-bootstrap \
+		--disable-libsanitizer \
 		--with-gmp-include="${at_dest}/include" \
 		--with-gmp-lib="${at_dest}/lib64" \
 		--with-mpfr-include="${at_dest}/include" \
