@@ -35,11 +35,20 @@ if { $env(AT_CROSS_BUILD) == "yes" } {
 	exit $ENOSYS
 }
 
-proc has_broken_dynlink {file} {
+proc is_dynlink {file} {
 	set file_info [ exec file $file ]
-	set ret 0
 
 	if { [regexp "dynamically linked" $file_info] } {
+		return 1
+	} else {
+		return 0
+	}
+}
+
+proc has_broken_dynlink {file} {
+	set ret 0
+
+	if { [is_dynlink ${file}] } {
 		if {[check_lib_dependencies $file]} {
 			set ret 1
 		}
@@ -47,6 +56,21 @@ proc has_broken_dynlink {file} {
 	return ${ret}
 }
 
+# Verify if the executables' interpreters have canonical path.
+set executables [ exec find $at_dir -type f -perm /111 ]
+foreach exe $executables {
+	if { [is_dynlink ${exe}] } {
+		set interp_info [exec readelf -l ${exe}]
+		if { [regexp -line "interpreter: (.*)\]$" ${interp_info} match \
+			  interpreter]} {
+			set interpreter2 [file normalize ${interpreter}]
+			if { ${interpreter} != ${interpreter2} } {
+				fvtr_error "The interpreter of ${exe} is not \
+canonical: ${interpreter}"
+			}
+		}
+	}
+}
 
 set files [ exec find $at_dir -type f -perm /111 | \
 		grep -Ev "$at_dir/(old/|compat/)?lib(64)?/ld\-" | \
