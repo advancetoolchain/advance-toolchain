@@ -47,37 +47,37 @@ atsrc_get_patches ()
 
 	at_get_patch \
 		https://github.com/atgreen/libffi/commit/d3d099b40c122550279789200263346f120f6909.patch \
-		ff61fb6ae3cebb91b11023462901dc6b \
+		7edcbf16526e630ba581c14e8a95fc72 \
 		libffi-ppc64le-1.patch || return ${?}
 
 	at_get_patch \
 		https://github.com/atgreen/libffi/commit/164283f4ac5972ce2ab5e015cc2ab1014c23276c.patch \
-		35f7892a704e899037b36a67e1d85c3d \
+		e97bae8d2600029cc63a6771a224e9f3 \
 		libffi-ppc64le-2.patch || return ${?}
 
 	at_get_patch \
 		https://github.com/atgreen/libffi/commit/a97cf1fae575d8bfd5259c5c422025ad43911326.patch \
-		cd1a0c2ef1c3bea7e6003c37f9c8dbd3 \
+		8115211a7c0b2a5025f42623b61ed7e0 \
 		libffi-ppc64le-3.patch || return ${?}
 
 	at_get_patch \
 		https://github.com/atgreen/libffi/commit/1c06515d927d9de1582438d4eb5953890e79c5c7.patch \
-		3b47aef31c3753450e17eb68c5881089 \
+		bf7416c3702e51f744232cf164e7427d \
 		libffi-ppc64le-4.patch || return ${?}
 
 	at_get_patch \
 		https://github.com/atgreen/libffi/commit/362851379a49ce07d3e36e82c4e5c7b6cc16a352.patch \
-		8576891656ca4eedc2accc0eacf1fcf5 \
+		ab301e4322aa008f5a228122b54bca04 \
 		libffi-ppc64le-5.patch || return ${?}
 
 	at_get_patch \
 		https://github.com/atgreen/libffi/commit/83f65b63d9764a9cc7688fc5cda5ee2bd23faf54.patch \
-		c2d2a44feaa4ec4ea67436eb5e74046d \
+		b761c170d8107a09412ac194ea221267 \
 		libffi-ppc64le-6.patch || return ${?}
 
 	at_get_patch \
 		https://github.com/atgreen/libffi/commit/16d56c51aded374730920a4acde76ff3d2860ae1.patch \
-		85cd6e185f9f402981af3df7950b1fa8 \
+		4bf6cc66b32f5e9a9e851990f0fb55a1 \
 		libffi-ppc64le-7.patch || return ${?}
 
 	at_get_patch \

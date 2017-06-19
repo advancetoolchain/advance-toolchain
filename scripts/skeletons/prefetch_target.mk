@@ -39,7 +39,7 @@ $(RCPTS)/fetch_%_source.rcpt: $(RCPTS)/bso_clearance.rcpt
 	            sleep 1; \
 	        done; \
 	    fi; \
-	} > $(LOGS)/$(notdir $(basename $@)).log 2>&1
+	} > $(LOGS)/_$(notdir $(basename $@)).log 2>&1
 	@echo "Completed $* pristine source fetch!";
 	@touch $@
 
@@ -77,6 +77,6 @@ $(RCPTS)/fetch_%_patches.rcpt: $(RCPTS)/bso_clearance.rcpt
 	            sleep 1; \
 	        done; \
 	    fi; \
-	} > $(LOGS)/$(notdir $(basename $@)).log 2>&1
+	} > $(LOGS)/_$(notdir $(basename $@)).log 2>&1
 	@echo "Completed $* patches fetch!";
 	@touch $@
