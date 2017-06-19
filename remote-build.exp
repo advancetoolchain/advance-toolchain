@@ -159,9 +159,9 @@ puts "Servers: $servers"
 # desired paths.
 
 # Directory used by the script to save its files.
-set tray_dir $trayprefix/$atdir
+set tray_dir [file normalize $trayprefix/$atdir]
 # Directory where AT will be installed (aka DESTDIR).
-set destdir $destprefix/$atdir
+set destdir [file normalize $destprefix/$atdir]
 set timeout $default_timeout
 
 spawn make pack
