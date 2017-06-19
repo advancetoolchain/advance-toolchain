@@ -157,7 +157,7 @@ atcfg_install() {
 
 	PATH=${at_dest}/bin:${PATH} \
 	make MANDIR=${at_dest}/share/man \
-	INSTALL_PREFIX=${install_place} -j1 ${install_arg}
+	DESTDIR=${install_place} -j1 ${install_arg}
 }
 
 atcfg_post_install() {
