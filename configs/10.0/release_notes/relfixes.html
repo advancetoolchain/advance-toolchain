@@ -9,6 +9,23 @@
 <li>Support for <a href="http://golang.org/">Go Programming Language</a>.</li>
 <li>Support for split stack.</li>
 
+<h3>New features in 10.0-5</h3>
+<ul>
+	<li>GCC provides:</li>
+	<ul>
+		<li>Fixes for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80376">ICE with vec_xxpermdi</a> and <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80315">unrecognizable insn with __builtin_crypto_vshasigmaw</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=71310">bitfields cause load hit store with smaller store and larger load</a>.</li>
+		<li>POWER8 built-ins for vec_xl and vec_xst with short and char pointer arguments.</li>
+		<li>New static var: rs6000_vect_nonmem.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80362">miscompile arithmetic with signed char</a>.</li>
+	</ul>
+	<li>OpenSSL provides a fix for <a href="https://www.openssl.org/news/secadv/20170216.txt">CVE-2017-3733</a>.</li>
+	<li>Python provides support for sqlite modules.</li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 10.0-4</h3>
 <ul>
 	<li>GCC provides:</li>
@@ -32,9 +49,6 @@
 		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=21253">Larger min stack for -fstack-check</a>.</li>
 	</ul>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 10.0-3</h3>
 <ul>
