@@ -33,9 +33,11 @@ binary-arch: build binary-cp
 	dh_installdirs
 	dh_installdocs
 	dh_installchangelogs
+	dh_systemd_enable
 
 # Copy the packages' files.
 	dh_install --fail-missing
+	dh_systemd_start
 
 # Strip binaries
 	perl debian/dh_strip --dest=__AT_DEST__ --exclude=getconf --exclude=libgo. --exclude=ld- --dbg-package=advance-toolchain-__AT_MAJOR_INTERNAL__-runtime-dbg -p advance-toolchain-__AT_MAJOR_INTERNAL__-runtime
@@ -58,11 +60,13 @@ binary-cp: build
 	      --exclude=compat/include \
 	      --exclude=share/info/dir \
 	      __AT_DEST__ debian/tmp/__AT_DEST__/../
-	# Set a cronjob to run AT's ldconfig when the system's ldconfig is
-	# executed.
-	mkdir -p debian/tmp/etc/cron.d/
-	echo "@reboot root __AT_DEST__/bin/watch_ldconfig &" \
-	      > debian/tmp/etc/cron.d/__AT_VER_REV_INTERNAL___ldconfig
+	# Set a systemd service to run AT's ldconfig when the system's \
+	# ldconfig is executed.
+	mkdir -p debian/tmp/__SYSTEMD_UNIT__/
+	mv debian/cachemanager.service debian/tmp/__SYSTEMD_UNIT__/__AT_VER_REV_INTERNAL__-cachemanager.service
+	mkdir -p debian/tmp/__SYSTEMD_PRESET__/
+	echo "enable at*cachemanager.service" \
+		> debian/tmp/__SYSTEMD_PRESET__/90-atcachemanager.preset
 	gzip -9nvf debian/tmp/__AT_DEST__/share/info/*.info*
 	# Prepare the area for golang
 	mkdir -p debian/tmp/__GO_DEST__

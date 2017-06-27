@@ -37,6 +37,15 @@ remove_compat ()
 
 mkdir -p ${deb_d}
 
+at_version=$(echo ${at_full_ver} | cut -d"." -f 1)
+
+# Set systemd cache manager directories.
+if (( ${at_version} >= 11 )) || [[ "${at_version}" == next ]]; then
+	cp "${utilities}/cachemanager.service" ${debh_root}/monolithic/
+	systemd_unit=$(pkg-config --variable=systemdsystemunitdir systemd)
+	systemd_preset=$(pkg-config --variable=systemdsystempresetdir systemd)
+fi
+
 # Set the directory with the raw configuration files
 if [[ "${cross_build}" == "yes" ]]; then
 	spec=${debh_root}/monolithic_cross
@@ -65,9 +74,12 @@ for f in *; do
 	    -e "s/__DEST_CROSS__/${dest_cross//\//\\/}/g" \
 	    -e "s/__TARGET__/${target}/g" \
 	    -e "s/__BUILD_ARCH__/-${build_arch}/g" \
-	    -e "s/__AT_VER_REV_INTERNAL__/${at_ver_rev_internal//./}/g" \
+	    -e "s/__AT_VER_REV_INTERNAL__/${at_ver_rev_internal}/g" \
+	    -e "s/__AT_VER_ALTERNATIVE__/${at_ver_rev_internal//./}/g" \
 	    -e "s/__TMP_DIR__/${tmp_dir//\//\\/}/g" \
 	    -e "s/__GO_DEST__/${go_dest//\//\\/}/g" \
+	    -e "s/__SYSTEMD_UNIT__/${systemd_unit//\//\\/}/g" \
+	    -e "s/__SYSTEMD_PRESET__/${systemd_preset//\//\\/}/g" \
 	    ${f} > ${deb_d}/${f}
 done
 popd > /dev/null
@@ -83,7 +95,6 @@ popd > /dev/null
 # order to be able to do so.
 #
 # We don't strip debug information for AT < 9.0 or cross.
-at_version=$(echo ${at_full_ver} | cut -d"." -f 1)
 if [[ "${cross_build}" != "yes" ]]; then
 	if (( ${at_version} >= 9 )) || [[ "${at_version}" == next ]]; then
 		pushd ${deb_d} > /dev/null
@@ -223,7 +234,9 @@ for pkg in $(awk '/^Package:/ { print $2 }' ${deb_d}/control | grep -v dbg); do
 				fi
 				;;
 			"runtime")
-				echo "/etc/cron.d/${at_ver_rev_internal//./}_ldconfig"
+				if (( ${at_version} < 11 )); then
+					echo "/etc/cron.d/${at_ver_rev_internal//./}_ldconfig"
+				fi
 				[[ ${addtlehelper} == "yes" ]] && \
 					echo "${at_dest}/scripts/tle_on.sh"
 				;;

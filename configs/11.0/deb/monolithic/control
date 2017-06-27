@@ -26,6 +26,7 @@ Description: Advance Toolchain
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime
 Architecture: ppc64el
+Build-Depends: dh-systemd
 Depends: ${shlibs:Depends} ${misc:Depends}
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
