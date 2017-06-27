@@ -1118,15 +1118,15 @@ $(RCPTS)/monitor.rcpt: $(RCPTS)/toolchain.rcpt
 	    group=$$( ls $(DYNAMIC_SPEC)/ | grep "toolchain\$$" ); \
 	    echo "$(AT_DEST)/bin/watch_ldconfig" \
 	          >> $(DYNAMIC_SPEC)/$${group}/ldconfig.filelist; \
-	    if [[ "$(pack-sys)" == "deb" || $${at_major_version%.*} -lt  9 ]]; then \
+	    if [[ $${at_major_version%.*} -lt  9 ]] || [[ "$(pack-sys)" == "deb" && $${at_major_version%.*} -lt 11 ]]; then \
 	        echo "/etc/cron.d/$${at_ver_rev_internal//./}_ldconfig" \
 	             >> $(DYNAMIC_SPEC)/$${group}/ldconfig.filelist; \
 	    else \
 		systemd_unit=$$( pkg-config --variable=systemdsystemunitdir systemd ); \
 		systemd_preset=$$( pkg-config --variable=systemdsystempresetdir systemd ); \
-	        echo "${RPM_BUILD_ROOT}/$${systemd_unit}/$(AT_VER_REV_INTERNAL)-cachemanager.service" \
+	        echo "$${systemd_unit}/$(AT_VER_REV_INTERNAL)-cachemanager.service" \
 	             >> $(DYNAMIC_SPEC)/$${group}/ldconfig.filelist; \
-	        echo "${RPM_BUILD_ROOT}/$${systemd_preset}/90-atcachemanager.preset" \
+	        echo "$${systemd_preset}/90-atcachemanager.preset" \
 	             >> $(DYNAMIC_SPEC)/$${group}/ldconfig.filelist; \
 	    fi; \
 	    echo "All done."; \
