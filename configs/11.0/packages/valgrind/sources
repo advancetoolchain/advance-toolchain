@@ -20,18 +20,18 @@
 #
 
 ATSRC_PACKAGE_NAME="Valgrind"
-ATSRC_PACKAGE_VER=3.11.0
+ATSRC_PACKAGE_VER=3.13.0
 # Don't update the Valgrind revision without updating the VEX revision too.
 # They have to be in sync.
-ATSRC_PACKAGE_REV=15905
-ATSRC_PACKAGE_VEX_REV=3223
+ATSRC_PACKAGE_REV=16446
+ATSRC_PACKAGE_VEX_REV=3386
 ATSRC_PACKAGE_LICENSE="GPL 2.0"
 ATSRC_PACKAGE_DOCLINK="http://valgrind.org/docs/"
 ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_VER_REV="${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
 ATSRC_PACKAGE_PRE="test -d valgrind-${ATSRC_PACKAGE_VER_REV}"
-ATSRC_PACKAGE_CO=([0]="svn co --revision ${ATSRC_PACKAGE_REV} --ignore-externals svn://svn.valgrind.org/valgrind/trunk valgrind-${ATSRC_PACKAGE_VER_REV}")
+ATSRC_PACKAGE_CO=([0]="svn co --revision ${ATSRC_PACKAGE_REV} --ignore-externals svn://svn.valgrind.org/valgrind/branches/VALGRIND_3_13_BRANCH/ valgrind-${ATSRC_PACKAGE_VER_REV}")
 # TODO: Downloading Valgrind and VEX in different steps is sub-optimal for
 # caching mechanisms.
 # VEX is part of the Valgrind code, but it's kept in a different repository.
@@ -40,7 +40,7 @@ ATSRC_PACKAGE_CO=([0]="svn co --revision ${ATSRC_PACKAGE_REV} --ignore-externals
 # synchronize its own revision with the VEX repository and whenever we
 # checkout a specific revision from trunk, it will always get the latest
 # revision from VEX, causing failures on Valgrind.
-ATSRC_PACKAGE_POST="svn co svn://svn.valgrind.org/vex/trunk valgrind-${ATSRC_PACKAGE_VER_REV}/VEX -r ${ATSRC_PACKAGE_VEX_REV}"
+ATSRC_PACKAGE_POST="svn co svn://svn.valgrind.org/vex/branches/VEX_3_13_BRANCH valgrind-${ATSRC_PACKAGE_VER_REV}/VEX -r ${ATSRC_PACKAGE_VEX_REV}"
 ATSRC_PACKAGE_SRC="${AT_BASE}/sources/valgrind-${ATSRC_PACKAGE_VER_REV}"
 ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/valgrind
 ATSRC_PACKAGE_MLS=""
@@ -57,13 +57,6 @@ atsrc_get_patches ()
 		https://github.com/powertechpreview/powertechpreview/raw/be030afbf8d78018ab77aeea58092e03d483e8ce/Valgrind%20iTrace%20Patches/3.11/vg-3110-itrace.v1.tgz \
 		337042b8ea29d476b69d439c154d62f0 || return ${?}
 
-	# Patch to fix the register R2 being clobbered in asm.
-	# TODO: Remove it when Valgrind BZ #371668 is fixed.
-	at_get_patch_and_trim \
-                https://bugsfiles.kde.org/attachment.cgi?id=101860 \
-                fix_r2_clobber.patch 44 \
-                e9c2e01092042c0162fbc9f2a5931bb5 || return ${?}
-
 	return 0
 }
 
@@ -76,9 +69,6 @@ atsrc_apply_patches ()
 	patch -p0 < add-itrace-bits-to-Makefile.am.diff || return ${?}
 	patch -p0 < add-itrace-bits-to-configure.ac.diff || return ${?}
 	patch -p0 < add-itrace-bits-to-check_headers_and_includes.diff || return ${?}
-
-	# Apply patch to be able to build Valgrind with GCC  7.
-	patch -p1 < fix_r2_clobber.patch || return ${?}
 
 	return 0
 }
