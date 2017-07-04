@@ -85,6 +85,7 @@ atcfg_configure() {
 			--with-tune=${build_optimization}
 	else
 		# Configure command for cross builds
+		# TODO: Re-enable libsanitizer when GCC bug #81066 is fixed.
 		CC="${system_cc}" \
 		CXX="${system_cxx}" \
 		LD_FOR_TARGET="${at_dest}/bin/${target}-ld" \
@@ -113,6 +114,7 @@ atcfg_configure() {
 			--enable-cross \
 			--enable-initfini-array \
 			--enable-linker-build-id \
+			--disable-libsanitizer \
 			--disable-gotools \
 			--disable-libcc1 \
 			--disable-bootstrap \
