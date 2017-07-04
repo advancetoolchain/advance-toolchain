@@ -633,7 +633,7 @@ endef
 # DESTDIR, is optional and should be externally defined.
 DESTDIR ?= /opt
 # Canonicalize DESTDIR path
-DESTDIR = $(shell readlink -m "${DESTDIR}")
+DESTDIR := $(shell readlink -m "${DESTDIR}")
 
 ifneq ($(AT_INTERNAL),none)
     AT_MAJOR_INTERNAL := $(AT_MAJOR)-$(AT_INTERNAL)
