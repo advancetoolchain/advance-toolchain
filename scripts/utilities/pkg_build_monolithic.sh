@@ -41,7 +41,7 @@ source "${utilities}/pkg_build_filefilters.sh"
 function monolithic_filelists()
 {
 	local GROUP PACK
-	local groups=$(find "${dynamic_spec}"/. -type d ! -path "${dynamic_spec}"/. -printf '%f ')
+	local groups=$(find "${dynamic_spec}"/. -mindepth 1 -type d -printf '%f ')
 
 	# Clean up final lists (from previous build)
 	for GROUP in ${groups}; do
