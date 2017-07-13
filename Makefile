@@ -1263,7 +1263,29 @@ $(RCPTS)/build.rcpt: $(RCPTS)/toolchain.rcpt $(RCPTS)/debug.rcpt \
 	@echo "Completed $(AT_VER_REV_INTERNAL) build"
 	@touch $@
 
-$(RCPTS)/distributed_scripts.rcpt:
+
+ifeq ($(BUILD_ENVIRONMENT_MODULES),yes)
+    ENVIRONMENT_MODULES := $(RCPTS)/environment_modules.rcpt
+endif
+
+$(RCPTS)/environment_modules.rcpt:
+	@echo "Creating and installing environment modules..."
+	@mkdir -p $(AT_DEST)/share/modules/modulefiles
+	@+{ echo "#%Module1.0"; \
+	    echo "set AT_VERSION \"$(AT_FULL_VER)\""; \
+	    echo "proc ModulesHelp { } {"; \
+	    echo "	puts stderr \"Enviroment for using IBM Advance Toolchain \$$AT_VERSION\""; \
+	    echo "}"; \
+	    echo "module-whatis \"Enviroment for using IBM Advance Toolchain \$$AT_VERSION\""; \
+	    echo ""; \
+	    echo "prepend-path PATH \"$(AT_DEST)/bin\""; \
+	    echo "prepend-path INFOPATH \"$(AT_DEST)/share/info\""; \
+	    echo "prepend-path MANPATH \"$(AT_DEST)/share/man\""; \
+	} > $(AT_DEST)/share/modules/modulefiles/$(AT_VER_REV_INTERNAL)
+	@echo "Completed install of environment modules!"
+	@touch $@
+
+$(RCPTS)/distributed_scripts.rcpt: $(ENVIRONMENT_MODULES)
 	@echo "Installing package scripts..."
 	@+{ echo "Setting final destination for package scripts."; \
 	    if [[ "$(CROSS_BUILD)" == "no" ]]; then \
