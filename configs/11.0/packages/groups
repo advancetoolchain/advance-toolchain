@@ -43,7 +43,8 @@ runtime_exclude=('/^.*\.a$/d' \
                  '/^.*\.o$/d' \
                  '/^.*\.la$/d' \
                  '/^.*\.spec$/d' \
-                 '/^.*\.gox$/d')
+                 '/^.*\.gox$/d' \
+                 '/^.*\/lib64\/python[0-9].[0-9]\/test\/.*$/d')
 
 # Filters to use on runtime package file inclusion (grep ERE)
 runtime_include=
@@ -62,4 +63,5 @@ devel_include=('^.*\.a$' \
                '^.*\.o$' \
                '^.*\.la$' \
                '^.*\.spec$' \
-               '^.*\.gox$')
+               '^.*\.gox$' \
+               '^.*\/lib64\/python[0-9].[0-9]\/test\/.*$')
