@@ -21,7 +21,7 @@
 
 ATSRC_PACKAGE_NAME="GNU C Library"
 ATSRC_PACKAGE_VER=2.26
-ATSRC_PACKAGE_REV=5e1122827a9f
+ATSRC_PACKAGE_REV=95a733925807
 ATSRC_PACKAGE_LICENSE="LGPL 2.1"
 ATSRC_PACKAGE_DOCLINK="http://www.gnu.org/software/libc/manual/html_node/index.html"
 ATSRC_PACKAGE_RELFIXES=
@@ -51,6 +51,14 @@ atsrc_get_patches ()
 	at_get_patch \
 		https://raw.githubusercontent.com/powertechpreview/powertechpreview/26747dc0bfb0f8f30de9ebad78847a96d3191ba5/GLIBC%20PowerPC%20Backport/2.22/0001-powerpc-Conditionally-enable-TLE.patch \
 		801c05ea780220e8b4cf931af8c86946 || return ${?}
+
+	# TODO: Remove this patch when the following patch gets merged.
+	# https://patchwork.sourceware.org/patch/21557/
+	at_get_patch_and_trim \
+		https://patchwork.sourceware.org/patch/21557/mbox/ \
+		fastbin.patch 0 \
+		e743ef9329de65631742831c886bf121 || return ${?}
+
 }
 
 atsrc_apply_patches ()
@@ -59,5 +67,6 @@ atsrc_apply_patches ()
 
 	patch -p1 < 0001-powerpc-Conditionally-enable-TLE.patch || return ${?}
 
+	patch -p1 < fastbin.patch || return ${?}
 	return 0
 }
