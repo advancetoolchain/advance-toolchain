@@ -85,7 +85,6 @@ atcfg_pre_configure() {
 # Conditional configure command for builds
 atcfg_configure() {
 	if [[ "${cross_build}" == "no" ]]; then
-		# TODO: Re-enable libsanitizer when GCC bug #81066 is fixed.
 		CC="${cc_64}" \
 		CXX="${cxx_64}" \
 		CFLAGS="-O2 -mminimal-toc" \
@@ -114,7 +113,6 @@ atcfg_configure() {
 			--enable-gnu-indirect-function \
 			--enable-linker-build-id \
 			--disable-libgomp \
-			--disable-libsanitizer \
 			--with-gmp-include="${at_dest}/include" \
 			--with-gmp-lib=${libdir} \
 			--with-mpfr-include="${at_dest}/include" \
