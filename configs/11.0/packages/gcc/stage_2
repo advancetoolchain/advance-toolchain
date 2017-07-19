@@ -68,7 +68,6 @@ atcfg_pre_configure() {
 atcfg_configure() {
 	if [[ "${cross_build}" == "no" ]]; then
 		# Configure command for native builds
-		# TODO: Re-enable libsanitizer when GCC bug #81066 is fixed.
 		CC="${cc_64}" \
 		CXX="${cxx_64}" \
 		CFLAGS="-O2" \
@@ -97,7 +96,6 @@ atcfg_configure() {
 			--disable-lto \
 			--disable-libgomp \
 			--disable-plugin \
-			--disable-libsanitizer \
 			--without-ppl \
 			--without-cloog \
 			--with-gmp-include="${at_dest}/include" \
