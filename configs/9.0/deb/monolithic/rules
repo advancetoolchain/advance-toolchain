@@ -62,7 +62,7 @@ binary-cp: build
 	# executed.
 	mkdir -p debian/tmp/etc/cron.d/
 	echo "@reboot root __AT_DEST__/bin/watch_ldconfig &" \
-	      > debian/tmp/etc/cron.d/__AT_VER_REV_INTERNAL___ldconfig
+	      > debian/tmp/etc/cron.d/__AT_VER_REV_INTERNAL_NODOT___ldconfig
 	gzip -9nvf debian/tmp/__AT_DEST__/share/info/*.info*
 	# Prepare the area for golang
 	mkdir -p debian/tmp/__GO_DEST__
