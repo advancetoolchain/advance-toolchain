@@ -43,6 +43,11 @@ atsrc_get_patches ()
         at_get_patch \
 	https://hg.mozilla.org/releases/mozilla-esr31/raw-diff/2f3e78643f5c/parser/expat/lib/xmlparse.c \
 	978566c4144504d170869619661fbd7d || return ${?}
+
+		at_get_patch_and_trim \
+	http://www.openwall.com/lists/oss-security/2016/05/17/12 \
+	CVE-2016-0718.patch 730 \
+	a1044d6e3789fd537461608bc4f3dab3 || return ${?}
 }
 
 atsrc_apply_patches ()
