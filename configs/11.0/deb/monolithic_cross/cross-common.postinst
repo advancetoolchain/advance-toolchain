@@ -16,14 +16,9 @@
 #
 
 if [[ "${1}" == configure ]]; then
+	# Update non-standard info directories.
 	for INFO in $(ls __AT_DEST__/share/info/*.info.gz); do
 		ginstall-info ${INFO} \
 			__AT_DEST__/share/info/dir > /dev/null 2>&1 || :
 	done
-
-	# Run this setup script right after install
-	__AT_DEST__/scripts/at-create-ibmcmp-cfg.sh
-
-	# Update ld.so.cache
-	[[ -f __AT_DEST__/sbin/ldconfig ]] && __AT_DEST__/sbin/ldconfig
 fi

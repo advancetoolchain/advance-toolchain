@@ -15,15 +15,11 @@
 # limitations under the License.
 #
 
-if [[ "${1}" == configure ]]; then
+if [[ "${1}" == remove ]]; then
+	# Update our non standard info dirs
 	for INFO in $(ls __AT_DEST__/share/info/*.info.gz); do
-		ginstall-info ${INFO} \
+		ginstall-info --delete ${INFO} \
 			__AT_DEST__/share/info/dir > /dev/null 2>&1 || :
 	done
-
-	# Run this setup script right after install
-	__AT_DEST__/scripts/at-create-ibmcmp-cfg.sh
-
-	# Update ld.so.cache
-	[[ -f __AT_DEST__/sbin/ldconfig ]] && __AT_DEST__/sbin/ldconfig
+	rm -f __AT_DEST__/share/info/dir
 fi
