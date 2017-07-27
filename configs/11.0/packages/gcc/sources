@@ -52,6 +52,11 @@ atsrc_get_patches ()
 		https://raw.githubusercontent.com/powertechpreview/powertechpreview/26747dc0bfb0f8f30de9ebad78847a96d3191ba5/GCC%20PowerPC%20Backport/6/gcc-6-lto.patch \
 		b10bdbf545205f142715dc25e087b1e7 || return ${?}
 
+	# Work around gccgo issue https://github.com/golang/go/issues/21147
+	at_get_patch \
+		https://github.com/tuliom/gcc/commit/9d7afb216062.patch \
+		5b10a45b9e635d5886fd7ea255708835 || return ${?}
+
 	return 0
 }
 
@@ -64,6 +69,8 @@ atsrc_apply_patches ()
 	sed "s:| OPTION_MASK_P9_MINMAX:/* | OPTION_MASK_P9_MINMAX */:" \
 	   gcc/config/rs6000/rs6000-cpus.def.back > \
 	   gcc/config/rs6000/rs6000-cpus.def || return ${?}
+
+	patch -p1 < 9d7afb216062.patch || return ${?}
 
 	return 0
 }
