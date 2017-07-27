@@ -42,12 +42,18 @@ atsrc_get_patches ()
 {
 	at_get_patch \
 		https://raw.githubusercontent.com/powertechpreview/powertechpreview/e9bebfe3c94e612fc348cbab3183a771247ad8b2/Python%20Fixes/python-3.6.0-getlib64s1.patch \
-	  c46ccb4d8f043da9966bbce62ae8b9e5 || return ${?}
+		c46ccb4d8f043da9966bbce62ae8b9e5 || return ${?}
+
+	# Fix Python issue https://bugs.python.org/issue30714
+	at_get_patch \
+		https://patch-diff.githubusercontent.com/raw/python/cpython/pull/2305.patch \
+		15f12a3dd6b1d6a31b7ca910a6a5c519 || return ${?}
 }
 
 atsrc_apply_patches ()
 {
 	patch -p1 < python-3.6.0-getlib64s1.patch || return ${?}
+	patch -p1 < 2305.patch || return ${?}
 }
 
 atsrc_package_verify_make_log ()
