@@ -24,6 +24,8 @@ if [[ "${1}" == configure ]]; then
 	[[ -f __AT_DEST__/sbin/ldconfig ]] && __AT_DEST__/sbin/ldconfig
 fi
 
-systemctl --no-reload preset __AT_VER_REV_INTERNAL__-cachemanager.service \
-    > /dev/null 2>&1 || :
-systemctl restart __AT_VER_REV_INTERNAL__-cachemanager.service
+if [[ "__USE_SYSTEMD__" == "yes" ]]; then
+	systemctl --no-reload preset __AT_VER_REV_INTERNAL__-cachemanager.service \
+	    > /dev/null 2>&1 || :
+	systemctl restart __AT_VER_REV_INTERNAL__-cachemanager.service
+fi
