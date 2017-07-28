@@ -40,7 +40,7 @@ mkdir -p ${deb_d}
 at_version=$(echo ${at_full_ver} | cut -d"." -f 1)
 
 # Set systemd cache manager directories.
-if (( ${at_version} >= 11 )) || [[ "${at_version}" == next ]]; then
+if [[ "${use_systemd}" == "yes" ]]; then
 	cp "${utilities}/cachemanager.service" ${debh_root}/monolithic/
 	systemd_unit=$(pkg-config --variable=systemdsystemunitdir systemd)
 	systemd_preset=$(pkg-config --variable=systemdsystempresetdir systemd)
@@ -80,6 +80,7 @@ for f in *; do
 	    -e "s/__GO_DEST__/${go_dest//\//\\/}/g" \
 	    -e "s/__SYSTEMD_UNIT__/${systemd_unit//\//\\/}/g" \
 	    -e "s/__SYSTEMD_PRESET__/${systemd_preset//\//\\/}/g" \
+	    -e "s/__USE_SYSTEMD__/${use_systemd}/g" \
 	    ${f} > ${deb_d}/${f}
 done
 popd > /dev/null
@@ -234,7 +235,7 @@ for pkg in $(awk '/^Package:/ { print $2 }' ${deb_d}/control | grep -v dbg); do
 				fi
 				;;
 			"runtime")
-				if (( ${at_version} < 11 )); then
+				if [[ "${use_systemd}" != "yes" ]]; then
 					echo "/etc/cron.d/${at_ver_rev_internal//./}_ldconfig"
 				fi
 				[[ ${addtlehelper} == "yes" ]] && \

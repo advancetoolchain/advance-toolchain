@@ -81,3 +81,6 @@ endif
 define distro_sanity
     echo "nothing to test here"
 endef
+
+# Inform if the systemd service to monitor the loader cache should be used.
+USE_SYSTEMD := no

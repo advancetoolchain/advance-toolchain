@@ -72,7 +72,7 @@ ifndef AT_DISTRO_REQ_PKGS
                           autoconf rsync curl bc libxml2-utils automake \
                           dpkg-sig xutils-dev libtool wget
     AT_CROSS_PGMS_REQ :=
-    AT_NATIVE_PGMS_REQ := pkg-config /opt/ibm/java-ppc64le-80/jre/bin/java
+    AT_NATIVE_PGMS_REQ := /opt/ibm/java-ppc64le-80/jre/bin/java
     AT_COMMON_PGMS_REQ := git_2.7
     AT_JAVA_VERSIONS := 8
 endif
@@ -81,3 +81,6 @@ endif
 define distro_sanity
     echo "nothing to test here"
 endef
+
+# Inform if the systemd service to monitor the loader cache should be used.
+USE_SYSTEMD := no

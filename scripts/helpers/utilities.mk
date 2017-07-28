@@ -320,6 +320,8 @@ define deb_setenv
     export debh_root=$(DEBH_ROOT); \
     echo "  - Setting debs to $(DEBS)"; \
     export debs="$(DEBS)"; \
+    echo "  - Setting use_systemd to $(USE_SYSTEMD)"; \
+    export use_systemd="$(USE_SYSTEMD)"; \
     echo "* Finished deb env variables."
 endef
 
