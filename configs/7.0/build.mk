@@ -56,3 +56,9 @@ BUILD_GET_MPS := yes
 BUILD_GET_ADDONS := yes
 BUILD_EXCLUSIVE_CROSS := no
 BUILD_DEFAULT_RETRIES := 5
+
+# Miscellaneous
+# =============
+# Should be either 'yes' or 'no'. Mostly self explanatory options.
+# - BUILD_ENVIRONMENT_MODULES: create and package an environment modules file
+BUILD_ENVIRONMENT_MODULES := no

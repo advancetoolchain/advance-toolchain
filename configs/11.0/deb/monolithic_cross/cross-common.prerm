@@ -16,6 +16,9 @@
 #
 
 if [[ "${1}" == remove ]]; then
+	# Remove global link to the environment modules.
+	rm -f /usr/share/modules/modulefiles/__AT_VER_REV_INTERNAL__*
+
 	# Update our non standard info dirs
 	for INFO in $(ls __AT_DEST__/share/info/*.info.gz); do
 		ginstall-info --delete ${INFO} \

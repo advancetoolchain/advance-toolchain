@@ -120,6 +120,19 @@ done
 for INFO in $(ls ${RPM_INSTALL_PREFIX}/%{infodir_r}/*.info.gz); do
 	install-info ${INFO} ${RPM_INSTALL_PREFIX}/%{infodir_r}/dir
 done
+# Make the environment modules visible to users.
+if [[ ! ( -d /usr/share/modules/modulefiles || -d /usr/share/Modules/modulefiles ) ]]; then
+	# for SUSE family
+	mkdir -p /usr/share/modules/modulefiles
+	# for Red Hat family
+	mkdir -p /usr/share/Modules/modulefiles
+fi
+if [[ -w /usr/share/modules/modulefiles/. ]]; then
+	ln -s %{_datadir}/modules/modulefiles/%{at_ver_rev_internal}* /usr/share/modules/modulefiles/.
+fi
+if [[ -w /usr/share/Modules/modulefiles/. ]]; then
+	ln -s %{_datadir}/modules/modulefiles/%{at_ver_rev_internal}* /usr/share/Modules/modulefiles/.
+fi
 ################################################
 
 #################### runtime-extras ############
@@ -152,6 +165,9 @@ fi
 
 #################### common ####################
 %preun -n advance-toolchain-%{at_major}__CROSS__-common
+# Remove the global link to the environment modules.
+rm -f /usr/share/modules/modulefiles/%{at_ver_rev_internal}*
+rm -f /usr/share/Modules/modulefiles/%{at_ver_rev_internal}*
 # Update the info directory entries
 if [ "$1" = 0 ]; then
 	for INFO in $(ls ${RPM_INSTALL_PREFIX}/%{infodir_r}/*.info.gz); do
