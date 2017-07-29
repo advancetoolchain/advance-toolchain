@@ -39,6 +39,7 @@ runtime_exclude=('/^.*\.a$/d' \
                  '/^.*\/sbin\/([^l]|l[^d]).*$/d' \
                  '/^.*\/include\/.*$/d' \
                  '/^.*\/share\/info\/.*$/d' \
+                 '/^.*\/share\/modules\/.*$/d' \
                  '/^.*\/pkgconfig\/.*$/d'\
                  '/^.*\.o$/d' \
                  '/^.*\.la$/d' \
@@ -59,6 +60,7 @@ devel_include=('^.*\.a$' \
                '^.*\/sbin\/.*$' \
                '^.*\/include\/.*$' \
                '^.*\/share\/info\/.*$' \
+               '^.*\/share\/modules\/.*$' \
                '^.*\/pkgconfig\/.*$'\
                '^.*\.o$' \
                '^.*\.la$' \

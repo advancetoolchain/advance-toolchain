@@ -26,4 +26,12 @@ if [[ "${1}" == configure ]]; then
 
 	# Update ld.so.cache
 	[[ -f __AT_DEST__/sbin/ldconfig ]] && __AT_DEST__/sbin/ldconfig
+
+	# Make the environment module available to users.
+	if [[ ! -d /usr/share/modules/modulefiles ]]; then
+		mkdir -p /usr/share/modules/modulefiles
+	fi
+	if [[ -w /usr/share/modules/modulefiles/. ]]; then
+		ln -s __AT_DEST__/share/modules/modulefiles/__AT_VER_REV_INTERNAL__ /usr/share/modules/modulefiles/.
+	fi
 fi

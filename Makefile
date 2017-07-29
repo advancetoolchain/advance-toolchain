@@ -1263,7 +1263,23 @@ $(RCPTS)/build.rcpt: $(RCPTS)/toolchain.rcpt $(RCPTS)/debug.rcpt \
 	@echo "Completed $(AT_VER_REV_INTERNAL) build"
 	@touch $@
 
-$(RCPTS)/distributed_scripts.rcpt:
+
+ifeq ($(BUILD_ENVIRONMENT_MODULES),yes)
+    ENVIRONMENT_MODULES := $(RCPTS)/environment_modules.rcpt
+endif
+
+$(RCPTS)/environment_modules.rcpt: $(RCPTS)/build.rcpt
+	@echo "Creating and installing environment modules..."
+	@mkdir -p $(AT_DEST)/share/modules/modulefiles
+	@$(call runandlog,$(LOGS)/_environment_modules.log, \
+	       $(UTILITIES_ROOT)/pkg_build_environment_modules.sh $(AT_DEST) \
+	       $(AT_FULL_VER) $(AT_VER_REV_INTERNAL) $(TARGET) \
+	       $(DYNAMIC_SPEC)/main_toolchain/environment-modules.filelist \
+	       $(CROSS_BUILD));
+	@echo "Completed install of environment modules!"
+	@touch $@
+
+$(RCPTS)/distributed_scripts.rcpt: $(ENVIRONMENT_MODULES)
 	@echo "Installing package scripts..."
 	@+{ echo "Setting final destination for package scripts."; \
 	    if [[ "$(CROSS_BUILD)" == "no" ]]; then \
