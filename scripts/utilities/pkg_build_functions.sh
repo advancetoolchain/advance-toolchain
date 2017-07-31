@@ -213,8 +213,9 @@ function find_dependencies()
 	      wordsize \
 	      suffix
 
-	# Create a temporary file
+	# Create temporary files
 	tmp_file=$(mktemp)
+	ignored=$(mktemp)
 	# Set tool for linked libraries verification
 	if [[ "${cross_build}" == "yes" ]]; then
 		ldd_path=$(which ldd)
@@ -256,14 +257,15 @@ function find_dependencies()
 			exit 1
 		fi
 		# Check the dynamically linked executable for AT prefix
-		ignored=$( ${ldd_path} "${file}" | grep "${at_dest}" | \
-			awk "{ print \$1 }" )
+		$( ${ldd_path} "${file}" | grep -E "${at_dest}|ld-.*\.so" | \
+			awk "{ print \$1 }" | xargs -r -n 1 basename \
+			>> "${ignored}" )
 		if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
 			echo "Failed to ldd file ${file}" 1>&2
 			exit 1
 		fi
 		# Get the dependencies
-		objdump -p "${file}" | grep "NEEDED" | grep -v "${ignored}" | \
+		objdump -p "${file}" | grep "NEEDED" | grep -vf "${ignored}" | \
 			awk "{ print \$2 \"${suffix}\" }" >> ${tmp_file}
 		if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
 			echo "Failed to objdump file ${file}" 1>&2
@@ -271,7 +273,7 @@ function find_dependencies()
 		fi
 	done
 	sort -u "${tmp_file}"
-	# Remove the temporary file
-	rm -f "${tmp_file}" &> /dev/null
+	# Remove the temporary files
+	rm -f "${tmp_file}" "${ignored}" &> /dev/null
 	# Completed the look for dependencies
 }

@@ -93,7 +93,8 @@ proc process_rpm_packages { packages cross_bld at_dest ldd_path objdump_path } {
 
 			# Grab the libraries provided by the system
 			catch {exec $ldd_path $file | sed s://:/: | \
-					  grep $at_dest | awk "{ print \$1 }" \
+					  grep -E "$at_dest|ld-.*\.so" \
+					  | awk "{ print \$1 }" \
 					  | xargs -r -n 1 basename >> $ignored}
 			catch {exec $objdump_path -p $file | grep NEEDED \
 					 | grep -vf $ignored | \
