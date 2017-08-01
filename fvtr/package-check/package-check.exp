@@ -126,8 +126,13 @@ proc get_pkg_flavor { package_name } {
 	# Cross compiled packages have different name patterns so that flavor
 	# should be parsed a bit different than native packages.
 	if { [regexp ".*cross.*" ${package_name}] } {
-		if { [regexp ".*-cross-common-.*" ${package_name}] } {
+		if { [regexp ".*-cross-common.*" ${package_name}] } {
 			return "cross_common"
+		}
+
+		if { [regexp ".*-cross-ppc.*\[-_\]${ver_rev}" \
+			     ${package_name}] } {
+			return "cross"
 		}
 
 		if { [regexp ".*-cross-ppc.*-(\\w\+(-\\w\+)?)\[-_\]${ver_rev}" \
