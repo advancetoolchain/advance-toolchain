@@ -191,10 +191,10 @@ systemd_preset=$(pkg-config --variable=systemdsystempresetdir systemd)
 mkdir -p ${RPM_BUILD_ROOT}/${systemd_unit}/
 sed -e s:__AT_VER_REV_INTERNAL__:%{at_ver_rev_internal}: \
     -e s:__AT_DEST__:%{_prefix}: %{_rpmdir}/cachemanager.service \
-    > ${RPM_BUILD_ROOT}/${systemd_unit}/%{at_ver_rev_internal}-cachemanager.service
+    > ${RPM_BUILD_ROOT}/${systemd_unit}/%{at_ver_alternative}-cachemanager.service
 mkdir -p ${RPM_BUILD_ROOT}/${systemd_preset}/
 echo "enable at*cachemanager.service" \
-    > ${RPM_BUILD_ROOT}/${systemd_preset}/90-atcachemanager.preset
+    > ${RPM_BUILD_ROOT}/${systemd_preset}/90-at%{at_ver_alternative}cachemanager.preset
 
 ####################################################
 %pre runtime
@@ -232,9 +232,9 @@ ln -s /etc/localtime %{_prefix}/etc/localtime
 if [[ -f %{_sbindir}/ldconfig ]]; then
     %{_sbindir}/ldconfig
 fi
-systemctl --no-reload preset %{at_ver_rev_internal}-cachemanager.service \
+systemctl --no-reload preset %{at_ver_alternative}-cachemanager.service \
     > /dev/null 2>&1 || :
-systemctl restart %{at_ver_rev_internal}-cachemanager.service
+systemctl restart %{at_ver_alternative}-cachemanager.service
 
 #---------------------------------------------------
 %post devel
@@ -338,7 +338,7 @@ fi
 ####################################################
 %preun runtime
 systemctl --no-reload disable --now \
-    %{at_ver_rev_internal}-cachemanager.service > /dev/null 2>&1 || :
+    %{at_ver_alternative}-cachemanager.service > /dev/null 2>&1 || :
 
 ####################################################
 %postun runtime
@@ -356,7 +356,7 @@ if file /usr/sbin/ldconfig | grep "bash script" > /dev/null; then
         rm -f /usr/sbin/ldconfig
     fi
 fi
-systemctl try-restart %{at_ver_rev_internal}-cachemanager.service >/dev/null \
+systemctl try-restart %{at_ver_alternative}-cachemanager.service >/dev/null \
     2>&1 || :
 
 #---------------------------------------------------
