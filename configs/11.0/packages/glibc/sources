@@ -21,7 +21,7 @@
 
 ATSRC_PACKAGE_NAME="GNU C Library"
 ATSRC_PACKAGE_VER=2.26
-ATSRC_PACKAGE_REV=95a733925807
+ATSRC_PACKAGE_REV=63efe9a47f4c
 ATSRC_PACKAGE_LICENSE="LGPL 2.1"
 ATSRC_PACKAGE_DOCLINK="http://www.gnu.org/software/libc/manual/html_node/index.html"
 ATSRC_PACKAGE_RELFIXES=
@@ -39,11 +39,6 @@ ATSRC_PACKAGE_BUNDLE=main_toolchain
 
 atsrc_get_patches ()
 {
-	# Patch that is applied to every ibm branch
-	at_get_patch \
-		https://raw.githubusercontent.com/powertechpreview/powertechpreview/2b67d9b6b6b5f8914e8579ad50ec2c69ddcf6198/GLIBC%20PowerPC%20Backport/2.26/0001-Remove-assert-if-DT_RUNPATH-and-DT_RPATH-flags-are-f.patch \
-		7b746cf156702fb7a566743f3f1966e2 || return ${?}
-
 	# Only enable TLE if:
 	#   * Supported by hardware
 	#   * Not a setuid program
@@ -63,8 +58,6 @@ atsrc_get_patches ()
 
 atsrc_apply_patches ()
 {
-	patch -p1 < 0001-Remove-assert-if-DT_RUNPATH-and-DT_RPATH-flags-are-f.patch || return ${?}
-
 	patch -p1 < 0001-powerpc-Conditionally-enable-TLE.patch || return ${?}
 
 	patch -p1 < fastbin.patch || return ${?}
