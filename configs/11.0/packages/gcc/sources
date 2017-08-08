@@ -54,16 +54,3 @@ atsrc_get_patches ()
 
 	return 0
 }
-
-atsrc_apply_patches ()
-{
-	# TODO: remove this on Beta phase.
-	set -x
-	mv gcc/config/rs6000/rs6000-cpus.def \
-	   gcc/config/rs6000/rs6000-cpus.def.back
-	sed "s:| OPTION_MASK_P9_MINMAX:/* | OPTION_MASK_P9_MINMAX */:" \
-	   gcc/config/rs6000/rs6000-cpus.def.back > \
-	   gcc/config/rs6000/rs6000-cpus.def || return ${?}
-
-	return 0
-}
