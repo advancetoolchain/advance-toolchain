@@ -117,6 +117,7 @@ atcfg_configure() {
 			--target=${target64:-${target}} \
 			--with-cpu=${default_cpu} \
 			--prefix="${at_dest}" \
+			${with_longdouble:+--with-long-double-128} \
 			${secure_plt:+--enable-secureplt} \
 			${disable_multilib:+--disable-multilib} \
 			--disable-threads \
