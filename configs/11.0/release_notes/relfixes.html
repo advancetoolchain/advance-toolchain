@@ -13,6 +13,25 @@
 <ul>
 	<li>Support for Debian 9.</li>
 	<li>GCC's POWER9 min/max support disabled.</li>
+	<li>GCC provides:</li>
+	<ul>
+		<li>The PowerPC port now uses LRA (a new local register allocator) by default.</li>
+		<li>The shrink-wrapping optimization can now separate portions of prologues and epilogues to improve performance if some of the work done traditionally by prologues and epilogues is not needed on certain paths. This is controlled by the -fshrink-wrap-separate option, enabled by default.</li>
+		<li>GCC now diagnoses inline assembly that clobbers register r2. This has always been invalid code, and is no longer quietly tolerated.</li>
+		<li>The PowerPC port's support for ISA 3.0 (-mcpu=power9) has been enhanced to generate more of the new instructions by default, and to provide more built-in functions to generate code for other new instructions.</li>
+		<li>The configuration option --enable-gnu-indirect-function is now enabled by default on PowerPC GNU/Linux builds.</li>
+		<li>The PowerPC port will now allow 64-bit and 32-bit integer types to be allocated to the VSX vector registers (ISA 2.06 and above). In addition, on ISA 3.0, 16-bit and 8-bit integer types can be allocated in the vector registers. Previously, only 64-bit integer types were allowed in the traditional floating point registers.</li>
+		<li>New options -mstack-protector-guard=global, -mstack-protector-guard=tls, -mstack-protector-guard-reg=, and -mstack-protector-guard-offset= change how the stack protector gets the value to use as canary.</li>
+	</ul>
+	<li>The GNU C Library provides:</li>
+	<ul>
+		<li>The math library now implements 128-bit floating point as defined by ISO/IEC/IEEE 60559:2011 (IEEE 754-2008) and ISO/IEC TS 18661-3:2015.</li>
+		<li>A per-thread cache has been added to malloc.</li>
+		<li>The tunables feature is now enabled by default.</li>
+		<li>The ucontext_t type no longer has the name struct ucontext.</li>
+		<li>CVE-2010-3192: Avoid printing a backtrace from the __stack_chk_fail function since it is called on a corrupt stack and a backtrace is unreliable on a corrupt stack.</li>
+		<li>CVE-2017-12133: A use-after-free vulnerability in clntudp_call in the Sun RPC system has been fixed.</li>
+	</ul>
 	<li>Valgrind provides support for ISA 3.0B and various fixes for existing 3.0 support.</li>
 	<li>Oprofile provides support for POWER9.</li>
 	<li>OpenSSL provides a fix for <a href="https://www.openssl.org/news/secadv/20170216.txt">CVE-2017-3733</a>.</li>
