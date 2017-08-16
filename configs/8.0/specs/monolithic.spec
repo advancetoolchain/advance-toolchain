@@ -120,6 +120,7 @@ gzip -9nvf ${RPM_BUILD_ROOT}%{_infodir}/*.info*
 mkdir -p ${RPM_BUILD_ROOT}/etc/cron.d/
 echo "@reboot root %{_bindir}/watch_ldconfig &" \
       > ${RPM_BUILD_ROOT}/etc/cron.d/%{at_ver_alternative}_ldconfig
+chmod 644 ${RPM_BUILD_ROOT}/etc/cron.d/%{at_ver_alternative}_ldconfig
 
 ####################################################
 %pre runtime

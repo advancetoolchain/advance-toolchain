@@ -27,5 +27,10 @@ fi
 if [[ "__USE_SYSTEMD__" == "yes" ]]; then
 	systemctl --no-reload preset __AT_VER_ALTERNATIVE__-cachemanager.service \
 	    > /dev/null 2>&1 || :
-	systemctl restart __AT_VER_ALTERNATIVE__-cachemanager.service
+	systemctl restart __AT_VER_ALTERNATIVE__-cachemanager.service || \
+	    echo -e " Failed to start __AT_VER_ALTERNATIVE__-cachemanager.service.\n \
+AT's linker cache file is not automatically updated when a package is \
+installed or modified.\n \
+Please run __AT_DEST__/bin/watch_ldconfig if you want it to be."
+
 fi
