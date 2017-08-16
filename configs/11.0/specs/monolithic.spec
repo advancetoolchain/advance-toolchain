@@ -193,8 +193,8 @@ sed -e s:__AT_VER_REV_INTERNAL__:%{at_ver_rev_internal}: \
     -e s:__AT_DEST__:%{_prefix}: %{_rpmdir}/cachemanager.service \
     > ${RPM_BUILD_ROOT}/${systemd_unit}/%{at_ver_alternative}-cachemanager.service
 mkdir -p ${RPM_BUILD_ROOT}/${systemd_preset}/
-echo "enable at*cachemanager.service" \
-    > ${RPM_BUILD_ROOT}/${systemd_preset}/90-at%{at_ver_alternative}cachemanager.preset
+echo "enable %{at_ver_alternative}-cachemanager.service" \
+    > ${RPM_BUILD_ROOT}/${systemd_preset}/90-%{at_ver_alternative}cachemanager.preset
 
 ####################################################
 %pre runtime

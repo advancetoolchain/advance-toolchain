@@ -1125,7 +1125,7 @@ $(RCPTS)/monitor.rcpt: $(RCPTS)/toolchain.rcpt
 		systemd_preset=$$( pkg-config --variable=systemdsystempresetdir systemd ); \
 	        echo "$${systemd_unit}/$${at_ver_rev_internal//./}-cachemanager.service" \
 	             >> $(DYNAMIC_SPEC)/$${group}/ldconfig.filelist; \
-	        echo "$${systemd_preset}/90-at$${at_ver_rev_internal//./}cachemanager.preset" \
+	        echo "$${systemd_preset}/90-$${at_ver_rev_internal//./}cachemanager.preset" \
 	             >> $(DYNAMIC_SPEC)/$${group}/ldconfig.filelist; \
 	    else \
 		echo "/etc/cron.d/$${at_ver_rev_internal//./}_ldconfig" \

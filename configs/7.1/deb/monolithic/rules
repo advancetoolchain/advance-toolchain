@@ -57,6 +57,7 @@ binary-cp: build
 	mkdir -p debian/tmp/etc/cron.d/
 	echo "@reboot root __AT_DEST__/bin/watch_ldconfig &" \
 	      > debian/tmp/etc/cron.d/__AT_VER_ALTERNATIVE___ldconfig
+	chmod 644 debian/tmp/etc/cron.d/__AT_VER_ALTERNATIVE___ldconfig
 	gzip -9nvf debian/tmp/__AT_DEST__/share/info/*.info*
 
 binary: binary-indep binary-arch
