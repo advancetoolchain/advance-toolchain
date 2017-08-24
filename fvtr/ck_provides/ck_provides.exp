@@ -69,27 +69,32 @@ proc process_deb {package expected} {
 	set version "(= ${at_full_ver})"
 
 	if { ![info exists ::env(AT_WD)] } {
-		if { ![exec dpkg-query --status ${expected}]} {
+		if { [catch {exec dpkg-query --status ${expected}}] } {
 			printit "User didn't install package ${expected}.\
 Can't run this test."
 			return ${ENOSYS}
 		}
 
-		return ${ENOSYS}
+		# Verify the version of the dummy package.
+		set dversion [string trimleft [exec dpkg-query --status \
+				${expected} | grep -E "Version"] "Version: "]
+		if { ![string equal ${dversion} ${at_full_ver}] } {
+			printit "Package ${expected} installed is not from AT \
+${at_full_ver}. Can't run this test."
+			return ${ENOSYS}
+		}
 
-		# TODO: Adapt this code to the new dummy package.
-		# Keep in mind that, the package installed may not be of the
-		# same version you're trying to test.
-		# The biggest problem is that dpkg-query doesn't provide a way
-		# to query for a specific version of a package.
-		set depends [string trimleft [exec dpkg-query --status \
-						  ${expected} | grep -E "Provides"] "Provides: "]
-		# We need trim here because the query returns the string with
-		# "Provides:" in the begining.
-		set provides [string trimleft [exec dpkg-query --status \
-				${package} | grep -E "Provides"] "Provides: "]
-		if { ![string equal ${expected} ${provides}] } {
-			printit "Provides for ${package} not found."
+		# Parse the Pre-Depends field from the dummy package.
+		# It must contain the actual package.
+		set depends [string trimleft \
+				    [exec dpkg-query --status ${expected} \
+					 | grep -E "Pre-Depends"] \
+				    "Pre-Depends: "]
+
+		# Check if the Pre-Depends field references the actual package.
+		if { [string first "${package} ${version}" ${depends}] < 0 } {
+			printit "Package ${expected} doesn't depend on\
+\"${package} ${version}\"" ${ERROR}
 			return ${ERROR}
 		}
 	} else {
@@ -103,12 +108,15 @@ Can't run this test."
 				 [string first "_" ${package}] \
 				 [string length ${package}]]
 
+		# Parse the Pre-Depends field from the dummy package.
+		# It must contain the actual package.
 		set depends [string trimleft \
 				    [exec dpkg --info \
 				          ${deb_path}/${dpkg} \
 					 | grep -E "Pre-Depends"] \
 				    "Pre-Depends: "]
 
+		# Check if the Pre-Depends field references the actual package.
 		if { [string first "${rpkg} ${version}" ${depends}] < 0 } {
 			printit "Package ${dpkg} doesn't depend on\
 \"${rpkg} ${version}\"" ${ERROR}
@@ -153,7 +161,9 @@ proc check_rpms {packages} {
 	return ${rc}
 }
 
-# Do the same as check_rpm for DEB packages.
+# Get each package that needs be checked and compare the string in Pre-Depends
+# of the correspondent DEB dummy package one by one.
+# packages - list of packages names.
 proc check_debs {packages} {
 	global at_ver_rev
 	set rc 0
@@ -172,17 +182,17 @@ proc check_debs {packages} {
 			    "advance-toolchain-runtime"]
 	set rc [set_new_rc ${rc} ${newrc}]
 
-	set package [lindex ${packages} [lsearch ${packages} "*devel_*"]]
+	set package [lindex ${packages} [lsearch ${packages} "*devel*"]]
 	set newrc [process_deb ${package} \
 			    "advance-toolchain-devel"]
 	set rc [set_new_rc ${rc} ${newrc}]
 
-	set package [lindex ${packages} [lsearch ${packages} "*perf_*"]]
+	set package [lindex ${packages} [lsearch ${packages} "*perf*"]]
 	set newrc [process_deb ${package} \
 			    "advance-toolchain-perf"]
 	set rc [set_new_rc ${rc} ${newrc}]
 
-	set package [lindex ${packages} [lsearch ${packages} "*mcore-libs_*"]]
+	set package [lindex ${packages} [lsearch ${packages} "*mcore-libs*"]]
 	set newrc [process_deb ${package} \
 			    "advance-toolchain-mcore-libs"]
 	set rc [set_new_rc ${rc} ${newrc}]
