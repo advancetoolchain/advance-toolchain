@@ -136,8 +136,12 @@ CMAKE_PREFIX_PATH=/opt/atX.X/
 
     	<li><code>advance-toolchain-atX.X-cross-ppc64(le)-mcore-libs</code>
 
-    <p>Provides the libraries for multi-thread development to the cross compiler (ppc64 or ppc64le).</p></li></ul>
+    <p>Provides the libraries for multi-thread development to the cross compiler (ppc64 or ppc64le).</p></li>
 
+    	<li><code>advance-toolchain-atX.X-&lt;package_name&gt;-debuginfo or advance-toolchain-atX.X-&lt;package_name&gt;-dbg</code>
+
+    <p>Provides the .debug files that contain the DWARF debuginfo for the files in &lt;package_name&gt;, this is useful to debug and profile the applications built with AT.</p></li>
+</ul>
 
 <div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
@@ -205,7 +209,7 @@ CMAKE_PREFIX_PATH=/opt/atX.X/
 
 
 <ul>
-    	<li>On Advance Toolchain 10.0, the compiler defaults to <code>-mcpu=power8 -mtune=power8</code></li>
+    	<li>On Advance Toolchain 10.0 and 11.0 the compiler defaults to <code>-mcpu=power8 -mtune=power8</code></li>
 
     	<li>On Advance Toolchain 7.x, 8.0, and 9.0, the compiler defaults to <code>-mcpu=power7 -mtune=power8</code></li>
 
@@ -380,7 +384,7 @@ shared object file: No such file or directory. </pre><br>
             <h3>Library search paths</h3>
 <p><code>/opt/atX.X/etc/ld.so.conf</code> already includes <code>/etc/ld.so.conf</code> in the search order, but you may need to re-run <code>/opt/atX.X/sbin/ldconfig</code> in order populate <code>/opt/atX.X/etc/ld.so.cache</code> with the specialized search paths you have added to <code>/etc/ld.so.conf</code> after an Advance Toolchain installation.</p>
 
-<p>If you are running ldd against your binary and it is showing that some libraries are not found, you may need to re-run <code>/opt/atX.X/sbin/ldconfig</code> to fix that. Although, Advance Toolchain has a daemon that monitors the system <code>ld.so.cache</code> and updates <code>/opt/atX.X/etc/ld.so.cache</code> when needed.</p>
+<p>If you are running ldd against your binary and it is showing that some libraries are not found, you may need to re-run <code>/opt/atX.X/sbin/ldconfig</code> to fix that. Although, Advance Toolchain has a daemon (atxx-x-cachemanager.service) that monitors the system <code>ld.so.cache</code> and updates <code>/opt/atX.X/etc/ld.so.cache</code> when needed.</p>
 
 <p>The environment variable <code>LD_LIBRARY_PATH</code> is a colon-separated set of directories where libraries should be searched first before the standard set of directories. This list is used in preference to any runtime or default system linker path.</p>
 
@@ -401,7 +405,7 @@ shared object file: No such file or directory. </pre><br>
 
 <p>It should be noted that TLE may not benefit all applications, and the benefits depend largely on how mutexes are used. In essence, TLE lets the hardware track any data races which occur while executing a critical section. POWER8 transactional resources are shared among hardware threads per core, thus enabling more threads per core may result in lower performance depending on how much memory is touched within a critical section. TLE is not recommended for applications which make system calls inside the critical section as the kernel does not support system calls from inside a memory transaction.</p>
 
-<p>Advance Toolchain 9.0 and 10.0 has support for Transactional Lock Elision (TLE) on glibc (since Advance Toolchain 9.0-3). TLE is disabled by default, a script to enable it is provided as /opt/atX.X/scripts/tle_on.sh. Note, that the internals of how the script work are subject to change at any time.</p>
+<p>Advance Toolchain 9.0 and above have support for Transactional Lock Elision (TLE) on glibc (since Advance Toolchain 9.0-3). TLE is disabled by default, a script to enable it is provided as /opt/atX.X/scripts/tle_on.sh. Note, that the internals of how the script work are subject to change at any time.</p>
 
 <p>Below is a sample program which demonstrates how to use the tle_on.sh script, and how to use it:</p>
 
