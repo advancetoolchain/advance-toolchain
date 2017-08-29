@@ -45,15 +45,16 @@ atsrc_get_patches ()
 		c46ccb4d8f043da9966bbce62ae8b9e5 || return ${?}
 
 	# Fix Python issue https://bugs.python.org/issue30714
-	at_get_patch \
-		https://patch-diff.githubusercontent.com/raw/python/cpython/pull/2305.patch \
-		15f12a3dd6b1d6a31b7ca910a6a5c519 || return ${?}
+	at_get_patch_and_trim \
+		https://github.com/python/cpython/commit/7b40cb7293cb14e5c7c8ed123efaf9acb33edae2.patch \
+		issue30714.patch 0 \
+		0f55c13d34f14cb2645e60f8c70d3926 || return ${?}
 }
 
 atsrc_apply_patches ()
 {
 	patch -p1 < python-3.6.0-getlib64s1.patch || return ${?}
-	patch -p1 < 2305.patch || return ${?}
+	patch -p1 < issue30714.patch || return ${?}
 }
 
 atsrc_package_verify_make_log ()
