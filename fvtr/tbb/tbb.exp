@@ -87,13 +87,13 @@ proc parallel_test {} {
 	printit "Testing parallel execution..."
 	if { $TARGET32 } {
 		printit "Testing dynamic 32 link..."
-		compile "${CXX} -m32 ${CFLAGS} $FULLPATH/mem-test.cpp \
+		compile "${CXX} -m32 ${CFLAGS} $FULLPATH/par-test.cpp \
 ${TBBLIBS} -o ${tmp_file}"
 		printit "Successfully built and linked 32 bit library"
 	}
 	if { $TARGET64 } {
 		printit "Testing dynamic 64 link..."
-		compile "${CXX} -m64 ${CFLAGS} $FULLPATH/mem-test.cpp \
+		compile "${CXX} -m64 ${CFLAGS} $FULLPATH/par-test.cpp \
 ${TBBLIBS} -o ${tmp_file}"
 		printit "Successfully built and linked 64 bit library"
 	}
@@ -105,8 +105,9 @@ set tmp_file [exec mktemp]
 # Run memtest for all TBB versions.
 memtest
 
-# parallel_test is supported by TBB >= 4.2 only.
-if { ${major_ver} >= 4 && ${minor_ver} >= 2 } {
+# Prior to 4.2u4 we would need different headers,
+# so parallel_test is supported by TBB >= 4.3 only.
+if { ${major_ver} >= 4 && ${minor_ver} >= 3 } {
 	parallel_test
 }
 
