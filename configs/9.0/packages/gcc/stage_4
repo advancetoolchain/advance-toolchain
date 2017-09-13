@@ -150,6 +150,8 @@ atcfg_make() {
 		# 32 bit go builds to work correctly.  Once
 		# RH BZ 1018072 is fixed then setting the variable is
 		# no longer needed and the build will work.
+		# We need to set LIBRARY_PATH in order to build Go tools.
+		LIBRARY_PATH="${at_dest}/lib64" \
 		PATH=${at_dest}/bin:${PATH}  libgo_cv_lib_setcontext_clobbers_tls=no \
 			${SUB_MAKE} STAGE1_CFLAGS="-g -O" profiledbootstrap
 	else
