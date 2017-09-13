@@ -20,27 +20,17 @@
 #
 
 ATSRC_PACKAGE_NAME="Valgrind"
-ATSRC_PACKAGE_VER=3.13.0
-# Don't update the Valgrind revision without updating the VEX revision too.
-# They have to be in sync.
-ATSRC_PACKAGE_REV=16446
-ATSRC_PACKAGE_VEX_REV=3386
+ATSRC_PACKAGE_VER=3.14.0
+ATSRC_PACKAGE_REV=00d4667295a8
 ATSRC_PACKAGE_LICENSE="GPL 2.0"
 ATSRC_PACKAGE_DOCLINK="http://valgrind.org/docs/"
 ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_VER_REV="${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
 ATSRC_PACKAGE_PRE="test -d valgrind-${ATSRC_PACKAGE_VER_REV}"
-ATSRC_PACKAGE_CO=([0]="svn co --revision ${ATSRC_PACKAGE_REV} --ignore-externals svn://svn.valgrind.org/valgrind/branches/VALGRIND_3_13_BRANCH/ valgrind-${ATSRC_PACKAGE_VER_REV}")
-# TODO: Downloading Valgrind and VEX in different steps is sub-optimal for
-# caching mechanisms.
-# VEX is part of the Valgrind code, but it's kept in a different repository.
-# When checking out Valgrind, the VEX repository is downloaded automatically
-# via a SVN external propery.  However, the Valgrind repository doesn't
-# synchronize its own revision with the VEX repository and whenever we
-# checkout a specific revision from trunk, it will always get the latest
-# revision from VEX, causing failures on Valgrind.
-ATSRC_PACKAGE_POST="svn co svn://svn.valgrind.org/vex/branches/VEX_3_13_BRANCH valgrind-${ATSRC_PACKAGE_VER_REV}/VEX -r ${ATSRC_PACKAGE_VEX_REV}"
+ATSRC_PACKAGE_CO=([0]="git clone git://sourceware.org/git/valgrind.git valgrind")
+ATSRC_PACKAGE_GIT="git checkout -b valgrind-${ATSRC_PACKAGE_VER_REV} ${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_POST="mv valgrind valgrind-${ATSRC_PACKAGE_VER_REV}"
 ATSRC_PACKAGE_SRC="${AT_BASE}/sources/valgrind-${ATSRC_PACKAGE_VER_REV}"
 ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/valgrind
 ATSRC_PACKAGE_MLS=""

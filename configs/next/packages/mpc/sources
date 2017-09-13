@@ -20,16 +20,17 @@
 #
 
 ATSRC_PACKAGE_NAME="GNU MPC Library"
-ATSRC_PACKAGE_VER=1.0.3
+ATSRC_PACKAGE_VER=1.0.4
+ATSRC_PACKAGE_REV=a3f939169482
 ATSRC_PACKAGE_LICENSE="GPL 3.0"
 ATSRC_PACKAGE_DOCLINK="http://www.multiprecision.org/index.php?prog=mpc&page=documentation"
 ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
-ATSRC_PACKAGE_PRE="test -d mpc-${ATSRC_PACKAGE_VER}"
-ATSRC_PACKAGE_CO=([0]="wget -N https://www.multiprecision.org/mpc/download/mpc-${ATSRC_PACKAGE_VER}.tar.gz" \
-		  [1]="wget -N ftp://ftp.unicamp.br/pub/gnu/mpc/mpc-${ATSRC_PACKAGE_VER}.tar.gz")
-ATSRC_PACKAGE_POST="tar -xzf mpc-${ATSRC_PACKAGE_VER}.tar.gz"
-ATSRC_PACKAGE_SRC=${AT_BASE}/sources/mpc-${ATSRC_PACKAGE_VER}
+ATSRC_PACKAGE_PRE="test -d mpc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_CO=([0]="git clone https://scm.gforge.inria.fr/anonscm/git/mpc/mpc.git mpc")
+ATSRC_PACKAGE_GIT="git checkout -b mpc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV} ${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_POST="mv mpc mpc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_SRC=${AT_BASE}/sources/mpc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}
 ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/mpc
 ATSRC_PACKAGE_MLS=
 ATSRC_PACKAGE_ALOC=

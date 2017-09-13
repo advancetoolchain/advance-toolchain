@@ -20,17 +20,18 @@
 #
 
 ATSRC_PACKAGE_NAME="Expat XML Parser"
-ATSRC_PACKAGE_VER="2.2.3"
-ATSRC_PACKAGE_REV=97c6bd019900
+ATSRC_PACKAGE_VER="2.2.5"
+ATSRC_PACKAGE_REV=a0567a38c298
 ATSRC_PACKAGE_DOCLINK="https://libexpat.github.io/doc/"
 ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_VERID="${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
 ATSRC_PACKAGE_LICENSE="MIT License"
 ATSRC_PACKAGE_PRE="test -d expat-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
-ATSRC_PACKAGE_CO=([0]="wget -O expat-${ATSRC_PACKAGE_VERID}.tar.gz https://github.com/libexpat/libexpat/archive/${ATSRC_PACKAGE_REV}.tar.gz")
-ATSRC_PACKAGE_POST="tar xzf expat-${ATSRC_PACKAGE_VERID}.tar.gz --wildcards --strip=2 libexpat-${ATSRC_PACKAGE_REV}[^\\/]*/expat --transform=s:libexpat-${ATSRC_PACKAGE_REV}[^\\/]*/expat:libexpat-${ATSRC_PACKAGE_REV}[^\\/]*/expat-${ATSRC_PACKAGE_VERID}:"
-ATSRC_PACKAGE_SRC=${AT_BASE}/sources/expat-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}
+ATSRC_PACKAGE_CO=([0]="git clone https://github.com/libexpat/libexpat.git expat")
+ATSRC_PACKAGE_GIT="git checkout -b expat-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV} ${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_POST="mv expat expat-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_SRC=${AT_BASE}/sources/expat-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}/expat
 ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/expat
 ATSRC_PACKAGE_MLS=
 ATSRC_PACKAGE_PATCHES=
@@ -44,13 +45,13 @@ atsrc_get_patches ()
 {
 	# Fix Makefile to try different command for docbook2x-man.
 	at_get_patch \
-		https://github.com/racardoso/libexpat/commit/9a8024f1a8ec.patch \
-		5fe8379cba7a7572b987639a198d9cc7 || return ${?}
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/c26de312a9d003d5bb817f1c8a177d7aeddc4f11/Expat%20Patches/Fix-docMakefile-for-multiple-distros.patch \
+		64657051a6a04ea465cfecd4f6d7cc6a || return ${?}
 }
 
 atsrc_apply_patches ()
 {
-	patch -p2 < 9a8024f1a8ec.patch || return ${?}
+	patch -p2 < Fix-docMakefile-for-multiple-distros.patch || return ${?}
 
 	return 0
 }

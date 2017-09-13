@@ -23,15 +23,14 @@ ATSRC_PACKAGE_NAME="TCMalloc"
 ATSRC_PACKAGE_VER=2.6
 ATSRC_PACKAGE_REV=e033431e5a9e
 ATSRC_PACKAGE_LICENSE="BSD License"
-ATSRC_PACKAGE_DOCLINK="http://htmlpreview.github.io/?https://github.com/gperftools/gperftools/blob/master/doc/tcmalloc.html"
+ATSRC_PACKAGE_DOCLINK="http://htmlpreview.github.io/?https://github.com/gperftools/gperftools/blob/master/docs/tcmalloc.html"
 ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
 ATSRC_PACKAGE_VERID="${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
 ATSRC_PACKAGE_PRE="test -d gperftools-${ATSRC_PACKAGE_VERID}"
-ATSRC_PACKAGE_CO=([0]="wget -O gperftools-${ATSRC_PACKAGE_VERID}.tar.gz https://github.com/gperftools/gperftools/archive/${ATSRC_PACKAGE_REV}.tar.gz")
-ATSRC_PACKAGE_GIT=""
-# Use --transform to give a better name to Gperftools directory.
-ATSRC_PACKAGE_POST="tar xzf gperftools-${ATSRC_PACKAGE_VERID}.tar.gz --transform=s/gperftools-${ATSRC_PACKAGE_REV}[^\\/]*/gperftools-${ATSRC_PACKAGE_VERID}/"
+ATSRC_PACKAGE_CO=([0]="git clone https://github.com/gperftools/gperftools.git tcmalloc")
+ATSRC_PACKAGE_GIT="git checkout -b gperftools-${ATSRC_PACKAGE_VERID} ${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_POST="mv tcmalloc gperftools-${ATSRC_PACKAGE_VERID}"
 ATSRC_PACKAGE_SRC="${AT_BASE}/sources/gperftools-${ATSRC_PACKAGE_VERID}"
 ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/gperftools
 ATSRC_PACKAGE_MLS=""

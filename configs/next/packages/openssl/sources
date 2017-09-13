@@ -20,15 +20,17 @@
 #
 
 ATSRC_PACKAGE_NAME="Open Secure Sockets Layer"
-ATSRC_PACKAGE_VER="1.1.0f"
+ATSRC_PACKAGE_VER="1.1.0"
+ATSRC_PACKAGE_REV=eff1752b66cb
 ATSRC_PACKAGE_LICENSE="BSD and GPL 2.0"
 ATSRC_PACKAGE_DOCLINK="http://www.openssl.org/docs/"
 ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
-ATSRC_PACKAGE_PRE="test -d openssl-${ATSRC_PACKAGE_VER}"
-ATSRC_PACKAGE_CO=([0]="wget -N -O openssl-${ATSRC_PACKAGE_VER}.tar.gz https://github.com/openssl/openssl/archive/OpenSSL_${ATSRC_PACKAGE_VER//\./_}.tar.gz")
-ATSRC_PACKAGE_POST="tar -xzf openssl-${ATSRC_PACKAGE_VER}.tar.gz --transform=s/openssl-OpenSSL_${ATSRC_PACKAGE_VER//\./_}[^\\/]*/openssl-${ATSRC_PACKAGE_VER}/"
-ATSRC_PACKAGE_SRC="${AT_BASE}/sources/openssl-${ATSRC_PACKAGE_VER}"
+ATSRC_PACKAGE_PRE="test -d openssl-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_CO=([0]="git clone https://github.com/openssl/openssl.git openssl")
+ATSRC_PACKAGE_GIT="git checkout -b openssl-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV} ${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_POST="mv openssl openssl-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_SRC="${AT_BASE}/sources/openssl-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/openssl
 ATSRC_PACKAGE_MLS=
 ATSRC_PACKAGE_MAKE_CHECK=
