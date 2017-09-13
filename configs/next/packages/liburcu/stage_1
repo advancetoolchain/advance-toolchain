@@ -31,6 +31,10 @@ ATCFG_BUILD_STAGE_T='link'
 
 atcfg_pre_configure ()
 {
+	# Reconfigure the build with bootstrap script.
+	if [[ -e ./bootstrap ]]; then
+		./bootstrap || exit 1
+	fi
 	# Prepare configure_build and configure_host variables, which are
 	# passed as parameters to configure as --build and --host,
 	# respectively.
@@ -105,7 +109,7 @@ atcfg_configure ()
 	PATH=${at_dest}/bin:${PATH} \
 	CC="${configure_cc}" \
 	CFLAGS="-g -O2 -fpic -m${AT_BIT_SIZE}" \
-	${ATSRC_PACKAGE_WORK}/configure \
+	./configure \
 		--build=${configure_build} \
 		--host=${configure_host} \
 		--prefix=${configure_prefix} \
