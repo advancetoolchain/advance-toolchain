@@ -9,6 +9,26 @@
 <li>Support for <a href="http://golang.org/">Go Programming Language</a>.</li>
 <li>Support for split stack.</li>
 
+<h3>New features in 11.0-1</h3>
+<ul>
+	<li>Binutils provides:</li>
+	<ul>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=21884">ELF checks for orphan placement</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=21017">ld fails with missing _GLOBAL_OFFSET_TABLE_</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=21847">Symbol flag for PowerPC64 localentry:0 tracking</a>.</li>
+		<li>Fix PowerPC64 --plt-align option behaviour.</li>
+	</ul>
+	<li>GDB provides:</li>
+	<ul>
+		<li>Fix DWARF-5 DW_FORM_implicit_const and -fdebug-types-section.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22046">T-stopped regression on old Linux kernels</a>.</li>
+	</ul>
+	<li>Oprofile provides a fix for POWER9 event entries with 0x00 values.</li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 11.0-0</h3>
 <ul>
 	<li>Support for Debian 9.</li>
@@ -36,9 +56,6 @@
 	<li>OpenSSL provides a fix for <a href="https://www.openssl.org/news/secadv/20170216.txt">CVE-2017-3733</a>.</li>
 	<li>Expat provides fixes for <a href="https://libexpat.github.io/doc/cve-2017-9233/">CVE-2017-9233</a> and CVE-2016-9063.</li>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 10.0-4</h3>
 <ul>
