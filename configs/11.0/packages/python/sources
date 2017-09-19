@@ -49,12 +49,19 @@ atsrc_get_patches ()
 		https://github.com/python/cpython/commit/7b40cb7293cb14e5c7c8ed123efaf9acb33edae2.patch \
 		issue30714.patch 0 \
 		0f55c13d34f14cb2645e60f8c70d3926 || return ${?}
+
+	# Skip test_float_with_comma, it is failing since glibc commit ID
+	# 70a6707.
+	at_get_patch \
+		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00273-skip-float-test.patch \
+		a1cb79875e6c2633222dc95910e59ab8 || return ${?}
 }
 
 atsrc_apply_patches ()
 {
 	patch -p1 < python-3.6.0-getlib64s1.patch || return ${?}
 	patch -p1 < issue30714.patch || return ${?}
+	patch -p1 < 00273-skip-float-test.patch || return ${?}
 }
 
 atsrc_package_verify_make_log ()
