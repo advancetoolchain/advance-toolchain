@@ -11,6 +11,16 @@
 
 <h3>New features in 11.0-1</h3>
 <ul>
+	<li>GCC provides:</li>
+	<ul>
+		<li>Fix for a <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=81354">segmentation fault in SSA Strength Reduction using -O3</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=81295">bootstrap on powerpc-linux-gnu with --enable-default-pie</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=81504">vec_st in loop misoptimized</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=81593">Optimized PowerPC vector set from vector extract</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=81214">GCC target_clone support does not work for global functions with no references</a>.</li>
+		<li>-mfloat128 enabled by default on PowerPC VSX systems.</li>
+		<li>Support for the IEEE 128-bit square root and fma built-in functions.</li>
+	</ul>
 	<li>Binutils provides:</li>
 	<ul>
 		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=21884">ELF checks for orphan placement</a>.</li>
