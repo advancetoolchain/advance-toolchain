@@ -20,15 +20,17 @@
 #
 
 ATSRC_PACKAGE_NAME="Expat XML Parser"
-ATSRC_PACKAGE_VER=2.1.0
-ATSRC_PACKAGE_DOCLINK="http://www.xml.com/pub/a/1999/09/expat/index.html"
+ATSRC_PACKAGE_VER=2.1.1
+ATSRC_PACKAGE_REV=ee0adc0d9d245
+ATSRC_PACKAGE_DOCLINK="https://libexpat.github.io/doc/"
 ATSRC_PACKAGE_RELFIXES=
-ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
+ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_VERID="${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
 ATSRC_PACKAGE_LICENSE="MIT License"
-ATSRC_PACKAGE_PRE="test -d expat-${ATSRC_PACKAGE_VER}"
-ATSRC_PACKAGE_CO=([0]="wget -N https://downloads.sourceforge.net/project/expat/expat/${ATSRC_PACKAGE_VER}/expat-${ATSRC_PACKAGE_VER}.tar.gz")
-ATSRC_PACKAGE_POST="tar -xzf expat-${ATSRC_PACKAGE_VER}.tar.gz"
-ATSRC_PACKAGE_SRC=${AT_BASE}/sources/expat-${ATSRC_PACKAGE_VER}
+ATSRC_PACKAGE_PRE="test -d expat-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_CO=([0]="wget -O expat-${ATSRC_PACKAGE_VERID}.tar.gz https://github.com/libexpat/libexpat/archive/${ATSRC_PACKAGE_REV}.tar.gz")
+ATSRC_PACKAGE_POST="tar xzf expat-${ATSRC_PACKAGE_VERID}.tar.gz --wildcards --strip=2 libexpat-${ATSRC_PACKAGE_REV}[^\\/]*/expat --transform=s:libexpat-${ATSRC_PACKAGE_REV}[^\\/]*/expat:libexpat-${ATSRC_PACKAGE_REV}[^\\/]*/expat-${ATSRC_PACKAGE_VERID}:"
+ATSRC_PACKAGE_SRC=${AT_BASE}/sources/expat-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}
 ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/expat
 ATSRC_PACKAGE_MLS=
 ATSRC_PACKAGE_PATCHES=
@@ -40,12 +42,45 @@ ATSRC_PACKAGE_BUNDLE=main_toolchain
 
 atsrc_get_patches ()
 {
-        at_get_patch \
-	https://hg.mozilla.org/releases/mozilla-esr31/raw-diff/2f3e78643f5c/parser/expat/lib/xmlparse.c \
-	978566c4144504d170869619661fbd7d || return ${?}
+	# Delete Makefile that generates man
+	at_get_patch \
+		https://github.com/racardoso/libexpat/commit/a6bb3358ddae.patch \
+		bc61e4806ae531941b652bb56abb3249 || return ${?}
+
+	# Added man pages
+	at_get_patch \
+		https://github.com/racardoso/libexpat/commit/f1a8200593de.patch \
+		0c71eb2bb1b6750a96c3c5181f67de3e || return ${?}
+
+	#Fix CVE-2012-6702 and CVE-2016-5300
+	at_get_patch \
+		https://github.com/racardoso/libexpat/commit/95dbdf173f19.patch \
+		ea1a061d504d47aa726d09dc639db1fa || return ${?}
+
+	#Fix CVE-2016-4472
+	at_get_patch \
+		https://github.com/racardoso/libexpat/commit/ca78e04e3e67.patch \
+		413e2b92eb8b6b35b8e22a1f56a2421e || return ${?}
+
+	#Fix CVE-2016-0718
+	at_get_patch \
+		https://github.com/racardoso/libexpat/commit/be940daed613.patch \
+		1bd7c8c0414bd0a6f13acae171118adf || return ${?}
+
+	#Fix CVE-2016-9063 and CVE-2017-9233
+	at_get_patch \
+		https://github.com/racardoso/libexpat/commit/a39744e4ec1e.patch \
+		50c236fd76f8868a48468faff968fc9f || return ${?}
 }
 
 atsrc_apply_patches ()
 {
-	patch -p3 < xmlparse.c || return ${?}
+	patch -p2 < a6bb3358ddae.patch || return ${?}
+	patch -p2 < f1a8200593de.patch || return ${?}
+	patch -p2 < 95dbdf173f19.patch || return ${?}
+	patch -p2 < ca78e04e3e67.patch || return ${?}
+	patch -p2 < be940daed613.patch || return ${?}
+	patch -p2 < a39744e4ec1e.patch || return ${?}
+
+	return 0
 }
