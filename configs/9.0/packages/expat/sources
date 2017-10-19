@@ -44,43 +44,43 @@ atsrc_get_patches ()
 {
 	# Delete Makefile that generates man
 	at_get_patch \
-		https://github.com/racardoso/libexpat/commit/a6bb3358ddae.patch \
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/68e9163b4022/Expat%20Patches/Delete-makefile-for-at9.0.patch \
 		bc61e4806ae531941b652bb56abb3249 || return ${?}
 
 	# Added man pages
 	at_get_patch \
-		https://github.com/racardoso/libexpat/commit/f1a8200593de.patch \
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/68e9163b4022/Expat%20Patches/Manualy-add-man-on-at9.0.patch \
 		0c71eb2bb1b6750a96c3c5181f67de3e || return ${?}
 
 	#Fix CVE-2012-6702 and CVE-2016-5300
 	at_get_patch \
-		https://github.com/racardoso/libexpat/commit/95dbdf173f19.patch \
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/68e9163b4022/Expat%20Patches/Fix-CVE-2012-6702-CVE-2016-5300-Expat-2.1.1.patch \
 		ea1a061d504d47aa726d09dc639db1fa || return ${?}
 
 	#Fix CVE-2016-4472
 	at_get_patch \
-		https://github.com/racardoso/libexpat/commit/ca78e04e3e67.patch \
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/68e9163b4022/Expat%20Patches/Fix-CVE-2016-4472-Expat-2.1.1.patch \
 		413e2b92eb8b6b35b8e22a1f56a2421e || return ${?}
 
 	#Fix CVE-2016-0718
 	at_get_patch \
-		https://github.com/racardoso/libexpat/commit/be940daed613.patch \
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/68e9163b4022/Expat%20Patches/Fix-CVE-2016-0718-Expat.2.1.1.patch \
 		1bd7c8c0414bd0a6f13acae171118adf || return ${?}
 
 	#Fix CVE-2016-9063 and CVE-2017-9233
 	at_get_patch \
-		https://github.com/racardoso/libexpat/commit/a39744e4ec1e.patch \
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/68e9163b4022/Expat%20Patches/Fix-CVE-2016-9063-CVE-2017-9233-Expat-2.1.1.patch \
 		50c236fd76f8868a48468faff968fc9f || return ${?}
 }
 
 atsrc_apply_patches ()
 {
-	patch -p2 < a6bb3358ddae.patch || return ${?}
-	patch -p2 < f1a8200593de.patch || return ${?}
-	patch -p2 < 95dbdf173f19.patch || return ${?}
-	patch -p2 < ca78e04e3e67.patch || return ${?}
-	patch -p2 < be940daed613.patch || return ${?}
-	patch -p2 < a39744e4ec1e.patch || return ${?}
+	patch -p2 < Delete-makefile-for-at9.0.patch || return ${?}
+	patch -p2 < Manualy-add-man-on-at9.0.patch || return ${?}
+	patch -p2 < Fix-CVE-2012-6702-CVE-2016-5300-Expat-2.1.1.patch || return ${?}
+	patch -p2 < Fix-CVE-2016-4472-Expat-2.1.1.patch || return ${?}
+	patch -p2 < Fix-CVE-2016-0718-Expat.2.1.1.patch || return ${?}
+	patch -p2 < Fix-CVE-2016-9063-CVE-2017-9233-Expat-2.1.1.patch || return ${?}
 
 	return 0
 }
