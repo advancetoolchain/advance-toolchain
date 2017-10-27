@@ -49,12 +49,18 @@ atsrc_get_patches ()
 	at_get_patch \
 		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00273-skip-float-test.patch \
 		a1cb79875e6c2633222dc95910e59ab8 || return ${?}
+
+	# Fix for test_ssl
+	at_get_patch \
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/93548fdd0ae7740f7a6158ced0ebdbd5a125bacf/Python%20Fixes/python-3.6.3-reseed_openssl_after_fork.patch \
+		2d8bd979783852a291ad5b916f845202 || return ${?}
 }
 
 atsrc_apply_patches ()
 {
 	patch -p1 < python-3.6.0-getlib64s1.patch || return ${?}
 	patch -p1 < 00273-skip-float-test.patch || return ${?}
+	patch -p1 < python-3.6.3-reseed_openssl_after_fork.patch || return ${?}
 }
 
 atsrc_package_verify_make_log ()
