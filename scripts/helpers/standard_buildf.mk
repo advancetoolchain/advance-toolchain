@@ -104,6 +104,13 @@ define standard_buildf
         fi; \
     fi; \
     local_step=$$(bc <<< $${local_step}+1); \
+    echo "Checking for unexpected behavior from configuration scripts"; \
+    $(call runandlog,$${local_log_prefix}$$(printf "%.2d" $${local_step})_verify_unexpected_conf.log, verify_unexpected_conf); \
+    if [[ $${ret} -ne 0 ]]; then \
+        echo "Problem running tests for unexpected behavior from configuration scripts."; \
+        exit 1; \
+    fi; \
+    local_step=$$(bc <<< $${local_step}+1); \
     echo "Checking for post-make settings and/or commands."; \
     if [[ "x$$(type -t atcfg_post_make)" == "xfunction" ]]; then \
         echo "Running post-make settings and/or commands."; \

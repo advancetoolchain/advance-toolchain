@@ -1365,8 +1365,9 @@ $(RCPTS)/%.b.rcpt: $(RCPTS)/%.a.rcpt
 	    { $(call build_stage2,$${ATSRC_PACKAGE_WORK},$${ATCFG_BUILD_STAGE_T},$(*F)); } > \
 			$(LOGS)/_$${AT_STEPID}-2_build_stage.log 2>&1; \
 	    echo "Doing the actual build and install steps."; \
-	    { $(call standard_buildf); } > \
-			$(LOGS)/_$${AT_STEPID}-3_standard_buildf.log 2>&1; \
+	    { source $(SCRIPTS_ROOT)/utils.sh; \
+	      $(call standard_buildf); \
+	    } > $(LOGS)/_$${AT_STEPID}-3_standard_buildf.log 2>&1; \
 	    echo "Completed main build, cleaning it now."; \
 	    { $(call clean_stage); } > \
 			$(LOGS)/_$${AT_STEPID}-5_clean_stage.log 2>&1; \
