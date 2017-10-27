@@ -87,3 +87,20 @@ get_gnu_version ()
 	# Print the version string of a standard GNU program, e.g. 1.13.4
 	${1} --version | head -n 1 | sed 's/.* \([^ ]*\)$/\1/g'
 }
+
+# Verify config.log files to identify unexpected behavior.
+#
+# This is useful to catch silent failures from configure scripts that are
+# automatically treated, causing features to not be available.
+verify_unexpected_conf ()
+{
+	local logs=$(find . -name config.log)
+	# Check for illegal instructions.  Illegal instructions are common when
+	# building tuned libraries because they're built with a -mcpu that is
+	# higher than the processor being used to build the library.
+	echo "Check if there are any illegal instructions in config.log..."
+	if test -n "${logs}" && grep -iHn "Illegal instruction" ${logs}; then
+		echo "Error: unexpected illegal instructions found!"
+		exit 1
+	fi
+}
