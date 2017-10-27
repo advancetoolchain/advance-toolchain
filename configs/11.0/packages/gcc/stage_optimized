@@ -86,9 +86,17 @@ atcfg_make() {
 	# 32 bit go builds to work correctly.  Once
 	# RH BZ 1018072 is fixed then setting the variable is
 	# no longer needed and the build will work.
+	#
+	# gcc_cv_have_tls=yes is required to avoid configure scripts testing if
+	# TLS is available.  These tests try to execute programs compiled with
+	# a -mcpu that is superior of the base value, which can cause a silent
+	# illegal instruction error, forcing the script to assume that TLS is
+	# not available.
+	#
 	PATH=${at_dest}/bin:${PATH} \
 	libgo_cv_lib_setcontext_clobbers_tls=no \
-		${SUB_MAKE} all
+		${SUB_MAKE} all \
+			    gcc_cv_have_tls=yes
 }
 
 
