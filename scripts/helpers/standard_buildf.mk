@@ -33,6 +33,8 @@
 define standard_buildf
     [[ -n $${DEBUG} ]] && set -ex; \
     set -x; \
+    local_step=1; \
+    local_log_prefix="$(LOGS)/_$${AT_STEPID}-3_standard_buildf-"; \
     install_place=$$(echo $(TEMP_INSTALL)/$${AT_STEPID} | sed 's|//*|/|g'); \
     install_transfer=$$(echo $(TEMP_INSTALL)/$${AT_STEPID}/$(AT_DEST) | sed 's|//*|/|g'); \
     if [[ -e $${install_place} ]]; then \
@@ -42,69 +44,76 @@ define standard_buildf
     echo "Checking for pre build hacks."; \
     if [[ "x$$(type -t atcfg_pre_hacks)" == "xfunction" ]]; then \
         echo "Running pre build hacks."; \
-        $(call runandlog,$(LOGS)/_$${AT_STEPID}-3_standard_buildf-01_pre_build_hacks.log, eval atcfg_pre_hacks); \
+        $(call runandlog,$${local_log_prefix}$$(printf "%.2d" $${local_step})_pre_build_hacks.log, eval atcfg_pre_hacks); \
         if [[ $${ret} -ne 0 ]]; then \
             echo "Problem running pre build hacks."; \
             exit 1; \
         fi; \
     fi; \
+    local_step=$$(bc <<< $${local_step}+1); \
     echo "Begin the building process."; \
     echo "Checking for pre-configure settings and/or commands."; \
     if [[ "x$$(type -t atcfg_pre_configure)" == "xfunction" ]]; then \
         echo "Running pre-configure settings and/or commands."; \
-        $(call runandlog,$(LOGS)/_$${AT_STEPID}-3_standard_buildf-02_pre_configure.log,eval atcfg_pre_configure); \
+        $(call runandlog,$${local_log_prefix}$$(printf "%.2d" $${local_step})_pre_configure.log,eval atcfg_pre_configure); \
         if [[ $${ret} -ne 0 ]]; then \
             echo "Problem running pre-configure commands."; \
             exit 1; \
         fi; \
     fi; \
+    local_step=$$(bc <<< $${local_step}+1); \
     echo "Running the selected configure"; \
-    $(call runandlog,$(LOGS)/_$${AT_STEPID}-3_standard_buildf-03_configure.log,eval atcfg_configure); \
+    $(call runandlog,$${local_log_prefix}$$(printf "%.2d" $${local_step})_configure.log,eval atcfg_configure); \
     if [[ $${ret} -ne 0 ]]; then \
         echo "Problem running configure command."; \
         exit 1; \
     fi; \
+    local_step=$$(bc <<< $${local_step}+1); \
     echo "Checking for post-configure settings and/or commands."; \
     if [[ "x$$(type -t atcfg_post_configure)" == "xfunction" ]]; then \
         echo "Running post-configure settings and/or commands."; \
-        $(call runandlog,$(LOGS)/_$${AT_STEPID}-3_standard_buildf-04_post_configure.log,eval atcfg_post_configure); \
+        $(call runandlog,$${local_log_prefix}$$(printf "%.2d" $${local_step})_post_configure.log,eval atcfg_post_configure); \
         if [[ $${ret} -ne 0 ]]; then \
             echo "Problem running post-configure commands."; \
             exit 1; \
         fi; \
     fi; \
+    local_step=$$(bc <<< $${local_step}+1); \
     echo "Checking for pre-make settings and/or commands."; \
     if [[ "x$$(type -t atcfg_pre_make)" == "xfunction" ]]; then \
         echo "Running pre-make settings and/or commands."; \
-        $(call runandlog,$(LOGS)/_$${AT_STEPID}-3_standard_buildf-05_pre_make.log,eval atcfg_pre_make); \
+        $(call runandlog,$${local_log_prefix}$$(printf "%.2d" $${local_step})_pre_make.log,eval atcfg_pre_make); \
         if [[ $${ret} -ne 0 ]]; then \
             echo "Problem running pre-make commands."; \
             exit 1; \
         fi; \
     fi; \
+    local_step=$$(bc <<< $${local_step}+1); \
     echo "Running the selected make"; \
-    $(call runandlog,$(LOGS)/_$${AT_STEPID}-3_standard_buildf-06_make.log,eval atcfg_make); \
+    $(call runandlog,$${local_log_prefix}$$(printf "%.2d" $${local_step})_make.log,eval atcfg_make); \
     if [[ $${ret} -ne 0 ]]; then \
         echo "Problem running make command."; \
         exit 1; \
     fi; \
     if [[ "x$$(type -t atsrc_package_verify_make_log)" == "xfunction" ]]; then \
         echo "Checking make log for $${AT_STEPID}"; \
-        atsrc_package_verify_make_log "$(LOGS)/_$${AT_STEPID}-3_standard_buildf-06_make.log"; \
+        atsrc_package_verify_make_log "$${local_log_prefix}$$(printf "%.2d" $${local_step})_make.log"; \
         if [[ $${?} -ne 0 ]]; then \
             echo "Verify of make log failed"; \
             exit 1; \
         fi; \
     fi; \
+    local_step=$$(bc <<< $${local_step}+1); \
     echo "Checking for post-make settings and/or commands."; \
     if [[ "x$$(type -t atcfg_post_make)" == "xfunction" ]]; then \
         echo "Running post-make settings and/or commands."; \
-        $(call runandlog,$(LOGS)/_$${AT_STEPID}-3_standard_buildf-07_post_make.log,eval atcfg_post_make); \
+        $(call runandlog,$${local_log_prefix}$$(printf "%.2d" $${local_step})_post_make.log,eval atcfg_post_make); \
         if [[ $${ret} -ne 0 ]]; then \
             echo "Problem running post-make commands."; \
             exit 1; \
         fi; \
     fi; \
+    local_step=$$(bc <<< $${local_step}+1); \
     echo "Checking for make-check settings and/or commands."; \
     if [[ "x$$(type -t atcfg_make_check)" == "xfunction" ]]; then \
         make_check_value="none"; \
@@ -117,14 +126,14 @@ define standard_buildf
             fi; \
             if [[ "$${make_check_value}" != "none" ]]; then \
                 echo "Running make-check settings and/or commands."; \
-                if [[ -e "$(LOGS)/_$${AT_STEPID}-3_standard_buildf-07_make_check.log" ]]; then \
-                    cat "$(LOGS)/_$${AT_STEPID}-3_standard_buildf-07_make_check.log" >> "$(LOGS)/_$${AT_STEPID}-3_standard_buildf-07_make_check_history.log"; \
-                    rm "$(LOGS)/_$${AT_STEPID}-3_standard_buildf-07_make_check.log"; \
+                if [[ -e "$${local_log_prefix}$$(printf "%.2d" $${local_step})_make_check.log" ]]; then \
+                    cat "$${local_log_prefix}$$(printf "%.2d" $${local_step})_make_check.log" >> "$${local_log_prefix}$$(printf "%.2d" $${local_step})_make_check_history.log"; \
+                    rm "$${local_log_prefix}$$(printf "%.2d" $${local_step})_make_check.log"; \
                 fi; \
-                $(call runandlog,$(LOGS)/_$${AT_STEPID}-3_standard_buildf-07_make_check.log,eval atcfg_make_check); \
+                $(call runandlog,$${local_log_prefix}$$(printf "%.2d" $${local_step})_make_check.log,eval atcfg_make_check); \
                 if [[ $${ret} -eq 0 ]]; then \
                     if [[ "x$$(type -t atsrc_package_verify_make_check_log)" == "xfunction" ]]; then \
-                        atsrc_package_verify_make_check_log "$(LOGS)/_$${AT_STEPID}-3_standard_buildf-07_make_check.log"; \
+                        atsrc_package_verify_make_check_log "$${local_log_prefix}$$(printf "%.2d" $${local_step})_make_check.log"; \
                         if [[ $${?} -eq 0 ]]; then \
                             ret=1; \
                         fi; \
@@ -144,34 +153,38 @@ define standard_buildf
             fi; \
         fi; \
     fi; \
+    local_step=$$(bc <<< $${local_step}+1); \
     echo "Checking for pre-install settings and/or commands."; \
     if [[ "x$$(type -t atcfg_pre_install)" == "xfunction" ]]; then \
         echo "Running pre-install settings and/or commands."; \
-        $(call runandlog,$(LOGS)/_$${AT_STEPID}-3_standard_buildf-08_pre_install.log,eval atcfg_pre_install); \
+        $(call runandlog,$${local_log_prefix}$$(printf "%.2d" $${local_step})_pre_install.log,eval atcfg_pre_install); \
         if [[ $${ret} -ne 0 ]]; then \
             echo "Problem running pre-install commands."; \
             exit 1; \
         fi; \
     fi; \
+    local_step=$$(bc <<< $${local_step}+1); \
     echo "Running the selected install"; \
-    $(call runandlog,$(LOGS)/_$${AT_STEPID}-3_standard_buildf-09_install.log,eval atcfg_install); \
+    $(call runandlog,$${local_log_prefix}$$(printf "%.2d" $${local_step})_install.log,eval atcfg_install); \
     if [[ $${ret} -ne 0 ]]; then \
         echo "Problem running install command."; \
         exit 1; \
     fi; \
+    local_step=$$(bc <<< $${local_step}+1); \
     echo "Checking for post-install settings and/or commands."; \
     if [[ "x$$(type -t atcfg_post_install)" == "xfunction" ]]; then \
         echo "Running post-install settings and/or commands."; \
-        $(call runandlog,$(LOGS)/_$${AT_STEPID}-3_standard_buildf-10_post_install.log,eval atcfg_post_install); \
+        $(call runandlog,$${local_log_prefix}$$(printf "%.2d" $${local_step})_post_install.log,eval atcfg_post_install); \
         if [[ $${ret} -ne 0 ]]; then \
             echo "Problem running post-install commands."; \
             exit 1; \
         fi; \
     fi; \
+    local_step=$$(bc <<< $${local_step}+1); \
     echo "Checking for post build hacks."; \
     if [[ "x$$(type -t atcfg_post_hacks)" == "xfunction" ]]; then \
         echo "Running post build hacks."; \
-        $(call runandlog,$(LOGS)/_$${AT_STEPID}-3_standard_buildf-11_post_build_hacks.log, eval atcfg_post_hacks); \
+        $(call runandlog,$${local_log_prefix}$$(printf "%.2d" $${local_step})_post_build_hacks.log, eval atcfg_post_hacks); \
         if [[ $${ret} -ne 0 ]]; then \
             echo "Problem running post build hacks."; \
             exit 1; \
@@ -198,10 +211,11 @@ define standard_buildf
             exit 1; \
         fi; \
     fi; \
+    local_step=$$(bc <<< $${local_step}+1); \
     echo "Checking for post install hacks."; \
     if [[ "x$$(type -t atcfg_posti_hacks)" == "xfunction" ]]; then \
         echo "Running post install hacks."; \
-        $(call runandlog,$(LOGS)/_$${AT_STEPID}-3_standard_buildf-12_post_install_hacks.log, eval atcfg_posti_hacks); \
+        $(call runandlog,$${local_log_prefix}$$(printf "%.2d" $${local_step})_post_install_hacks.log, eval atcfg_posti_hacks); \
         if [[ $${ret} -ne 0 ]]; then \
             echo "Problem running post install hacks."; \
             exit 1; \
