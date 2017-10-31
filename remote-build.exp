@@ -228,24 +228,15 @@ foreach server $servers {
 	}
 
 	# Remove files from old builds
-	send "test -x remake.sh; echo $?\n"
+	send "test -x remake.sh && ./remake.sh clean\n"
 	expect {
-		"1" { }
-		"0" {
-			flush_expect
-
-			send "./remake.sh clean\n"
-			expect {
-				-re $prompt { }
-				# Some servers are very slow and require a lot
-				# of time to clean a previous build.
-				-timeout 600 default {
-					send_user "Failed to clean a previous build.\n"
-					exit 1
-				}
-			}
+		-re $prompt { }
+		# Some servers are very slow and require a lot
+		# of time to clean a previous build.
+		-timeout 600 default {
+			send_user "Failed to clean a previous build.\n"
+			exit 1
 		}
-		-re ${prompt} { }
 	}
 
 	flush_expect
