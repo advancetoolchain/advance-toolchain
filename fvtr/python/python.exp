@@ -66,6 +66,14 @@ if { ![file isfile "$test_script"] } {
 	fvtr_error "Can't find $test_script in the installed AT."
 }
 
+# The subtests listed in the environment variable below are disabled
+# during the FVTR.
+# However, notice that adding new entries to this list is not enough for
+# actually disabling the test.  The unit test itself needs to check for
+# the environment variable.  For more information, see:
+# https://github.com/advancetoolchain/advance-toolchain/pull/230
+set env(PYTHON_SKIP_TESTS) "test_ssl.test_random_fork"
+
 # These tests were commonly removed from all python versions due to the fact
 # that other tests make use of the facilities that they check, so we can catch
 # the failure later in any case. In special, test_doctest, test_doctest2,
