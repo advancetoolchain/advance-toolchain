@@ -49,12 +49,19 @@ atsrc_get_patches ()
 	at_get_patch \
 		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00273-skip-float-test.patch \
 		a1cb79875e6c2633222dc95910e59ab8 || return ${?}
+
+	# Disable test_random_fork (test_ssl).
+	# See https://github.com/advancetoolchain/advance-toolchain/issues/201
+	at_get_patch \
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/89d1d3cb24e43f8ec716e1047f8d94702b131fda/Python%20Fixes/python-3.6.3-skip_test_random_fork.patch \
+		b6713b5bea7d419b18b8f8319ba5a6f2 || return ${?}
 }
 
 atsrc_apply_patches ()
 {
 	patch -p1 < python-3.6.0-getlib64s1.patch || return ${?}
 	patch -p1 < 00273-skip-float-test.patch || return ${?}
+	patch -p1 < python-3.6.3-skip_test_random_fork.patch || return ${?}
 }
 
 atsrc_package_verify_make_log ()
