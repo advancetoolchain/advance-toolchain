@@ -15,11 +15,18 @@
 # limitations under the License.
 #
 
-if [[ "${1}" == remove ]]; then
+if [[ "${1}" == configure ]]; then
 	# Update non-standard info directories.
-	for INFO in $(ls __DEST_CROSS__/usr/share/info/*.info.gz); do
-		ginstall-info --delete ${INFO} \
-			__DEST_CROSS__/usr/share/info/dir > /dev/null 2>&1 || :
+	for INFO in $(ls __AT_DEST__/share/info/*.info.gz); do
+		ginstall-info ${INFO} \
+			__AT_DEST__/share/info/dir > /dev/null 2>&1 || :
 	done
-	rm -f __DEST_CROSS__/usr/share/info/dir
+
+	# Make the environment modules available to users.
+	if [[ ! -d /usr/share/modules/modulefiles ]]; then
+		mkdir -p /usr/share/modules/modulefiles
+	fi
+	if [[ -w /usr/share/modules/modulefiles/. ]]; then
+		ln -s __AT_DEST__/share/modules/modulefiles/__AT_VER_REV_INTERNAL__* /usr/share/modules/modulefiles/.
+	fi
 fi

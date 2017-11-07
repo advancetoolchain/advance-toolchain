@@ -16,10 +16,13 @@
 #
 
 if [[ "${1}" == remove ]]; then
-	# Update non-standard info directories.
-	for INFO in $(ls __DEST_CROSS__/usr/share/info/*.info.gz); do
+	# Remove global link to the environment modules.
+	rm -f /usr/share/modules/modulefiles/__AT_VER_REV_INTERNAL__*
+
+	# Update our non standard info dirs
+	for INFO in $(ls __AT_DEST__/share/info/*.info.gz); do
 		ginstall-info --delete ${INFO} \
-			__DEST_CROSS__/usr/share/info/dir > /dev/null 2>&1 || :
+			__AT_DEST__/share/info/dir > /dev/null 2>&1 || :
 	done
-	rm -f __DEST_CROSS__/usr/share/info/dir
+	rm -f __AT_DEST__/share/info/dir
 fi
