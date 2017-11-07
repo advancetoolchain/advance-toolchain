@@ -35,6 +35,8 @@ remove_compat ()
 	mv ${deb_d}/control.tmp ${deb_d}/control
 }
 
+# Clean the debhelper tree
+rm -rf "${deb_d}"
 mkdir -p ${deb_d}
 
 at_version=$(echo ${at_full_ver} | cut -d"." -f 1)
