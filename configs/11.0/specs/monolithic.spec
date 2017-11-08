@@ -154,6 +154,9 @@ package or when debugging this package.
         bash %{_rpmdir}/split-debuginfo.sh --rpmdir %{_rpmdir} --dynamic %{at_work} --subpackage profile \
 %{nil}
 
+# Relative paths of directories.
+%define datadir_r share
+
 # These have been known to be different on different distributions
 %define _datadir %{_prefix}/share
 %define _libexecdir %{_prefix}/libexec
@@ -251,17 +254,20 @@ if [[ -f %{_sbindir}/ldconfig ]]; then
     %{_sbindir}/ldconfig
 fi
 # Make the environment module visible to users.
-if [[ ! ( -d /usr/share/modules/modulefiles || -d /usr/share/Modules/modulefiles ) ]]; then
+if [[ ! ( -d /usr/share/modules/modulefiles || \
+	  -d /usr/share/Modules/modulefiles ) ]]; then
 	# for SUSE family
 	mkdir -p /usr/share/modules/modulefiles
 	# for Red Hat family
 	mkdir -p /usr/share/Modules/modulefiles
 fi
 if [[ -w /usr/share/modules/modulefiles/. ]]; then
-	ln -s %{_datadir}/modules/modulefiles/%{at_ver_rev_internal} /usr/share/modules/modulefiles/.
+	ln -sf ${RPM_INSTALL_PREFIX}/%{datadir_r}/modules/modulefiles/%{at_dir_name} \
+		/usr/share/modules/modulefiles/.
 fi
 if [[ -w /usr/share/Modules/modulefiles/. ]]; then
-	ln -s %{_datadir}/modules/modulefiles/%{at_ver_rev_internal} /usr/share/Modules/modulefiles/.
+	ln -sf ${RPM_INSTALL_PREFIX}/%{datadir_r}/modules/modulefiles/%{at_dir_name} \
+		/usr/share/Modules/modulefiles/.
 fi
 
 #---------------------------------------------------
@@ -342,8 +348,8 @@ done
 ####################################################
 %preun devel
 # Remove the global link to the environment module.
-rm -f /usr/share/modules/modulefiles/%{at_ver_rev_internal} 
-rm -f /usr/share/Modules/modulefiles/%{at_ver_rev_internal} 
+rm -f /usr/share/modules/modulefiles/%{at_dir_name} 
+rm -f /usr/share/Modules/modulefiles/%{at_dir_name} 
 # Update the info directory entries
 if [ "$1" = 0 ]; then
     for INFO in $(ls %{_infodir}/*.info.gz); do

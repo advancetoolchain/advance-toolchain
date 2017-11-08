@@ -24,20 +24,20 @@
 #
 # Parameters
 AT_DEST="$1"
-AT_FULL_VER="$2"
-AT_VER_REV_INTERNAL="$3"
-TARGET="$4"
-filelist="$5"
-CROSS_BUILD="$6"
+AT_DIR_NAME="$2"
+TARGET="$3"
+filelist="$4"
+CROSS_BUILD="$5"
 #
 
 mkdir -p "$AT_DEST/share/modules/modulefiles"
 
 # Create simple module file for basic Advance Toolchain
-cat >"$AT_DEST/share/modules/modulefiles/$AT_VER_REV_INTERNAL" <<EOF
+cat >"$AT_DEST/share/modules/modulefiles/$AT_DIR_NAME" <<EOF
 #%Module1.0
-set AT_VERSION "$AT_FULL_VER"
+set AT_VERSION "$AT_DIR_NAME"
 proc ModulesHelp { } {
+	global AT_VERSION
 	puts stderr "Environment for using IBM Advance Toolchain \$AT_VERSION"
 }
 module-whatis "Environment for using IBM Advance Toolchain \$AT_VERSION"
@@ -48,16 +48,16 @@ prepend-path MANPATH "$AT_DEST/share/man"
 EOF
 
 # Add module file to packaging file list
-echo "$AT_DEST/share/modules/modulefiles/$AT_VER_REV_INTERNAL" > "$filelist"
+echo "$AT_DEST/share/modules/modulefiles/$AT_DIR_NAME" > "$filelist"
 
 if [ "$CROSS_BUILD" = "yes" ]; then
 
 	# Create module file for cross compilation environment
-	cat >"$AT_DEST/share/modules/modulefiles/$AT_VER_REV_INTERNAL-$TARGET" <<EOF
+	cat >"$AT_DEST/share/modules/modulefiles/$AT_DIR_NAME-$TARGET" <<EOF
 #%Module1.0
-set AT_VERSION "$AT_FULL_VER"
-set AT_MODULE "$AT_VER_REV_INTERNAL"
+set AT_VERSION "$AT_DIR_NAME"
 proc ModulesHelp { } {
+	global AT_VERSION
 	puts stderr "Environment for using IBM Advance Toolchain \$AT_VERSION cross-compiler"
 	puts stderr "Sets up environment variables and aliases to facilitate transparent use of the IBM Advance Toolchain \$AT_VERSION cross-compiler."
 	puts stderr "Use with extreme care, as newly created executables will not execute natively!  (Don't rebuild /bin/init!)"
@@ -66,13 +66,13 @@ module-whatis "Environment for using IBM Advance Toolchain \$AT_VERSION cross-co
 
 set MODE "[module-info mode]"
 
-if {[is-loaded "\$AT_MODULE"]} {
+if {[is-loaded "\$AT_VERSION"]} {
 	if {"\$MODE" == "remove"} {
-		module unload "\$AT_MODULE"
+		module unload "\$AT_VERSION"
 	}
 } else {
 	if {"\$MODE" == "load"} {
-		module load "\$AT_MODULE"
+		module load "\$AT_VERSION"
 	}
 }
 
@@ -83,9 +83,9 @@ EOF
 			file=$(basename "$file")
 			echo "set-alias ${file#"$TARGET-"} $file"
 		done
-	} >>"$AT_DEST/share/modules/modulefiles/$AT_VER_REV_INTERNAL-$TARGET"
+	} >>"$AT_DEST/share/modules/modulefiles/$AT_DIR_NAME-$TARGET"
 
 	# Add module file to packaging file list
-	echo "$AT_DEST/share/modules/modulefiles/$AT_VER_REV_INTERNAL-$TARGET" >> "$filelist"
+	echo "$AT_DEST/share/modules/modulefiles/$AT_DIR_NAME-$TARGET" >> "$filelist"
 fi
 

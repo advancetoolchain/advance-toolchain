@@ -107,7 +107,7 @@ function monolithic_filelists()
 
 	# Group files lists on cross builds
 	if [[ "${cross_build}" == "yes" ]]; then
-		group_filelists_cross
+		group_filelists_cross "$@"
 	fi
 }
 

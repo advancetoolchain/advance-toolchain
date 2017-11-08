@@ -78,6 +78,7 @@ for f in *; do
 	    -e "s/__BUILD_ARCH__/-${build_arch}/g" \
 	    -e "s/__AT_VER_REV_INTERNAL__/${at_ver_rev_internal}/g" \
 	    -e "s/__AT_VER_ALTERNATIVE__/${at_ver_rev_internal//./}/g" \
+	    -e "s/__AT_DIR_NAME__/${at_dir_name}/g" \
 	    -e "s/__TMP_DIR__/${tmp_dir//\//\\/}/g" \
 	    -e "s/__GO_DEST__/${go_dest//\//\\/}/g" \
 	    -e "s/__SYSTEMD_UNIT__/${systemd_unit//\//\\/}/g" \
