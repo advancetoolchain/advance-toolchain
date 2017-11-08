@@ -1185,7 +1185,7 @@ $(RCPTS)/deb.rcpt: $(RCPTS)/build.rcpt $(RCPTS)/distributed_scripts.rcpt
 	        $(LOGS)/_$${AT_STEPID}-01_deb_setenv.log 2>&1; \
 	    echo "- Preparing the filelist of included packages..."; \
 	    $(call runandlog,$(LOGS)/_$${AT_STEPID}-02_pkg_set_filelists.log, \
-	           $(UTILITIES_ROOT)/pkg_build_filelists.sh); \
+	           $(UTILITIES_ROOT)/pkg_build_filelists.sh $(TARGET)); \
 	    if [[ $${ret} -ne 0 ]]; then \
 	        echo "Failed while creating file lists."; \
 	        exit 1; \
@@ -1213,7 +1213,7 @@ $(RCPTS)/rpm.rcpt: $(RCPTS)/build.rcpt $(RCPTS)/distributed_scripts.rcpt
 		$(LOGS)/_$${AT_STEPID}-01_rpm_setenv.log 2>&1; \
 	    echo "- Preparing the filelist of included packages..."; \
 	    $(call runandlog,$(LOGS)/_$${AT_STEPID}-02_pkg_build_filelists.log, \
-	           $(UTILITIES_ROOT)/pkg_build_filelists.sh); \
+	           $(UTILITIES_ROOT)/pkg_build_filelists.sh $(TARGET)); \
 	    if [[ $${ret} -ne 0 ]]; then \
 	        echo "Failed while creating file lists."; \
 	        exit 1; \
@@ -1273,7 +1273,7 @@ $(RCPTS)/environment_modules.rcpt: $(RCPTS)/build.rcpt
 	@mkdir -p $(AT_DEST)/share/modules/modulefiles
 	@$(call runandlog,$(LOGS)/_environment_modules.log, \
 	       $(UTILITIES_ROOT)/pkg_build_environment_modules.sh $(AT_DEST) \
-	       $(AT_FULL_VER) $(AT_VER_REV_INTERNAL) $(TARGET) \
+	       $(AT_DIR_NAME) $(TARGET) \
 	       $(DYNAMIC_SPEC)/main_toolchain/environment-modules.filelist \
 	       $(CROSS_BUILD));
 	@echo "Completed install of environment modules!"

@@ -38,9 +38,9 @@ source "${utilities}/pkg_build_monolithic.sh"
 # there may be chances to implement the former one sometime in the
 # future...
 if [[ "${rpm_build_type}" == "granular" ]]; then
-	echo "Doing granular packaging..."
-	granular_filelists
+	echo "Doing granular packaging ($@)..."
+	granular_filelists "$@"
 else
-	echo "Doing monolithic packaging..."
-	monolithic_filelists
+	echo "Doing monolithic packaging ($@)..."
+	monolithic_filelists "$@"
 fi

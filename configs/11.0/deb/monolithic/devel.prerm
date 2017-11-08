@@ -17,7 +17,7 @@
 
 if [[ "${1}" == remove ]]; then
 	# Remove global link to the environment module.
-	rm -f /usr/share/modules/modulefiles/__AT_VER_REV_INTERNAL__
+	rm -f /usr/share/modules/modulefiles/__AT_DIR_NAME__
 
 	# Update our non standard info dir
 	for INFO in $(ls __AT_DEST__/share/info/*.info.gz); do

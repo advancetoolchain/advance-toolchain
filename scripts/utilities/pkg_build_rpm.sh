@@ -160,8 +160,10 @@ function pkg_build_rpms()
 			      --define="_min_power_arch ${at_min_power_arch}" \
 			      --define="at_ver_rev_internal ${at_ver_rev_internal}" \
 			      --define="at_ver_alternative ${at_ver_rev_internal//./}" \
+			      --define="at_dir_name ${at_dir_name}" \
 			      --define="_tmpdir ${tmp_dir}" \
 			      --define="_golang /usr/local/go/" \
+			      --define="target ${target}" \
 			      --target="${host_arch}-linux"
 	if [[ ${?} -ne 0 ]]; then
 		echo "Error generating rpm packages."

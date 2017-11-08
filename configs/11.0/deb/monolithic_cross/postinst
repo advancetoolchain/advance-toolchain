@@ -22,3 +22,7 @@ if [[ "${1}" == configure ]]; then
 			__DEST_CROSS__/usr/share/info/dir > /dev/null 2>&1 || :
 	done
 fi
+if [[ -w /usr/share/modules/modulefiles/. ]]; then
+	ln -sf __AT_DEST__/share/modules/modulefiles/__AT_DIR_NAME__-__TARGET__ \
+		/usr/share/modules/modulefiles/.
+fi

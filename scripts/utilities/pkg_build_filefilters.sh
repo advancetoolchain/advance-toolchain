@@ -211,7 +211,8 @@ function process_filelist()
 function group_filelists_cross()
 {
 	# Inform function execution
-	echo "Begin group_filelists_cross..."
+	echo "Begin group_filelists_cross ($@)..."
+	TARGET="$1"
 
 	rm -f "${dynamic_spec}"/cross_files.list* \
 	      "${dynamic_spec}"/cross.list* \
@@ -224,18 +225,22 @@ function group_filelists_cross()
 	sort -u "${dynamic_spec}"/runtime.listfile >> "${dynamic_spec}"/cross_files.listfile
 	local common_regex1='^"%{_(data|include|info|man)dir}'
 	local common_regex2="^${at_dest}/+(share|include)"
-	egrep "${common_regex1}" "${dynamic_spec}"/cross_files.list > \
+	egrep "${common_regex1}" "${dynamic_spec}"/cross_files.list | \
+		grep -v "$TARGET" > \
 		"${dynamic_spec}"/cross-common.list || \
 		exit 1
-	egrep -v "${common_regex1}" "${dynamic_spec}"/cross_files.list > \
+	(egrep -v "${common_regex1}" "${dynamic_spec}"/cross_files.list; \
+	 grep "$TARGET" "${dynamic_spec}"/cross_files.list) | sort -u > \
 		"${dynamic_spec}"/cross.list.tmp && \
 		mv "${dynamic_spec}"/cross.list.tmp \
 		   "${dynamic_spec}"/cross.list || \
 		exit 1
-	egrep "${common_regex2}" "${dynamic_spec}"/cross_files.listfile > \
+	egrep "${common_regex2}" "${dynamic_spec}"/cross_files.listfile | \
+		grep -v "$TARGET" > \
 		"${dynamic_spec}"/cross-common.listfile || \
 		exit 1
-	egrep -v "${common_regex2}" "${dynamic_spec}"/cross_files.listfile > \
+	(egrep -v "${common_regex2}" "${dynamic_spec}"/cross_files.listfile; \
+	 grep "$TARGET" "${dynamic_spec}"/cross_files.listfile) | sort -u > \
 		"${dynamic_spec}"/cross.listfile.tmp && \
 		mv "${dynamic_spec}"/cross.listfile.tmp \
 		   "${dynamic_spec}"/cross.listfile || \
