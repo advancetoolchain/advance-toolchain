@@ -128,14 +128,32 @@ get_latest_revision ()
 		return 1;
 	fi
 
-	local isGit=$(echo ${1} | grep -ce "git:" -e "\.git$");
+	local url=${1}
+	local isGit=$(echo ${url} | grep -ce "git:" -e "\.git$")
 	local hash="";
 
 	if [[ "${isGit}" == 1 ]]; then
-		hash=$(git ls-remote ${1} HEAD | cut -f1)
+		local tmp_dir=$(mktemp -d)
+		git clone ${url} ${tmp_dir}
+		pushd ${tmp_dir} > /dev/null
+		# Get which branch is being used.
+		local branch=$(git branch -r --contains ${ATSRC_PACKAGE_REV} \
+			| cut -d/ -f2-)
+		# When the revision is in HEAD we got a string like:
+		# master -> HEAD
+		# origin/master
+		if [[ $(expr index "${branch}" "HEAD") -ne 0 ]]; then
+			branch="HEAD"
+		else
+			branch="refs/heads/${branch}"
+		fi
+		hash=$(git ls-remote ${url} ${branch} | cut -f1)
 		hash=$(git rev-parse --short=12 ${hash});
+		popd > /dev/null
+		rm -rf ${tmp_dir}
 	else
-		hash=$(svn info ${1} | grep Revision: | cut -d\  -f2);
+		hash=$(svn info ${url} | grep "Last Changed Rev:" \
+			| cut -d: -f2)
 	fi
 
 	echo ${hash};
@@ -259,7 +277,8 @@ Bump to revision ${2}\n\n"
 send_to_github ()
 {
 	# Get AT config and package being updated.
-	# Expected a string like "<path-to-AT>/next/valgrind/source"
+	# Expected a string like
+	# "<path-to-AT>/configs/<configset>/packages/<package>/source"
 	pkg=$(echo ${1} | awk -F "/" '{ print $(NF-1) }')
 	cfg=$(echo ${1} | awk -F "/" '{ print $(NF-3) }')
 
@@ -384,7 +403,7 @@ exists!"
 	file=$(basename $(dirname ${1}))/$(basename ${1})
 
 	git add ${1}
-	local msg="Update ${pkg} on AT ${cfg}\n\
+	local msg="Update ${pkg} on AT ${cfg}\n\n\
 Bump to revision ${2}\n\n\
 \
 Signed-off-by: ${GITHUB_SIGNATURE}"
