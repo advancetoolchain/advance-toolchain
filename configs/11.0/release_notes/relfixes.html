@@ -11,6 +11,37 @@
 
 <h3>New features in 11.0-2</h3>
 <ul>
+	<li>GCC provides:</li>
+	<ul>
+		<li>ISA 3.0 atomic memory operation instruction support.</li>
+		<li>Float128 built-in functions support.</li>
+		<li>x86 BMI, BMI2, MMX, SSE and SSE2 intrinsics added to ppc64le.</li>
+		<li>fminf<x> and fmaxf<x> enabled.</li>
+		<li>Enable generating XXBR{H,W,D} on POWER9.</li>
+		<li>IEEE 128 support for several existing built-in functions.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82748">__builtin_fabsq ICE on PowerPC</a>.</li>
+		<li>Float128 built-in functions work with -mabi=ieeelongdouble.</li>
+	</ul>
+	<li>The GNU C Library provides:</li>
+	<ul>
+		<li>Fix <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=21922">getaddrinfo error handling in gethosts</a>.</li>
+		<li>Fix <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22051">zero terminator in the middle of glibc's .eh_frame</a>.</li>
+		<li>Fix <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=21982">GCC 7 errors when string/stratcliff.c is compiled with -O3</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=21930">C++ versions of issignaling and iszero that does not use __MATH_TG</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22235">C++ versions of iscanonical for ldbl-96 and ldbl-128ibm</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22146">fpclassify uses the builtin when optimizing for size in C++ mode</a>.</li>
+		<li>Fix <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22111">per thread cache is not returned when thread exits malloc</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22320">CVE-2017-15670: Buffer overflow in glob with GLOB_TILDE</a>.</li>
+	</ul>
+	<li>Binutils provides:</li>
+	<ul>
+		<li>Fixes for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=21441">unnecessary padding</a> and <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22048">incorrect</a> .eh_frame section.</li>
+		<li>Added --no-stub-group-multi and --no-relax options to gold.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22150">ld keeps a version reference in .gnu.version_r for symbols which are optimized out</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22220">BFD linker plugin wrongly marks symbols as PREVAILING_DEF_IRONLY</a>.</li>
+		<li>Fix <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22245">potential UB in bfd_set_error</a>.</li>
+	</ul>
+	<li>Thread Building Blocks now provides support for more TBB executors than CPU cores.</li>
 	<li>OpenSSL provides fixes for <a href="https://www.openssl.org/news/secadv/20171102.txt">CVE-2017-3736 and CVE-2017-3735</a>.</li>
 </ul>
 
