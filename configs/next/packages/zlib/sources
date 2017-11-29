@@ -21,15 +21,15 @@
 
 ATSRC_PACKAGE_NAME="ZLIB Compression Library"
 ATSRC_PACKAGE_VER=1.2.11
+ATSRC_PACKAGE_REV=ba9df2111e9c
 ATSRC_PACKAGE_LICENSE="Zlib License"
 ATSRC_PACKAGE_DOCLINK="http://www.zlib.net/manual.html"
 ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
-ATSRC_PACKAGE_PRE="test -d zlib-${ATSRC_PACKAGE_VER}"
-ATSRC_PACKAGE_CO=([0]="wget -N https://zlib.net/zlib-${ATSRC_PACKAGE_VER}.tar.gz" \
-                  [1]="wget -N https://downloads.sourceforge.net/project/libpng/zlib/${ATSRC_PACKAGE_VER}/zlib-${ATSRC_PACKAGE_VER}.tar.gz")
-ATSRC_PACKAGE_POST="tar -xzf zlib-${ATSRC_PACKAGE_VER}.tar.gz"
-ATSRC_PACKAGE_SRC="${AT_BASE}/sources/zlib-${ATSRC_PACKAGE_VER}"
+ATSRC_PACKAGE_PRE="test -d zlib-${ATSRC_PACKAGE_VERID}"
+ATSRC_PACKAGE_CO=([0]="wget -O zlib-${ATSRC_PACKAGE_VERID}.tar.gz https://github.com/madler/zlib/archive/${ATSRC_PACKAGE_REV}.tar.gz")
+ATSRC_PACKAGE_POST="tar xzf zlib-${ATSRC_PACKAGE_VERID}.tar.gz --transform=s/zlib-${ATSRC_PACKAGE_REV}[^\\/]*/zlib-${ATSRC_PACKAGE_VERID}/"
+ATSRC_PACKAGE_SRC="${AT_BASE}/sources/zlib-${ATSRC_PACKAGE_VERID}"
 ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/zlib
 ATSRC_PACKAGE_MLS=""
 ATSRC_PACKAGE_ALOC=""
