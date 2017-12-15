@@ -69,8 +69,8 @@ done
 shift "$((OPTIND - 1))"
 
 if [[ "$enable_tle" == "yes" ]]; then
-	export GLIBC_ELISION_ENABLE=yes
+	export GLIBC_TUNABLES=glibc.elision.enable=1
 else
-	unset GLIBC_ELISION_ENABLE
+	export GLIBC_TUNABLES=glibc.elision.enable=0
 fi
 exec "$@"

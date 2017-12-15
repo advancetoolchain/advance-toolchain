@@ -40,8 +40,8 @@ ATSRC_PACKAGE_BUNDLE=main_toolchain
 atsrc_get_patches ()
 {
 	at_get_patch \
-		https://raw.githubusercontent.com/powertechpreview/powertechpreview/26747dc0bfb0f8f30de9ebad78847a96d3191ba5/GLIBC%20PowerPC%20Backport/2.22/0001-powerpc-Conditionally-enable-TLE.patch \
-		801c05ea780220e8b4cf931af8c86946 || return ${?}
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/c58beed95f1cae9361efc614b1d79483caba95f2/GLIBC%20PowerPC%20Backport/2.22/0001-powerpc-Conditionally-enable-TLE.patch \
+		90fe7a2bf3297885655660f785d9421e || return ${?}
 	return 0
 }
 
