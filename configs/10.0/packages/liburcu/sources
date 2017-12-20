@@ -20,28 +20,18 @@
 #
 
 ATSRC_PACKAGE_NAME="Userspace RCU"
-ATSRC_PACKAGE_VER=0.9.2
+ATSRC_PACKAGE_VER=0.9.4
+ATSRC_PACKAGE_REV=387346f05570
 ATSRC_PACKAGE_LICENSE="Lesser GPL 2.1"
 ATSRC_PACKAGE_DOCLINK="http://lttng.org/urcu"
 ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
-ATSRC_PACKAGE_PRE="test -d userspace-rcu-${ATSRC_PACKAGE_VER}"
-ATSRC_PACKAGE_CO=([0]="wget -N https://lttng.org/files/urcu/userspace-rcu-${ATSRC_PACKAGE_VER}.tar.bz2")
-ATSRC_PACKAGE_POST="tar -xjf userspace-rcu-${ATSRC_PACKAGE_VER}.tar.bz2"
-ATSRC_PACKAGE_SRC="${AT_BASE}/sources/userspace-rcu-${ATSRC_PACKAGE_VER}"
+ATSRC_PACKAGE_PRE="test -d userspace-rcu-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_CO=([0]="git clone git://git.liburcu.org/userspace-rcu.git liburcu")
+ATSRC_PACKAGE_GIT="git checkout -b userspace-rcu-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV} ${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_POST="mv liburcu userspace-rcu-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_SRC="${AT_BASE}/sources/userspace-rcu-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/userspace-rcu
 ATSRC_PACKAGE_MAKE_CHECK=""
 ATSRC_PACKAGE_DISTRIB=yes
 ATSRC_PACKAGE_BUNDLE=mcore-libs
-
-atsrc_get_patches ()
-{
-	at_get_patch \
-		https://raw.githubusercontent.com/powertechpreview/powertechpreview/26747dc0bfb0f8f30de9ebad78847a96d3191ba5/URCU%20Patches/userspace-rcu-0.9.2-ppc64le.patch \
-		d227fca038c60e39c9fcfaa66a5d12a2 || return ${?}
-}
-
-atsrc_apply_patches ()
-{
-	patch -p1 < userspace-rcu-0.9.2-ppc64le.patch || return ${?}
-}
