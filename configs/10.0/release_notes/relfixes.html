@@ -11,7 +11,46 @@
 
 <h3>New features in 10.0-6</h3>
 <ul>
-	<li>OpenSSL provides fixes for <a href="https://www.openssl.org/news/secadv/20171102.txt">CVE-2017-3736 and CVE-2017-3735</a>.</li>
+	<li>GCC provides:</li>
+	<ul>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=68163">power8 does not issue the stxsspx instruction on power8</a>.</li>
+		<li>Optimized POWER7/POWER8 Altivec load/stores.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80718">Slow code generated for offsettable vec_duplicate</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80902">expand_builtin_atomic_fetch_op for pre-op fixed</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80966">ICE with -fstack-limit-register and large frames</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80429">-fcompare-debug failure on ppc64le with LRA</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=60818">ICE in validate_condition_mode</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80101">ICE in store_data_bypass_p</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80103">ICE in output_1144</a>.</li>
+	</ul>
+	<li>The GNU C Library provides:</li>
+	<ul>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=21654">incorrect pointer alignment in NSS group merge result construction</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22320">CVE-2017-15670: Buffer overflow in glob with GLOB_TILDE</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22332">CVE-2017-15804: Buffer overflow in glob during unescaping of user names with the ~ operator</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22606">CVE-2017-1000408: Incorrect array size computation in _dl_init_paths</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22607">CVE-2017-1000409: Buffer Overflow in _dl_init_paths</a>.</li>
+	</ul>
+	<li>Threading Building Blocks provides:</li>
+	<ul>
+		<li>Quadrupled the worst-case limit on the amount of memory the allocator can handle.</li>
+		<li>Fixed a memory corruption in the memory allocator when it meets internal limits.</li>
+		<li>Fixed the memory allocator on 64-bit platforms to align memory to 16 bytes by default for all allocations bigger than 8 bytes.</li>
+	</ul>
+	<li>Python provides:</li>
+	<ul>
+		<li><a href="https://www.python.org/dev/peps/pep-0448/">Additional unpacking generalizations</a>.</li>
+		<li><a href="https://www.python.org/dev/peps/pep-0465/">A new operator (@) for matrix multiplication</a>.</li>
+		<li><a href="https://www.python.org/dev/peps/pep-0471/">os.scandir(), a fast new directory traversal function</a>.</li>
+		<li><a href="https://www.python.org/dev/peps/pep-0475/">Support for automatic retries of interrupted system calls</a>.</li>
+	</ul>
+	<li>Userspace RCU provides:</li>
+	<ul>
+		<li>Fix memory leak on hash table destroy.</li>
+		<LI>Fix for override user variables within the build system.</li>
+	</ul>
+	<li>Expat provides fixes for CVE-2016-9063 and CVE-2017-9233.</li>
+	<li>OpenSSL provides fixes for <a href="https://www.openssl.org/news/secadv/20171102.txt">CVE-2017-3736, CVE-2017-3735</a>, <a href="https://www.openssl.org/news/secadv/20171207.txt">CVE-2017-3737 and CVE-2017-3738</a>.</li>
 </ul>
 
 <a name="previous"></a>
