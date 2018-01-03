@@ -21,7 +21,7 @@
 
 ATSRC_PACKAGE_NAME="GNU C Library"
 ATSRC_PACKAGE_VER=2.26.9000
-ATSRC_PACKAGE_REV=9d0ffa60ad88
+ATSRC_PACKAGE_REV=28fd6a44cb57
 ATSRC_PACKAGE_LICENSE="LGPL 2.1"
 ATSRC_PACKAGE_DOCLINK="http://www.gnu.org/software/libc/manual/html_node/index.html"
 ATSRC_PACKAGE_RELFIXES=
@@ -41,8 +41,8 @@ atsrc_get_patches ()
 {
 	# Patch that is applied to every ibm branch
 	at_get_patch \
-		https://raw.githubusercontent.com/powertechpreview/powertechpreview/2b67d9b6b6b5f8914e8579ad50ec2c69ddcf6198/GLIBC%20PowerPC%20Backport/2.26/0001-Remove-assert-if-DT_RUNPATH-and-DT_RPATH-flags-are-f.patch \
-		7b746cf156702fb7a566743f3f1966e2 || return ${?}
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/93fef0c7170ccc1ee36a63fc25e4074e9e3b7e0c/GLIBC%20PowerPC%20Backport/master/0001-Remove-assert-if-DT_RUNPATH-and-DT_RPATH-flags-are-f.patch \
+		6cb72e98670c1c7671c9aa704f586d68 || return ${?}
 }
 
 atsrc_apply_patches ()
