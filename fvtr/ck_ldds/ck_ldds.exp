@@ -60,7 +60,7 @@ proc has_broken_dynlink {file} {
 set executables [ exec find $at_dir -type f -perm /111 ]
 foreach exe $executables {
 	if { [is_dynlink ${exe}] } {
-		set interp_info [exec readelf -l ${exe}]
+		set interp_info [exec ${at_dir}/bin/readelf -l ${exe}]
 		if { [regexp -line "interpreter: (.*)\]$" ${interp_info} match \
 			  interpreter]} {
 			set interpreter2 [file normalize ${interpreter}]
