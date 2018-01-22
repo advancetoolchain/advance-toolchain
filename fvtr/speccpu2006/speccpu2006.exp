@@ -19,8 +19,9 @@
 
 source ./shared.exp
 
-if { [array names env -exact SPEC] == "" } {
+if { [array names env -exact SPEC] == "" || ! [regexp "cpu2006" $env(SPEC)] } {
 	printit "Skipping: Didn't find an installed SPEC CPU 2006."
+	printit "The directory needs to have \"cpu2006\" in its name ."
 	printit "Check if it's environment is loaded."
 	exit $ENOSYS
 }
