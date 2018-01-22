@@ -1,0 +1,125 @@
+#!/usr/bin/expect
+# Copyright 2018 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Check if AT can compile and run some SPEC CPU 2017 benchmarks
+# The SPEC CPU 2017 must be installed and it's environment set, as explained at
+# http://www.spec.org/cpu2017/Docs/install-guide-unix.html#s6
+
+source ./shared.exp
+
+if { [array names env -exact SPEC] == "" || ! [regexp "cpu2017" $env(SPEC)] } {
+	printit "Skipping: Didn't find an installed SPEC CPU 2017."
+	printit "The directory needs to have \"cpu2017\" in its name ."
+	printit "Check if it's environment is loaded."
+	exit $ENOSYS
+}
+
+if { [file exists $env(SPEC)] == 0 } {
+	printit "Directory $env(SPEC) not found." ${ERROR}
+	exit 1
+}
+
+set gcc_path [compiler_path]
+
+# Define the config files to use for building
+set build_configs ""
+if { $TARGET32 } {
+	lappend build_configs "at-sniff32"
+}
+if { $TARGET64 } {
+	lappend build_configs "at-sniff64"
+}
+
+# Define the config files to use for running
+if { $env(AT_CROSS_BUILD) == yes } {
+	# We can't run on x86 machines
+	set run_configs {}
+} else {
+	set run_configs $build_configs
+}
+
+# Set MAKEOPTS
+if { [catch {exec grep -c processor /proc/cpuinfo} cpus] != 0 } {
+	printit "\t\t\t Can't identify the amount of processors."
+	set MAKEOPTS ""
+} else {
+	if { ${cpus} == 0} {
+		set MAKEOPTS ""
+	} else {
+		set mem [exec free -m | awk "/Mem:/ {print \$2}"]
+		# Assume that each thread consumes 512 MiB of RAM.
+		# Some f951 processes consume more than that, though.
+		set threads [expr $mem / 512]
+		if {${threads} <= ${cpus}} {
+			set MAKEOPTS "-j${threads}"
+		} else {
+			set MAKEOPTS "-j${cpus}"
+		}
+	}
+}
+
+# Copy config files
+foreach config ${build_configs} {
+	if {! [file exists speccpu2017/${config}.cfg]} {
+		printit "Couldn't access file speccpu2017/${config}.cfg" $ERROR
+		exit 1
+	}
+	printit "\t\t\t Copying ${config}.cfg to $env(SPEC)/config/"
+	file copy -force speccpu2017/${config}.cfg $env(SPEC)/config/
+}
+
+# Build
+foreach config ${build_configs} {
+	printit "\t\t\t Building SPEC CPU 2017 with configuration ${config}."
+	spawn runcpu -c $config --define BASE_DIR=$env(AT_DEST) \
+	    --define MAKEFLAGS=${MAKEOPTS} \
+	    --define CC=[compiler_path] \
+	    --define CXX=[compiler_path g++] \
+	    --define FC=[compiler_path gfortran] \
+	    -I --rebuild --action build intrate fprate
+	expect {
+		-timeout -1
+		"debug log" {
+			printit "Failed to build SPEC SCPU 2017 with configuration ${config}" ${ERROR}
+			exit 1
+		}
+		eof {
+			printit "\t\t\t SPEC CPU 2017 with configuration ${config} built."
+		}
+	}
+}
+
+# Run
+foreach config ${run_configs} {
+	printit "\t\t\t Running SPEC CPU 2017 with configuration ${config}."
+	spawn runcpu -c ${config} --define BASE_DIR=$env(AT_DEST) \
+	    --define MAKEFLAGS=${MAKEOPTS} \
+	    --define CC=[compiler_path] \
+	    --define CXX=[compiler_path g++] \
+	    --define FC=[compiler_path gfortran] \
+	    -I --size test intrate fprate >&@ $OUTPUT
+	expect {
+		-timeout -1
+		"debug log" {
+			printit "Failed to run SPEC SCPU 2017 with configuration ${config}" ${ERROR}
+			exit 1
+		}
+		eof {
+			printit "\t\t\t Execution of SPEC CPU 2017 with configuration ${config} succeeded"
+		}
+	}
+}
+
+exit 0
