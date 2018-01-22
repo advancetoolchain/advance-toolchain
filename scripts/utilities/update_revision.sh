@@ -136,6 +136,11 @@ get_latest_revision ()
 		local tmp_dir=$(mktemp -d)
 		git clone ${url} ${tmp_dir}
 		pushd ${tmp_dir} > /dev/null
+		# Check for the remote HEAD reference.
+		if [[ ! -e .git/refs/remotes/origin/HEAD ]]; then
+			# Fix missing reference.
+			git remote set-head origin master
+		fi
 		# Get which branch is being used.
 		local branch=$(git branch -r --contains ${ATSRC_PACKAGE_REV} \
 			| cut -d/ -f2-)
