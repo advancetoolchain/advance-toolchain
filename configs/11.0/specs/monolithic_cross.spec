@@ -112,12 +112,13 @@ gzip -9nvf ${RPM_BUILD_ROOT}%{_tgtinfodir}/*.info*
 for INFO in $(ls ${RPM_INSTALL_PREFIX}/%{tgtinfodir_r}/*.info.gz); do
 	install-info ${INFO} ${RPM_INSTALL_PREFIX}/%{tgtinfodir_r}/dir
 done
+datadir="${RPM_INSTALL_PREFIX}/%{datadir_r}"
 if [[ -w /usr/share/modules/modulefiles/. ]]; then
-	ln -sf %{_datadir}/modules/modulefiles/%{at_dir_name}-%{target} \
+	ln -sf ${datadir}/modules/modulefiles/%{at_dir_name}-%{target} \
 		/usr/share/modules/modulefiles/.
 fi
 if [[ -w /usr/share/Modules/modulefiles/. ]]; then
-	ln -sf %{_datadir}/modules/modulefiles/%{at_dir_name}-%{target} \
+	ln -sf ${datadir}/modules/modulefiles/%{at_dir_name}-%{target} \
 		/usr/share/Modules/modulefiles/.
 fi
 ################################################
@@ -136,12 +137,13 @@ if [[ ! ( -d /usr/share/modules/modulefiles || \
 	# for Red Hat family
 	mkdir -p /usr/share/Modules/modulefiles
 fi
+datadir="${RPM_INSTALL_PREFIX}/%{datadir_r}"
 if [[ -w /usr/share/modules/modulefiles/. ]]; then
-	ln -s %{_datadir}/modules/modulefiles/%{at_dir_name} \
+	ln -s ${datadir}/modules/modulefiles/%{at_dir_name} \
 		/usr/share/modules/modulefiles/.
 fi
 if [[ -w /usr/share/Modules/modulefiles/. ]]; then
-	ln -s %{_datadir}/modules/modulefiles/%{at_dir_name} \
+	ln -s ${datadir}/modules/modulefiles/%{at_dir_name} \
 		/usr/share/Modules/modulefiles/.
 fi
 ################################################
