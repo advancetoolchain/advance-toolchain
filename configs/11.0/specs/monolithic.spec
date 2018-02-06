@@ -262,11 +262,11 @@ if [[ ! ( -d /usr/share/modules/modulefiles || \
 	mkdir -p /usr/share/Modules/modulefiles
 fi
 if [[ -w /usr/share/modules/modulefiles/. ]]; then
-	ln -sf ${RPM_INSTALL_PREFIX}/%{datadir_r}/modules/modulefiles/%{at_dir_name} \
+	ln -sf %{_datadir}/modules/modulefiles/%{at_dir_name} \
 		/usr/share/modules/modulefiles/.
 fi
 if [[ -w /usr/share/Modules/modulefiles/. ]]; then
-	ln -sf ${RPM_INSTALL_PREFIX}/%{datadir_r}/modules/modulefiles/%{at_dir_name} \
+	ln -sf %{_datadir}/modules/modulefiles/%{at_dir_name} \
 		/usr/share/Modules/modulefiles/.
 fi
 
