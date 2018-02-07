@@ -129,6 +129,8 @@ if { ${TARGET64} } {
 	lappend wordsize_l 64
 }
 
+cd ${FULLPATH}
+
 set rc [expr {$rc || [test_this "ophelp" ${FULLPATH}/ophelp.log]}]
 
 set test_source "${FULLPATH}/test.c"
