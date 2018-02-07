@@ -114,6 +114,7 @@ if { "$pyver" == "2.6" } {
 set env(TMPDIR) "$FULLPATH/tmp[pid]"
 exec mkdir $env(TMPDIR)
 printit "TMPDIR=\"$env(TMPDIR)\""
+global ERROR
 
 printit "Spawn cmd for $pyver:  $spawn_cmd"
 eval $spawn_cmd
@@ -121,21 +122,25 @@ expect {
 	# Wait for 1 hour at most
 	-timeout 3600
 	-re "(test\[s\]* failed|Test Failed)" {
-		fvtr_error "Failed to run Python tests."
+		printit "Failed to run Python tests." $ERROR
+		set rc 1
 	}
 	"Fatal Python error" {
-		fvtr_error "Python crashed during the tests."
+		printit "Python crashed during the tests." $ERROR
+		set rc 1
 	}
 	-re "skip\[s\]* unexpected" {
-		fvtr_error "Skipped some tests. Please check if all modules \
-are available"
+		printit "Skipped some tests. Please check if all modules \
+are available" $ERROR
+		set rc 1
 	}
 	eof {
 		printit "Python passed all tests!"
+		set rc 0
 	}
 }
 
 # clean up any droppings
 exec rm -rf $env(TMPDIR)
 
-exit 0
+exit $rc
