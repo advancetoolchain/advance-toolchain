@@ -138,14 +138,23 @@ if [[ ! ( -d /usr/share/modules/modulefiles || \
 	mkdir -p /usr/share/Modules/modulefiles
 fi
 datadir="${RPM_INSTALL_PREFIX}/%{datadir_r}"
-if [[ -w /usr/share/modules/modulefiles/. ]]; then
-	ln -s ${datadir}/modules/modulefiles/%{at_dir_name} \
-		/usr/share/modules/modulefiles/.
-fi
-if [[ -w /usr/share/Modules/modulefiles/. ]]; then
-	ln -s ${datadir}/modules/modulefiles/%{at_dir_name} \
-		/usr/share/Modules/modulefiles/.
-fi
+for mdir in modules Modules; do
+	if [[ -w /usr/share/$mdir/modulefiles/. ]]; then
+		cat <<EOF >/usr/share/$mdir/modulefiles/%{at_dir_name}
+#%Module1.0
+set AT_VERSION "%{at_dir_name}"
+proc ModulesHelp { } {
+	global AT_VERSION
+	puts stderr "Environment for using IBM Advance Toolchain \$AT_VERSION"
+}
+module-whatis "Environment for using IBM Advance Toolchain \$AT_VERSION"
+
+prepend-path PATH "${RPM_INSTALL_PREFIX}/bin"
+prepend-path INFOPATH "${RPM_INSTALL_PREFIX}/share/info"
+prepend-path MANPATH "${RPM_INSTALL_PREFIX}/share/man"
+EOF
+	fi
+done
 ################################################
 
 #################### runtime-extras ############
