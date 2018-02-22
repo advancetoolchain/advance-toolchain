@@ -176,9 +176,6 @@ fi
 ################################################
 
 %preun
-# Remove the global link to the environment modules.
-rm -f /usr/share/modules/modulefiles/%{at_dir_name}-%{target}
-rm -f /usr/share/Modules/modulefiles/%{at_dir_name}-%{target}
 # Update the info directory entries
 if [ "$1" = 0 ]; then
 	for INFO in $(ls ${RPM_INSTALL_PREFIX}/%{tgtinfodir_r}/*.info.gz); do
@@ -190,11 +187,11 @@ fi
 
 #################### common ####################
 %preun -n advance-toolchain-%{at_major}__CROSS__-common
-# Remove the global link to the environment modules.
-rm -f /usr/share/modules/modulefiles/%{at_dir_name}
-rm -f /usr/share/Modules/modulefiles/%{at_dir_name}
 # Update the info directory entries
 if [ "$1" = 0 ]; then
+	# Remove the global link to the environment modules.
+	rm -f /usr/share/modules/modulefiles/%{at_dir_name}
+	rm -f /usr/share/Modules/modulefiles/%{at_dir_name}
 	for INFO in $(ls ${RPM_INSTALL_PREFIX}/%{infodir_r}/*.info.gz); do
 		install-info --delete ${INFO} \
 			     ${RPM_INSTALL_PREFIX}/%{infodir_r}/dir
@@ -215,6 +212,9 @@ fi
 %postun
 if [[ ${1} -eq 0 ]]; then
 	find ${RPM_INSTALL_PREFIX} -type d -empty -delete
+	# Remove the global link to the environment modules.
+	rm -f /usr/share/modules/modulefiles/%{at_dir_name}-%{target}
+	rm -f /usr/share/Modules/modulefiles/%{at_dir_name}-%{target}
 fi
 ################################################
 
