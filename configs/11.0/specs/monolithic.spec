@@ -347,9 +347,6 @@ done
 
 ####################################################
 %preun devel
-# Remove the global link to the environment module.
-rm -f /usr/share/modules/modulefiles/%{at_dir_name} 
-rm -f /usr/share/Modules/modulefiles/%{at_dir_name} 
 # Update the info directory entries
 if [ "$1" = 0 ]; then
     for INFO in $(ls %{_infodir}/*.info.gz); do
@@ -383,6 +380,11 @@ systemctl try-restart %{at_ver_alternative}-cachemanager.service >/dev/null \
 
 #---------------------------------------------------
 %postun devel
+if [ "$1" = 0 ]; then
+	# Remove the global link to the environment module.
+	rm -f /usr/share/modules/modulefiles/%{at_dir_name} 
+	rm -f /usr/share/Modules/modulefiles/%{at_dir_name} 
+fi
 # Update the loader cache after uninstall
 # We never know the order rpm is going to remove/update AT's packages.
 # So we only need to update the ldconf cache when ldconfig is still available
