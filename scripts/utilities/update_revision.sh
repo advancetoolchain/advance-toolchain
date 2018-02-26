@@ -463,7 +463,7 @@ update_revision ()
 	fi
 
 	# TODO: weak check - some revisions have less than 12 chars.
-	if [[ ${2} -eq ${ATSRC_PACKAGE_REV} ]]; then
+	if [[ ${2} == ${ATSRC_PACKAGE_REV} ]]; then
 		print_msg 0 "Sources at latest revision already. Nothing to be done."
 		exit 0;
 	fi
