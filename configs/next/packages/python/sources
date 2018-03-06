@@ -47,7 +47,7 @@ atsrc_get_patches ()
 	# Skip test_float_with_comma, it is failing since glibc commit ID
 	# 70a6707.
 	at_get_patch \
-		http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00273-skip-float-test.patch \
+		https://src.fedoraproject.org/rpms/python3/raw/6c5169565e6bff14f883f19a234fc1b1133b6822/f/00273-skip-float-test.patch \
 		a1cb79875e6c2633222dc95910e59ab8 || return ${?}
 
 	# Disable test_random_fork (test_ssl).
