@@ -115,6 +115,7 @@ set env(TMPDIR) "$FULLPATH/tmp[pid]"
 exec mkdir $env(TMPDIR)
 printit "TMPDIR=\"$env(TMPDIR)\""
 global ERROR
+set rc 0
 
 printit "Spawn cmd for $pyver:  $spawn_cmd"
 eval $spawn_cmd
