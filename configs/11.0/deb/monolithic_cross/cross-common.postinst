@@ -27,7 +27,7 @@ if [[ "${1}" == configure ]]; then
 		mkdir -p /usr/share/modules/modulefiles
 	fi
 	if [[ -w /usr/share/modules/modulefiles/. ]]; then
-		ln -s __AT_DEST__/share/modules/modulefiles/__AT_DIR_NAME__ \
+		ln -sf __AT_DEST__/share/modules/modulefiles/__AT_DIR_NAME__ \
 			/usr/share/modules/modulefiles/.
 	fi
 fi
