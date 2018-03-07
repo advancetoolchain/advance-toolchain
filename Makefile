@@ -892,6 +892,8 @@ destclean: localclean
 clean-fvtr: $(RCPTS)/collect-fvtr.rcpt
 	@echo "Cleaning FVTR logs... "
 	@find fvtr/ -name '*.log' -delete
+	@echo "Cleaning FVTR output files... "
+	@find fvtr/ -name '*.out*' -delete
 
 clean-temp:
 	@echo "Cleaning $(TEMP_INSTALL)"
