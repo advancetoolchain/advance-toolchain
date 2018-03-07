@@ -24,8 +24,8 @@ proc process_rpm_packages { packages cross_bld at_dest ldd_path objdump_path } {
 	global FULLPATH
 	global env
 	set rc 0
-	set ignored $FULLPATH/ignored.tmp
-	set TMP_FILE $FULLPATH/requirements.tmp
+	set ignored $FULLPATH/ignored.tmp.out
+	set TMP_FILE $FULLPATH/requirements.tmp.out
 
 	foreach package $packages {
 		# Ignore debuginfo packages.
@@ -47,8 +47,8 @@ proc process_rpm_packages { packages cross_bld at_dest ldd_path objdump_path } {
 			set files [exec rpm -qlp $rpm_path/$package]
 		}
 
-		set requi $FULLPATH/$package.req
-		set diff $FULLPATH/$package.diff
+		set requi $FULLPATH/$package.req.out
+		set diff $FULLPATH/$package.diff.out
 
 		file delete $TMP_FILE $requi $ignored
 
@@ -138,8 +138,8 @@ proc process_deb_packages { packages cross_bld at_dest ldd_path objdump_path } {
 	global FULLPATH
 	global AT_CROSS_BUILD
 	global env
-	set ignored $FULLPATH/ignored.tmp
-	set TMP_FILE $FULLPATH/requirements.tmp
+	set ignored $FULLPATH/ignored.tmp.out
+	set TMP_FILE $FULLPATH/requirements.tmp.out
 
 	set rc 0
 	foreach package $packages {
