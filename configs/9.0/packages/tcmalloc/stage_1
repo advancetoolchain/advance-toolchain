@@ -109,6 +109,8 @@ atcfg_configure ()
 		./autogen.sh || return 1
 	fi
 
+	# GCC 8 complains about invalid non-constant in-class initialization
+	# for static members.
 	PATH=${at_dest}/bin:${PATH} \
 	CC="${configure_cc}" \
 	CXX="${configure_cxx}" \
@@ -117,7 +119,7 @@ atcfg_configure ()
 	AR="${configure_ar}" \
 	RANLIB="${configure_ranlib}" \
 	CFLAGS="-g -m${AT_BIT_SIZE} -O3" \
-	CXXFLAGS="-g -m${AT_BIT_SIZE} -O3" \
+	CXXFLAGS="-g -m${AT_BIT_SIZE} -O3 -std=gnu++11" \
 	LDFLAGS="-Wl,-Bsymbolic" \
 	./configure \
 		--build=${configure_build} \
