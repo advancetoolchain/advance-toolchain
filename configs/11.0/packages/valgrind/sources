@@ -57,6 +57,10 @@ atsrc_get_patches ()
 		https://github.com/powertechpreview/powertechpreview/raw/be030afbf8d78018ab77aeea58092e03d483e8ce/Valgrind%20iTrace%20Patches/3.11/vg-3110-itrace.v1.tgz \
 		337042b8ea29d476b69d439c154d62f0 || return ${?}
 
+	at_get_patch \
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/87e6a6dc7f402c5b7e98d0c435dc3403b2aa92be/Valgrind%20Core%20Patches/3.13.0/0001-Valgrind-3.13.0-updates-from-mainline-as-of-3-14-201.patch \
+		32d37ea8d9e29c8a6a2f3c634b076f4a || return ${?}
+
 	return 0
 }
 
@@ -70,5 +74,6 @@ atsrc_apply_patches ()
 	patch -p0 < add-itrace-bits-to-configure.ac.diff || return ${?}
 	patch -p0 < add-itrace-bits-to-check_headers_and_includes.diff || return ${?}
 
+	patch -p1 < 0001-Valgrind-3.13.0-updates-from-mainline-as-of-3-14-201.patch || return ${?}
 	return 0
 }
