@@ -84,6 +84,7 @@ EOF
 
 	if [[ "${cross_build}" == "no" ]]; then
 
+		set -e
 		# Generate the required locales
 		# Remove the locale-archive, because localedef does not read
 		# empty files.  This was a dummy file created during the
@@ -106,6 +107,7 @@ EOF
 			    subdir=localedata \
 			    install-locales
 		popd > /dev/null
+		set +e
 	fi
 }
 
