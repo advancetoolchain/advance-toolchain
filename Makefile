@@ -544,8 +544,10 @@ define set_provides_arch
 endef
 
 define collect_logs
-    @echo -en "Collecting log information... ";
-    @+{ unset commit_info; \
+    @dt=$$(date -u +"%Y-%m-%d_%H.%M.%S"); \
+    fname=collected_logs-$(AT_VER_REV_INTERNAL).$(BUILD_ID)_$${dt}.tar.gz; \
+    echo -en "Collecting log information to $${fname}... "; \
+    { unset commit_info; \
         if [[ -f commit.info ]]; then \
             cp -p commit.info $(AT_WD); \
             commit_info="./commit.info"; \
@@ -555,7 +557,7 @@ define collect_logs
             ./logs/* ./dynamic $${commit_info} \
             $$(find ./builds -name 'config.[hlms]*' \
                     -print); \
-        mv -f $(AT_WD)/collected_logs.tar.gz $(AT_BASE)/collected_logs-$(AT_VER_REV_INTERNAL).$(BUILD_ID)_$$(date --rfc-3339=seconds | tr ' ' '_' | tr ':' '.' | cut -c -19).tar.gz; \
+        mv -f $(AT_WD)/collected_logs.tar.gz $(AT_BASE)/$${fname}; \
         unset commit_info; \
     } > /dev/null 2>&1
     @echo 'done!'
