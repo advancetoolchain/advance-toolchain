@@ -52,6 +52,7 @@
  <li style="margin-top:4px"><a role="tab" href="#faq10">MASS libraries</a></li>	 	 
  <li style="margin-top:4px"><a role="tab" href="#faq11">Debug options</a></li>
  <li style="margin-top:4px"><a role="tab" href="#faq12">Go compilers</a></li>
+ <li style="margin-top:4px"><a role="tab" href="#faq13">Environment modules</a></li>
             </ul>
          </div>
       </div>
@@ -69,6 +70,8 @@
 PATH=/opt/atX.X/bin:/opt/atX.X/sbin:$PATH make
 </pre>
 </blockquote>
+
+      <p>Alternatively you can use <a href="https://developer.ibm.com/linuxonpower/advance-toolchain/adv-tool-usage#tab_faq13">Environment modules</a>.</p>
 
       <p>On cmake build systems, it is also necessary to set the <code>CMAKE_PREFIX_PATH</code> with AT's path, for example:</p>
 <blockquote>
@@ -112,7 +115,7 @@ CMAKE_PREFIX_PATH=/opt/atX.X/
 
     	<li>advance-toolchain-atX.X-runtime-atZZ-compat
 
-    <p>Install this package only if you need to run an application built with the previous version of the Advance Toolchain on top of the current version. More information on Runtime Compatibility Between Advance Toolchain Versions</p></li>
+    <p>Install this package only if you need to run an application built with the previous version of the Advance Toolchain on top of the current version. More information on <a href="https://developer.ibm.com/linuxonpower/advance-toolchain/adv-tool-usage#tab_faq1B">Runtime Compatibility Between Advance Toolchain Versions</a></p></li>
 
     	<li><code>advance-toolchain-atX.X-selinux</code>
 
@@ -655,6 +658,28 @@ creates the config files in <code>/opt/atX.X/scripts</code>.</p>
 <div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
 <p class"ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyURL12">Copy Link</button></p></div>
+</div>
+</div>
+
+ <!-- Begin content for overview tab -->
+
+<div id="faq13" class="ibm-tabs-content">
+<h3>Environment modules</h3>
+
+<p>Environment Modules is a tool that simplifies shell initialization and lets users easily modify their environment during the session with modulefiles.</p>
+
+<p>Since AT 11.0, modulefiles are provided in the devel and cross-common packages to help easily set the environment for using AT.</p>
+
+<p>To use, simply run the command:</p>
+<pre>    module load atX.X </pre>
+
+<p>To stop using, it is also simple:</p>
+<pre>    module unload atX.X </pre>
+
+<p><strong>Note</strong>: The enviroment-modules package needs to be installed and configured in the system.</p>
+<div class="ibm-columns">
+    <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
+<p class"ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyURL13">Copy Link</button></p></div>
 </div>
 </div>
 </div>
