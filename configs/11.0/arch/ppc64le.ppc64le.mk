@@ -29,6 +29,3 @@ HOST := $(CTARGET_64)
 
 CROSS_BUILD := no
 ENV_BUILD_ARCH := 64
-
-# Don't build 32-bit libraries when targeting 64-bit only.
-DISABLE_MULTILIB := yes
