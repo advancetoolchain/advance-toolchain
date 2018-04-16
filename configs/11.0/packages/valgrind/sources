@@ -58,8 +58,8 @@ atsrc_get_patches ()
 		337042b8ea29d476b69d439c154d62f0 || return ${?}
 
 	at_get_patch \
-		https://raw.githubusercontent.com/powertechpreview/powertechpreview/87e6a6dc7f402c5b7e98d0c435dc3403b2aa92be/Valgrind%20Core%20Patches/3.13.0/0001-Valgrind-3.13.0-updates-from-mainline-as-of-3-14-201.patch \
-		32d37ea8d9e29c8a6a2f3c634b076f4a || return ${?}
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/69b92e26e9dd9cfe889b92045f85195a9c901c07/Valgrind%20Core%20Patches/3.13.0/0001-Valgrind-3.13.0-updates-from-mainline-as-of-3-14-201.patch \
+		f5696e37da4659cc43ba8faced9c9b15 || return ${?}
 
 	return 0
 }
