@@ -22,7 +22,7 @@
 
 # Install AT packages on PowerPC
 #
-# install_native <at_version>
+# install_native <at_version> <command>
 install_native ()
 {
 	local version=${1}
@@ -38,7 +38,8 @@ install_native ()
 			sudo dpkg -i advance-toolchain-golang* || return ${?}
 		fi
 	else
-		sudo rpm -iv advance-toolchain-*runtime-${version}* \
+		sudo rpm -${2}v advance-toolchain-*runtime-${version}* \
+			advance-toolchain-*runtime-debuginfo* \
 			advance-toolchain-*devel* \
 			advance-toolchain-*mcore* \
 			advance-toolchain-*perf* || return ${?}
@@ -50,7 +51,7 @@ install_native ()
 
 # Install AT cross-compiler
 #
-# install_cross
+# install_cross <command>
 install_cross ()
 {
 	if [[ ${debian} == "yes" ]]; then
@@ -60,28 +61,123 @@ install_cross ()
 		sudo dpkg -i advance-toolchain-at*cross-ppc*mcore* \
 			advance-toolchain-at*cross-ppc*extras* || return ${?}
 	else
-		sudo rpm -iv advance-toolchain-*common* || return ${?}
-		sudo rpm -iv advance-toolchain-*cross-ppc* || return ${?}
+		sudo rpm -${1}v advance-toolchain-*common* || return ${?}
+		sudo rpm -${1}v advance-toolchain-*cross-ppc* || return ${?}
 	fi
 }
 
 # Install AT packages.
 #
-# install <files_path> <at_version>
+# install <files_path> <at_version> <command>
 install ()
 {
 	pushd ${1}
 	shift
 
 	if [[ $(uname -m) == ppc* ]]; then
-		install_native ${@}
+		install_native ${1} ${2}
 	else
-		install_cross
+		install_cross ${2}
 	fi;
 	ret=${?}
 
 	popd
 	return ${ret}
+}
+
+# Install last AT version on PowerPC
+#
+# install_last_native <at_version>
+install_last_native ()
+{
+	local version=${1}
+
+	if [[ ${debian} == "yes" ]]; then
+		sudo apt-get install -y \
+		   advance-toolchain-at${version}-runtime \
+		   advance-toolchain-at${version}-runtime-dbg \
+		   advance-toolchain-at${version}-devel* \
+		   advance-toolchain-at${version}-mcore-libs* \
+		   advance-toolchain-at${version}-perf* \
+		   || return ${?}
+	else
+		local os=$(cat /etc/os-release | grep "^ID=" | cut -d '"' -f2)
+		if [[ ${os} == "sles" ]]; then
+			sudo zypper install -y \
+			   advance-toolchain-at${version}-runtime \
+			   advance-toolchain-at${version}-runtime-debuginfo \
+			   advance-toolchain-at${version}-devel* \
+			   advance-toolchain-at${version}-mcore-libs* \
+			   advance-toolchain-at${version}-perf* \
+			   || return ${?}
+		else
+			sudo yum install -y \
+			   advance-toolchain-at${version}-runtime \
+			   advance-toolchain-at${version}-runtime-debuginfo \
+			   advance-toolchain-at${version}-devel* \
+			   advance-toolchain-at${version}-mcore-libs* \
+			   advance-toolchain-at${version}-perf* \
+			   || return ${?}
+		fi
+	fi
+}
+
+# Install last cross-compiler AT version
+#
+# install_last_cross <at_version>
+install_last_cross ()
+{
+	local version=${1}
+
+	if [[ ${debian} == "yes" ]]; then
+		sudo apt-get install -y \
+		   advance-toolchain-at${version}-cross* \
+		   || return ${?}
+	else
+		local os=$(cat /etc/os-release | grep "^ID=" | cut -d '"' -f2)
+		if [[ ${os} == "sles" ]]; then
+			sudo zypper install -y \
+			   advance-toolchain-at${version}-cross* \
+			   || return ${?}
+		else
+			sudo yum install -y \
+			   advance-toolchain-at${version}-cross* \
+			   || return ${?}
+		fi
+	fi
+}
+
+# Install last AT version
+#
+# install_last <at_version>
+install_last ()
+{
+	if [[ $(uname -m) == ppc* ]]; then
+		install_last_native ${1}
+	else
+		install_last_cross ${1}
+	fi;
+	ret=${?}
+}
+
+# Update AT packages
+#
+# update <files_path> <at_version> <output_list>
+update ()
+{
+	local files=${1}
+	local version=${2}
+	local list=${3}
+
+	# There is no update with internal releases.
+	if [[ -z $(ls ${files} | grep -E "\-rc|alpha|beta") ]]; then
+		install_last ${version}
+		install ${files} ${version} U
+		list ${list}
+	else
+		echo "Skipping: internal release."
+		touch ${list}
+	fi
 }
 
 # Uninstall AT packages.
@@ -90,6 +186,11 @@ install ()
 uninstall ()
 {
 	local list=${1}
+
+	if [[ ! -s ${list} ]]; then
+		echo "Nothing to uninstall."
+		exit
+	fi
 
 	if [[ ${debian} == "yes" ]]; then
 		sudo dpkg -P $(cat ${list})
