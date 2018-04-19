@@ -156,14 +156,10 @@ atcfg_pre_make() {
 atcfg_make() {
 	if [[ "${cross_build}" == "no" ]]; then
 		# Make build command
-		# libgo_cv_lib_setcontext_clobbers=no must be set for
-		# 32 bit go builds to work correctly.  Once
-		# RH BZ 1018072 is fixed then setting the variable is
-		# no longer needed and the build will work.
-		PATH=${at_dest}/bin:${PATH}  libgo_cv_lib_setcontext_clobbers_tls=no \
+		PATH=${at_dest}/bin:${PATH} \
 			${SUB_MAKE} STAGE1_CFLAGS="-g -O" profiledbootstrap
 	else
-		PATH=${at_dest}/bin:${PATH} libgo_cv_lib_setcontext_clobbers_tls=no \
+		PATH=${at_dest}/bin:${PATH} \
 			${SUB_MAKE} STAGE1_CFLAGS="-g -O"
 	fi
 }
