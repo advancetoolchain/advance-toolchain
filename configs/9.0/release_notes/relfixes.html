@@ -12,8 +12,20 @@
 
 <h3>New features in 9.0-7</h3>
 <ul>
+	<li>The GNU C Library provides:</li>
+	<ul>
+		<li>Fix <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=16750">CVE-2009-5064: ldd should not try to execute the binaries</a>.</li>
+		<li>Fix <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=21115">CVE-2017-12133: sunrpc - Use-after-free in error path in clntudp_call</a>.</li>
+		<li>Fix <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22625">CVE-2017-16997: RPATH $ORIGIN replaced by PWD for AT_SECURE/SUID binaries or if /proc is not mounted</a>.</li>
+		<li>Fix <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22606">CVE-2017-1000408: Incorrect array size computation in _dl_init_paths</a>.</li>
+		<li>Fix <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22607">CVE-2017-1000409: Buffer Overflow in _dl_init_paths</a>.</li>
+		<li>Fix <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22343">CVE-2018-6485: Integer overflow in posix_memalign</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22332">CVE-2017-15804: Buffer overflow in glob during unescaping of user names with the ~ operator</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22320">CVE-2017-15670: Buffer overflow in glob with GLOB_TILDE</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22325">CVE-2017-15671: Memory leak in glob with GLOB_TILDE</a>.</li>
+	</ul>
 	<li>Binutils provides fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=18867">ld reloc sorting causes glibc to crash</a>.</li>
-	<li>OpenSSL provides fixes for <a href="https://www.openssl.org/news/secadv/20171207.txt">CVE-2017-3737 and CVE-2017-3738</a>.</li>
+	<li>OpenSSL provides fixes for <a href="https://www.openssl.org/news/secadv/20171207.txt">CVE-2017-3737, CVE-2017-3738</a>, <a href="https://www.openssl.org/news/secadv/20180327.txt">CVE-2018-0739 and CVE-2018-0733</a>.</li>
 </ul>
 
 <a name="previous"></a>
