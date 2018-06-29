@@ -50,6 +50,9 @@ atsrc_get_patches ()
 	at_get_patch \
 		https://github.com/powertechpreview/powertechpreview/raw/master/Valgrind%20Core%20Patches/3.10.1/vg-3101-bz-fixes.tgz \
 		9be2b5dacd637d9fde83b6473cfd4a75 || return ${?}
+	at_get_patch \
+		https://github.com/powertechpreview/powertechpreview/raw/master/Valgrind%20iTrace%20Patches/3.10/vg-310-itrace.v2.patch \
+		4a04705e391cb81a1540c0dc0fa0c337 || return ${?}
 }
 
 atsrc_apply_patches ()
@@ -59,6 +62,7 @@ atsrc_apply_patches ()
 	tar xzf vg-3101-bz-fixes.tgz || return ${?}
 
 	patch -p1 < vg-310-itrace.patch || return ${?}
+	patch -p1 < vg-310-itrace.v2.patch || return ${?}
 	# We skip the first patch in this patch set, because it has already
 	# been applied by the previous patch set.
 	# patch -p1 < 0001-Itrace-patch-for-the-AT-8.0-release-on-top-of-the-Va.patch || return ${?}
