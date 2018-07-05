@@ -71,7 +71,7 @@ ifndef AT_DISTRO_REQ_PKGS
                           texinfo subversion cvs gawk fakeroot debhelper \
                           autoconf rsync curl bc libxml2-utils automake \
                           dpkg-sig xutils-dev libtool wget dh-systemd \
-                          docbook2x pkg-config
+                          docbook2x pkg-config autoconf-archive
     AT_CROSS_PGMS_REQ :=
     AT_NATIVE_PGMS_REQ := /opt/ibm/java-ppc64le-80/jre/bin/java
     AT_COMMON_PGMS_REQ := git_2.7
