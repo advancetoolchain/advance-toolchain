@@ -40,3 +40,16 @@ ATSRC_PACKAGE_PATCHES=
 ATSRC_PACKAGE_TARS=
 ATSRC_PACKAGE_DISTRIB=yes
 ATSRC_PACKAGE_BUNDLE=main_toolchain
+
+atsrc_get_patches ()
+{
+	at_get_patch \
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/GNU%20Binutils%20Patches/0001-Initialize-kept_size-in-gold-object.cc.patch \
+		4ab7c410728c6e4eeb9f44d6a295db57 || return ${?}
+}
+
+atsrc_apply_patches ()
+{
+	patch -p1 < 0001-Initialize-kept_size-in-gold-object.cc.patch \
+		|| return ${?}
+}

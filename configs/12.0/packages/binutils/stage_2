@@ -48,10 +48,13 @@ atcfg_configure() {
 						--enable-gold
 	else
 		# Configure command for cross builds
+		# TODO: Since Binutils 2.31, gold requires to build with
+		# -std=c++11.  Please review if it's possible to remove this
+		# later.
 		CC=${system_cc} \
 		CXX=${system_cxx} \
 		CFLAGS="-g -O" \
-		CXXFLAGS="-g -O" \
+		CXXFLAGS="-g -O -std=c++11" \
 		${ATSRC_PACKAGE_WORK}/configure --build=${host} \
 						--host=${host} \
 						--target=${target} \
