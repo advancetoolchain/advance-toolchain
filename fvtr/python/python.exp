@@ -59,7 +59,8 @@ print_env_var PYTHONHOME
 print_env_var PYTHONPATH
 print_env_var PYTHONUSERBASE
 
-set pyver [string range $env(AT_PYTHON_VER) 0 2]
+set pyverl [split $env(AT_PYTHON_VER) .]
+set pyver "[lindex $pyverl 0].[lindex $pyverl 1]"
 
 set test_script "$env(AT_DEST)/lib64/python$pyver/test/regrtest.py"
 if { ![file isfile "$test_script"] } {
@@ -82,6 +83,17 @@ set env(PYTHON_SKIP_TESTS) "test_ssl.test_random_fork"
 set common_exclude_tests "test_doctest test_doctest2 test_asyncio \
 			  test_asyncore test_concurrent_futures	\
 			  test_buffer test_tarball test_venv test_pty"
+
+if { [lindex $pyverl 0] > 3
+     || ([lindex $pyverl 0] == 3 && [lindex $pyverl 1] >= 6) } {
+	# The following tests take almost 1 hour to execute:
+	# test_multiprocessing_fork test_multiprocessing_forkserver
+	# test_multiprocessing_spawn
+	append common_exclude_tests " test_multiprocessing_fork \
+				      test_multiprocessing_forkserver \
+				      test_multiprocessing_spawn"
+}
+
 # The following sets up the python test command so that it excludes tests
 # which should not be run using FVTR.  The exclude test list is different
 # depending on the version of python being used, although some common tests
