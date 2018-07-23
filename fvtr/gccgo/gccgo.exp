@@ -38,6 +38,15 @@ $at_dir/bin/$env(AT_TARGET)-gccgo is missing."
 	set rc 1
 }
 
+printit "Test if libgo.so supports split-stack..."
+set libs [ exec find ${at_dir} -type f -name libgo.so* ]
+foreach f ${libs} {
+	if {[catch {exec nm -s ${f} | grep morestack} err]} {
+		printit "Library ${f} does not support split-stack" ${ERROR}
+		set rc 1
+	}
+}
+
 
 printit "Test if all 32-bit go libraries were removed..."
 set libs32dir [split [ exec find ${at_dir} -name lib ] "\n"]
