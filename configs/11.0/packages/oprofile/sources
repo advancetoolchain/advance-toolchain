@@ -39,3 +39,26 @@ ATSRC_PACKAGE_TARS=
 ATSRC_PACKAGE_MAKE_CHECK=
 ATSRC_PACKAGE_DISTRIB=yes
 ATSRC_PACKAGE_BUNDLE=profile
+
+atsrc_get_patches ()
+{
+	# Backport fix from master.
+	at_get_patch \
+		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/Oprofile%20Patches/0001-PowerPC-Remove-trailing-comma-in-cpu_name.patch' \
+		b47d0bff43ee7c8a6f8098178f5b05e3 || return ${?}
+
+	# Backport fix from master.
+	at_get_patch \
+		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/Oprofile%20Patches/0001-Initialize-the-trans-structure-fields-to-values-unus.patch' \
+		8dc25b7e24439a9bfee54d3e9291d4f2 || return ${?}
+
+	return 0
+}
+
+atsrc_apply_patches ()
+{
+	patch -p1 < 0001-PowerPC-Remove-trailing-comma-in-cpu_name.patch || return ${?}
+	patch -p1 < 0001-Initialize-the-trans-structure-fields-to-values-unus.patch || return ${?}
+
+	return 0
+}
