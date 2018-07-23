@@ -92,6 +92,8 @@ if { [lindex $pyverl 0] > 3
 	append common_exclude_tests " test_multiprocessing_fork \
 				      test_multiprocessing_forkserver \
 				      test_multiprocessing_spawn"
+	# test_dtrace tries to pass invalid parameters to dtrace.
+	append common_exclude_tests " test_dtrace"
 }
 
 # The following sets up the python test command so that it excludes tests
