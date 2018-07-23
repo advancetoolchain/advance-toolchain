@@ -32,6 +32,8 @@ atcfg_pre_configure() {
 	else
 		echo cross-compiling=yes >> ./configparms
 	fi
+	glibc=$(CC="${at_dest}/bin/${target}-gcc" \
+		  ${utilities}/get_glibc_version.sh)
 }
 
 
@@ -55,6 +57,7 @@ atcfg_configure() {
 		${secure_plt:+--enable-secureplt} \
 		${disable_multilib:+--disable-multilib} \
 		--with-advance-toolchain=$(basename ${at_dest}) \
+		--with-glibc-version=${glibc} \
 		--with-local-prefix=${at_dest} \
 		--enable-threads=posix \
 		--enable-languages=${build_gcc_languages} \
