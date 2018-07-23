@@ -106,6 +106,13 @@ atcfg_install() {
 
 
 atcfg_post_install() {
+	# Remove 32-bit go libraries as it is not supported on go >= 1.4.2.
+	if [[ -n "${target32}" ]]; then
+		find "${install_place}/${at_dest}/lib/" -depth \
+		     -name "libgo.*" -o -name "libgo*begin.*" \
+			| xargs rm
+		rm -rf ${install_place}/${at_dest}/lib/go/
+	fi
 	# Remove unneeded install files
 	rm -rf ${install_place}/${at_dest}/lib/gcc
 	find "${install_place}" -type f -name "*.o"  -print -delete

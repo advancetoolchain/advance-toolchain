@@ -38,6 +38,16 @@ $at_dir/bin/$env(AT_TARGET)-gccgo is missing."
 	set rc 1
 }
 
+
+printit "Test if all 32-bit go libraries were removed..."
+set libs32dir [split [ exec find ${at_dir} -name lib ] "\n"]
+set libs [ eval exec find ${libs32dir} -name libgo.* -o -name libgo*begin.* ]
+foreach f ${libs} {
+	printit "Library ${f} should have been removed." ${ERROR}
+	set rc 1
+}
+
+
 printit "Compiling with: ${GCCGO}..."
 compile "${GCCGO} ${CFLAGS} $FULLPATH/test.go -o $FULLPATH/gotest"
 
@@ -60,9 +70,12 @@ if { $env(AT_CROSS_BUILD) != "yes" } {
 	printit "Program not run on cross"
 }
 
-printit "\n\t\t\t\t\t\[SUCCESS\]"
 file delete -force $FULLPATH/gotest
 file delete -force $FULLPATH/gotest.o
 file delete -force $FULLPATH/gopkgtest
 file delete -force $FULLPATH/gopkgtest.o
+
+if {${rc} == 0} {
+	printit "\n\t\t\t\t\t\[SUCCESS\]"
+}
 exit $rc
