@@ -95,7 +95,7 @@ ifndef AT_DISTRO_REQ_PKGS
                           docbook2X autoconf-archive
     AT_CROSS_PGMS_REQ :=
     AT_NATIVE_PGMS_REQ :=
-    AT_COMMON_PGMS_REQ := git_1.7
+    AT_COMMON_PGMS_REQ := git_1.7 make_4.0
     AT_JAVA_VERSIONS := 7
 endif
 
