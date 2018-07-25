@@ -22,6 +22,15 @@ It also provides a group of optimized threading libraries as well.
 %package runtime
 Summary: Advance Toolchain
 Requires: __RUNTIME_REQ__
+Requires(pre): coreutils
+Requires(pre): gawk
+Requires(pre): grep
+Requires(pre): rpm
+Requires(pre): sed
+Requires(post): systemd
+Requires(preun): systemd
+Requires(postun): grep
+Requires(postun): systemd
 Group: Development/Libraries
 AutoReqProv: no
 Provides: advance-toolchain-runtime = %{at_major_version}-%{at_revision_number}
@@ -97,6 +106,7 @@ running SElinux.
 %package runtime-debuginfo
 Summary: Debug information for package %{name}-runtime
 Requires: advance-toolchain-%{at_major}-runtime = %{at_major_version}-%{at_revision_number}
+Requires(post): grep
 Group: Development/Debug
 AutoReqProv: 0
 
@@ -119,6 +129,7 @@ package or when debugging this package.
 %package devel-debuginfo
 Summary: Debug information for package %{name}-devel
 Requires: advance-toolchain-%{at_major}-devel = %{at_major_version}-%{at_revision_number}
+Requires(post): grep
 Group: Development/Debug
 AutoReqProv: 0
 
@@ -130,6 +141,7 @@ package or when debugging this package.
 %package perf-debuginfo
 Summary: Debug information for package %{name}-perf
 Requires: advance-toolchain-%{at_major}-perf = %{at_major_version}-%{at_revision_number}
+Requires(post): grep
 Group: Development/Debug
 AutoReqProv: 0
 
@@ -223,18 +235,11 @@ useradd -r -g oprofile -d /home/oprofile -s /sbin/nologin \
 -c "Special user account to be used by OProfile" oprofile
 exit 0
 
-
 ####################################################
 %post runtime
 # Automatically set the timezone
 rm -f %{_prefix}/etc/localtime
 ln -s /etc/localtime %{_prefix}/etc/localtime
-# Do this in every .spec file because they may only install a subset.
-# We never know the order rpm is going to update AT's packages.
-# So we only need to update the ldconf cache when ldconfig is available
-if [[ -f %{_sbindir}/ldconfig ]]; then
-    %{_sbindir}/ldconfig
-fi
 systemctl --no-reload preset %{at_ver_alternative}-cachemanager.service \
     > /dev/null 2>&1 || :
 systemctl restart %{at_ver_alternative}-cachemanager.service
@@ -247,12 +252,6 @@ for INFO in $(ls %{_infodir}/*.info.gz); do
 done
 # Run this setup script right after install
 %{_prefix}/scripts/at-create-ibmcmp-cfg.sh
-# Do this in every .spec file because they may only install a subset.
-# We never know the order rpm is going to update AT's packages.
-# So we only need to update the ldconf cache when ldconfig is available
-if [[ -f %{_sbindir}/ldconfig ]]; then
-    %{_sbindir}/ldconfig
-fi
 # Make the environment module visible to users.
 if [[ ! ( -d /usr/share/modules/modulefiles || \
 	  -d /usr/share/Modules/modulefiles ) ]]; then
@@ -268,24 +267,6 @@ fi
 if [[ -w /usr/share/Modules/modulefiles/. ]]; then
 	ln -sf %{_datadir}/modules/modulefiles/%{at_dir_name} \
 		/usr/share/Modules/modulefiles/.
-fi
-
-#---------------------------------------------------
-%post perf
-# Do this in every .spec file because they may only install a subset.
-# We never know the order rpm is going to update AT's packages.
-# So we only need to update the ldconf cache when ldconfig is available
-if [[ -f %{_sbindir}/ldconfig ]]; then
-    %{_sbindir}/ldconfig
-fi
-
-#---------------------------------------------------
-%post mcore-libs
-# Do this in every .spec file because they may only install a subset.
-# We never know the order rpm is going to update AT's packages.
-# So we only need to update the ldconf cache when ldconfig is available
-if [[ -f %{_sbindir}/ldconfig ]]; then
-    %{_sbindir}/ldconfig
 fi
 
 #---------------------------------------------------
@@ -346,6 +327,42 @@ for DIR in $(find %{_prefix}/lib/debug/%{_prefix}/lib*/ -type d \
 done
 
 ####################################################
+%posttrans runtime
+# Do this in every .spec file because they may only install a subset.
+# We never know the order rpm is going to update AT's packages.
+# So we only need to update the ldconf cache when ldconfig is available
+if [[ -f %{_sbindir}/ldconfig ]]; then
+    %{_sbindir}/ldconfig
+fi
+
+#---------------------------------------------------
+%posttrans devel
+# Do this in every .spec file because they may only install a subset.
+# We never know the order rpm is going to update AT's packages.
+# So we only need to update the ldconf cache when ldconfig is available
+if [[ -f %{_sbindir}/ldconfig ]]; then
+    %{_sbindir}/ldconfig
+fi
+
+#---------------------------------------------------
+%posttrans perf
+# Do this in every .spec file because they may only install a subset.
+# We never know the order rpm is going to update AT's packages.
+# So we only need to update the ldconf cache when ldconfig is available
+if [[ -f %{_sbindir}/ldconfig ]]; then
+    %{_sbindir}/ldconfig
+fi
+
+#---------------------------------------------------
+%posttrans mcore-libs
+# Do this in every .spec file because they may only install a subset.
+# We never know the order rpm is going to update AT's packages.
+# So we only need to update the ldconf cache when ldconfig is available
+if [[ -f %{_sbindir}/ldconfig ]]; then
+    %{_sbindir}/ldconfig
+fi
+
+####################################################
 %preun devel
 # Update the info directory entries
 if [ "$1" = 0 ]; then
@@ -354,7 +371,7 @@ if [ "$1" = 0 ]; then
     done
 fi
 
-####################################################
+#---------------------------------------------------
 %preun runtime
 systemctl --no-reload disable --now \
     %{at_ver_alternative}-cachemanager.service > /dev/null 2>&1 || :
