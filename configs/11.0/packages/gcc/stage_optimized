@@ -32,6 +32,8 @@ atcfg_pre_configure() {
 	else
 		echo cross-compiling=yes >> ./configparms
 	fi
+	glibc=$(CC="${at_dest}/bin/${target}-gcc" \
+		  ${utilities}/get_glibc_version.sh)
 }
 
 
@@ -55,6 +57,7 @@ atcfg_configure() {
 		${secure_plt:+--enable-secureplt} \
 		${disable_multilib:+--disable-multilib} \
 		--with-advance-toolchain=$(basename ${at_dest}) \
+		--with-glibc-version=${glibc} \
 		--with-local-prefix=${at_dest} \
 		--enable-threads=posix \
 		--enable-languages=${build_gcc_languages} \
@@ -106,6 +109,13 @@ atcfg_install() {
 
 
 atcfg_post_install() {
+	# Remove 32-bit go libraries as it is not supported on go >= 1.4.2.
+	if [[ -n "${target32}" ]]; then
+		find "${install_place}/${at_dest}/lib/" -depth \
+		     -name "libgo.*" -o -name "libgo*begin.*" \
+			| xargs rm
+		rm -rf ${install_place}/${at_dest}/lib/go/
+	fi
 	# Remove unneeded install files
 	rm -rf ${install_place}/${at_dest}/lib/gcc
 	find "${install_place}" -type f -name "*.o"  -print -delete
