@@ -671,7 +671,7 @@ define check_packages
         missing_pkg="no"; \
         tmp_file=$$(mktemp); \
         if [[ ("$(DISTRO_FM)" == "ubuntu") || ("$(DISTRO_FM)" == "debian") ]]; then \
-            dpkg -l | tail -n +6 | awk '{ printf("%s\n",$$2); };' > $${tmp_file}; \
+            dpkg -l | tail -n +6 | awk '{ print $$2 "-" $$3; };' > $${tmp_file}; \
         else \
             rpm -qa > $${tmp_file}; \
         fi; \
