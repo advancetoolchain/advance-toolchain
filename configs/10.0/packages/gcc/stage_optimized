@@ -32,6 +32,8 @@ atcfg_pre_configure() {
 	else
 		echo cross-compiling=yes >> ./configparms
 	fi
+	glibc=$(CC="${at_dest}/bin/${target}-gcc" \
+		  ${utilities}/get_glibc_version.sh)
 }
 
 
@@ -55,6 +57,7 @@ atcfg_configure() {
 		${secure_plt:+--enable-secureplt} \
 		${disable_multilib:+--disable-multilib} \
 		--with-advance-toolchain=$(basename ${at_dest}) \
+		--with-glibc-version=${glibc} \
 		--with-local-prefix=${at_dest} \
 		--enable-threads=posix \
 		--enable-languages=${build_gcc_languages} \
@@ -82,11 +85,6 @@ atcfg_configure() {
 
 
 atcfg_make() {
-	# libgo_cv_lib_setcontext_clobbers=no must be set for
-	# 32 bit go builds to work correctly.  Once
-	# RH BZ 1018072 is fixed then setting the variable is
-	# no longer needed and the build will work.
-	#
 	# gcc_cv_have_tls=yes is required to avoid configure scripts testing if
 	# TLS is available.  These tests try to execute programs compiled with
 	# a -mcpu that is superior of the base value, which can cause a silent
@@ -98,7 +96,6 @@ atcfg_make() {
 	# of the base value, which can cause a silent illegal instruction
 	# error, forcing the script to assume that vsnprintf is not usable.
 	PATH=${at_dest}/bin:${PATH} \
-	libgo_cv_lib_setcontext_clobbers_tls=no \
 		${SUB_MAKE} all \
 			    gcc_cv_have_tls=yes \
 			    ssp_have_usable_vsnprintf=define
@@ -112,6 +109,13 @@ atcfg_install() {
 
 
 atcfg_post_install() {
+	# Remove 32-bit go libraries as it is not supported on go >= 1.4.2.
+	if [[ -n "${target32}" ]]; then
+		find "${install_place}/${at_dest}/lib/" -depth \
+		     -name "libgo.*" -o -name "libgo*begin.*" \
+			| xargs rm
+		rm -rf ${install_place}/${at_dest}/lib/go/
+	fi
 	# Remove unneeded install files
 	rm -rf ${install_place}/${at_dest}/lib/gcc
 	find "${install_place}" -type f -name "*.o"  -print -delete
