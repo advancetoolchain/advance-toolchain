@@ -1,1 +1,73 @@
-../../11.0/release_notes/relfixes.html
+<li>POWER9 enablement.</li>
+<li>POWER9 optimized scheduler.</li>
+<li>Requires at least POWER7 for ppc64 and POWER8 for ppc64le.</li>
+<li>POWER8 Transactional Memory enablement.</li>
+<li>POWER8 Crypto Operations enablement.</li>
+<li>POWER8 Fusion enablement.</li>
+<li>POWER8 and POWER9 optimized system libraries.</li>
+<li>GCC creates binaries using --mcpu=power8 --mtune=power9 by default on ppc64le.</li>
+<li>Support for <a href="http://golang.org/">Go Programming Language</a>.</li>
+
+<h3>New features in 12.0-0</h3>
+<ul>
+	<li>Fix <a href="https://github.com/advancetoolchain/advance-toolchain/issues/194">Missing required packages</a>.</li>
+	<li>GCC provides:</li>
+	<ul>
+		<li>Fix for <a href="https://github.com/advancetoolchain/advance-toolchain/issues/143">Segmentation fault in programs generated with GCC Go on ppc64 (big endian)</a>.</li>
+		<li>Fix for <a href="https://github.com/advancetoolchain/advance-toolchain/issues/497">printing the correct revision on 'gcc -v'</a>.</li>
+	</ul>
+	<li>OProfile fixes the issue <a href="https://github.com/advancetoolchain/advance-toolchain/issues/499">OProfile does not recognize POWER9</a>.</li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
+<h3>New features in 11.0-3</h3>
+<ul>
+	<li>GCC provides:</li>
+	<ul>
+		<li>Support for --with-long-double-format option to change the default long double format.</li>
+		<li>Support for -mspeculate-indirect-jumps option to produce only safe indirect jumps.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82333">_Float128 ICE in as_a</a>.</li>
+		<li>Support for IEEE 128-bit round to integer instructions.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80695">Account for direct move costs for vec_construct of integer</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=81996">__builtin_return_address(0) fails with -fPIC -fstack-protector-all or -fsanitize=address</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82602">IRA considers volatile asm to be moveable</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=77687">frame access after release without redzone</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80101">ICE in store_data_bypass_p</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80210">ICE in extract_insn with __builtin_pow</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83677">the xxpermr instruction is not generated correctly</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83399"> ICE During LRA with 2-op rtl pattern for lvx instruction</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=84033">-moptimize-swaps produces bad code with vec_vbpermq</a>.</li>
+	</ul>
+	<li>The GNU C Library provides:</li>
+	<ul>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=21754">Remove check_action variable in malloc</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22332">CVE-2017-15804: Buffer overflow in glob during unescaping of user names with the ~ operator</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22375">CVE-2017-17426: Integer overflow in malloc when tcache is enabled</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22052">malloc failed to compile with GCC 7 and -O3</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22606">CVE-2017-1000408: Incorrect array size computation in _dl_init_paths</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22607">CVE-2017-1000409: Buffer Overflow in _dl_init_paths</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22625">CVE-2017-16997: RPATH $ORIGIN replaced by PWD for AT_SECURE/SUID binaries or if /proc is not mounted</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22679">CVE-2018-1000001: getcwd(3) can succeed without returning an absolute path</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22377">C++ version of iseqsig</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22685">static AT_SECURE binaries segfault with lock-elision and tunables</a>.</li>
+	</ul>
+	<li>Binutils provides:</li>
+	<ul>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22431">segmentation fault when .plt is discarded</a>.</li>
+		<li>Fix incremental linking failure with GCC 7+.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=21118">Stop masking X_add_number containing a register number</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22626">invalid dynindx used for dynamic relocs against section syms</a>.</li>
+	</ul>
+	<li>GDB provides fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=20899">dwarf2_string_attr for -gsplit-dwarf</a>.</li>
+	<li>Golang provides:</li>
+	<ul>
+		<li>Go 1.9.</li>
+		<li>Support to improve performance when loading or storing consecutive bytes.</li>
+		<li>Support for -buildmode=plugin and -buildmode=c-shared on ppc64le.</li>
+		<li>Vector implementation of IndexByte.</li>
+		<li>Fix for dcbt and other data cache instructions.</li>
+		<li>Fix for performance regression in CompareBytes.</li>
+	</ul>
+</ul>
