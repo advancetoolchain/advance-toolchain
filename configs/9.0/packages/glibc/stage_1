@@ -90,17 +90,13 @@ EOF
 		# empty files.  This was a dummy file created during the
 		rm -f "${libdir}/locale/locale-archive"
 
-		# Locale generation can require a lot of RAM per job.  Limit
-		# the number of jobs on the amount of RAM.
-		# The largest RAM usage noticed was ~300 MB / job.  However,
-		# we pick 800 MB as a safer limit.
-		memory=$(free -m | awk '/Mem/ {print $2}')
-		max_jobs=$((${memory}/800))
-
 		# Temporarily save the current build directory
 		local build_stage_work="$(pwd)"
 		pushd ${build_stage_work}/localedata > /dev/null
-		${SUB_MAKE} -j ${max_jobs} \
+		# Install locales with a single job in order to avoid
+		# concurrent access to the locale archive.  This used to
+		# cause issues.
+		${SUB_MAKE} -j 1 \
 			    -C "${ATSRC_PACKAGE_WORK}/localedata" \
 			    objdir="${build_stage_work}" \
 			    install_root="/" \
