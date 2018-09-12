@@ -8,6 +8,10 @@
 <li>GCC creates binaries using --mcpu=power8 --mtune=power9 by default on ppc64le.</li>
 <li>Support for <a href="http://golang.org/">Go Programming Language</a>.</li>
 
+<h3>Deprecation notice:</h3>
+
+<p>IBM Advance Toolchain 12.0 will be the last version that includes OProfile and Libpfm. Future versions of IBM Advance Toolchain will not include OProfile nor Libpfm in favor of <a href="https://perf.wiki.kernel.org/index.php/Main_Page">the Linux perf command and the perf_events set of performance tools</a> available from the supported distributions.</p>
+
 <h3>New features in 12.0-0</h3>
 <ul>
 	<li>Fix <a href="https://github.com/advancetoolchain/advance-toolchain/issues/194">Missing required packages</a>.</li>
