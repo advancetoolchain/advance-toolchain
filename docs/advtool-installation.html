@@ -76,21 +76,11 @@
 <td></td>
 </tr>
 <tr>
-<td>Fedora 19</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td>Fedora 22</td>
 <td></td>
 <td><p class="ibm-ind-link"><a class="ibm-anchor-down-link" href="#redhatinstalltabs">Install advance toolchain</a></p><br>
 <p class="ibm-ind-link"><a class="ibm-forward-link" href="https://developer.ibm.com/linuxonpower/advance-toolchain/advtool-compiler/">Install cross compiler</a></p><br>
 <p class="ibm-ind-link"><a class="ibm-btn-sec ibm-btn-gray-50 ibm-forward-link" href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/redhat/Fedora22/at10.0">Repository and release notes</a></p></td>
-</tr>
-<tr>
-<td>Red Hat 6</td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td>Red Hat 7</td>
@@ -116,11 +106,6 @@
 <td><p class="ibm-ind-link"><a class="ibm-anchor-down-link" href="#installUbuntu">Install advance toolchain</a></p><br>
 <p class="ibm-ind-link"><a class="ibm-forward-link" href="https://developer.ibm.com/linuxonpower/advance-toolchain/advtool-compiler">Install cross compiler</a></p><br>
 <p class="ibm-ind-link"><a class="ibm-btn-sec ibm-btn-gray-50 ibm-forward-link" href="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu/dists/trusty/at10.0">Repository and release notes</a></p></td>
-</tr>
-<tr>
-<td>Ubuntu 14.10</td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td>Ubuntu 16.04</td>
@@ -183,7 +168,6 @@
 </pre>
 <p>Notes:
 <ul><li>If you are installing on Red Hat 6, you must include two gpg public keys: <code>gpg-pubkey-6976a827-5164221b</code> and <code>gpg-pubkey-3052930d-5175955a</code>.</li>
-<li>Fedora 19 uses the same repository as RHEL7.</li>
 <li>Fedora 22 uses <code>redhat/Fedora22</code></li></ul>
 
 
@@ -441,24 +425,19 @@ wget ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu/dists/trusty/6976a8
 sudo apt-key add 6976a827.gpg.key
 </pre>
 <p></li>
-<li>Configure the Advance toolchain repositories by adding the following line to /etc/apt/sources.list:
-<p>On i386 or amd64:</p>
+<li>Configure the Advance Toolchain repositories by adding the following line to /etc/apt/sources.list:
 
-<pre>    deb [arch=i386] ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu trusty atX.X</pre>
-
-<p><strong>Note</strong>: AT 10.0 and above does not support i386. Follow instructions for ppc64el.</p>
-
-<p>On ppc64el:</p>
+<p>On ppc64el or amd64:</p>
 
 <pre>    deb ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu trusty atX.X </pre>
 
 <p>Notes:</p>
 
 <ul>
-    	<li>When installing on Ubuntu 16.04 (xenial) or Ubuntu 14.10 (utopic), point to its respective repository:
+  <li>When installing on Ubuntu 16.04 (xenial) or Ubuntu 14.04 (trusty), point to its respective repository:
 <pre>
               deb ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu xenial atX.X
-              deb ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu utopic atX.X
+              deb ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu trusty atX.X
 </pre></li>
 
 	<li>When installing on Debian 8 (jessie) or Debian 9 (stretch), point to its respective repository:
@@ -509,10 +488,10 @@ sudo apt-key add 6976a827.gpg.key
 <p>Notes:</p>
 
 <ul>
-    	<li>When installing on Ubuntu 16.04 (xenial) or Ubuntu 14.10 (utopic), point to its respective repository:
+  <li>When installing on Ubuntu 16.04 (xenial) or Ubuntu 14.04 (trusty), point to its respective repository:
 
 <pre>         deb ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu xenial atX.X
-              deb ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu utopic atX.X</pre></li>
+              deb ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu trusty atX.X</pre></li>
 
 
     	<li>When installing on Debian 8 (jessie), point to its respective repository:
