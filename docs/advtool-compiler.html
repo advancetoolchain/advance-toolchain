@@ -103,7 +103,7 @@
 <!-- Tabs here: -->
 <div class="ibm-tab-section" id="crosscompilerinstalltabs">
 <ul class="ibm-tabs" role="tablist">
-        <li role="presentation"class="ibm-active"><a aria-selected="true" role="tab" href="#compilerrhel">On Red Hat or Fedora</a></li>
+        <li role="presentation"class="ibm-active"><a aria-selected="true" role="tab" href="#compilerrhel">On Red Hat</a></li>
         <li role="presentation"><a role="tab" href="#compilersles">On SLES</a></li>
         <li role="presentation"><a role="tab" href="#compilerubuntu">On Ubuntu or Debian</a></li>
 </ul>
@@ -124,11 +124,9 @@
 </pre>
 <p>Notes:
 <ul><li>If you are installing on Red Hat 6, you must include two gpg public keys: <code>gpg-pubkey-6976a827-5164221b</code> and <code>gpg-pubkey-3052930d-5175955a</code>.</li>
-<li>Fedora 19 uses the same repository as RHEL7.</li>
-<li>Fedora 22 uses <code>redhat/Fedora22</code></li></ul></li>
-<li>Create a configuration file for the Advance Toolchain repository configuration file: <code>/etc/yum.repos.d/<em>at9.0.repo</em></code>. Add the following content: 
+<li>Create a configuration file for the Advance Toolchain repository configuration file: <code>/etc/yum.repos.d/<em>advance-toolchain.repo</em></code>. Add the following content:
 <pre># Begin of configuration file
-[at9.0]
+[advance-toolchain]
 name=Advance Toolchain Unicamp FTP
 baseurl=ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/redhat/<em>RHELX</em>
 failovermethod=priority
@@ -157,9 +155,9 @@ gpgkey=ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/redhat/<em>RHELX</em>/gp
     rpm --import gpg-pubkey-6976a827-5164221b
 </pre>
 <p></li>
-<li>Create a configuration file for the Advance Toolchain repository configuration file: <code>/etc/yum.repos.d/at9.0.repo</code>.  Add the following content: 
+<li>Create a configuration file for the Advance Toolchain repository configuration file: <code>/etc/yum.repos.d/advance-toolchain.repo</code>.  Add the following content:
 <pre># Begin of configuration file
-[at9.0]
+[advance-toolchain]
 name=Advance Toolchain Unicamp FTP
 baseurl=ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/suse/SLES_12
 failovermethod=priority
@@ -209,13 +207,7 @@ sudo apt-key add 6976a827.gpg.key
 </pre>
 <p></li>
 <li>Configure the Advance Toolchain repositories by adding the following line to <code>/etc/apt/sources.list</code>:
-<p>On i386 or amd64:</p>
-
-<pre>    deb [arch=i386] ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu trusty atX.X</pre>
-
-<p><strong>Note</strong>: AT 10.0 and above does not support i386. Follow instructions for ppc64el.</p>
-
-<p>On ppc64el:</p>
+<p>On ppc64el or amd64:</p>
 
 <pre>    deb ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu trusty atX.X </pre>
 
