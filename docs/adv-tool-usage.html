@@ -2,7 +2,7 @@
    <div class="ibm-leadspace-body ibm-padding-top-r2 ibm-padding-bottom-r2">
       <div class="ibm-columns ibm-alternate-background">
          <div class="ibm-col-2-1 ibm-col-medium-1-1">
-            <h1 class="ibm-h1 ibm-medium">Advance toolchain for Linux on Power</h1>
+            <h1 class="ibm-h1 ibm-medium">Advance Toolchain for Linux on Power</h1>
             <h4 class="ibm-h4">Taking advantage of leading edge tools and libraries</h4>
          </div>
       </div>
@@ -545,7 +545,7 @@ man libhugetlbfs</pre>
  <!-- Begin content for overview tab -->	 	 
 
  <div id="faq8" class="ibm-tabs-content">
- <h3>Packaging an application built with the Advance toolchain</h3>
+ <h3>Packaging an application built with the Advance Toolchain</h3>
 <p>Applications built with Advance Toolchain can be packaged with RPM. However, due to a limitation in the way that RPM generates dependency lists, the symbols from the Advance Toolchain may collide with the ones provided by the Linux distribution. There are two ways to prevent this:</p>
 
 <h5>Manually set your dependencies</h5>	 	 
@@ -576,7 +576,7 @@ case, it must be revised to guarantee its functionality). </p>
 <h5>Use a script to get personalized require dependency filters</h5>
 <p>Use this method with RPM version 4.8 or later.</p>	 	 
 
-<ol><li>The <code>/opt/atX.X/scripts/find_dependencies.sh</code> script is provided (since Advance Toolchain 9.0-2) to help set the dependencies. Since RPM version 4.8, you can replace the macro that checks for dependencies. This script accept a list of files as input and provide a list of found dependencies as output, it looks for standard dependencies found inside the Advance Toolchain install path and replace them by a single output of <code>advance-toolchain-atX.X-runtime</code>, or <code>advance-toolchain-atX.X-mcore-libs</code> if the dependency found was a multi core library provided by Advance toolchain.</li>	 	 
+<ol><li>The <code>/opt/atX.X/scripts/find_dependencies.sh</code> script is provided (since Advance Toolchain 9.0-2) to help set the dependencies. Since RPM version 4.8, you can replace the macro that checks for dependencies. This script accept a list of files as input and provide a list of found dependencies as output, it looks for standard dependencies found inside the Advance Toolchain install path and replace them by a single output of <code>advance-toolchain-atX.X-runtime</code>, or <code>advance-toolchain-atX.X-mcore-libs</code> if the dependency found was a multi core library provided by Advance Toolchain.</li>
 
  	 	 
 
@@ -599,7 +599,7 @@ Take a look at <a href="http://rpm.org/user_doc/dependencies.html">this link</a>
 
  <div id="faq9" class="ibm-tabs-content">	 	 
 
- <h3>Advance toolchain with IBM XLC and XLF</h3>	 	 
+ <h3>Advance Toolchain with IBM XLC and XLF</h3>
 
 <p>When compiling binaries using XLC or XLF, the user must add the 	 	 
 
@@ -628,7 +628,7 @@ creates the config files in <code>/opt/atX.X/scripts</code>.</p>
  <!-- Begin content for overview tab -->	 	 
 
  <div id="faq10" class="ibm-tabs-content">
- <h3>MASS libraries and Advance toolchain</h3>	 	 
+ <h3>MASS libraries and Advance Toolchain</h3>
 
  <p>IBM's Mathematical Acceleration Subsystem (MASS) libraries consist of a set of mathematical functions for C, C++, and Fortran-language applications that are tuned for specific POWER architectures. The libraries are available for ppc64 and ppc64le.</p>	 	 
 
@@ -643,7 +643,7 @@ creates the config files in <code>/opt/atX.X/scripts</code>.</p>
 
  <div id="faq11" class="ibm-tabs-content">	 	 
 
- <h3>Debug options for Advance toolchain</h3>	 	 
+ <h3>Debug options for Advance Toolchain</h3>
 
 <p><code>gdb</code> can be asked to <code>output _Decimal[32|64|128]</code> formatted floating point registers by default, using its printf command.</p>	 	 
 
