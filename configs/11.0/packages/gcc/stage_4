@@ -40,8 +40,8 @@ atcfg_configure() {
 		CC="${at_dest}/bin/gcc" \
 		CFLAGS="-O2" \
 		CXXFLAGS="-O2" \
-		CFLAGS_FOR_TARGET="-O3" \
-		CXXFLAGS_FOR_TARGET="-O3" \
+		CFLAGS_FOR_TARGET="-O3 -g" \
+		CXXFLAGS_FOR_TARGET="-O3 -g" \
 		AS="${at_dest}/bin/as" \
 		LD="${at_dest}/bin/ld" \
 		LDFLAGS="-L${at_dest}/lib64" \
