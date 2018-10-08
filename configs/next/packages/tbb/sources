@@ -20,8 +20,8 @@
 #
 
 ATSRC_PACKAGE_NAME="Thread Building Blocks"
-ATSRC_PACKAGE_VER=2018_U5
-ATSRC_PACKAGE_REV=615bb971db87
+ATSRC_PACKAGE_VER=2019_U1
+ATSRC_PACKAGE_REV=4cebdd9a1c9f
 ATSRC_PACKAGE_LICENSE="GPL 2.0"
 ATSRC_PACKAGE_DOCLINK="https://www.threadingbuildingblocks.org/documentation"
 ATSRC_PACKAGE_RELFIXES=
@@ -55,17 +55,4 @@ atsrc_package_verify_make_check_log ()
 		grep -i "error[: ]" "${1}" > /dev/null
 		return ${?}
 	fi
-}
-
-atsrc_get_patches ()
-{
-	at_get_patch \
-		https://github.com/powertechpreview/powertechpreview/raw/42cfbcf3d4a2fb7f9216069397df0dff9fc0f651/TBB%20PowerPC%20Patches/4.3/ppc64-tbb-4.3-fix.tgz \
-		11708da1a42542608a345c8f0b71dfc6 || return ${?}
-}
-
-atsrc_apply_patches ()
-{
-	tar xzf ppc64-tbb-4.3-fix.tgz || return ${?}
-	patch -p1 < inteltbb_set_compiler.patch || return ${?}
 }
