@@ -79,10 +79,14 @@ set env(PYTHON_SKIP_TESTS) "test_ssl.test_random_fork"
 # that other tests make use of the facilities that they check, so we can catch
 # the failure later in any case. In special, test_doctest, test_doctest2,
 # test_tarball, test_venv and test_pty provides ambiguous results that not
-# always represent a real success or failure.
+# always represent a real success or failure. Some tests (test_signal
+# and test_epoll) fail intermittently; disabling them reduces the
+# maintenance burden (someone would have to restart builds) at the cost
+# of loosing some test coverage.
 set common_exclude_tests "test_doctest test_doctest2 test_asyncio \
 			  test_asyncore test_concurrent_futures	\
-			  test_buffer test_tarball test_venv test_pty"
+			  test_buffer test_tarball test_venv test_pty \
+			  test_epoll test_signal"
 
 if { [lindex $pyverl 0] > 3
      || ([lindex $pyverl 0] == 3 && [lindex $pyverl 1] >= 6) } {
