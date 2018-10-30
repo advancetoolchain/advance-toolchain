@@ -1,1 +1,1 @@
-../../12.0/distros/centos-7.mk
+redhat-7.mk
