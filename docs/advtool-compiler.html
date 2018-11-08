@@ -26,7 +26,7 @@
 
 <!-- Start the get support button and overlay -->
 <div class="center">
-   <a href="#" onclick="IBMCore.common.widget.overlay.show('SUPPORT'); return false;">Get support</a></p>
+   <p><a href="#" onclick="IBMCore.common.widget.overlay.show('SUPPORT'); return false;">Get support</a></p>
    <div class="ibm-common-overlay ibm-overlay-alt" data-widget="overlay" id="SUPPORT">
       <p class="ibm-h2">Get support from the experts</p>
       <!-- edit support links in this list as needed for your page -->
@@ -123,7 +123,7 @@
     rpm --import gpg-pubkey-6976a827-5164221b
 </pre>
 <p>Notes:
-<ul><li>If you are installing on Red Hat 6, you must include two gpg public keys: <code>gpg-pubkey-6976a827-5164221b</code> and <code>gpg-pubkey-3052930d-5175955a</code>.</li>
+<ul><li>If you are installing on Red Hat 6, you must include two gpg public keys: <code>gpg-pubkey-6976a827-5164221b</code> and <code>gpg-pubkey-3052930d-5175955a</code>.</li></ul>
 <li>Create a configuration file for the Advance Toolchain repository configuration file: <code>/etc/yum.repos.d/<em>advance-toolchain.repo</em></code>. Add the following content:
 <pre># Begin of configuration file
 [advance-toolchain]
@@ -154,7 +154,7 @@ gpgkey=ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/redhat/<em>RHELX</em>/gp
     wget ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/redhat/RHEL7/gpg-pubkey-6976a827-5164221b
     rpm --import gpg-pubkey-6976a827-5164221b
 </pre>
-<p></li>
+</li>
 <li>Create a configuration file for the Advance Toolchain repository configuration file: <code>/etc/yum.repos.d/advance-toolchain.repo</code>.  Add the following content:
 <pre># Begin of configuration file
 [advance-toolchain]
@@ -205,7 +205,7 @@ gpgkey=ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/suse/SLES_12/gpg-pubkey-
 wget ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/ubuntu/dists/trusty/6976a827.gpg.key
 sudo apt-key add 6976a827.gpg.key
 </pre>
-<p></li>
+</li>
 <li>Configure the Advance Toolchain repositories by adding the following line to <code>/etc/apt/sources.list</code>:
 <p>On ppc64el or amd64:</p>
 
@@ -263,7 +263,7 @@ sudo apt-key add 6976a827.gpg.key
 
 
 
-<p class="ibm-h3"">Copy headers and libraries</p>
+<p class="ibm-h3">Copy headers and libraries</p>
 
          <p>First, it is necessary to copy all necessary libraries and headers to a certain directory. This example uses the following libraries and headers:</p>
 
@@ -279,9 +279,9 @@ sudo apt-key add 6976a827.gpg.key
 
          <p>For GNU wget, we need to provide some OpenSSL libraries and Zlib. Both of them are available in the Advance Toolchain native compiler. However, the list of necessary libraries may vary according to the project. If you don't know well the project, you can use the following tools in order to identify the list of libraries they use:</p>
 
-<pre>ldd <executable>
-rpm -q --requires -p <package.rpm>
-dpkg-deb -f <package.deb> | grep "Depends:"</pre>
+<pre>ldd &lt;executable&gt;
+rpm -q --requires -p &lt;package.rpm&gt;
+dpkg-deb -f &lt;package.deb&gt; | grep "Depends:"</pre>
 
          <p>Usually the list of libraries necessary to build a project is the same across all processor architectures. So, you may use the above commands against an executable or package compiled for another processor.</p>
 
@@ -391,7 +391,7 @@ LDFLAGS="-L${HOME}/wget/lib" \
             <p>Not necessarily. It depends on the code being built and the level of optimization in use.</p>
 <div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
-<p class"ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ1">Copy Link</button></p></div>
+<p class="ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ1">Copy Link</button></p></div>
 </div>
 </div>
          <!-- Begin content for faq2 tab -->
@@ -400,7 +400,7 @@ LDFLAGS="-L${HOME}/wget/lib" \
             <p>No. There are some differences in the metadata of the binaries, but it will run at the same speed.</p>
 <div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
-<p class"ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ2">Copy Link</button></p></div>
+<p class="ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ2">Copy Link</button></p></div>
 </div>
 </div>
          <!-- Begin content for faq3 tab -->
@@ -421,7 +421,7 @@ LDFLAGS="-L${HOME}/wget/lib" \
 
 <div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
-<p class"ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ3">Copy Link</button></p></div>
+<p class="ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ3">Copy Link</button></p></div>
 </div>
 </div>
          <!-- Begin content for description tab -->

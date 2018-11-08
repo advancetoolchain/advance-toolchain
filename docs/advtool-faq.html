@@ -26,7 +26,7 @@
 
 <!-- Start the get support button and overlay -->
 <div class="center">
-   <a href="#" onclick="IBMCore.common.widget.overlay.show('SUPPORT'); return false;">Get support</a></p>
+   <p><a href="#" onclick="IBMCore.common.widget.overlay.show('SUPPORT'); return false;">Get support</a></p>
    <div class="ibm-common-overlay ibm-overlay-alt" data-widget="overlay" id="SUPPORT">
       <p class="ibm-h2">Get support from the experts</p>
       <!-- edit support links in this list as needed for your page -->
@@ -87,7 +87,7 @@
 
 <div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
-<p class"ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ1">Copy Link</button></p></div>
+<p class="ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ1">Copy Link</button></p></div>
 </div>
 </div>
          <!-- Begin content for description tab -->
@@ -98,7 +98,7 @@ multithreading support (i.e. specify -pthread when calling the linker), for exam
 <code>/opt/at10.0/bin/gcc main.c -pthread</code>
 <div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
-<p class"ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ2">Copy Link</button></p></div>
+<p class="ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ2">Copy Link</button></p></div>
 </div>
 </div>
          <!-- Begin resources content -->
@@ -110,7 +110,7 @@ the library path or when the library path is changed, it is necessary to update 
 <code>/opt/atX.X/sbin/ldconfig</code> as root.</p>
 <div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
-<p class"ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ3">Copy Link</button></p></div>
+<p class="ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ3">Copy Link</button></p></div>
 </div>
 </div>
          <!-- Begin faq4 content -->
@@ -121,11 +121,11 @@ error message <code>bash: ./program: No such file or directory</code>.</p>
 <p>This message is indicating the system was not able to run this program. Usually this happens because 
 the system wasn't able to find the correct major version of the Advance Toolchain. In other words, Bash
 didn't find the loader specified in the <code>.interp</code> section of the executable.</p>
-<p>You can identify which Advance Toolchain version built this program by running <code>ldd <program></code>. Then, look for <code>/opt/atX.X/lib64/ld64.so.2</code>. Ensure 
+<p>You can identify which Advance Toolchain version built this program by running <code>ldd &lt;program&gt;</code>. Then, look for <code>/opt/atX.X/lib64/ld64.so.2</code>. Ensure
 to install the latest update of the major version you identified.</p>
 <div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
-<p class"ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ4">Copy Link</button></p></div>
+<p class="ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ4">Copy Link</button></p></div>
 </div>
 </div>
          <!-- Begin faq5 content -->
@@ -138,7 +138,7 @@ However, in case the user changes this behavior, he or she must ensure the Advan
 This will guarantee you won't mix parts of different glibc versions.</p>
 <div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
-<p class"ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ5">Copy Link</button></p></div>
+<p class="ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ5">Copy Link</button></p></div>
 </div>
 </div>
          <div id="faq6" class="ibm-tabs-content">
@@ -160,23 +160,22 @@ PATH</li>
 
 <div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
-<p class"ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ6">Copy Link</button></p></div>
+<p class="ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ6">Copy Link</button></p></div>
 </div></div>
          <div id="faq7" class="ibm-tabs-content">
             <h3>How to verify if the Advance Toolchain is corrupted?</h3>
 <p>The package manager provides .</p>
-<p> </p>
 <dl>
 <dt>On RPM-based systems (RHEL, SLES, Fedora):</dt>
-<dd>Run rpm --verify <list of packages>. 
-<p>Replace <list of packages> by the list of Advance Toolchain packages installed in the system, for example: 
+<dd>Run rpm --verify &lt;list of packages&gt;.
+<p>Replace &lt;list of packages&gt; by the list of Advance Toolchain packages installed in the system, for example:
 <code>rpm --verify advance-toolchain-atX.X-runtime 
 advance-toolchain-atX.X-devel advance-toolchain-atX.X-perf 
 advance-toolchain-atX.X-mcore-libs</code></p>
 <p>If this command creates any output, some of the packages are corrupted. If it returns 0, the installation is fine.</p></dd>
 <dt>On DEB-based systems (Ubuntu):</dt>
-<dd>Run debsums <list of packages>. 
-<p>Replace <list of packages> by the list of Advance Toolchain packages installed in the system, for example: 
+<dd>Run debsums &lt;list of packages&gt;.
+<p>Replace &lt;list of packages&gt; by the list of Advance Toolchain packages installed in the system, for example:
 <code>debsums advance-toolchain-atX.X-runtime 
 advance-toolchain-atX.X-devel advance-toolchain-atX.X-perf 
 advance-toolchain-atX.X-mcore-libs</code></p>
@@ -185,7 +184,7 @@ advance-toolchain-atX.X-mcore-libs</code></p>
 <p>In case the previous commands report any issue, uninstall and install the corrupted package again.</p>
 <div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
-<p class"ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ7">Copy Link</button></p></div>
+<p class="ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ7">Copy Link</button></p></div>
 </div>
 </div>
          <div id="faq8" class="ibm-tabs-content">
@@ -199,7 +198,7 @@ to use the distro's toolchain that usually performs quite well. Such cases inclu
 applications that are not CPU-bound and on I/O constrained environments.</p>
 <div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
-<p class"ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ8">Copy Link</button></p></div>
+<p class="ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ8">Copy Link</button></p></div>
 </div>
 </div>
 
@@ -215,7 +214,7 @@ and does not affect that, nor newer releases. </li>
 	<li>libdfp has some known limitations as indicated in the libdfp README.user documentation.</li></ul>
 <div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
-<p class"ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ9">Copy Link</button></p></div>
+<p class="ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ9">Copy Link</button></p></div>
 </div>
 </div>
 
@@ -244,7 +243,8 @@ United States:
 
 	<li>Option #7 (Other OS/Linux). </li>
 
-For other countries <a href="https://www.ibm.com/planetwide/">click here</a>. </ol></li>
+</ol>
+For other countries <a href="https://www.ibm.com/planetwide/">click here</a>.</li>
 
 	<li>All other users can use an electronic forum that is monitored Monday through Friday. For 
 questions regarding the use of the Advance Toolchain or to report a suspected defect, <a href="https://developer.ibm.com/answers/smart-spaces/331/linuxonpower.html">click here</a>.
@@ -269,7 +269,7 @@ questions regarding the use of the Advance Toolchain or to report a suspected de
 
 <div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
-<p class"ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ10">Copy Link</button></p></div>
+<p class="ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ10">Copy Link</button></p></div>
 </div>
 </div>
    </div>
