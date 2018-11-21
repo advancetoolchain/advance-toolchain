@@ -20,7 +20,7 @@
 #
 
 ATSRC_PACKAGE_NAME="Thread Building Blocks"
-ATSRC_PACKAGE_VER=2019_U1
+ATSRC_PACKAGE_VER=2019_U2
 ATSRC_PACKAGE_REV=8ff3697f544c
 ATSRC_PACKAGE_LICENSE="GPL 2.0"
 ATSRC_PACKAGE_DOCLINK="https://www.threadingbuildingblocks.org/documentation"
