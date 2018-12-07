@@ -53,28 +53,29 @@
          <p class="ibm-h4">The Advance Toolchain provides cross compilers that run on Intel x86 and generate code for Power which help teams to start developing for Power without having immediate access to a POWER server. The cross compiler provides a way to compile programs for POWER using a x86 (i386) or x86-64 (amd64) machine, helping teams to start developing for POWER without having access to a server in the early development phase.</p>
 </div>
 </div>
+</div>
 
 <div class="ibm-columns ibm-background-warm-white ibm-padding-top-r1 ibm-padding-bottom-r1" data-widget="setsameheight" data-items=".ibm-blocklink">
 
 
     <div class="ibm-col-6-2 ibm-col-medium-6-4">
         <a href="#install-cross-compiler" class="ibm-blocklink ibm-highlight-bg-purple-50 ibm-padding-content">
-            <p class="ibm-icon-nolink ibm-textcolor-default ibm-padding-bottom-0"><span class="ibm-anchor-down-link">Install the cross-compiler</span></p>
+            <span class="ibm-icon-nolink ibm-textcolor-default ibm-padding-bottom-0 ibm-anchor-down-link">Install the cross-compiler</span>
         </a>
     </div>
     <div class="ibm-col-6-2 ibm-col-medium-6-4">
     <a href="#compiler-sample-program" class="ibm-blocklink ibm-highlight-bg-purple-50 ibm-padding-content">
-            <p class="ibm-icon-nolink ibm-textcolor-default ibm-padding-bottom-0"><span class="ibm-anchor-down-link">Build</span></p>
+            <span class="ibm-icon-nolink ibm-textcolor-default ibm-padding-bottom-0 ibm-anchor-down-link">Build</span>
     </a>
     </div>
 
     <div class="ibm-col-6-2 ibm-col-medium-6-4">
         <a href="#compiler-FAQ" class="ibm-blocklink ibm-highlight-bg-purple-50 ibm-padding-content">
-            <p class="ibm-icon-nolink ibm-textcolor-default ibm-padding-bottom-0"><span class="ibm-anchor-down-link">FAQ</span></p>
+            <span class="ibm-icon-nolink ibm-textcolor-default ibm-padding-bottom-0 ibm-anchor-down-link">FAQ</span>
         </a>
     </div>
 </div>
-<div class="ibm-band ibm-background-white-core ibm-padding-top-1 ibm-padding-bottom-0" id="advtool-compiler-intro">
+<div class="ibm-band ibm-background-white-core ibm-padding-top-1 ibm-padding-bottom-0" id="advtool-compiler-installing">
    <div class="ibm-columns">
       <div class="ibm-col-1-1">
 </div>
@@ -122,7 +123,7 @@
     wget ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/redhat/RHEL7/gpg-pubkey-6976a827-5164221b
     rpm --import gpg-pubkey-6976a827-5164221b
 </pre>
-<p>Notes:
+<p>Notes:</p>
 <ul><li>If you are installing on Red Hat 6, you must include two gpg public keys: <code>gpg-pubkey-6976a827-5164221b</code> and <code>gpg-pubkey-3052930d-5175955a</code>.</li></ul>
 <li>Create a configuration file for the Advance Toolchain repository configuration file: <code>/etc/yum.repos.d/<em>advance-toolchain.repo</em></code>. Add the following content:
 <pre># Begin of configuration file
@@ -235,6 +236,7 @@ sudo apt-key add 6976a827.gpg.key
 <p>APT supports package upgrades for new revision releases (i.e. 7.1-0 to 7.1-1). For new major releases (i.e. 7.1-1 to 8.0-0), please proceed as in a normal installation.</p>
 </div>
 
+</div>
 </div>
 </div>
 </div>
@@ -361,7 +363,7 @@ LDFLAGS="-L${HOME}/wget/lib" \
 </div>
 </div>
 </div>
-<div class="ibm-band ibm-background-white-core ibm-padding-top-1 ibm-padding-bottom-0" id="advtool-compiler-intro">
+<div class="ibm-band ibm-background-white-core ibm-padding-top-1 ibm-padding-bottom-0" id="advtool-compiler-faq">
    <div class="ibm-columns">
       <div class="ibm-col-1-1">
 <p>Learn more about the cross-compiler with these frequently asked questions.</p>
@@ -422,6 +424,9 @@ LDFLAGS="-L${HOME}/wget/lib" \
 <div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
 <p class="ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyFAQ3">Copy Link</button></p></div>
+</div>
+</div>
+</div>
 </div>
 </div>
          <!-- Begin content for description tab -->
