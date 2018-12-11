@@ -32,7 +32,7 @@ ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_NAMESUFFIX="[C, C++ (g++), fortran, Go]"
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}-ibm-r${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_PRE="test -d gcc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
-ATSRC_PACKAGE_CO=([0]="git clone git://gcc.gnu.org/git/gcc.git")
+ATSRC_PACKAGE_CO=([0]="git clone https://gcc.gnu.org/git/gcc.git")
 ATSRC_PACKAGE_GIT="git checkout -b gcc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV} ${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_POST="mv gcc gcc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_SRC=${AT_BASE}/sources/gcc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}
@@ -54,8 +54,8 @@ atsrc_get_patches ()
 
 	# Avoid a misconfiguration of tuned libraries as seen in issue #204.
 	at_get_patch \
-		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/c4d344aa8542224951cc492f3173f31e1b7965a3/GCC%20PowerPC%20Backport/6/0001-libssp-Ignore-vsnprintf-test-when-ssp_have_usable_vs.patch' \
-		44864be4d1e93925ca1066bd9446372f || return ${?}
+		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/e49f20bdf5e310b3d962ee683c3e05e88d2a0225/GCC%20PowerPC%20Backport/6/0001-libssp-Ignore-vsnprintf-test-when-ssp_have_usable_vs.patch' \
+		b6d1226b7dcd36d08b35758fae9f3b8d || return ${?}
 
 	return 0
 }
