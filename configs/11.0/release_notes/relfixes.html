@@ -9,6 +9,68 @@
 <li>Support for <a href="http://golang.org/">Go Programming Language</a>.</li>
 <li>Support for split stack.</li>
 
+<h3>New features in 11.0-4</h3>
+<ul>
+	<li>GCC provides:</li>
+	<ul>
+		<li>Support for x86 SSE3 and SSSE3 intrinsics.</li>
+		<li>Fix enabling gccgo tests on ppc64.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83315">PowerPC xmmintrin.h emulation for _mm_{min,max}_ps not semantically equivalent</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83402">PPC64 implementation of ./rs6000/emmintrin.h gives out of range for _mm_slli_epi32</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=84266">mmintrin.h intrinsic headers for PowerPC code fails on power9</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=84914">PowerPC complex multiply/divide calls the wrong function when -mabi=ieeelongdouble</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85456">PowerPC: Using -mabi=ieeelongdouble calls wrong function for __builtin_powi</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88316">numerous big-endian issues with compatibility implementations of vector intrinsics for powerpc</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88408">r266868 breaks gcc.target/powerpc/undef-bool-2.c on powerpc64</a>.</li>
+	</ul>
+	<li>The GNU C Library provides:</li>
+	<ul>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23927">CVE-2018-19591: if_nametoindex: Fix descriptor for overlong name</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=20419">Fix stack overflow with huge PT_NOTE segment</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=21745">Build some IFUNC math functions for libc and libm</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=21812">Don't return ifa entries with NULL names</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22342">Fix netgroup cache keys</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22446">Fix nscd readlink argument aliasing</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22447">Avoid use of strlen in getlogin_r</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22463">Fix p_secstodate overflow handling</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22786">Fix path length overflow in realpath</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22927">Properly cleanup if first helper thread creation failed</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23005">Fix crash in resolver on memory allocation failure</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23037">Fully initialize struct mmsghdr in send_dg</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23137">Fix blocking pthread_join</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23171">Fix parameter type in C++ version of iseqsig</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23236">Avoid _allocate_buffer, _free_buffer function pointers</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23313">Disable vtable validation in case of interposition</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23349">Use _STRUCT_TIMESPEC as guard in <bits/types/struct_timespec.h></a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23363">Remove part under a non-free license</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23538">Fix waiters-after-spinning case</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23562">Use correct type for si_band in siginfo_t</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23579">Fix misreported errno on preadv2/pwritev2</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24018">Do not return NULL on asprintf failure in gettext</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24027">Always call memcpy in _int_realloc</a>.</li>
+	</ul>
+	<li>Binutils provides:</li>
+	<ul>
+		<li>Fix symbol resolution with linker plugins for defsym symbols.</li>
+		<li>Fix memory corruption when using memcpy to overwrite a string in place.</li>
+		<li>Add new plugin interface to get list of symbols wrapped with --wrap option.</li>
+		<li>Add new option -z,keep-text-section prefix.</li>
+	</ul>
+	<li>Golang provides:</li>
+	<ul>
+		<li>Go 1.9.7.</li>
+		<li>Fix enabling debug information.</li>
+		<li>Fix comparison of long byte slices on s390x.</li>
+		<li>Improve performance on ppc64x (unrolling loops, AddMulVVW, mulAddVWW, and addVW/subVW).</li>
+		<li>Implement faster atomics for ppc64x.</li>
+		<li>Use unsigned loads for multi-element comparisons.</li>
+	</ul>
+	<li>OProfile provides fix to recognize Power9.</li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 11.0-3</h3>
 <ul>
 	<li>GCC provides:</li>
@@ -24,7 +86,7 @@
 		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80101">ICE in store_data_bypass_p</a>.</li>
 		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80210">ICE in extract_insn with __builtin_pow</a>.</li>
 		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83677">the xxpermr instruction is not generated correctly</a>.</li>
-		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83399"> ICE During LRA with 2-op rtl pattern for lvx instruction</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83399">ICE During LRA with 2-op rtl pattern for lvx instruction</a>.</li>
 		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=84033">-moptimize-swaps produces bad code with vec_vbpermq</a>.</li>
 	</ul>
 	<li>The GNU C Library provides:</li>
@@ -58,9 +120,6 @@
 		<li>Fix for performance regression in CompareBytes.</li>
 	</ul>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 11.0-2</h3>
 <ul>
@@ -97,7 +156,6 @@
 	<li>Thread Building Blocks now provides support for more TBB executors than CPU cores.</li>
 	<li>OpenSSL provides fixes for <a href="https://www.openssl.org/news/secadv/20171102.txt">CVE-2017-3736 and CVE-2017-3735</a>.</li>
 </ul>
-
 
 <h3>New features in 11.0-1</h3>
 <ul>
