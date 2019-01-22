@@ -45,7 +45,11 @@ atcfg_pre_hacks() {
 	# The following lines patch the gcc source, in order to allow the use
 	# of the --with-advance-toolchain during advance toolchain builds.
 	echo ${destdir}
-	sed -i -e "/\/opt\/\$with_advance_toolchain/s@/opt@${destdir}@" "${ATSRC_PACKAGE_WORK}/gcc/config.gcc"
+	if ! grep "${destdir}" "${ATSRC_PACKAGE_WORK}/gcc/config.gcc"; then
+		sed -i -e \
+		    "/\/opt\/\$with_advance_toolchain/s@/opt@${destdir}@" \
+		    "${ATSRC_PACKAGE_WORK}/gcc/config.gcc"
+	fi
 }
 
 # Pre configure settings or commands to run
