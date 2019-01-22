@@ -134,7 +134,7 @@ atcfg_configure() {
 
 atcfg_pre_make() {
 	if [[ "${cross_build}" == "no" ]]; then
-		local lto_patch=gcc-6-lto.patch
+		local lto_patch=gcc-9-lto.patch
 
 		pushd ${ATSRC_PACKAGE_WORK}
 		if [[ ! -r ${lto_patch} ]]; then

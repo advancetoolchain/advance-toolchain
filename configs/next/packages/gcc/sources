@@ -23,7 +23,7 @@ ATSRC_PACKAGE_NAME="GCC (GNU Compiler Collection)"
 ATSRC_PACKAGE_SUBPACKAGE_NAME_0="GNU Standard C++ Library v3 (Libstdc++-v3)"
 ATSRC_PACKAGE_SUBPACKAGE_NAME_1="GNU Libgomp"
 ATSRC_PACKAGE_VER=9.0.0
-ATSRC_PACKAGE_REV=c45bebb5ee92
+ATSRC_PACKAGE_REV=4fd240469362
 ATSRC_PACKAGE_LICENSE="GPL 3.0"
 ATSRC_PACKAGE_DOCLINK="https://gcc.gnu.org/onlinedocs/gcc/"
 ATSRC_PACKAGE_SUBPACKAGE_DOCLINK_0="https://gcc.gnu.org/libstdc++/"
@@ -49,13 +49,13 @@ atsrc_get_patches ()
 {
 	# Patch to add link-time optimization to some GCC libraries.
 	at_get_patch \
-		https://raw.githubusercontent.com/powertechpreview/powertechpreview/26747dc0bfb0f8f30de9ebad78847a96d3191ba5/GCC%20PowerPC%20Backport/6/gcc-6-lto.patch \
-		b10bdbf545205f142715dc25e087b1e7 || return ${?}
+		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/0be24b142a81e44ac4abadb3fde4eb0010b79f70/GCC%20PowerPC%20Backport/9/gcc-9-lto.patch' \
+		80639c0922d9942cb4fc7a6e88dab311 || return ${?}
 
 	# Avoid a misconfiguration of tuned libraries as seen in issue #204.
 	at_get_patch \
-		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/c4d344aa8542224951cc492f3173f31e1b7965a3/GCC%20PowerPC%20Backport/6/0001-libssp-Ignore-vsnprintf-test-when-ssp_have_usable_vs.patch' \
-		44864be4d1e93925ca1066bd9446372f || return ${?}
+		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/GCC%20PowerPC%20Backport/9/0001-libssp-Ignore-vsnprintf-test-when-ssp_have_usable_vs.patch' \
+		f2e9fb2e57c6a33b90c29940e365df13 || return ${?}
 
 	# Avoid an error on libstdc++ when running msgfmt.
 	at_get_patch \
