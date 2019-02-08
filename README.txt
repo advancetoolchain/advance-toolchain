@@ -73,7 +73,7 @@ see it miserably fail, asking for these packages, we provide the list below for 
 	libxslt-devel - for valgrind
 	docbook-xsl-stylesheets - for valgrind
 	git client - for GLIBC checkout (repo migrated from CVS to git)
-	java-1_5_0-ibm-devel (for Oprofile)
+	java-1_5_0-ibm-devel - for oprofile
 	xmllint
 	lsb-release
 	bzip2-devel
