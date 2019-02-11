@@ -291,7 +291,7 @@ send_to_github ()
 
 	# Check connection to GitHub
 	print_msg 2 "Checking GitHub SSH accessibility."
-	ssh git@github.com > /dev/null 2>&1
+	ssh git@github.com > /dev/null 2>&1 </dev/null
 	if [[ $? -ne 1 ]]; then
 		print_msg 0 "Problem accessing GitHub with SSH."
 		return 1
