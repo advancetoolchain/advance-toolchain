@@ -71,7 +71,7 @@ atcfg_make_check() {
 # =========================================================
 # Pre install settings or commands to run
 atcfg_pre_install() {
-	${SUB_MAKE} -C docs html-docs
+	${SUB_MAKE} -C docs html-docs man-pages
 }
 # Install build command
 atcfg_install() {
