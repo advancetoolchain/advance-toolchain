@@ -21,7 +21,7 @@
 
 ATSRC_PACKAGE_NAME="Valgrind"
 ATSRC_PACKAGE_VER=3.14.0
-ATSRC_PACKAGE_REV=0c701ba2a4b1
+ATSRC_PACKAGE_REV=de7fc1a0593c
 ATSRC_PACKAGE_LICENSE="GPL 2.0"
 ATSRC_PACKAGE_DOCLINK="http://valgrind.org/docs/"
 ATSRC_PACKAGE_RELFIXES=
@@ -44,8 +44,8 @@ ATSRC_PACKAGE_BUNDLE=profile
 atsrc_get_patches ()
 {
 	at_get_patch \
-		https://github.com/powertechpreview/powertechpreview/raw/be030afbf8d78018ab77aeea58092e03d483e8ce/Valgrind%20iTrace%20Patches/3.11/vg-3110-itrace.v1.tgz \
-		337042b8ea29d476b69d439c154d62f0 || return ${?}
+		https://github.com/powertechpreview/powertechpreview/raw/07c79e0f6534069c5655083dc978e450a45d59fe/Valgrind%20iTrace%20Patches/3.11/vg-3110-itrace.v1.tgz \
+		9b44cb5beb15fd89bde3f8fa3030d8ce || return ${?}
 
 	# Update itrace to Valgrind 3.14.
 	at_get_patch \
