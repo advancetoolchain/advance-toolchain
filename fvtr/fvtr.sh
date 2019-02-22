@@ -150,28 +150,15 @@ then
 	exit 1
 fi
 
-# creating a file that will hold the AT_* vars
-# scripts that need to use any of the AT_* vars can
-# access them by calling:
-# array set AT_ENV [ exec cat envvararray.txt ]
-# i.e. $AT_ENV(AT_DEST)
-#
 source $CONFIGFILE
-set > envtempfile.txt
-grep "AT_" envtempfile.txt | sed 's/^> //' | sed "s/'/{/" | \
-	sed "s/'/}/"| sed 's/=/!!!/' > envvars.txt
-while read line
-do
-	varname=""
-	varval=""
-	varname=$(echo $line | awk -F'!!!' '{ print $1 }')
-	varval=$(echo $line |  awk -F'!!!' '{ print $2 }')
-	if [ ${#varval} -eq 0 ]
-	then
-		varval="NOT_SET"
-	fi
-	export $varname="$varval"
-done < envvars.txt
+eval $(
+    set | grep "^AT_" | sed -e "s/^> //" -e "s/'/{/" -e "s/'/}/" -e "s/=/ /" | \
+	while read varname varval
+	do
+	    test -z "$varval" && varval="NOT_SET"
+	    echo "export $varname=\"$varval\""
+	done
+    )
 
 if [ -e "${AT_WD}" ]
 then
@@ -289,14 +276,6 @@ echo "***********************************************"
 if [ -e auxv_info.txt ]
 then
 	rm auxv_info.txt
-fi
-if [ -e envvars.txt ]
-then
-	rm envvars.txt
-fi
-if [ -e envtempfile.txt ]
-then
-	rm envtempfile.txt
 fi
 
 exit $ret
