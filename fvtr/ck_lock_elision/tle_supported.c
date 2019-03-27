@@ -37,7 +37,8 @@ main ()
 		return EXIT_FAILURE;
 	}
 
-	if (!(hwcap2 & PPC_FEATURE2_HAS_HTM))
+	if (!((hwcap2 & PPC_FEATURE2_HAS_HTM)
+	      && (hwcap2 & PPC_FEATURE2_HTM_NOSC)))
 		return ENOSYS;
 
 	pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
