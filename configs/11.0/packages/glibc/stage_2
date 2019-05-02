@@ -30,6 +30,11 @@ ATCFG_HOLD_TEMP_BUILD='no'
 # Build in a new directory
 ATCFG_BUILD_STAGE_T='dir'
 
+atcfg_pre_hacks() {
+	# Copy systemtap header files.
+	find /usr/include \( -name sdt.h -o -name sdt-config.h \) -exec cp {} ${at_dest}/include/sys \;
+}
+
 # Required post install hacks (this one is run after the final install move)
 atcfg_posti_hacks() {
 	local base_libdir=$(find_build_libdir ${AT_BIT_SIZE})
@@ -53,6 +58,10 @@ atcfg_posti_hacks() {
 	echo "GROUP ( libc.so.6 libc_nonshared.a AS_NEEDED ( ${ld_so} ) )"    >> ${libdir}/libc.so
 	[[ -e ${libdir}/libc.so.orig ]] && \
 		rm ${libdir}/libc.so.orig
+	# Remove two header files related with systemtap.
+	# Those files were needed to compile glibc but they aren't meant
+	# to be distributed.
+	rm ${at_dest}/include/sys/sdt.h ${at_dest}/include/sys/sdt-config.h
 }
 
 # Pre configure settings or commands to run
