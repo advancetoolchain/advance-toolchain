@@ -92,7 +92,8 @@ ifndef AT_DISTRO_REQ_PKGS
                           rsync curl bc automake libstdc\\+\\+-static \
                           redhat-lsb-core autoconf bzip2-[0-9] libtool-[0-9] \
                           gzip rpm-build-[0-9] rpm-sign gcc-c++ imake wget \
-                          docbook2X autoconf-archive libffi-devel python34
+                          docbook2X autoconf-archive libffi-devel python34 \
+                          systemtap-sdt-devel
     AT_CROSS_PGMS_REQ :=
     AT_NATIVE_PGMS_REQ :=
     AT_COMMON_PGMS_REQ := git_1.7 make_4.0

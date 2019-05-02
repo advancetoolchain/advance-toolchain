@@ -76,7 +76,7 @@ ifndef AT_DISTRO_REQ_PKGS
                           createrepo subversion cvs gawk autoconf rsync curl \
                           bc automake rpm-build gcc-c++ xorg-x11-util-devel \
                           docbook2x wget autoconf-archive make \
-                          libffi48-devel python3
+                          libffi48-devel python3 systemtap-sdt-devel
     AT_CROSS_PGMS_REQ :=
     AT_NATIVE_PGMS_REQ :=
     AT_COMMON_PGMS_REQ := git_1.7
