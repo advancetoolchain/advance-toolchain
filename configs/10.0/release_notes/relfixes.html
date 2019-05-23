@@ -9,6 +9,51 @@
 <li>Support for <a href="http://golang.org/">Go Programming Language</a>.</li>
 <li>Support for split stack.</li>
 
+<h3>New features in 10.0-7</h3>
+<ul>
+	<li>GCC provides:</li>
+	<ul>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=44292">Increase internal size of RECL= of the OPEN statement</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=78549">Very slow formatted internal file output</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80118">ICE with zero size parameter array</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80287">C++ crash with __attribute((may_alias))</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=81066">sanitizer_stoptheworld_linux_libcdep.cc:276:22: error: aggregate ‘sigaltstack handler_stack’ has incomplete type and cannot be defined</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=81117">Improve buffer overflow checking in strncpy</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=81921">Fails to always-inline intrinsics with -flto</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82007">DTIO write format stored in a string leads to severe errors</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82190">Possibly latent miscompilation issue on ppc64le-linux-gnu for memcpy-bi.c with -fweb -fno-optimize-strlen</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82511">ICE Bad IO basetype (12) on attempted read or write of entire DEC structure</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83070">-Wsign-compare warning in eoshift0</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83097">Use __BYTE_ORDER__ instead of runtime test</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83191">Writing a namelist with repeated complex numbers</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83525">open(newunit=funit, status=&quot;scratch&quot;) fails if an internal file (characters) was read previously.</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83560">list-directed formatting of INTEGER is missing plus on output when output open with SIGN='PLUS'</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83896">ice in get_string_len on a call to strlen with non-constant length</a>.</li>
+	</ul>
+	<li>Userspace RCU version 0.9.6, see the <a href="https://github.com/urcu/userspace-rcu/blob/stable-0.9/ChangeLog">release notes</a> for details.</li>
+	<li>Valgrind provides a fix for the generation of the manpages.</li>
+	<li>OpenSSL provides:</li>
+	<ul>
+		<li>Fix for <a href="https://www.openssl.org/news/secadv/20180612.txt">CVE-2018-0732</a>.</li>
+		<li>Fix for <a href="https://www.openssl.org/news/secadv/20181030.txt">CVE-2018-0734</a>.</li>
+		<li>Fix for <a href="https://www.openssl.org/news/secadv/20181029.txt">CVE-2018-0735</a>.</li>
+		<li>Fix for <a href="https://www.openssl.org/news/secadv/20180416.txt">CVE-2018-0737</a>.</li>
+		<li>Fix for <a href="https://www.openssl.org/news/secadv/20180327.txt">CVE-2018-0739</a>.</li>
+		<li>Fix for <a href="https://www.openssl.org/news/secadv/20181112.txt">CVE-2018-5407</a>.</li>
+		<li>Fix for <a href="https://www.openssl.org/news/secadv/20190226.txt">CVE-2019-1559</a>.</li>
+		<li>Version 1.0.2r, see the <a href="https://www.openssl.org/news/cl102.txt">release notes</a> for details.</li>
+		<li>RT 4242: reject invalid EC point coordinates.</li>
+		<li>fixed public range check in ec_GF2m_simple_oct2point.</li>
+		<li>Make err_clear_constant_time really constant time.</li>
+		<li>Fix memory overrun in rsa padding check functions.</li>
+		<li>Avoid an underflow in ecp_nistp521.c.</li>
+	</ul>
+	<li>PAFLib provides a fix to use stdu (doubleword) instead of stwu in ebb callback prolog on ppc64.</lib>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 10.0-6</h3>
 <ul>
 	<li>GCC provides:</li>
@@ -52,9 +97,6 @@
 	<li>Expat provides fixes for CVE-2016-9063 and CVE-2017-9233.</li>
 	<li>OpenSSL provides fixes for <a href="https://www.openssl.org/news/secadv/20171102.txt">CVE-2017-3736, CVE-2017-3735</a>, <a href="https://www.openssl.org/news/secadv/20171207.txt">CVE-2017-3737 and CVE-2017-3738</a>.</li>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 10.0-5</h3>
 <ul>
