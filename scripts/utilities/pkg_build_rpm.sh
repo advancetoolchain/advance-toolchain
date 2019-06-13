@@ -133,6 +133,9 @@ function pkg_build_rpms()
 	# Do not strip ld
 	sed ${rpmdir}/find-debuginfo.sh -i -e "/perm/s/)/& ! -name \"ld*.so*\"/"
 
+	# From RHEL8, set path to call rpm scripts (debugedit, sepdebugcrcfix...)
+	sed ${rpmdir}/find-debuginfo.sh -i -e "/lib_rpm_dir=/s/=.*$/=\/usr\/lib\/rpm/"
+
 	# Final step to support debuginfo under /opt.
 	sed ${rpmdir}/find-debuginfo.sh -i -e "s@__AT_DEST__@${at_dest}@"
 

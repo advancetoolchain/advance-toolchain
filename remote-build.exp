@@ -76,8 +76,14 @@ proc print_usage { } {
 
 # Detach from current screen session.
 proc dettach_screen { } {
-	# Detach from screen session.
-	send ""
+	global screen
+	if { ${screen} } {
+		# Detach from screen session.
+		send ""
+	} else {
+		# Detach from tmux session.
+		send "d"
+	}
 }
 
 # Default values
@@ -163,6 +169,13 @@ set tray_dir [file normalize $trayprefix/$atdir]
 # Directory where AT will be installed (aka DESTDIR).
 set destdir [file normalize $destprefix/$atdir]
 set timeout $default_timeout
+
+# RHEL8 doesn't provide screen.
+# Check screen is installed. If not, assume tmux is installed.
+set screen 1
+if { ! [file executable /usr/bin/screen] } {
+    set screen 0
+}
 
 spawn make pack
 expect {
@@ -347,6 +360,9 @@ ${server}.\n"
 	send_user "\nUsing -j${cores}\n"
 
 	set screen_parms "-L -S at-build"
+	if { ! ${screen} } {
+		set tmux_parms "new -s at-build"
+	}
 	set parent_cmd "time -p nice -n 19"
 	set make_parms "-j${cores} AT_CONFIGSET=${at_version} \
 DESTDIR=${destdir}"
@@ -355,8 +371,13 @@ DESTDIR=${destdir}"
 	}
 	# Force the targets for building and FVTR runs.
 	append make_parms " release test"
-	send_user "screen ${screen_parms} ${parent_cmd} make ${make_parms}\n"
-	send "screen ${screen_parms} ${parent_cmd} make ${make_parms}\n"
+	if { ${screen} } {
+		send_user "screen ${screen_parms} ${parent_cmd} make ${make_parms}\n"
+		send "screen ${screen_parms} ${parent_cmd} make ${make_parms}\n"
+	} else {
+		send_user "tmux ${tmux_parms} ${parent_cmd} make ${make_parms}\n"
+		send "tmux ${tmux_parms} ${parent_cmd} make ${make_parms} \\; pipe-pane 'cat > screen.log'\n"
+	}
 	expect {
 		"command not found" {
 			send_user "Something is missing on ${server}.\n"
@@ -366,7 +387,7 @@ DESTDIR=${destdir}"
 			send_user "Caught an early build failure on $server.\n"
 			exit 1
 		}
-		-re "failed|Error" {
+		-re "exited|failed|Error" {
 			dettach_screen
 			send_user "\n"
 			send_user "Failed to build on $server.\n"
