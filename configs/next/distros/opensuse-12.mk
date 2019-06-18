@@ -1,0 +1,1 @@
+../../13.0/distros/opensuse-12.mk
