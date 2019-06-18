@@ -71,7 +71,7 @@ switch -regexp $env(AT_BUILD_ARCH) {
 
 # List of libraries that should be present.
 set experimental exp-
-if { $env(AT_MAJOR_VERSION) > 12.0 } {
+if { $env(AT_MAJOR_VERSION) > 13.0 } {
 	set experimental ""
 }
 set lib_list {}
