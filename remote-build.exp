@@ -170,13 +170,6 @@ set tray_dir [file normalize $trayprefix/$atdir]
 set destdir [file normalize $destprefix/$atdir]
 set timeout $default_timeout
 
-# RHEL8 doesn't provide screen.
-# Check screen is installed. If not, assume tmux is installed.
-set screen 1
-if { ! [file executable /usr/bin/screen] } {
-    set screen 0
-}
-
 spawn make pack
 expect {
 	"at-*.tgz" {
@@ -321,6 +314,22 @@ ${server}.\n"
 
 	flush_expect
 
+	# RHEL8 doesn't provide screen.
+	# Check screen is installed. If not, assume tmux is installed.
+	set screen 1
+	send "which screen\n"
+	expect {
+		-re $prompt { }
+		"no screen" {
+			set screen 0 }
+		default {
+			send_user "Failed to check if screen is installed.\n"
+			exit 1
+		}
+	}
+
+	flush_expect
+
 	# Get cpu information
 	send "grep -c processor /proc/cpuinfo\n"
 	expect {
@@ -359,10 +368,6 @@ ${server}.\n"
 
 	send_user "\nUsing -j${cores}\n"
 
-	set screen_parms "-L -S at-build"
-	if { ! ${screen} } {
-		set tmux_parms "new -s at-build"
-	}
 	set parent_cmd "time -p nice -n 19"
 	set make_parms "-j${cores} AT_CONFIGSET=${at_version} \
 DESTDIR=${destdir}"
@@ -372,9 +377,11 @@ DESTDIR=${destdir}"
 	# Force the targets for building and FVTR runs.
 	append make_parms " release test"
 	if { ${screen} } {
+		set screen_parms "-L -S at-build"
 		send_user "screen ${screen_parms} ${parent_cmd} make ${make_parms}\n"
 		send "screen ${screen_parms} ${parent_cmd} make ${make_parms}\n"
 	} else {
+		set tmux_parms "new -s at-build"
 		send_user "tmux ${tmux_parms} ${parent_cmd} make ${make_parms}\n"
 		send "tmux ${tmux_parms} ${parent_cmd} make ${make_parms} \\; pipe-pane 'cat > screen.log'\n"
 	}
