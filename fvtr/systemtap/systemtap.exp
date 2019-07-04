@@ -28,13 +28,11 @@ if { $TARGET32 } {
 }
 if { $env(AT_CROSS_BUILD) == "yes" } {
     set readelf_exe $env(AT_DEST)/bin/$env(AT_TARGET)-readelf
+    set lib $env(AT_BUILD_ARCH)/$lib
 } else {
     set readelf_exe $env(AT_DEST)/bin/readelf
 }
-set sdt [exec $readelf_exe --notes {*}[glob $env(AT_DEST)/$lib/libpthread-*.so] | \
-	     grep stapsdt | wc -l]
-if { $sdt > 0 } {
-    exit 0
+if {[catch {exec $readelf_exe --notes {*}[glob $env(AT_DEST)/$lib/libpthread-*.so] | grep stapsdt}]} {
+    exit 1
 }
-
-exit 1
+exit 0
