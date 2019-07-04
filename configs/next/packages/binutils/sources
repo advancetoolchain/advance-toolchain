@@ -45,7 +45,7 @@ atsrc_get_patches ()
 {
 	at_get_patch \
 		https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/GNU%20Binutils%20Patches/workaround-to-build-with-gcc9.patch \
-		9664a2e575437c22afabf722b6176028 || return ${?}
+		eaff715dac80052ff8181e4d6ae1f694 || return ${?}
 }
 
 atsrc_apply_patches ()
