@@ -44,6 +44,20 @@ ATCFG_HOLD_TEMP_BUILD='no'
 # Build in a new directory
 ATCFG_BUILD_STAGE_T='dir'
 
+find_cross_includedir() {
+	local cc=${at_dest}/bin/${target64:-${target}}-gcc
+	echo ${at_dest}/lib/gcc/${target64:-${target}}/$($cc -dumpversion)/include
+}
+
+atcfg_pre_hacks() {
+	if [[ "${cross_build}" == "yes" ]]; then
+		local includedir=$(find_cross_includedir)
+		# Copy systemtap header files.
+		test ! -d ${includedir}/sys && mkdir -p ${includedir}/sys
+		find /usr/include \( -name sdt.h -o -name sdt-config.h \) -exec cp {} ${includedir}/sys \;
+	fi
+}
+
 # Required post install hacks (this one is run after the final install move)
 atcfg_posti_hacks()
 {
@@ -104,6 +118,12 @@ EOF
 			    install-locales
 		popd > /dev/null
 		set +e
+	else
+		# Remove two header files related with systemtap.
+		# Those files were needed to compile glibc but they aren't meant
+		# to be distributed.
+		local includedir=$(find_cross_includedir)
+		rm ${includedir}/sys/sdt.h ${includedir}/sys/sdt-config.h
 	fi
 }
 
@@ -185,6 +205,7 @@ atcfg_configure()
 			--with-__thread \
 			--without-gd \
 			--without-selinux \
+			--enable-systemtap \
 			--enable-kernel="${kernel}" \
 			${disable_ssp:+libc_cv_ssp="no"}
 	fi
