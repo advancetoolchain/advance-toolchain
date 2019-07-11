@@ -380,7 +380,7 @@ define prepare_loader_cache
         echo "$(AT_DEST)/$(TARGET)/lib64" >  "$(DYNAMIC_LOAD)/at64.ld.conf"; \
         echo "$(AT_DEST)/lib64"           >> "$(DYNAMIC_LOAD)/at64.ld.conf"; \
         echo "/lib64"                     >  "$(DYNAMIC_LOAD)/sys64.ld.conf"; \
-        if [[ "$(DISTRO_FM)" == "ubuntu" ]]; then \
+        if [[ ("$(DISTRO_FM)" == "ubuntu") || ("$(DISTRO_FM)" == "debian") ]]; then \
             echo "/lib/$(TARGET)"       >> "$(DYNAMIC_LOAD)/sys64.ld.conf"; \
             echo "/usr/lib/$(TARGET)"   >> "$(DYNAMIC_LOAD)/sys64.ld.conf"; \
             echo "/lib"                 >> "$(DYNAMIC_LOAD)/sys64.ld.conf"; \
