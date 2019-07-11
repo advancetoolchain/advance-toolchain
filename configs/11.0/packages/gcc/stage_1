@@ -71,8 +71,8 @@ atcfg_pre_configure() {
 # Conditional configure command
 atcfg_configure() {
 	if [[ "${cross_build}" == "no" ]]; then
-		if [[ "${distro_fm}" == "ubuntu" ]]; then
-			# Ubuntu requires a different path for include and libs
+		if [[ ("${distro_fm}" == "ubuntu") || ("${distro_fm}" == "debian") ]]; then
+			# Ubuntu and Debian requires a different path for include and libs
 			# due to its solution for multiarch support.
 			multiarch=yes
 		fi
