@@ -120,11 +120,22 @@ if { "$pyver" == "2.6" } {
         # Test for the issue #45
         printit "Executing sqlite3 importing test."
         exec $env(AT_DEST)/bin/python3 -c "import sqlite3"
-	# The following tests fail for python when run using FVTR so exclude
-	# them.
+	# The following tests fail intermittently when running the FVTR,
+	# making them unreliable for this kind of tests.
 	set spawn_cmd "spawn $env(AT_DEST)/bin/python3 $test_script \
-		-j$CORES -x $common_exclude_tests test_gdb test_site \
-		test_httpservers test_os test_posix test_compileall"
+		-j$CORES -x $common_exclude_tests \
+		test_compileall \
+		test_faulthandler \
+		test_gdb \
+		test_httpservers \
+		test_imaplib \
+		test_os \
+		test_posix \
+		test_selectors \
+		test_site \
+		test_smtplib \
+		test_socket \
+		test_time"
 } else {
 	set spawn_cmd "spawn $env(AT_DEST)/bin/python $test_script"
 }
