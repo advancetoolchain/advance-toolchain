@@ -46,13 +46,13 @@ $(RCPTS)/glibc_2.rcpt: $(glibc_2-archdeps)
 $(RCPTS)/glibc_compat.rcpt: $(glibc_compat-archdeps)
 	@touch $@
 
-$(RCPTS)/glibc_1-32.a.rcpt: $(RCPTS)/gcc_1.rcpt $(RCPTS)/rsync_glibc.rcpt
+$(RCPTS)/glibc_1-32.a.rcpt: $(RCPTS)/glibc_1-64.a.rcpt
 	@touch $@
 
 $(RCPTS)/glibc_1-64.a.rcpt: $(RCPTS)/gcc_1.rcpt $(RCPTS)/rsync_glibc.rcpt
 	@touch $@
 
-$(RCPTS)/glibc_2-32.a.rcpt: $(RCPTS)/gcc_3.rcpt
+$(RCPTS)/glibc_2-32.a.rcpt: $(RCPTS)/glibc_2-64.a.rcpt
 	@touch $@
 
 $(RCPTS)/glibc_2-64.a.rcpt: $(RCPTS)/gcc_3.rcpt
