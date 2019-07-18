@@ -44,17 +44,14 @@ ATCFG_HOLD_TEMP_BUILD='no'
 # Build in a new directory
 ATCFG_BUILD_STAGE_T='dir'
 
-find_cross_includedir() {
-	local cc=${at_dest}/bin/${target64:-${target}}-gcc
-	echo ${at_dest}/lib/gcc/${target64:-${target}}/$($cc -dumpversion)/include
-}
-
 atcfg_pre_hacks() {
 	if [[ "${cross_build}" == "yes" ]]; then
-		local includedir=$(find_cross_includedir)
-		# Copy systemtap header files.
-		test ! -d ${includedir}/sys && mkdir -p ${includedir}/sys
-		find /usr/include \( -name sdt.h -o -name sdt-config.h \) -exec cp {} ${includedir}/sys \;
+		# Copy systemtap header files to its own directory inside
+		# the build directory.  We're going to use them during the
+		# build.  Native builds do this at stage 2.
+		test ! -d systemtap/sys && mkdir -p systemtap/sys
+		find /usr/include \( -name sdt.h -o -name sdt-config.h \) \
+		     -exec cp {} systemtap/sys \;
 	fi
 }
 
@@ -118,12 +115,6 @@ EOF
 			    install-locales
 		popd > /dev/null
 		set +e
-	else
-		# Remove two header files related with systemtap.
-		# Those files were needed to compile glibc but they aren't meant
-		# to be distributed.
-		local includedir=$(find_cross_includedir)
-		rm ${includedir}/sys/sdt.h ${includedir}/sys/sdt-config.h
 	fi
 }
 
@@ -183,9 +174,16 @@ atcfg_configure()
 			disable_ssp=yes
 		fi
 
+		# Systemtap headers - In order to build glibc with support for
+		# systemtap probes, the build has to use the systemtap headers
+		# without using the other system headers.  In order to achieve
+		# this, we copy the systemtap headers to the build directory
+		# and add them to CPPFLAGS with -isystem because they need
+		# special treatment like other system headers.
 		AUTOCONF="${autoconf}" \
 		CC="${at_dest}/bin/${target64:-${target}}-gcc -m${AT_BIT_SIZE}" \
 		CFLAGS="-g -O2" \
+		CPPFLAGS="-isystem $(pwd)/systemtap" \
 		CXX="/bin/false" \
 		AR="${at_dest}/bin/${target}-ar" \
 		AS="${at_dest}/bin/${target}-as" \
