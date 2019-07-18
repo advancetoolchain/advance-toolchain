@@ -31,8 +31,12 @@ ATCFG_HOLD_TEMP_BUILD='no'
 ATCFG_BUILD_STAGE_T='dir'
 
 atcfg_pre_hacks() {
-	# Copy systemtap header files.
-	find /usr/include \( -name sdt.h -o -name sdt-config.h \) -exec cp {} ${at_dest}/include/sys \;
+	# Copy systemtap header files to its own directory inside
+	# the build directory.  We're going to use them during the
+	# build.
+	test ! -d systemtap/sys && mkdir -p systemtap/sys
+	find /usr/include \( -name sdt.h -o -name sdt-config.h \) \
+	     -exec cp {} systemtap/sys \;
 }
 
 # Required post install hacks (this one is run after the final install move)
@@ -58,10 +62,6 @@ atcfg_posti_hacks() {
 	echo "GROUP ( libc.so.6 libc_nonshared.a AS_NEEDED ( ${ld_so} ) )"    >> ${libdir}/libc.so
 	[[ -e ${libdir}/libc.so.orig ]] && \
 		rm ${libdir}/libc.so.orig
-	# Remove two header files related with systemtap.
-	# Those files were needed to compile glibc but they aren't meant
-	# to be distributed.
-	rm ${at_dest}/include/sys/sdt.h ${at_dest}/include/sys/sdt-config.h
 }
 
 # Pre configure settings or commands to run
@@ -83,12 +83,19 @@ atcfg_pre_configure() {
 atcfg_configure() {
 	local base_target=$(find_build_target ${AT_BIT_SIZE})
 
+	# Systemtap headers - In order to build glibc with support for
+	# systemtap probes, the build has to use the systemtap headers
+	# without using the other system headers.  In order to achieve
+	# this, we copy the systemtap headers to the build directory
+	# and add them to CPPFLAGS with -isystem because they need
+	# special treatment like other system headers.
 	PATH=${at_dest}/bin:${PATH} \
 	AUTOCONF="${autoconf}" \
 	CC="${at_dest}/bin/gcc -m${AT_BIT_SIZE}" \
 	CXX="${at_dest}/bin/g++ -m${AT_BIT_SIZE}" \
 	CFLAGS="-g -O3 \
 		${with_longdouble:+-mlong-double-128}" \
+	CPPFLAGS="-isystem $(pwd)/systemtap" \
 	CXXFLAGS="-g -O3" \
 	${ATSRC_PACKAGE_WORK}/configure --build=${host} \
 					--host=${base_target} \

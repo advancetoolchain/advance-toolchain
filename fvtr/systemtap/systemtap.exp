@@ -22,17 +22,44 @@ if { $env(AT_MAJOR_VERSION) < 11.0 } {
     printit "Skipping: systemtap isn't enabled on version older than AT 11.0"
     exit $ENOSYS
 }
-set lib "lib64"
-if { $TARGET32 } {
-    set lib "lib"
+
+
+proc check_systemtap {readelf lib} {
+	global WARNING
+	global ERROR
+	if {[catch {exec $readelf --notes $lib | grep stapsdt}]} {
+		printit "Could not find systemtap probes in $lib" $ERROR
+		return 1
+	} else {
+		printit "Systemtap probes found in $lib" $WARNING
+		return 0
+	}
 }
+
+set ret 0
+set readelf_exe [compiler_path readelf]
+
 if { $env(AT_CROSS_BUILD) == "yes" } {
-    set readelf_exe $env(AT_DEST)/bin/$env(AT_TARGET)-readelf
-    set lib $env(AT_BUILD_ARCH)/$lib
+	if { $env(AT_BUILD_ARCH) == "ppc64le" } {
+		set install_prefix "$env(AT_DEST)/$env(AT_BUILD_ARCH)"
+	} else {
+		set install_prefix "$env(AT_DEST)/ppc"
+	}
 } else {
-    set readelf_exe $env(AT_DEST)/bin/readelf
+	set install_prefix $env(AT_DEST)
 }
-if {[catch {exec $readelf_exe --notes {*}[glob $env(AT_DEST)/$lib/libpthread-*.so] | grep stapsdt}]} {
-    exit 1
+
+if { $TARGET32 } {
+	set lib [glob $install_prefix/lib/libpthread-*.so]
+	if {[check_systemtap $readelf_exe $lib]} {
+		set ret 1
+	}
 }
-exit 0
+if { $TARGET64 } {
+	set lib [glob $install_prefix/lib64/libpthread-*.so]
+	if {[check_systemtap $readelf_exe $lib]} {
+		set ret 1
+	}
+}
+
+exit $ret
