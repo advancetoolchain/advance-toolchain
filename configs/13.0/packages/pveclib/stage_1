@@ -95,9 +95,13 @@ atcfg_configure() {
 	# ranlib, so that they work on both native and cross build.
 	configure_cc="${at_dest}/bin/${target64:-${target}}-gcc"
 
+	flags=
+	if [[ ("${cross_build}" == 'yes') && ("${build_arch}" == ppc64) ]]; then
+	        flags="-mcpu=power8"
+	fi
 	PATH=${at_dest}/bin:${PATH} \
 	CC="${configure_cc} -m${AT_BIT_SIZE}" \
-	CFLAGS="-g -O" \
+	CFLAGS="-g -O ${flags}" \
 	${ATSRC_PACKAGE_WORK}/configure \
 		--build=${configure_build} \
 		--host=${configure_host} \

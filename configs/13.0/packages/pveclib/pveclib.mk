@@ -24,8 +24,5 @@ pveclib: $(RCPTS)/pveclib_1.rcpt
 $(RCPTS)/pveclib_1.rcpt: $(pveclib_1-archdeps)
 	@touch $@
 
-$(RCPTS)/pveclib_1-32.a.rcpt: $(RCPTS)/gcc_4.rcpt $(RCPTS)/rsync_pveclib.rcpt
-	@touch $@
-
 $(RCPTS)/pveclib_1-64.a.rcpt: $(RCPTS)/gcc_4.rcpt $(RCPTS)/rsync_pveclib.rcpt
 	@touch $@
