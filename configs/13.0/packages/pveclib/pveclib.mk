@@ -21,7 +21,7 @@ pveclib: $(RCPTS)/pveclib_1.rcpt
 #Add it to the target 3rdparty_libs
 3rdparty_libs-reqs += $(RCPTS)/pveclib_1.rcpt
 
-$(RCPTS)/pveclib_1.rcpt: $(pveclib_1-archdeps)
+$(RCPTS)/pveclib_1.rcpt: $(RCPTS)/pveclib_1-64.b.rcpt
 	@touch $@
 
 $(RCPTS)/pveclib_1-64.a.rcpt: $(RCPTS)/gcc_4.rcpt $(RCPTS)/rsync_pveclib.rcpt
