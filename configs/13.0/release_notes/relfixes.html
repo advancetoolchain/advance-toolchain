@@ -1,1 +1,147 @@
-../../12.0/release_notes/relfixes.html
+<li>POWER9 enablement.</li>
+<li>POWER9 optimized scheduler.</li>
+<li>Requires at least POWER8 for ppc64le.</li>
+<li>POWER8 Transactional Memory enablement.</li>
+<li>POWER8 Crypto Operations enablement.</li>
+<li>POWER8 Fusion enablement.</li>
+<li>POWER8 and POWER9 optimized system libraries.</li>
+<li>GCC creates binaries using --mcpu=power8 --mtune=power9 by default.</li>
+
+<h3>Advance Toolchain new location</h3>
+<p>Since the end of August 2019, Advance Toolchain has been available from a new FTP server: <a href="ftp://public.dhe.ibm.com/">public.dhe.ibm.com</a></p>
+<p>Please be advised the FTP server at Unicamp won't be updated any longer.</p>
+
+<h3>New features in 13.0-0</h3>
+<ul>
+	<li>Support for RHEL 8.</li>
+	<li>Support for SLES 15.</li>
+	<li>Support for Ubuntu 18.04.</li>
+	<li>Support for Debian 10.</li>
+	<li>GCC provides:</li>
+	<ul>
+		<li>Version 9.2, see the <a href="https://gcc.gnu.org/gcc-9/changes.html">release notes</a> for details.</li>
+	</ul>
+	<li>GNU C Library provides:</li>
+	<ul>
+		<li>Version 2.30, see the <a href="https://www.sourceware.org/ml/libc-alpha/2019-08/msg00029.html">release notes</a> for details.</li>
+	</ul>
+	<li>Binutils provides:</li>
+	<ul>
+		<li>Version 2.32, see the <a href="https://lists.gnu.org/archive/html/info-gnu/2019-02/msg00000.html">release notes</a> for details.</li>
+	</ul>
+	<li>GNU Debugger provides:</li>
+	<ul>
+		<li>Version 8.3, see the <a href="https://lists.gnu.org/archive/html/info-gnu/2019-05/msg00007.html">release notes</a> for details.</li>
+	</ul>
+	<li>Userspace RCU provides:</li>
+	<ul>
+		<li>Version 0.11.1, see the <a href="https://github.com/urcu/userspace-rcu/blob/v0.11.1/ChangeLog">release notes</a> for details.</li>
+	</ul>
+	<li>OpenSSL provides:</li>
+	<ul>
+		<li>Version 1.1.1c, see the <a href="https://www.openssl.org/news/openssl-1.1.1-notes.html">release notes</a> for details.</li>
+	</ul>
+	<li>Expat provides:</li>
+	<ul>
+		<li>Version 2.2.7, see the <a href="https://github.com/libexpat/libexpat/blob/R_2_2_7/expat/Changes">release notes</a> for details.</li>
+	</ul>
+	<li>Libhugetlbfs provides:</li>
+	<ul>
+		<li>Version 2.21, see the <a href="https://github.com/libhugetlbfs/libhugetlbfs/blob/2.21/NEWS">release notes</a> for details.</li>
+	</ul>
+	<li>Python provides:</li>
+	<ul>
+		<li>Version 3.7.3, see the <a href="https://www.python.org/downloads/release/python-373/">release notes</a> for details.</li>
+	</ul>
+	<li>Boost provides:</li>
+	<ul>
+		<li>Version 1.70.0, see the <a href="https://www.boost.org/users/history/version_1_70_0.html">release notes</a> for details.</li>
+	</ul>
+	<li>Provides a new component: Power Vector Library (pveclib).</li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
+<h3>New features in 12.0-1</h3>
+<ul>
+	<li>GCC provides:</li>
+	<ul>
+		<li>Support for x86 SSE3 and SSSE3 intrinsics.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=86324">testsuite test divkc3-1.c FAILs when compiling with -mabi=ieeelongdouble</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88408">r266868 breaks gcc.target/powerpc/undef-bool-2.c on powerpc64</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88316">numerous big-endian issues with compatibility implementations of vector intrinsics for powerpc</a>.</li>
+	</ul>
+	<li>GNU C Library provides:</li>
+	<ul>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23927">CVE-2018-19591: if_nametoindex: Fix descriptor for overlong name</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=20018">CVE-2016-10739: getaddrinfo: Fully parse IPv4 address strings</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22927">Properly cleanup if first helper thread creation failed</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23579">Fix misreported errno on preadv2/pwritev2</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24018">Do not return NULL on asprintf failure in gettext</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24027">Always call memcpy in _int_realloc</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23844">Fix pthread_rwlock_try*lock stalls</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24161">Avoid fork handler lock for async-signal-safe fork</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24180">Add compiler barriers around modifications of the robust mutex list for pthread_mutex_trylock</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24112">Do not send queries for non-host-names in nss_dns</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23861">Fix rwlock stall with PREFER_WRITER_NONRECURSIVE_NP</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23614">Add missing CFI register information (powerpc)</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23690">Fix _dl_profile_fixup data-dependency issue</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23520">Fix use-after-free in addgetnetgrentX</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23562">Use correct type for si_band in siginfo_t</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23275">Fix race in pthread_mutex_lock while promoting to PTHREAD_MUTEX_ELISION_NP</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23637">Fix strstr bug with huge needles</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23679">Check for NULL value from gethostbyname_r</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23538">Fix waiters-after-spinning case </a>.</li>
+	</ul>
+	<li>GNU Debugger provides:</li>
+	<ul>
+		<li>Version 8.2.1, see the <a href="https://sourceware.org/gdb/download/ANNOUNCEMENT">release notes</a> for details.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23919">bfd doesn't handle ELF compressed data alignment</a>.</li>
+	</ul>
+	<li>GNU MPFR provides:</li>
+	<ul>
+		<li>Fix double-rounding bug in the internal function mpfr_set_1_2.</li>
+		<li>Shared cache: cleanup and various improvements/corrections.</li>
+		<li>Detect use of DBL_* macros instead of MPFR_DBL_* ones..</li>
+	</ul>
+	<li>Golang provides:</li>
+	<ul>
+		<li>Go 1.10.8.</li>
+		<li>Fix enabling debug information.</li>
+		<li>Use private futexes on Linux.</li>
+		<li>Fix of OMUL should be evaluated when using soft-float.</li>
+		<li>Prevent overflow in walkinrange.</li>
+		<li>Move wildcard-trimming to before CheckImportPath.</li>
+		<li>Relax pathOK check to allow any letter.</li>
+		<li>Reject 'get' of paths containing leading dots or unsupported characters.</li>
+		<li>Put runtime.framepointer_enabled in DATA instead of RODATA.</li>
+		<li>Limit number of signature checks for each verification.</li>
+		<li>Check for nil connRequest.conn before use.</li>
+		<li>Restore r2 when restoring state from gobuf in gogo on ppc64x.</li>
+	</ul>
+	<li>Userspace RCU provides:</li>
+	<ul>
+		<li>Version 0.10.2, see the <a href="https://github.com/urcu/userspace-rcu/blob/stable-0.10/ChangeLog">release notes</a> for details.</li>
+		<li>Fix: don't wait after completion of a work queue job batch.</li>
+		<li>Fix: mixup between URCU_WORKQUEUE_RT and URCU_CALL_RCU_RT</li>
+	</ul>
+	<li>Valgrind provides:</li>
+	<ul>
+		<li>Version 3.14.0, see the <a href="http://valgrind.org/docs/manual/dist.news.html">release notes</a> for details.</li>
+		<li>Fix the generation of the manpages.</li>
+	</ul>
+	<li>OpenSSL provides:</li>
+	<ul>
+		<li>Fix for <a href="https://www.openssl.org/news/secadv/20180612.txt">CVE-2018-0732</a>.</li>
+		<li>Fix for <a href="https://www.openssl.org/news/secadv/20181030.txt">CVE-2018-0734</a>.</li>
+		<li>Fix for <a href="https://www.openssl.org/news/secadv/20181029.txt">CVE-2018-0735</a>.</li>
+		<li>Fix for <a href="https://www.openssl.org/news/secadv/20181112.txt">CVE-2018-5407</a>.</li>
+		<li>Fix for <a href="https://www.openssl.org/news/secadv/20190306.txt">CVE-2019-1543</a>.</li>
+		<li>Fix for <a href="https://www.openssl.org/news/secadv/20190226.txt">CVE-2019-1559</a>.</li>
+		<li>Avoid an underflow in ecp_nistp521.c.</li>
+		<li>Fix a crash in reuse of d2i_X509_PUBKEY.</li>
+		<li>Implement coordinate blinding for EC_POINT.</li>
+		<li>Fix segfault in RSA_free() (and DSA/DH/EC_KEY).</li>
+	</ul>
+</ul>
