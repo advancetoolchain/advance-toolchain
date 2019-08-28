@@ -28,6 +28,7 @@ install_native ()
 	local version=${1}
 
 	if [[ ${debian} == "yes" ]]; then
+		[[ "${version}" == "next" ]] && version=
 		sudo dpkg -i advance-toolchain-at*runtime_${version}* \
 			|| return ${?}
 		sudo dpkg -i advance-toolchain-at*devel_* \
