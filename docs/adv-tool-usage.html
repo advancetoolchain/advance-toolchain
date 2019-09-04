@@ -47,6 +47,12 @@
 
 
 <!-- Begin content -->
+<style>
+pre {
+    margin-top: 1em;
+    margin-left: 4em;
+}
+</style>
 <div class="ibm-background-white-core ibm-padding-top-2" id="advance-toolchain-faq">
 <div class="ibm-columns">
    <div class="ibm-col-1-1">
@@ -71,14 +77,14 @@
                <li style="margin-top:4px"><a role="tab" href="#faq3">Platform and Hardware Capabilities Determination</a></li>
                <li style="margin-top:4px"><a role="tab" href="#faq4">Relinking a pre-built application</a></li>
                <li style="margin-top:4px"><a role="tab" href="#faq5">Library search paths</a></li>
- <li style="margin-top:4px"><a role="tab" href="#faq6">Lock Elision in glibc</a></li>	 	 
- <li style="margin-top:4px"><a role="tab" href="#faq7">Advance Toolchain and libhugetlbfs</a></li>	 	 
- <li style="margin-top:4px"><a role="tab" href="#faq8">Packaging an application built with the Advance Toolchain</a></li>	 	 
- <li style="margin-top:4px"><a role="tab" href="#faq9">IBM XLC and XLF</a></li>	 	 
- <li style="margin-top:4px"><a role="tab" href="#faq10">MASS libraries</a></li>	 	 
- <li style="margin-top:4px"><a role="tab" href="#faq11">Debug options</a></li>
- <li style="margin-top:4px"><a role="tab" href="#faq12">Go compilers</a></li>
- <li style="margin-top:4px"><a role="tab" href="#faq13">Environment modules</a></li>
+	       <li style="margin-top:4px"><a role="tab" href="#faq6">Lock Elision in glibc</a></li>
+	       <li style="margin-top:4px"><a role="tab" href="#faq7">Advance Toolchain and libhugetlbfs</a></li>
+	       <li style="margin-top:4px"><a role="tab" href="#faq8">Packaging an application built with the Advance Toolchain</a></li>
+	       <li style="margin-top:4px"><a role="tab" href="#faq9">IBM XLC and XLF</a></li>
+	       <li style="margin-top:4px"><a role="tab" href="#faq10">MASS libraries</a></li>
+	       <li style="margin-top:4px"><a role="tab" href="#faq11">Debug options</a></li>
+	       <li style="margin-top:4px"><a role="tab" href="#faq12">Go compilers</a></li>
+	       <li style="margin-top:4px"><a role="tab" href="#faq13">Environment modules</a></li>
             </ul>
          </div>
       </div>
@@ -91,20 +97,17 @@
 
        <p>However, some applications have complex build systems (for example: autotool, make, cmake) in which is necessary to correctly set the environment <code>PATH</code>, for example:</p>
 
-<blockquote>
-  <pre>
+<pre>
 PATH=/opt/atX.X/bin:/opt/atX.X/sbin:$PATH make
 </pre>
-</blockquote>
 
       <p>Alternatively you can use <a href="https://developer.ibm.com/linuxonpower/advance-toolchain/adv-tool-usage#tab_faq13">Environment modules</a>.</p>
 
       <p>On cmake build systems, it is also necessary to set the <code>CMAKE_PREFIX_PATH</code> with AT's path, for example:</p>
-<blockquote>
-  <pre>
+
+<pre>
 CMAKE_PREFIX_PATH=/opt/atX.X/
-  </pre>
-</blockquote>
+</pre>
 
 <div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
@@ -114,8 +117,8 @@ CMAKE_PREFIX_PATH=/opt/atX.X/
 </div>
 
          <div id="faq1A" class="ibm-tabs-content">
-            <h3 id="packageDescrip">Package descriptions</h3>
-      <p class="ibm-padding-bottom-2">In most cases, you do not need to install all of the packages that are provided with the Advance Toolchain. The following list describes when they are needed:</p>
+            <h3>Package descriptions</h3>
+      <p>In most cases, you do not need to install all of the packages that are provided with the Advance Toolchain. The following list describes when they are needed:</p>
 
 
 <ul class="ibm-plain-list ibm-padding-top-r1">
@@ -184,11 +187,14 @@ CMAKE_PREFIX_PATH=/opt/atX.X/
 <p>If you are running applications built with an older version of the Advance Toolchain, install the compatibility <code>rpm advance-toolchain-atX.X-runtime-atZ.Z-compat-X.X-X</code> in order to run these applications on top of a newer version of the Advance Toolchain. For example, using AT 10.0 to run applications built with AT 9.0:
 
 <p>Install the runtime package:</p>
-<pre>    rpm advance-toolchain-at10.0-runtime-at9.0-compat-10.0-0</pre>
+<pre>
+rpm advance-toolchain-at10.0-runtime-at9.0-compat-10.0-0
+</pre>
 
 <p>After installing the runtime package, run:</p>
-
-<pre>    /etc/rc.d/init.d/at10.0-runtime-at9.0-compat start</pre>
+<pre>
+/etc/rc.d/init.d/at10.0-runtime-at9.0-compat start
+</pre>
 
 <div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
@@ -200,14 +206,19 @@ CMAKE_PREFIX_PATH=/opt/atX.X/
             <h3>Manual pages</h3>
 <p>In order for the system man application to pick up Advance Toolchain installed manual pages, you must export the location of the AT manual pages in the MANPATH variable prior to invoking man. This is best accomplished with the following commands:</p>
 
-<pre>    unset MANPATH
-    export MANPATH="/opt/atX.X/share/man:`manpath`"
-    man &lt;topic&gt;</pre>
-      
+<pre>
+unset MANPATH
+export MANPATH="/opt/atX.X/share/man:`manpath`"
+man &lt;topic&gt;
+</pre>
+
 
 <p>Or you may override the current environment MANPATH as demonstrated in the following example:</p>
 
-    <code>MANPATH="/opt/atX.X/share/man:`manpath`" man lsauxv</code>
+<pre>
+MANPATH="/opt/atX.X/share/man:`manpath`" man lsauxv
+</pre>
+
 <div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
 <p class="ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyURL1">Copy Link</button></p></div>
@@ -246,7 +257,10 @@ CMAKE_PREFIX_PATH=/opt/atX.X/
 
     	<li>When using -mcpu=power7, DO NOT disable Altivec (for example, <code>-mno-altivec</code>) without also disabling VSX (for example, <code>-mno-vsx</code>). The following combination is invalid:
 
- <pre>       -mcpu=power7 -mno-altivec</pre> </li>
+<pre>
+-mcpu=power7 -mno-altivec
+</pre>
+	</li>
 
 </ul>
 <div class="ibm-columns">
@@ -274,10 +288,10 @@ CMAKE_PREFIX_PATH=/opt/atX.X/
 
     <p>Sets the <code>-fno-math-errno</code>, <code>-funsafe-math-optimizations</code>, <code>-ffinite-math-only</code>, <code>-fno-rounding-math</code>, <code>-fno-signaling-nans</code>, and <code>-fcx-limited-range</code> values. This option causes the preprocessor macro <code>__FAST_MATH__ </code>to be defined. This option is not turned on by any <code>-O</code> option because it can result in incorrect output for programs which depend on an exact implementation of IEEE or ISO rules or specifications for math functions. It may, however, yield faster code for programs that do not require the guarantees of these specifications.</p></li>
 </ul>
- 
+
 <h4>GCC options for older Linux distributions</h4>
 
- 
+
 
 <p>The Advance Toolchain shows significant gains over the older (SLES10 SP3) Enterprise Linux Distributions, because these releases use an older GCC-4.1 compiler that is not enabled for POWER7. In addition, these releases are restricted to POWER6 compatibility mode and cannot leverage the new instructions enabled for POWER7 for applications or runtime libraries. There are, however, some best practices that you can use to maximize your performance.</p>
 <p><strong>Best practices for the <code>-mcpu</code> and <code>-mtune</code> values</strong></p>
@@ -322,22 +336,27 @@ Starting with Advance Toolchain  9.0, glibc includes the function <code>getauxva
 bool
 has_vector(void)
 {
-	unsigned long int hwcap_mask = (unsigned long int) getauxval (AT_HWCAP);
-        bool has_vec = (hwcap_mask & PPC_FEATURE_HAS_VSX) != 0;
-        if (has_vec)
-		printf("CPU has POWER7 vector extensions\n");
-	return has_vec;
-}</pre>
+    unsigned long int hwcap_mask = (unsigned long int) getauxval (AT_HWCAP);
+    bool has_vec = (hwcap_mask & PPC_FEATURE_HAS_VSX) != 0;
+    if (has_vec)
+        printf("CPU has POWER7 vector extensions\n");
+    return has_vec;
+}
+</pre>
 <p>Advance Toolchain versions 10.0 and below include libauxv and lsauxv, a system library and application, respectively, which provide a mechanism for querying the system platform information from the kernel's auxiliary vector. The system hardware capabilities (hwcap) may be queried through the auxiliary vector as well. For example, the platform can be queried dynamically with the following function:</p>
 
-    <pre>char * platform = (char *) query_auxv (AT_PLATFORM); </pre>
+<pre>
+char * platform = (char *) query_auxv (AT_PLATFORM);
+</pre>
 
 <p>Information from the hwcap can be queried in the following manner:</p>
 
-<pre>    unsigned long int hwcap_mask = (unsigned long int) query_auxv (AT_HWCAP);
-    if (hwcap_mask & PPC_FEATURE_HAS_FPU)
-        printf(" HAS_FPU\n");</pre>
-      
+<pre>
+unsigned long int hwcap_mask = (unsigned long int) query_auxv (AT_HWCAP);
+if (hwcap_mask & PPC_FEATURE_HAS_FPU)
+    printf(" HAS_FPU\n");
+</pre>
+
 
 <p>For more information about using libauxv and lsauxv can be found in the auxv and lsauxv manual pages provided by the Advance Toolchain (see <a href="https://developer.ibm.com/linuxonpower/advance-toolchain/adv-tool-usage#tab_faq1">Manual Pages</a>).</p>
 <div class="ibm-columns">
@@ -351,57 +370,73 @@ has_vector(void)
 <p>Locate all of the application's .o files. You can also link .a files to pick them all up at once. These will be needed for the relink.</p>
 
 <p>Locate the paths to all of the necessary linked shared-object files, for example:</p>
-    <pre>/usr/X11R6/lib for libXrender
-    /opt/gnome/lib for libgtk-x11-2.0</pre>
+<pre>
+/usr/X11R6/lib for libXrender
+/opt/gnome/lib for libgtk-x11-2.0
+</pre>
 
 <p>Edit /opt/atX.X/etc/ld.so.conf and add the directories to all of the shared object files to the end of this file. Don't forget lib64 for the 64-bit equivalent libraries if applicable, for example:</p>
 
-<pre>    /opt/gnome/lib/
-    /opt/gnome/lib64/
-    /usr/X11R6/lib
-    /usr/X11R6/lib64/ </pre>
+<pre>
+/opt/gnome/lib/
+/opt/gnome/lib64/
+/usr/X11R6/lib
+/usr/X11R6/lib64/
+</pre>
 
 <p>Run the Advance Toolchain <code>ldconfig</code> application to regenerate <code>/opt/atX.X/etc/ld.so.cache</code>, for example:</p>
 
-    <pre>sudo /opt/atX.X/sbin/ldconfig</pre>
+<pre>
+sudo /opt/atX.X/sbin/ldconfig
+</pre>
 
 <p>The loader uses <code>/opt/atX.X/etc/ld.so.cache</code> to find the libraries the application was linked against.</p>
 
 <p>Relink using the Advance Toolchain's compiler:</p>
 
-<pre>    /opt/atX.X/bin/gcc -g -O2 -o &lt;application_name&gt; &lt;list_of_dot_o_files&gt; \
-                       &lt;list_of_dot_a_files&gt; -L&lt;path_to_libraries&gt; \
-                       -l&lt;one_for_each_library_needed_for_the_link&gt;</pre>
-      
+<pre>
+/opt/atX.X/bin/gcc -g -O2 -o &lt;application_name&gt; &lt;list_of_dot_o_files&gt; \
+    &lt;list_of_dot_a_files&gt; -L&lt;path_to_libraries&gt; \
+    -l&lt;one_for_each_library_needed_for_the_link&gt;
+</pre>
+
 
 <p>For example:</p>
 
-<pre>    /opt/at5.0/bin/gcc -g -O2 -o mandelbrot callbacks.o interface.o \
-        main.o quadmand.o support.o mandel_internals.a \
-        -L/usr/X11R6/lib -L/usr/X11R6/lib64 -L/opt/gnome/lib -lgtk-x11-2.0
-        -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 \
-        -lpangocairo-1.0 -lpango-1.0 -lcairo -lgobject-2.0 -lgmodule-2.0 -ldl \
-        -lglib-2.0 -lfreetype -lfontconfig \
-        -lXrender -lX11 -lXext -lpng12 -lz -lglitz -lm -lstdc++ -lpthread \
-        -lgthread-2.0</pre>
-      
+<pre>
+/opt/at5.0/bin/gcc -g -O2 -o mandelbrot callbacks.o interface.o \
+    main.o quadmand.o support.o mandel_internals.a \
+    -L/usr/X11R6/lib -L/usr/X11R6/lib64 -L/opt/gnome/lib -lgtk-x11-2.0
+    -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 \
+    -lpangocairo-1.0 -lpango-1.0 -lcairo -lgobject-2.0 -lgmodule-2.0 -ldl \
+    -lglib-2.0 -lfreetype -lfontconfig \
+    -lXrender -lX11 -lXext -lpng12 -lz -lglitz -lm -lstdc++ -lpthread \
+    -lgthread-2.0
+</pre>
+
 
 <p>If <code>ld</code> gives an error like the following then you're missing the path to that library in the link stage. Add it with -L&lt;path to library&gt;, for example:</p>
 
-<pre>    /opt/at5.0/bin/ld: cannot find -lgtk-x11-2.0 </pre>
+<pre>
+/opt/at5.0/bin/ld: cannot find -lgtk-x11-2.0
+</pre>
 
 <p>Add -L/opt/gnome/lib/ to the gnome compilation line. You need to tell the linker where to find all of the libraries.</p>
 
 <p>When running the relinked application, if you get an error like the following:</p>
 
-<pre>    ./mandelbrot: error while loading shared libraries: libglib-2.0.so.0: cannot open<br>
-shared object file: No such file or directory. </pre><br>
+<pre>
+./mandelbrot: error while loading shared libraries: libglib-2.0.so.0: cannot open
+shared object file: No such file or directory.
+</pre>
 
 <p>You need to add the path to the library in question to <code>/opt/atX.X/etc/ld.so.conf</code> and re-run <code>/opt/atX.X/sbin/ldconfig</code>. The Advance Toolchain loader needs to know where to find the libraries and uses the generated <code>/opt/atX.X/etc/ld.so.cache</code> to find them.</p>
 
 <p>You can verify that the Advance Toolchain libraries were picked up by running the application prefaced with <code>LD_DEBUG=libs</code>, for example:</p>
 
-<pre>    LD_DEBUG=all ./mandelbrot </pre>
+<pre>
+LD_DEBUG=all ./mandelbrot
+</pre>
 
 <p>Caution: Do NOT use <code>LD_LIBRARY_PATH</code> to point to the Advance Toolchain libraries if your applications are not relinked with the Advance Toolchain. Doing so can result in <code>ld.so</code> and <code>libc.so</code> version mismatch and cause runtime failures.</p>
 
@@ -421,7 +456,9 @@ shared object file: No such file or directory. </pre><br>
 
 <p>Example:</p>
 
-    <pre>LD_LIBRARY_PATH=/opt/atX.X/lib64:/lib64:$LD_LIBRARY_PATH </pre>
+<pre>
+LD_LIBRARY_PATH=/opt/atX.X/lib64:/lib64:$LD_LIBRARY_PATH
+</pre>
 <div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
 <p class="ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyURL5">Copy Link</button></p></div>
@@ -438,44 +475,54 @@ shared object file: No such file or directory. </pre><br>
 
 <p>Below is a sample program which demonstrates how to use the tle_on.sh script, and how to use it:</p>
 
-<pre>    #include &lt;stdio.h&gt;
-    #include &lt;pthread.h&gt;
-    #include &lt;htmintrin.h&gt;
+<pre>
+#include &lt;stdio.h&gt;
+#include &lt;pthread.h&gt;
+#include &lt;htmintrin.h&gt;
 
-    int main()
-    {
-      pthread_mutex_t t = PTHREAD_MUTEX_INITIALIZER;
-      int elided = 0;
+int main()
+{
+    pthread_mutex_t t = PTHREAD_MUTEX_INITIALIZER;
+    int elided = 0;
 
-      pthread_mutex_lock (&amp;t);
-      if (_HTM_STATE (__builtin_tcheck ()) == _HTM_TRANSACTIONAL)
+    pthread_mutex_lock (&amp;t);
+    if (_HTM_STATE (__builtin_tcheck ()) == _HTM_TRANSACTIONAL)
         elided = 1;
-      pthread_mutex_unlock (&amp;t);
+    pthread_mutex_unlock (&amp;t);
 
-      if (elided)
+    if (elided)
         puts ("Hurray! We are elided!");
-      else
+    else
         puts ("Shucks! We are not elided!");
 
-      return 0;
-    }</pre>
-      
+    return 0;
+}
+</pre>
+
 
 <p>Compiling this with the following command:</p>
 
-  <pre>  /opt/at9.0/bin/gcc tle.c -mhtm -o tle -O2 -pthread </pre>
+<pre>
+/opt/at9.0/bin/gcc tle.c -mhtm -o tle -O2 -pthread
+</pre>
 
 <p>It can be run as follows:</p>
 
-<pre>    /opt/at9.0/scripts/tle_on.sh -e yes ./tle </pre>
+<pre>
+/opt/at9.0/scripts/tle_on.sh -e yes ./tle
+</pre>
 
 <p>or</p>
 
- <pre>   /opt/at9.0/scripts/tle_on.sh ./tle </pre>
+<pre>
+/opt/at9.0/scripts/tle_on.sh ./tle
+</pre>
 
 <p>Likewise</p>
 
-<pre>    /opt/at9.0/scripts/tle_on.sh -h </pre>
+<pre>
+/opt/at9.0/scripts/tle_on.sh -h
+</pre>
 
 <p>Will print the help information for the script.</p>
 
@@ -486,199 +533,202 @@ shared object file: No such file or directory. </pre><br>
          <div id="faq7" class="ibm-tabs-content">
 
 
- <h3>Advance Toolchain and <code>libhugetlbfs</code></h3>	 	 
+ <h3>Advance Toolchain and libhugetlbfs</h3>
 
-<p>The Advance Toolchain provides its own 32-bit and 64-bit versions of libhugetlbfs 2.x. Please refer to the Advance Toolchain's <code>libhugetlbfs</code> man page for more information on using libhugetlbfs-2.0:</p>	 	 
+<p>The Advance Toolchain provides its own 32-bit and 64-bit versions of libhugetlbfs 2.x. Please refer to the Advance Toolchain's <code>libhugetlbfs</code> man page for more information on using libhugetlbfs-2.0:</p>
 
-<pre>unset MANPATH	 	 
+<pre>
+unset MANPATH
 
-export MANPATH="/opt/atX.X/share/man:`manpath`"	 	 
+export MANPATH="/opt/atX.X/share/man:`manpath`"
 
-man libhugetlbfs</pre>
+man libhugetlbfs
+</pre>
 
-<p><strong>Note</strong>: Libhugetlbfs 1.0 is deprecated for new users. Please use libhugetlbfs 2.0 (or later) that is provided directly by the Advance Toolchain. If you must use libhugetlbfs 1.0 follow these instructions.</p>	 	 
+<p><strong>Note</strong>: Libhugetlbfs 1.0 is deprecated for new users. Please use libhugetlbfs 2.0 (or later) that is provided directly by the Advance Toolchain. If you must use libhugetlbfs 1.0 follow these instructions.</p>
 
-<p>The <code>/opt/atX.X/scripts/createldhuge.sh</code> script is provided (until Advance Toolchain 8.0), which copies <code>/opt/atX.X/bin/ld</code> to <code>/opt/atX.X/bin/ld.orig</code> and creates a wrapper script in <code>/opt/atX.X/bin/ld</code>. You only need to run this if you want the Advance Toolchain to work with libhugetlbfs.</p> 	 	 
+<p>The <code>/opt/atX.X/scripts/createldhuge.sh</code> script is provided (until Advance Toolchain 8.0), which copies <code>/opt/atX.X/bin/ld</code> to <code>/opt/atX.X/bin/ld.orig</code> and creates a wrapper script in <code>/opt/atX.X/bin/ld</code>. You only need to run this if you want the Advance Toolchain to work with libhugetlbfs.</p>
 
-<p>The new <code>/opt/atX.X/bin/ld</code> is a wrapper script which detects whether the <code>--hugetlbfs-link</code> or <code>--hugetlbsf-align</code> switches have been passed to the linker. If so then it sets a script-local LD environment variable to <code>/opt/atX.X/bin/ld.orig</code> and invokes the system's ld.hugetlbfs, for example:</p>	 	 
+<p>The new <code>/opt/atX.X/bin/ld</code> is a wrapper script which detects whether the <code>--hugetlbfs-link</code> or <code>--hugetlbsf-align</code> switches have been passed to the linker. If so then it sets a script-local LD environment variable to <code>/opt/atX.X/bin/ld.orig</code> and invokes the system's ld.hugetlbfs, for example:</p>
 
-<pre>LD="/opt/atX.X/bin/ld.orig" 	 	 
+<pre>
+LD="/opt/atX.X/bin/ld.orig"
 
-/usr/share/libhugetlbfs/ld.hugetlbfs *switches* </pre>	 	 
+/usr/share/libhugetlbfs/ld.hugetlbfs *switches*
+</pre>
 
-<p>If it doesn't detect the <code>hugetlbfs-link/hugetlbfs-align</code> switch, then it simply forwards the linker invocation to <code>/opt/atX.X/bin/ld.orig</code> directly.</p>	 	 
+<p>If it doesn't detect the <code>hugetlbfs-link/hugetlbfs-align</code> switch, then it simply forwards the linker invocation to <code>/opt/atX.X/bin/ld.orig</code> directly.</p>
 
-<p>If libhugetlbfs support is desired, the first thing to do is backup the original Advance Toolchain linker just in case there are problems and you need to restore it manually.</p>	 	 
+<p>If libhugetlbfs support is desired, the first thing to do is backup the original Advance Toolchain linker just in case there are problems and you need to restore it manually.</p>
 
-<pre>cp -p /opt/atX.X/bin/ld /opt/atX.X/bin/ld.backup </pre>
+<pre>
+cp -p /opt/atX.X/bin/ld /opt/atX.X/bin/ld.backup
+</pre>
 
-<p>The scripts in <code>/opt/atX.X/scripts/</code> will do the rest of the work for you:</p>	 	 
+<p>The scripts in <code>/opt/atX.X/scripts/</code> will do the rest of the work for you:</p>
 
-<pre>createldhuge.sh restoreld.sh </pre>	 	 
+<pre>
+createldhuge.sh restoreld.sh
+</pre>
 
-<p>Invoke <code>createldhuge.sh</code> to create the wrapper <code>ld</code>:</p>	 	 
+<p>Invoke <code>createldhuge.sh</code> to create the wrapper <code>ld</code>:</p>
 
-<pre>sudo sh createldhuge.sh 	 	 
+<pre>
+sudo sh createldhuge.sh
 
-/&lt;prefix-to-libhugetlbfs&gt;/share/libhugetlbfs/ld.hugetlbfs	 	 
+/&lt;prefix-to-libhugetlbfs&gt;/share/libhugetlbfs/ld.hugetlbfs
 
-/opt/atX.X </pre>	 	 
+/opt/atX.X
+</pre>
 
 <p>This MUST be executed as sudo (or root) for the <code>ld</code> wrapper script to be created properly.</p>
 
 <p>If or when you want to restore the original Advance Toolchain linker, simply run <code>sudo sh restoreld.sh</code>.</p>
 
-<p>The Advance Toolchain <code>gcc</code> always ignores the <code>-B/&lt;prefix-to-libhugetlbfs&gt;/share/libhugetlbfs</code> directive because it has been built to always invoke
+<p>The Advance Toolchain <code>gcc</code> always ignores the <code>-B/&lt;prefix-to-libhugetlbfs&gt;/share/libhugetlbfs</code> directive because it has been built to always invoke <code>/opt/atX.X/bin/ld</code> directly. You can use the <code>gcc</code> invocation you have always used, for example:</p>
 
-<code>/opt/atX.X/bin/ld</code> directly. You can use the <code>gcc</code> invocation you have always used, for example:</p>
+<pre>
+/opt/atX.X/bin/gcc temp.c -v -o temp
 
-<pre>/opt/atX.X/bin/gcc temp.c -v -o temp 	 	 
+-B/&lt;prefix-to-libhugetlbfs&gt;/share/libhugetlbfs/
 
--B/&lt;prefix-to-libhugetlbfs&gt;/share/libhugetlbfs/ 	 	 
-
--Wl,--hugetlbfs-link=BDT </pre>
+-Wl,--hugetlbfs-link=BDT
+</pre>
 <p><strong>Note</strong>: If you invoke <code>/opt/atX.X/bin/ld --hugetlbfs-link=BDT</code> directly, you'll need to supply an <code>-m*</code> flag which is normally provided by gcc directly (see <code>man ld</code> for supported emulations).</p>
-<div class="ibm-columns"> 
+<div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
 <p class="ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyURL7">Copy Link</button></p></div>
-</div>	 	 
 </div>
- <!-- Begin content for overview tab -->	 	 
+</div>
+ <!-- Begin content for overview tab -->
 
  <div id="faq8" class="ibm-tabs-content">
  <h3>Packaging an application built with the Advance Toolchain</h3>
 <p>Applications built with Advance Toolchain can be packaged with RPM. However, due to a limitation in the way that RPM generates dependency lists, the symbols from the Advance Toolchain may collide with the ones provided by the Linux distribution. There are two ways to prevent this:</p>
 
-<h5>Manually set your dependencies</h5>	 	 
+<h5>Manually set your dependencies</h5>
 
-<p>Use this method for versions of RPM older than 4.8.</p>	 	 
+<p>Use this method for versions of RPM older than 4.8.</p>
 
-<ol>	 	 
+<ol>
 
-<li>Change your spec file, adding the entry <code>Autoreq: 0</code> to disable the auto requirements check</li>	 	 
+<li>Change your spec file, adding the entry <code>Autoreq: 0</code> to disable the auto requirements check</li>
 
- <li>Perform the build of your application as usual and then check every component manually for its dependencies (usually using <code>ldd</code> to find out shared library dependencies); </li>	 	 
+ <li>Perform the build of your application as usual and then check every component manually for its dependencies (usually using <code>ldd</code> to find out shared library dependencies); </li>
 
- <li>Use the shared library list obtained in the previous step and replace the Advance Toolchain entries found by a single advance-toolchain-atX.X-runtime, where X.X is the Advance Toolchain version being used for the build	 	 
+ <li>Use the shared library list obtained in the previous step and replace the Advance Toolchain entries found by a single advance-toolchain-atX.X-runtime, where X.X is the Advance Toolchain version being used for the build
 
-<p>Note: If any libraries from the Advance Toolchain mcore-libs package have being used, their entries must be replaced by a single 	 	 
-
-<code>advance-toolchain-atX.X-mcore-libs</code> entry instead</p></li>	 	 
+<p>Note: If any libraries from the Advance Toolchain mcore-libs package have being used, their entries must be replaced by a single <code>advance-toolchain-atX.X-mcore-libs</code> entry instead</p></li>
 
 <li>Add an entry of <code>Requires: &lt;list-found&gt;</code> on your spec file, replacing the "&lt;list-found&gt;" with the list assembled in the previous step</li>
 
-</ol>	 	 
+</ol>
 
-<p>Note: These steps are only required for the first build to adjust your spec file for packaging, 	 	 
-
-unless changes in the build system, or other packaging spec defined changes occur (in which 	 	 
-
-case, it must be revised to guarantee its functionality). </p>
+<p>Note: These steps are only required for the first build to adjust your spec file for packaging, unless changes in the build system, or other packaging spec defined changes occur (in which case, it must be revised to guarantee its functionality). </p>
 <h5>Use a script to get personalized require dependency filters</h5>
-<p>Use this method with RPM version 4.8 or later.</p>	 	 
+<p>Use this method with RPM version 4.8 or later.</p>
 
 <ol><li>The <code>/opt/atX.X/scripts/find_dependencies.sh</code> script is provided (since Advance Toolchain 9.0-2) to help set the dependencies. Since RPM version 4.8, you can replace the macro that checks for dependencies. This script accept a list of files as input and provide a list of found dependencies as output, it looks for standard dependencies found inside the Advance Toolchain install path and replace them by a single output of <code>advance-toolchain-atX.X-runtime</code>, or <code>advance-toolchain-atX.X-mcore-libs</code> if the dependency found was a multi core library provided by Advance Toolchain.</li>
 
- 	 	 
 
-<li>RPM by default points the <code>%__find_requires</code> macro to its standard script located on <code>/usr/lib/rpm/find_requires</code>, to use the find_dependencies.sh script you need to change your spec file, redefining the macro required using the following entries:	 	 
+<li>RPM by default points the <code>%__find_requires</code> macro to its standard script located on <code>/usr/lib/rpm/find_requires</code>, to use the find_dependencies.sh script you need to change your spec file, redefining the macro required using the following entries:
 
-<pre>%define __find_requires 	 	 
+<pre>
+%define __find_requires
 
-/opt/atx.x/scripts/find_dependencies.sh 	 	 
+/opt/atx.x/scripts/find_dependencies.sh
 
-&lt;/full/path/to/files&gt;</pre>
+&lt;/full/path/to/files&gt;
+</pre>
 
-<pre>%define _use_internal_dependency_generator 0</pre>	 	 
+<pre>
+%define _use_internal_dependency_generator 0
+</pre>
 
-Take a look at <a href="http://rpm.org/user_doc/dependencies.html">this link</a> for more information about RPM dependencies. </li></ol>	
-<div class="ibm-columns"> 	 
+Take a look at <a href="http://rpm.org/user_doc/dependencies.html">this link</a> for more information about RPM dependencies. </li></ol>
+<div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
 <p class="ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyURL8">Copy Link</button></p></div>
 </div></div>
- <!-- Begin content for overview tab -->	 	 
+ <!-- Begin content for overview tab -->
 
- <div id="faq9" class="ibm-tabs-content">	 	 
+ <div id="faq9" class="ibm-tabs-content">
 
  <h3>Advance Toolchain with IBM XLC and XLF</h3>
 
-<p>When compiling binaries using XLC or XLF, the user must add the 	 	 
+<p>When compiling binaries using XLC or XLF, the user must add the <code>-F &lt;path_to_cfg_file&gt;</code> option to the compiler command line. The Advance Toolchain provides a script that creates those files in <code>/opt/atX.X/scripts</code>. This script is automatically run during installation. If you need to re-run it later (i.e. you installed XLC/XLF after the Advance Toolchain installation), execute the following command:</p>
 
-<code>-F &lt;path_to_cfg_file&gt;</code> option to the compiler command line. The Advance Toolchain provides a script that creates those files
+<pre>
+/opt/atX.X/scripts/at-create-ibmcmp-cfg.sh
+</pre>
 
-in <code>/opt/atX.X/scripts</code>. This script is automatically run during installation. If you need to re-run 	 	 
-
-it later (i.e. you installed XLC/XLF after the Advance Toolchain installation), execute the following 	 	 
-
-command:</p>	 	 
-
-<pre>/opt/atX.X/scripts/at-create-ibmcmp-cfg.sh </pre>	 	 
-
-<p>Please notice the absolute path when calling the script. 	 	 
-
-<strong>DO NOT</strong> call it using a relative path. The script	 	 
-
-creates the config files in <code>/opt/atX.X/scripts</code>.</p>	 	 
+<p>Please notice the absolute path when calling the script. <strong>DO NOT</strong> call it using a relative path. The script creates the config files in <code>/opt/atX.X/scripts</code>.</p>
 
 <p>This procedure does not affect the default XLC/XLF configuration.</p>
-<div class="ibm-columns"> 	 
+<div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
 <p class="ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyURL9">Copy Link</button></p></div>
-</div>	 	 
 </div>
- <!-- Begin content for overview tab -->	 	 
+</div>
+ <!-- Begin content for overview tab -->
 
- <div id="faq10" class="ibm-tabs-content">
- <h3>MASS libraries and Advance Toolchain</h3>
+<div id="faq10" class="ibm-tabs-content">
+<h3>MASS libraries and Advance Toolchain</h3>
 
- <p>IBM's Mathematical Acceleration Subsystem (MASS) libraries consist of a set of mathematical functions for C, C++, and Fortran-language applications that are tuned for specific POWER architectures. The libraries are available for ppc64 and ppc64le.</p>	 	 
+<p>IBM's Mathematical Acceleration Subsystem (MASS) libraries consist of a set of mathematical functions for C, C++, and Fortran-language applications that are tuned for specific POWER architectures. The libraries are available for ppc64 and ppc64le.</p>
 
 <p>To use MASS with Advance Toolchain you need to pass the option<code> -mveclibabi=mass</code> to <code>GCC</code>.</p>
-<div class="ibm-columns">	 
+<div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
 <p class="ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyURL10">Copy Link</button></p></div>
 </div>
-</div> 
+</div>
 
- <!-- Begin content for overview tab -->	 	 
+ <!-- Begin content for overview tab -->
 
- <div id="faq11" class="ibm-tabs-content">	 	 
+<div id="faq11" class="ibm-tabs-content">
 
- <h3>Debug options for Advance Toolchain</h3>
+<h3>Debug options for Advance Toolchain</h3>
 
-<p><code>gdb</code> can be asked to <code>output _Decimal[32|64|128]</code> formatted floating point registers by default, using its printf command.</p>	 	 
+<p><code>gdb</code> can be asked to <code>output _Decimal[32|64|128]</code> formatted floating point registers by default, using its printf command.</p>
 
-<p>When using objdump to inspect POWER Decimal code, make sure to use the <code>-Mpower7</code> or <code>-Mpower8</code> flag. For example:</p>	 	 
+<p>When using objdump to inspect POWER Decimal code, make sure to use the <code>-Mpower7</code> or <code>-Mpower8</code> flag. For example:</p>
 
-<pre>/opt/atX.X/bin/objdump -d -Mpower8 &lt;your_file&gt; </pre>
+<pre>
+/opt/atX.X/bin/objdump -d -Mpower8 &lt;your_file&gt;
+</pre>
 
-<p>The same applies to POWER7 code.</p>	
-<div class="ibm-columns"> 	 
+<p>The same applies to POWER7 code.</p>
+<div class="ibm-columns">
     <div class="ibm-col-2-2 ibm-center ibm-padding-top-r1">
 <p class="ibm-center"><button type="button" class="ibm-btn-pri ibm-btn-gray-50 copyURL11">Copy Link</button></p></div>
 </div>
-</div> 	 
+</div>
 
- <!-- Begin content for overview tab -->	 	 
+ <!-- Begin content for overview tab -->
 
- <div id="faq12" class="ibm-tabs-content">
-<h3>Go compilers and Advance Toolchain</h3>	 	 
+<div id="faq12" class="ibm-tabs-content">
+<h3>Go compilers and Advance Toolchain</h3>
 
-<p>There are two compilers provided by the Advance Toolchain that can be used to compile Go source code on ppc64le starting in AT 9.0: the Golang compiler and gccgo.</p>	 	 
+<p>There are two compilers provided by the Advance Toolchain that can be used to compile Go source code on ppc64le starting in AT 9.0: the Golang compiler and gccgo.</p>
 
-<p>The Advance Toolchain provides an IBM-optimized version of the Go compiler from the Golang community for ppc64le starting on AT 9.0.</p>	 	 
+<p>The Advance Toolchain provides an IBM-optimized version of the Go compiler from the Golang community for ppc64le starting on AT 9.0.</p>
 
-<p>It is installed by the package advance-toolchain-golang-at-X.Y-Z.ppc64le.rpm. This package is standalone and does not depend on any of the other packages offered by the Advance Toolchain.</p>	 	 
+<p>It is installed by the package advance-toolchain-golang-at-X.Y-Z.ppc64le.rpm. This package is standalone and does not depend on any of the other packages offered by the Advance Toolchain.</p>
 
-<p>This compiler and runtime is based on the final release versions provided by the Go community, plus the newest bug fixes and performance optimizations relevant to Power. The major version of the compiler (i.e. 1.6, 1.7, etc) is upgraded with every Advance Toolchain major release. Please refer to the Release Notes file for the compiler version and included bug/performance fixes included.</p>	 	 
+<p>This compiler and runtime is based on the final release versions provided by the Go community, plus the newest bug fixes and performance optimizations relevant to Power. The major version of the compiler (i.e. 1.6, 1.7, etc) is upgraded with every Advance Toolchain major release. Please refer to the Release Notes file for the compiler version and included bug/performance fixes included.</p>
 
-<p>The Go compiler for Golang is installed here:</p>	 	 
+<p>The Go compiler for Golang is installed here:</p>
 
- <pre> /usr/local/go </pre>	 	 
+<pre>
+/usr/local/go
+</pre>
 
-<p>When /usr/local/go/bin is added to $PATH, then this go tool is the default. Otherwise, the go tool can be invoked directly by doing:</p>	 	 
+<p>When /usr/local/go/bin is added to $PATH, then this go tool is the default. Otherwise, the go tool can be invoked directly by doing:</p>
 
- <pre> /usr/local/go/bin/go </pre>	 	 
+<pre>
+/usr/local/go/bin/go
+</pre>
 
 <p>The Advance Toolchain also includes gccgo. When the full install of GCC is done from Advance Toolchain, gccgo is included and the go tool which uses gccgo is in the default path. If both GCC (including gccgo) and the Golang compiler from Advance Toolchain are installed, and the Go compiler from Golang is to be used instead of gccgo, then the PATH must be set as described above.</p>
 <div class="ibm-columns">
@@ -697,10 +747,14 @@ creates the config files in <code>/opt/atX.X/scripts</code>.</p>
 <p>Since AT 11.0, modulefiles are provided in the devel and cross-common packages to help easily set the environment for using AT.</p>
 
 <p>To use, simply run the command:</p>
-<pre>    module load atX.X </pre>
+<pre>
+module load atX.X
+</pre>
 
 <p>To stop using, it is also simple:</p>
-<pre>    module unload atX.X </pre>
+<pre>
+module unload atX.X
+</pre>
 
 <p><strong>Note</strong>: The enviroment-modules package needs to be installed and configured in the system.</p>
 <div class="ibm-columns">
