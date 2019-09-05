@@ -18,7 +18,7 @@
 # version.
 #
 echo "Advance Toolchain downloader"
-at_url="ftp://ftp.unicamp.br/pub/linuxpatch/toolchain/at/"
+at_url="ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/"
 # Initialize the variables.
 pwd=$(pwd)
 tmp_file="${pwd}/temp.out"
