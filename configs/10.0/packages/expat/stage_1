@@ -22,11 +22,29 @@
 ATCFG_HOLD_TEMP_INSTALL='no'
 ATCFG_HOLD_TEMP_BUILD='no'
 # Build in a new directory.
-ATCFG_BUILD_STAGE_T='dir'
+ATCFG_BUILD_STAGE_T='link'
 # Don't fail if stage final install place doesn't exist
 if [[ "${cross_build}" == "yes" ]]; then
 	ATCFG_INSTALL_PEDANTIC="no"
 fi
+
+atcfg_pre_configure() {
+	# Completely clean the build prior any build.
+	if [[ -e "Makefile" ]]; then
+		make extraclean
+	fi
+
+	# Reconfigure the build with the buildconf.
+	if [[ -e ./buildconf.sh ]]; then
+		sh ./buildconf.sh || exit 1
+	else
+		aclocal
+		automake --add-missing 2>/dev/null || true
+		autoreconf -fvi
+		# Toss this; it gets created by autoconf on some systems
+		rm -rf autom4te*.cache
+	fi
+}
 
 atcfg_configure() {
 	# Expat is built for the same architecture GDB is built to.
@@ -48,7 +66,8 @@ atcfg_configure() {
 	PATH=${at_dest}/bin:${PATH} \
 	CC="${cc_path}" \
 	CFLAGS="-g -O3" CXXFLAGS="-g -O3" \
-	${ATSRC_PACKAGE_WORK}/configure \
+
+	./configure \
 		--build=${host} \
 		--host=${host} \
 		--prefix=${prefix} \
