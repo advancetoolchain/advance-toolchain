@@ -46,7 +46,7 @@ atsrc_get_patches ()
 {
 	at_get_patch \
 		https://github.com/gperftools/gperftools/commit/7852eeb75b9375cf52a7da01be044da6e915dd08.patch \
-		f41cc9694a060099bef28a13043a1dc9 || return ${?}
+		df521f96ffc2b684ff6a91393551807a || return ${?}
 }
 
 atsrc_apply_patches ()
