@@ -124,17 +124,21 @@ if { "$pyver" == "2.6" } {
 	# making them unreliable for this kind of tests.
 	set spawn_cmd "spawn $env(AT_DEST)/bin/python3 $test_script \
 		-j$CORES -x $common_exclude_tests \
+		test_asyncgen \
 		test_compileall \
 		test_faulthandler \
 		test_gdb \
 		test_httpservers \
 		test_imaplib \
+		test_logging \
 		test_os \
+		test_poplib \
 		test_posix \
 		test_selectors \
 		test_site \
 		test_smtplib \
 		test_socket \
+		test_threading \
 		test_time"
 } else {
 	set spawn_cmd "spawn $env(AT_DEST)/bin/python $test_script"
