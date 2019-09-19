@@ -46,11 +46,18 @@ atsrc_get_patches ()
 	at_get_patch \
 		https://raw.githubusercontent.com/powertechpreview/powertechpreview/c58beed95f1cae9361efc614b1d79483caba95f2/GLIBC%20PowerPC%20Backport/2.22/0001-powerpc-Conditionally-enable-TLE.patch \
 		90fe7a2bf3297885655660f785d9421e || return ${?}
+
+	# CVE-2018-6551
+	at_get_patch \
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/c3cb75dc95a292a63427cc8868ef96a6c5192603/GLIBC%20PowerPC%20Backport/2.24/0001-CVE-2018-6551.patch \
+		87a2c9376ec027346ff3342236b8b445 || return ${?}
+
 }
 
 atsrc_apply_patches ()
 {
 	patch -p1 < 0001-powerpc-Conditionally-enable-TLE.patch || return ${?}
+	patch -p1 < 0001-CVE-2018-6551.patch || return ${?}
 
 	return 0
 }
