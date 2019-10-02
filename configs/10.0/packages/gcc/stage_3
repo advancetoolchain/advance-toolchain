@@ -68,15 +68,7 @@ atcfg_posti_hacks() {
 # Conditional pre configure settings or commands to run
 atcfg_pre_configure() {
 	if [[ "${cross_build}" == "no" ]]; then
-		cc_64=${system_cc}
-		cxx_64=${system_cxx}
 		libdir="${at_dest}/tmp/gcc_3"
-		if [[ "${build_arch}" == ppc64* ]]; then
-			if [[ "${default_compiler}" == "32" ]]; then
-				cc_64="${gcc64}"
-				cxx_64="${gpp64}"
-			fi
-		fi
 		glibc=$(CC="${at_dest}/bin/${target}-gcc" \
 				${utilities}/get_glibc_version.sh)
 	fi
@@ -85,12 +77,16 @@ atcfg_pre_configure() {
 # Conditional configure command for builds
 atcfg_configure() {
 	if [[ "${cross_build}" == "no" ]]; then
-		CC="${cc_64}" \
-		CXX="${cxx_64}" \
-		CFLAGS="-O2 -mminimal-toc" \
-		CXXFLAGS="-O2 -mminimal-toc" \
+		PATH=${at_dest}/bin:${PATH} \
+		CC="${at_dest}/bin/gcc" \
+		CXX="${at_dest}/bin/g++" \
 		AS="${at_dest}/bin/as" \
 		LD="${at_dest}/bin/ld" \
+		AR="${at_dest}/bin/ar" \
+		NM="${at_dest}/bin/nm" \
+		RANLIB="${at_dest}/bin/ranlib" \
+		CFLAGS="-O2 -mminimal-toc" \
+		CXXFLAGS="-O2 -mminimal-toc" \
 		LDFLAGS="-L${libdir}" \
 		POSTSTAGE1_LDFLAGS="-L${libdir} -lstdc++ -lsupc++ -lm -lgmp -lgmpxx -lmpfr -lmpc" \
 		${ATSRC_PACKAGE_WORK}/configure \
@@ -134,9 +130,8 @@ atcfg_configure() {
 # Make build command
 atcfg_make() {
 	if [[ "${cross_build}" == "no" ]]; then
-		# With -isystem we make sure that system's gcc (stage1) will recognize
-		# AT headers as system headers and give them special treatment.
-		${SUB_MAKE} STAGE1_CFLAGS="-isystem ${at_dest}/include" STAGE1_CXXFLAGS="-isystem ${at_dest}/include" all
+		PATH=${at_dest}/bin:${PATH} \
+			${SUB_MAKE} all
 	else
 		echo "No make all on gcc_3 cross stage"
 	fi

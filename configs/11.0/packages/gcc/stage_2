@@ -54,17 +54,9 @@ atcfg_pre_hacks() {
 
 # Pre configure settings or commands to run
 atcfg_pre_configure() {
-	cc_64="${system_cc}"
-	cxx_64="${system_cxx}"
 	libdir="${at_dest}/lib"
-	if [[ "${cross_build}" == "no" ]]; then
-		if [[ "${build_arch}" == ppc64* ]]; then
-			if [[ "${default_compiler}" == "32" ]]; then
-				cc_64="${gcc64}"
-				cxx_64="${gpp64}"
-			fi
-			libdir="${at_dest}/lib64"
-		fi
+	if [[ "${cross_build}" == "no" && "${build_arch}" == ppc64* ]]; then
+		libdir="${at_dest}/lib64"
 	fi
 }
 
@@ -72,12 +64,24 @@ atcfg_pre_configure() {
 atcfg_configure() {
 	if [[ "${cross_build}" == "no" ]]; then
 		# Configure command for native builds
-		CC="${cc_64}" \
-		CXX="${cxx_64}" \
-		CFLAGS="-O2" \
-		CXXFLAGS="-O2" \
+
+		# The use of --with-stage1-ldflags is required during gcc_2
+		# compilation. gcc_2 compiles a helper program called
+		# genautomata and tries to run it as part of the make script.
+		# It is correctly built against glibc from AT, but it is run
+		# with the host loader (/lib64/ld.so.2), which uses the host
+		# library paths to search libs, potentially leading to build
+		# failures.
+		PATH=${at_dest}/bin:${PATH} \
+		CC="${at_dest}/bin/gcc" \
+		CXX="${at_dest}/bin/g++" \
 		AS="${at_dest}/bin/as" \
 		LD="${at_dest}/bin/ld" \
+		AR="${at_dest}/bin/ar" \
+		NM="${at_dest}/bin/nm" \
+		RANLIB="${at_dest}/bin/ranlib" \
+		CFLAGS="-O2" \
+		CXXFLAGS="-O2" \
 		${ATSRC_PACKAGE_WORK}/configure \
 			--build=${target64:-${target}} \
 			--host=${target64:-${target}} \
@@ -109,11 +113,12 @@ atcfg_configure() {
 			--with-mpc-include="${at_dest}/include" \
 			--with-mpc-lib=${libdir} \
 			--with-as="${at_dest}/bin/as" \
-			--with-ld="${at_dest}/bin/ld"
+			--with-ld="${at_dest}/bin/ld" \
+			--with-stage1-ldflags="-Wl,--dynamic-linker=${at_dest}/lib64/ld64.so.2"
 	else
 		# Configure command for cross builds
-		CC="${cc_64}" \
-		CXX="${cxx_64}" \
+		CC="${system_cc}" \
+		CXX="${system_cxx}" \
 		LD_FOR_TARGET="${at_dest}/bin/${target}-ld" \
 		AS_FOR_TARGET="${at_dest}/bin/${target}-as" \
 		AR_FOR_TARGET="${at_dest}/bin/${target}-ar" \
@@ -159,9 +164,8 @@ atcfg_configure() {
 
 # Make build command
 atcfg_make() {
-	# With -isystem we make sure that system's gcc (stage1) will recognize AT
-	# headers as system headers and give them special treatment.
-	${SUB_MAKE} STAGE1_CFLAGS="-isystem ${at_dest}/include" STAGE1_CXXFLAGS="-isystem ${at_dest}/include" all
+	PATH=${at_dest}/bin:${PATH} \
+		${SUB_MAKE} all
 }
 
 # Pre install settings or commands to run
