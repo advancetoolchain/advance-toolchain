@@ -38,13 +38,17 @@ atcfg_configure() {
 		# Configure command for native builds
 		PATH=${at_dest}/bin:${PATH} \
 		CC="${at_dest}/bin/gcc" \
-		CFLAGS="-O2" \
-		CXXFLAGS="-O2" \
-		CFLAGS_FOR_TARGET="-O3" \
-		CXXFLAGS_FOR_TARGET="-O3" \
+		CXX="${at_dest}/bin/g++" \
 		AS="${at_dest}/bin/as" \
 		LD="${at_dest}/bin/ld" \
+		AR="${at_dest}/bin/ar" \
+		NM="${at_dest}/bin/nm" \
+		RANLIB="${at_dest}/bin/ranlib" \
+		CFLAGS="-O2" \
+		CXXFLAGS="-O2" \
 		LDFLAGS="-L${at_dest}/lib64" \
+		CFLAGS_FOR_TARGET="-O3" \
+		CXXFLAGS_FOR_TARGET="-O3" \
 		${ATSRC_PACKAGE_WORK}/configure \
 			--build=${target64:-$target} \
 			--host=${target64:-$target} \
