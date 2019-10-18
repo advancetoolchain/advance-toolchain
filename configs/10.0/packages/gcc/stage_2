@@ -54,6 +54,13 @@ atcfg_pre_configure() {
 	if [[ "${cross_build}" == "no" && "${build_arch}" == ppc64* ]]; then
 		libdir="${at_dest}/lib64"
 	fi
+	if [[ "${cross_build}" == "no" ]]; then
+		case "${build_arch}" in
+			ppc) ldso="${libdir}/ld.so.1" ;;
+			ppc64) ldso="${libdir}/ld64.so.1" ;;
+			ppc64le) ldso="${libdir}/ld64.so.2" ;;
+		esac
+	fi
 }
 
 # Conditional configure command
@@ -110,7 +117,7 @@ atcfg_configure() {
 			--with-mpc-lib=${libdir} \
 			--with-as="${at_dest}/bin/as" \
 			--with-ld="${at_dest}/bin/ld" \
-			--with-stage1-ldflags="-Wl,--dynamic-linker=${at_dest}/lib64/ld64.so.2"
+			--with-stage1-ldflags="-Wl,--dynamic-linker=${ldso}"
 	else
 		# Configure command for cross builds
 		CC="${system_cc}" \
