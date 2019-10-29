@@ -9,6 +9,93 @@
 <li>Support for <a href="http://golang.org/">Go Programming Language</a>.</li>
 <li>Support for split stack.</li>
 
+<h3>New features in 11.0-5</h3>
+<ul>
+	<li>GCC provides:</li>
+	<ul>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=37369">ice for legal C code</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=56386">[F03] ICE with ASSOCIATE construct and an derived type array component</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58906">[OOP] SELECT TYPE with CLASS IS generates ICE</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=60702">thread_local initialization</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=60994">gcc does not recognize hidden/shadowed enumeration as valid nested-name-specifier</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61976">Data corruption in struct passed by value</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=64242">Longjmp expansion incorrect</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=64895">RA picks the wrong register for -fipa-ra</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=65364">FAIL: gcc.dg/uninit-19.c  (test for warnings, line 22)</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=66676">pragma omp simd aligned(x) results in &quot;internal compiler error: Segmentation fault&quot;</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=70696">[Coarray] ICE on EVENT POST of host-associated EVENT_TYPE coarray</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=77583">ICE in pp_quoted_string, at pretty-print.c:966</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82075">structured binding fails with empty base class</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82564">ICE at -O1 and above: in assign_stack_temp_for_type, at function.c:783</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83246">internal compiler error or loader problem might be related to a PARAMETER statement being in a BLOCK</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83515">ICE: Invalid expression in gfc_element_size</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85488">segmentation fault when compiling code using the ordered(n) clause in OpenMP 4.5</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85594">ICE during expand when compiling with -fwrapv -fopenmp</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85755">PowerPC Gcc's -mupdate produces inefficient code on power8/power9 machines</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87532">bad results from vec_extract(unsigned char, foo) dependent upon function inline</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87649">ICE in OpenMP doacross (ordered) loop</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87689">PowerPC64 ELFv2 function parameter passing violation</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87725">OpenMP 4.5 clause schedule(simd,monotonic:static) not understood</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87829">Contradiction about -fReorder-Blocks</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87887">ICE in make_ssa_name_fn, at tree-ssanames.c:269</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87929">ICE in verify_gimple failed</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88030">ICE in calc_dfs_tree, at dominance.c:458</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88147">ICE in linemap_line_start, at libcpp/line-map.c:781 starting from r265875</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88553">ICE: tree check: expected ssa_name, have var_decl in SSA_VAL, at tree-ssa-sccvn.c:461</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88739">Big-endian union bug</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88902">ICE: Segmentation fault (in DFS::DFS_write_tree_body)</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88949">ICE in expand_expr_real_1, at expr.c:10001 with -fopenmp</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89009">Miscompilation (missing function call) with -fvisibility=hidden -fpic -O2 -fno-inline</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89077">ICE using * as len specifier for character parameter</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89104">ICE: Segmentation fault (in tree_int_cst_elt_check)</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89115">compile time and memory hog</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89234">ICE in get_eh_region_and_lp_from_rtx at gcc/except.c:1824</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89242">ICE in verify_dominators, at dominance.c:1184 (error: dominator of 7 should be 5, not 2)</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89278">ICE in gimplify_modify_expr, at gimplify.c:5821</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89349">segfault when building GCC 7 &amp; 8 branch with GCC master</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89424">__builtin_vec_ext_v1ti (v, i) results in ICE with variable i (RS6000)</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89587">gcc's rs6000 configuration unconditionally sets MULTIARCH_DIRNAME, even when multiarch is disabled</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89629">std::hash&lt;std::string&gt; segfault for long strings</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89651">OpenMP private array uninitialized warning with -O flag</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89679">wrong code with -Og -frerun-cse-after-loop -fno-tree-fre</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89736">New test pr87532-mc.c fails on compiler not defaulting to VSX</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89765">Multiple problems with vec-insert implementation on PowerPC</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89796">Incorrect warning generated with OpenMP atomic capture</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89869">-fsanitize=undefined miscompilation</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89896">-flto=4 is confused by presence of 'all.c' in a local directory. -flto=1 is not.</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90105">std::forward_list::sort() is not &quot;stable&quot;</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90108">ICE: Segmentation fault (in c_tree_chain_next)</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90194">ICE in expand_debug_expr, at cfgexpand.c:5244</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90213">UBSAN: signed integer overflow: -5621332293356458048 * 8 cannot be represented in type 'long int'</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90220">std::any_cast misbehaves for function and array types</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90278">ICE: verify_gimple failed (error: statement marked for throw, but doesn't)</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90326">Using any precompiled header breaks definition of FLT_MAX</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90634">filesystem::path insane memory allocations</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90770">Building with --enable-libstdcxx-debug and make profiledbootstrap fails with mv: cannot stat 'Makefile': No such file or directory</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90924">lto-plugin/lto-plugin.c heap memory corruption due to insufficient sanitization.</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90939">ICE in meet_with, at ipa-cp.c:1073</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90950">OpenMP clause handling rejecting references to incomplete types in templates</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90954">ICE: combining undefined behavior sanitizer with openmp</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91131">(bitfield, coalescing) Bad bitfield coalescing</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91172">Command line option for a wrong language is not reported with -Werror=warning_name syntax</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91200">ICE on valid code at -O1: verify_ssa failed</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91275">__builtin_crypto_vpmsumd gives different results -O[123] vs -O0</a>.</li>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91481">(CVE-2019-15847) POWER9 &quot;DARN&quot; RNG intrinsic produces repeated output (CVE-2019-15847)</a>.</li>
+	</ul>
+	<li>Userspace RCU provides:</li>
+	<ul>
+		<li>Fix providing errno as argument to urcu_die().</li>
+		<li>Fix including urcu-signal-nr.h.</li>
+		<li>Fix for rculfhash worker needs to unblock to SIGRCU.</li>
+		<li>Fix for <a href="https://bugs.lttng.org/issues/1187">urcu/futex.h: users of struct timespec should include time.h</a>.</li>
+	</ul>
+	<li>OpenSSL provides version 1.1.0l, see the <a href="https://www.openssl.org/news/openssl-1.1.0-notes.html">release notes</a> for details.</li>
+	<li>Expat provides version 2.2.7, see the <a href="https://github.com/libexpat/libexpat/blob/R_2_2_7/expat/Changes">release notes</a> for details.</li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 11.0-4</h3>
 <ul>
 	<li>GCC provides:</li>
@@ -74,9 +161,6 @@
 		<li>Fix for <a href="https://www.openssl.org/news/secadv/20181112.txt">CVE-2018-5407</a>.</li>
 	</ul>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 11.0-3</h3>
 <ul>
