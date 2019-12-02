@@ -26,30 +26,28 @@ ATCFG_BUILD_STAGE_T='dir'
 
 # Required pre build hacks
 atcfg_pre_hacks() {
+	# IBM maintains branches on the svn repository for GCC.
+	# Check we are using an IBM branch. If not, stop everything.
+	if [[ ! -s ${ATSRC_PACKAGE_WORK}/gcc/REVISION ]]; then
+		echo "ERROR: gcc/REVISION is missing and/or empty"
+		exit 1
+	fi
+	if ! grep -Eqs "^\[ibm/gcc-[0-9]+-branch revision [0-9]+]$" ${ATSRC_PACKAGE_WORK}/gcc/REVISION; then
+		echo "ERROR: Not using an IBM branch"
+		exit 1
+	fi
 	# Overwrite the existing DEV-PHASE with Advance-Toolchain-XX
 	mv ${ATSRC_PACKAGE_WORK}/gcc/DEV-PHASE ${ATSRC_PACKAGE_WORK}/gcc/DEV-PHASE.back
 	echo "Advance-Toolchain-${at_major_internal}" > ${ATSRC_PACKAGE_WORK}/gcc/DEV-PHASE
 	# Expand REVISION with the requested revision
-	if [ -s ${ATSRC_PACKAGE_WORK}/gcc/REVISION]; then
-		cp ${ATSRC_PACKAGE_WORK}/gcc/REVISION ${ATSRC_PACKAGE_WORK}/gcc/REVISION.back
-		sed -i "s/ \([^ ][^ ]*\)]$/ ${ATSRC_PACKAGE_REV}, based upon FSF revision \1]/" \
-			${ATSRC_PACKAGE_WORK}/gcc/REVISION
-		cmp --silent ${ATSRC_PACKAGE_WORK}/gcc/REVISION.back ${ATSRC_PACKAGE_WORK}/gcc/REVISION || exit 1
-	else
-		echo "[revision ${ATSRC_PACKAGE_REV}]" > ${ATSRC_PACKAGE_WORK}/gcc/REVISION
-	fi
-	# IBM maintains branches on the svn repository for GCC.  Such branches
-	# do not update the release timestamp (gcc/DATESTAMP).  The following
-	# lines patch the release timestamp with the date of latest entry in
-	# the IBM branch ChangeLog, if the ChangeLog exists.  If it doesn't
-	# exist, then we are probably not using an IBM branch.
-	if [ -f ${ATSRC_PACKAGE_WORK}/gcc/ChangeLog.ibm ]; then
-		mv ${ATSRC_PACKAGE_WORK}/gcc/DATESTAMP ${ATSRC_PACKAGE_WORK}/gcc/DATESTAMP.back
-		echo "$(head -n 1 ${ATSRC_PACKAGE_WORK}/gcc/ChangeLog.ibm | cut -f 1 -d " " | sed "s/-//g")" \
-			  > ${ATSRC_PACKAGE_WORK}/gcc/DATESTAMP
-	else
-		echo "WARNING: Not using an IBM branch"
-	fi
+	cp ${ATSRC_PACKAGE_WORK}/gcc/REVISION ${ATSRC_PACKAGE_WORK}/gcc/REVISION.back
+	sed -i "s/ \([^ ][^ ]*\)]$/ ${ATSRC_PACKAGE_REV}, based upon FSF revision \1]/" \
+		${ATSRC_PACKAGE_WORK}/gcc/REVISION
+	# The following lines patch the release timestamp (gcc/DATESTAMP)
+	# with the date of latest entry in the IBM branch ChangeLog.
+	mv ${ATSRC_PACKAGE_WORK}/gcc/DATESTAMP ${ATSRC_PACKAGE_WORK}/gcc/DATESTAMP.back
+	echo "$(head -n 1 ${ATSRC_PACKAGE_WORK}/gcc/ChangeLog.ibm | cut -f 1 -d " " | sed "s/-//g")" \
+		> ${ATSRC_PACKAGE_WORK}/gcc/DATESTAMP
 }
 
 # Pre configure settings or commands to run
