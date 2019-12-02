@@ -54,7 +54,7 @@ atsrc_get_patches ()
 
 	# Avoid a misconfiguration of tuned libraries as seen in issue #204.
 	at_get_patch \
-		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/GCC%20PowerPC%20Backport/9/0001-libssp-Ignore-vsnprintf-test-when-ssp_have_usable_vs.patch' \
+		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/d74e6318679606541d9cb5fd5f88589d3f8496ff/GCC%20PowerPC%20Backport/9/0001-libssp-Ignore-vsnprintf-test-when-ssp_have_usable_vs.patch' \
 		f2e9fb2e57c6a33b90c29940e365df13 || return ${?}
 
 	# Avoid an error on libstdc++ when running msgfmt.
