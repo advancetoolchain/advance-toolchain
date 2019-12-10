@@ -12,6 +12,128 @@
 
 <p>IBM Advance Toolchain 12.0 will be the last version that includes OProfile and Libpfm. Future versions of IBM Advance Toolchain will not include OProfile nor Libpfm in favor of <a href="https://perf.wiki.kernel.org/index.php/Main_Page">the Linux perf command and the perf_events set of performance tools</a> available from the supported distributions.</p>
 
+<h3>New features in 12.0-2</h3>
+<ul>
+	<li>GCC provides:</li>
+	<ul>
+		<li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91481">CVE-2019-15847: POWER9 &quot;DARN&quot; RNG intrinsic produces repeated output</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=29383">Fortran 2003/F95[TR15580:1999]: Floating point exception (IEEE) support</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=37369">ice for legal C code</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=48101">obscure error message with std::set&lt;const int&gt;</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=56408">Fix dependency handling of testsuite/gfortran.dg</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=57284">[OOP] ICE with find_array_spec for polymorphic arrays</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=60702">thread_local initialization</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=60790">libatomic convenience library selects IFUNC implementation before obtaining cpu info.</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61976">aix64: Data corruption in struct passed by value</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=64242">Longjmp expansion incorrect</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=64895">RA picks the wrong register for -fipa-ra</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=65364">FAIL: gcc.dg/uninit-19.c  (test for warnings, line 22)</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=70010">powerpc: -flto forgets 'no-vsx' function attributes</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=71203">ICE in add_init_expr_to_sym, at fortran/decl.c:1512 and :1564</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=71544">gfortran compiler optimization bug when dealing with c-style pointers</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82075">structured binding fails with empty base class</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82081">Tail call optimisation of noexcept function leads to exception allowed through</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83515">ICE: Invalid expression in gfc_element_size</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=84032">ICE in optimize_sc, at modulo-sched.c:1064</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=84369">test case gcc.dg/sms-10.c fails on power9</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85797">ICE in gfc_element_size, at fortran/target-memory.c:126</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=86098">canonical types differ for identical types</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87127">External function not recognised from within an associate block</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87532">bad results from vec_extract(unsigned char, foo) dependent upon function inline</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87829">Contradiction about -fReorder-Blocks</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88075">[feature-request] allow &quot;concept&quot; instead of &quot;concept bool&quot; with -fconcepts</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88147">ICE in linemap_line_start, at libcpp/line-map.c:781 starting from r265875</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88315">SAD and DOT_PROD SLP reductions with initial value != 0 create wrong code</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88389">-flto -g -gsplit-dwarf is broken</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89102">'common_type' of single abominable function should not have a nested typename</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89424">__builtin_vec_ext_v1ti (v, i) results in ICE with variable i (RS6000)</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89585">GCC 8.3: asm volatile no longer accepted at file scope</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89587">gcc's rs6000 configuration unconditionally sets MULTIARCH_DIRNAME, even when multiarch is disabled</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89629">std::hash&lt;std::string&gt; segfault for long strings</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89631">gcc/dwarf2cfi.c:1647:15:Semantic Issue: comparison of two values with different enumeration types in switch statement ('enum rtx_code' and 'tree_code'): -Wenum-compare-switch</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89651">OpenMP private array uninitialized warning with -O flag</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89655">GCC crashes building linux kernel for arm 32-bit (culprit r269453)</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89712">Documentation contains unsupported options (-fdump-class-hierarchy and -fdump-translation-unit)</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89721">__builtin_mffs sometimes optimized away</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89736">New test pr87532-mc.c fails on compiler not defaulting to VSX</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89796">Incorrect warning generated with OpenMP atomic capture</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89869">-fsanitize=undefined miscompilation</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89896">-flto=4 is confused by presence of 'all.c' in a local directory. -flto=1 is not.</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90105">std::forward_list::sort() is not &quot;stable&quot;</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90108">ICE: Segmentation fault (in c_tree_chain_next)</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90165">std::variant constructs wrong alternative</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90194">ICE in expand_debug_expr, at cfgexpand.c:5244</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90213">UBSAN: signed integer overflow: -5621332293356458048 * 8 cannot be represented in type 'long int'</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90220">std::any_cast misbehaves for function and array types</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90278">ICE: verify_gimple failed (error: statement marked for throw, but doesn't)</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90299">std::filesystem::absolute(&quot;&quot;) and std::filesystem::absolute(&quot;&quot;, ec) behave differently</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90326">Using any precompiled header breaks definition of FLT_MAX</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90329">Incompatibility between gfortran and C lapack calls</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90380">gcov issue: gets stuck (infinite loop?) while analyzing coverage on Fortran project</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90454">filesystem::path template constructor void* overload interference</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90570">AddressSanitizer: stack-use-after-scope</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90634">filesystem::path insane memory allocations</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90709">[meta-bug] GNU Objective C (C++) cannot consume current headers on Darwin platforms.</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90770">Building with --enable-libstdcxx-debug and make profiledbootstrap fails with mv: cannot stat 'Makefile': No such file or directory</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90924">lto-plugin/lto-plugin.c heap memory corruption due to insufficient sanitization.</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90939">ICE in meet_with, at ipa-cp.c:1073</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90950">OpenMP clause handling rejecting references to incomplete types in templates</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90954">ICE: combining undefined behavior sanitizer with openmp</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91131">(bitfield, coalescing) Bad bitfield coalescing</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91172">Command line option for a wrong language is not reported with -Werror=warning_name syntax</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91200">ICE on valid code at -O1: verify_ssa failed</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91231">ICE in dwarf2out_inline_entry, at dwarf2out.c:27642</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91275">__builtin_crypto_vpmsumd gives different results -O[123] vs -O0</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91289">powerpc-eabi: Usage of -fstack-limit-symbol leads to internal compiler error during RTL pass</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91401">schedule + dist_schedule clauses rejected on distribute parallel for</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91414">Improved PRNG</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91436">Confusing suggestion to include &lt;memory&gt;</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91588">ICE in check_inquiry, at fortran/expr.c:2673</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91619">New test case gcc.dg/vect/pr81740-2.c fails on powerpc64 power7 BE</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91974">function not sequenced before function argument</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92059">Crash on tr2::dynamic_bitset::operator=() with optimization</a>.</li>
+		<li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92093">New test case gcc.target/powerpc/pr91275.c from r276410 fails on BE</a>.</li>
+	</ul>
+	<li>GNU C Library provides:</li>
+	<ul>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25204">CVE-2019-19126: LD_PREFER_MAP_32BIT_EXEC not ignored in setuid binaries</a>.</li>
+		<li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24114">CVE-2019-9169: regexec buffer read overrun in &quot;grep -i '\(\(\)*.\)*\(\)\(\)\1'&quot;</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=18035">pldd does no longer work, enters infinite loop</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22964">The Japanese Era name will be changed on May 1, 2019</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23403">Wrong alignment of TLS variables</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24026">malloc_info() returns wrong numbers</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24259">Call _dl_open_check after relocation is finished, to deal with CET failures</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24323">dlopen should not be able open PIE objects</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24476">__libc_freeres triggers bad free in libdl if dlerror was not used</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24531">Malloc tunables give tcache assertion failures</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24696">endgrent() clobbers errno=ERRNO for 'group: db files' entry in /etc/nsswitch.conf</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24744">Remove copy_file_range emulation</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24867">Unintended malloc_info formatting changes</a>.</li>
+		<li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25203">Disable libio vtable validation for interposed pre-2.1 stdio handles</a>.</li>
+	</ul>
+	<li>GNU MPFR provides:</li>
+	<ul>
+		<li>Check that the lists of rounding modes in src/print_rnd_mode.c and doc/mpfr.texi are identical.</li>
+		<li>Fix for <a href="https://gforge.inria.fr/tracker/?func=detail&atid=619&aid=21762&group_id=136">__gmpfr_longdouble_volatile not defined when volatile not available</a>.</li>
+	</ul>
+	<li>Userspace RCU provides:</li>
+	<ul>
+		<li>Fix providing errno as argument to urcu_die().</li>
+		<li>Fix including urcu-signal-nr.h.</li>
+		<li>Fix for rculfhash worker needs to unblock to SIGRCU.</li>
+		<li>Fix for <a href="https://bugs.lttng.org/issues/1187">urcu/futex.h: users of struct timespec should include time.h</a>.</li>
+	</ul>
+	<li>OpenSSL provides:</li>
+	<ul>
+		<li>version 1.1.0l, see the <a href="https://www.openssl.org/news/openssl-1.1.0-notes.html">release notes</a> for details.</li>
+		<li>Fix no-ec2m in ec_curve.c</li>
+	</ul>
+	<li>Expat provides version 2.2.7, see the <a href="https://github.com/libexpat/libexpat/blob/R_2_2_7/expat/Changes">release notes</a> for details.</li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 12.0-1</h3>
 <ul>
 	<li>GCC provides:</li>
@@ -94,9 +216,6 @@
 		<li>Fix segfault in RSA_free() (and DSA/DH/EC_KEY).</li>
 	</ul>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 12.0-0</h3>
 <ul>
