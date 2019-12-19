@@ -83,7 +83,10 @@ atcfg_configure() {
 	CC="${at_dest}/bin/gcc -m${AT_BIT_SIZE}" \
 	CXX="${at_dest}/bin/g++ -m${AT_BIT_SIZE}" \
 	CFLAGS="-g -O3 \
-		${with_longdouble:+-mlong-double-128}" \
+		${with_longdouble:+-mlong-double-128} \
+		-fcommon \
+		-Wno-error=stringop-overflow= \
+		-Wno-error=maybe-uninitialized" \
 	CXXFLAGS="-g -O3" \
 	${ATSRC_PACKAGE_WORK}/configure --build=${target} \
 					--host=${base_target} \
