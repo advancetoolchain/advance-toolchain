@@ -595,15 +595,21 @@ define fetch_sources
                 fi; \
                 if [[ "$${fetch:0:9}" == "git clone" ]]; then \
                     pushd $1; \
-                    echo -en "\t\t- Final git revision checkout $${ATSRC_PACKAGE_REV}"; \
-                    eval \$${ATSRC_PACKAGE_GIT} > $(LOGS)/_$${AT_STEPID}_git-checkout_$${index}.log 2>&1; \
-                    if [[ $${?} -ne 0 ]]; then \
-                        rm -rf $${fetch_lock}; \
-                        popd; \
-                        echo " - [FAIL]"; \
-                        exit 1; \
-                    fi; \
-                    echo " - [SUCCESS]"; \
+                    echo -en "\t\t- Final git revision checkout $${ATSRC_PACKAGE_REV}\n"; \
+                    num_git=$$(( $$(eval echo \$${#ATSRC_PACKAGE_GIT[@]}) - 1 )); \
+                    for index in $$(seq 0 $${num_git}); do \
+                        fetch=$$(eval echo \$${ATSRC_PACKAGE_GIT[$${index}]}); \
+                        echo -en "\t\t* git command: $${fetch}."; \
+                        eval $${fetch} > $(LOGS)/_$${AT_STEPID}_git-checkout_$${index}.log 2>&1; \
+                        if [[ $${?} -ne 0 ]]; then \
+                            rm -rf $${fetch_lock}; \
+                            popd; \
+                            echo " - [FAIL]"; \
+                            exit 1; \
+                        else \
+                            echo " - [SUCCESS]"; \
+                        fi; \
+                    done; \
                     popd; \
                 fi; \
                 echo -en "\t* Preparing final source place of $1"; \

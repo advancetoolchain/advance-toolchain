@@ -120,15 +120,19 @@ print_msg ()
 # This function returns the latest revision from a git/svn repository
 #
 # Parameters:
-#    $1 - sources config path
+#    $1 - URL to reach source code
+#    $2 - package
+#    $3 - configset
 get_latest_revision ()
 {
-	if [[ ${#} -ne  1 ]]; then
-		echo "Function get_latest_revision expects 1 parameter.";
+	if [[ ${#} -ne 3 ]]; then
+		echo "Function get_latest_revision expects 3 parameters.";
 		return 1;
 	fi
 
 	local url=${1}
+	local package=${2}
+	local configset=${3}
 	local isGit=$(echo ${url} | grep -ce "git:" -e "\.git$")
 	local hash="";
 
@@ -141,6 +145,12 @@ get_latest_revision ()
 			# Fix missing reference.
 			git remote set-head origin master
 		fi
+		# Since GCC moved to git (January 2020), extra git commands have
+		# been needed to get IBM branches.
+		if [[ $package == "gcc" ]] && [[ $configset != "next" ]]; then
+		    git config --local remote.origin.fetch +refs/vendors/ibm/heads/*:refs/remotes/origin/ibm/*
+		    git fetch origin
+		fi
 		# Get which branch is being used.
 		local branch=$(git branch -r --contains ${ATSRC_PACKAGE_REV} \
 			| cut -d/ -f2-)
@@ -150,7 +160,13 @@ get_latest_revision ()
 		if [[ $(expr index "${branch}" "HEAD") -ne 0 ]]; then
 			branch="HEAD"
 		else
+		    # Since GCC moved to git (January 2020), the name of the branch
+		    # has looked like: ibm/<branch>
+		    if [[ $package == "gcc" ]] && [[ $configset != "next" ]]; then
+			branch="refs/vendors/ibm/heads/${branch#*/}"
+		    else
 			branch="refs/heads/${branch}"
+		    fi
 		fi
 		hash=$(git ls-remote ${url} ${branch} | cut -f1)
 		hash=$(git rev-parse --short=12 ${hash});
@@ -440,7 +456,7 @@ EOF
 		if [[ $(echo "$pulltxt" | grep -c 'Status: 201 Created') -eq 0 ]];
 		then
 			print_msg 0 "Pull request creation failed. cURL message:"
-		  echo -e "$pulltxt"
+			echo -e "$pulltxt"
 		else
 			print_msg 0 "Pull request creation successful!"
 		fi
@@ -476,26 +492,27 @@ update_revision ()
 	print_msg 0 "Update complete.";
 }
 
+package=$(readlink -f $1 | tr "/" "\n" | tail -n 2 | head -n 1)
+configset=$(readlink -f $1 | tr "/" "\n" | tail -n 4 | head -n 1)
 for co in "${ATSRC_PACKAGE_CO[@]}"; do
 	# So far, we only update git/svn revision
-	repo=$(echo $co | grep -oE \(git\|svn\|https\):[^\ ]+);
+	repo=$(echo $co | grep -oE \(git\|svn\|https\):[^\ ]+)
 
-	if [[ -n "${repo}" ]]; then
-		hash=$(get_latest_revision ${repo});
+	[[ -z "${repo}" ]] && continue
 
-		if [[ -n "${hash}" ]]; then
-			echo ""
-			print_msg 0 "The latest revision of ${repo} is ${hash}"
-			update_revision ${1} ${hash}
-			if [[ ${service} = "github" ]];
-			then
-				send_to_github ${1} ${hash}
-			else
-				send_to_gerrit ${1} ${hash}
-			fi
-			break;
-		else
-			print_msg 0 "Unable to connect to ${repo}"
-		fi
+	hash=$(get_latest_revision ${repo} ${package} ${configset})
+
+	if [[ -n "${hash}" ]]; then
+	    echo ""
+	    print_msg 0 "The latest revision of ${repo} is ${hash}"
+	    update_revision ${1} ${hash}
+	    if [[ ${service} = "github" ]]; then
+		send_to_github ${1} ${hash}
+	    else
+		send_to_gerrit ${1} ${hash}
+	    fi
+	    break;
+	else
+	    print_msg 0 "Unable to connect to ${repo}"
 	fi
 done;
