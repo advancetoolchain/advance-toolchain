@@ -23,7 +23,7 @@ ATSRC_PACKAGE_NAME="GCC (GNU Compiler Collection)"
 ATSRC_PACKAGE_SUBPACKAGE_NAME_0="GNU Standard C++ Library v3 (Libstdc++-v3)"
 ATSRC_PACKAGE_SUBPACKAGE_NAME_1="GNU Libgomp"
 ATSRC_PACKAGE_VER=7.4
-ATSRC_PACKAGE_REV=277075
+ATSRC_PACKAGE_REV=69e4aa63fb0
 ATSRC_PACKAGE_LICENSE="GPL 3.0"
 ATSRC_PACKAGE_DOCLINK="https://gcc.gnu.org/onlinedocs/gcc-7.1.0/gcc/"
 ATSRC_PACKAGE_SUBPACKAGE_DOCLINK_0="https://gcc.gnu.org/libstdc++/"
@@ -32,9 +32,11 @@ ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_NAMESUFFIX="[C, C++ (g++), fortran, Go]"
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}-ibm-r${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_PRE="test -d gcc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
-ATSRC_PACKAGE_CO=([0]="svn co --revision ${ATSRC_PACKAGE_REV} svn://gcc.gnu.org/svn/gcc/branches/ibm/gcc-7-branch" \
-		  [1]="svn co --revision ${ATSRC_PACKAGE_REV} http://gcc.gnu.org/svn/gcc/branches/ibm/gcc-7-branch")
-ATSRC_PACKAGE_POST="mv gcc-7-branch gcc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_CO=([0]="git clone git://gcc.gnu.org/git/gcc.git")
+ATSRC_PACKAGE_GIT=([0]="git config --local remote.origin.fetch +refs/vendors/ibm/heads/*:refs/remotes/origin/ibm/*" \
+                   [1]="git fetch origin" \
+                   [2]="git checkout -b gcc-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}} ${ATSRC_PACKAGE_REV}")
+ATSRC_PACKAGE_POST="mv gcc gcc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_SRC=${AT_BASE}/sources/gcc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}
 ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/gcc
 ATSRC_PACKAGE_MLS=
