@@ -85,8 +85,7 @@ atcfg_configure() {
 	CFLAGS="-g -O3 \
 		${with_longdouble:+-mlong-double-128} \
 		-fcommon \
-		-Wno-error=stringop-overflow= \
-		-Wno-error=maybe-uninitialized" \
+		-Wno-error=stringop-overflow=" \
 	CXXFLAGS="-g -O3" \
 	${ATSRC_PACKAGE_WORK}/configure --build=${target} \
 					--host=${base_target} \
