@@ -71,7 +71,13 @@ endef
 # Inform the list of packages to check
 ifndef AT_DISTRO_REQ_PKGS
     AT_CROSS_PKGS_REQ :=
-    AT_NATIVE_PKGS_REQ := libxslt docbook-style-xsl qt5-devel \
+    # NOTE: qt5 devel packages are also required. A `qt5-devel` meta
+    # package is provided by RHEL8, which has all needed packages listed
+    # as dependencies. However, it is temporarily unavailable on the repos
+    # configured on our build server, so we are TEMPORARILY removing this
+    # dependecy from AT_NATIVE_PKGS_REQ. It should be re-added as soon as
+    # it can be installed to the build server again.
+    AT_NATIVE_PKGS_REQ := libxslt docbook-style-xsl \
                           autogen-libopts sqlite-devel
     AT_COMMON_PKGS_REQ := zlib-devel ncurses-devel flex bison texinfo \
                           createrepo glibc-devel subversion cvs gawk \
