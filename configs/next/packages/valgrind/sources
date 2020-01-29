@@ -21,7 +21,7 @@
 
 ATSRC_PACKAGE_NAME="Valgrind"
 ATSRC_PACKAGE_VER=3.15.0
-ATSRC_PACKAGE_REV=2bddca658976
+ATSRC_PACKAGE_REV=2052837a3e0b
 ATSRC_PACKAGE_LICENSE="GPL 2.0"
 ATSRC_PACKAGE_DOCLINK="http://valgrind.org/docs/"
 ATSRC_PACKAGE_RELFIXES=
@@ -51,6 +51,11 @@ atsrc_get_patches ()
 	at_get_patch \
 		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/Valgrind%20iTrace%20Patches/3.14/update_itrace_to_use_epoch.v2.diff' \
 		41fc03e4b074698f1fff9e7a53fed63a || return ${?}
+
+	# Update itrace to Valgrind 3.15.
+	at_get_patch \
+		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/0496d9de5cf3d441787d413367c5ec514a64b2ae/Valgrind%20iTrace%20Patches/3.15/Fix-itrace-initialization-of-guest_chase-variable.patch' \
+		0410d828116d20ffdae3182c514c04bb || return ${?}
 	return 0
 }
 
@@ -66,6 +71,9 @@ atsrc_apply_patches ()
 
 	# Update itrace to Valgrind 3.14.
 	patch -p1 < update_itrace_to_use_epoch.v2.diff || return ${?}
+
+	# Update itrace to Valgrind 3.15.
+	patch -p1 < Fix-itrace-initialization-of-guest_chase-variable.patch || return ${?}
 
 	return 0
 }
