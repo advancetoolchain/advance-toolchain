@@ -120,6 +120,11 @@ if { "$pyver" == "2.6" } {
         # Test for the issue #45
         printit "Executing sqlite3 importing test."
         exec $env(AT_DEST)/bin/python3 -c "import sqlite3"
+
+	# Test for issue #1269.
+	printit "Test if ssl module is available."
+	exec $env(AT_DEST)/bin/python3 -m ssl
+
 	# The following tests fail intermittently when running the FVTR,
 	# making them unreliable for this kind of tests.
 	set spawn_cmd "spawn $env(AT_DEST)/bin/python3 $test_script \
