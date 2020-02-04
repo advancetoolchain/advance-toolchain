@@ -26,28 +26,27 @@ ATCFG_BUILD_STAGE_T='dir'
 
 # Required pre build hacks
 atcfg_pre_hacks() {
-	# IBM maintains branches on the svn repository for GCC.
-	# Check we are using an IBM branch. If not, stop everything.
-	if [[ ! -s ${ATSRC_PACKAGE_WORK}/gcc/REVISION ]]; then
-		echo "ERROR: gcc/REVISION is missing and/or empty"
-		exit 1
-	fi
-	if ! grep -Eqs "^\[ibm/gcc-[0-9]+-branch revision [0-9]+]$" ${ATSRC_PACKAGE_WORK}/gcc/REVISION; then
-		echo "ERROR: Not using an IBM branch"
-		exit 1
-	fi
-	# Overwrite the existing DEV-PHASE with Advance-Toolchain-XX
-	mv ${ATSRC_PACKAGE_WORK}/gcc/DEV-PHASE ${ATSRC_PACKAGE_WORK}/gcc/DEV-PHASE.back
-	echo "Advance-Toolchain-${at_major_internal}" > ${ATSRC_PACKAGE_WORK}/gcc/DEV-PHASE
-	# Expand REVISION with the requested revision
-	cp ${ATSRC_PACKAGE_WORK}/gcc/REVISION ${ATSRC_PACKAGE_WORK}/gcc/REVISION.back
-	sed -i "s/ \([^ ][^ ]*\)]$/ ${ATSRC_PACKAGE_REV}, based upon FSF revision \1]/" \
-		${ATSRC_PACKAGE_WORK}/gcc/REVISION
+	# Overwrite the existing DEV-PHASE with Advance-Toolchain XX.Y-Z-rcW.
+	mv ${ATSRC_PACKAGE_WORK}/gcc/DEV-PHASE \
+	   ${ATSRC_PACKAGE_WORK}/gcc/DEV-PHASE.back
+	echo "Advance-Toolchain ${at_full_ver}" \
+	     > ${ATSRC_PACKAGE_WORK}/gcc/DEV-PHASE
+
+	# Expand REVISION with the requested revision.
+	mv ${ATSRC_PACKAGE_WORK}/gcc/REVISION \
+	   ${ATSRC_PACKAGE_WORK}/gcc/REVISION.back
+	echo "[${ATSRC_PACKAGE_REV}]" \
+	     > ${ATSRC_PACKAGE_WORK}/gcc/REVISION
+
 	# The following lines patch the release timestamp (gcc/DATESTAMP)
 	# with the date of latest entry in the IBM branch ChangeLog.
-	mv ${ATSRC_PACKAGE_WORK}/gcc/DATESTAMP ${ATSRC_PACKAGE_WORK}/gcc/DATESTAMP.back
-	echo "$(head -n 1 ${ATSRC_PACKAGE_WORK}/gcc/ChangeLog.ibm | cut -f 1 -d " " | sed "s/-//g")" \
-		> ${ATSRC_PACKAGE_WORK}/gcc/DATESTAMP
+	# When working on non-IBM branch, they should not be changed.
+	if [[ -e "${ATSRC_PACKAGE_WORK}/gcc/ChangeLog.ibm" ]]; then
+		mv ${ATSRC_PACKAGE_WORK}/gcc/DATESTAMP \
+		   ${ATSRC_PACKAGE_WORK}/gcc/DATESTAMP.back
+		echo "$(head -n 1 ${ATSRC_PACKAGE_WORK}/gcc/ChangeLog.ibm | cut -f 1 -d " " | sed "s/-//g")" \
+		     > ${ATSRC_PACKAGE_WORK}/gcc/DATESTAMP
+	fi
 }
 
 # Pre configure settings or commands to run
