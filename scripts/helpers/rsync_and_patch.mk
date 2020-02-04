@@ -63,7 +63,7 @@ define rsync_and_patch
         echo "rsync of $${src_path} to $${dest_path} failed!"; \
         exit 1; \
     fi; \
-    echo "rsync of $${src_path} to $${dest_path} successfull"; \
+    echo "rsync of $${src_path} to $${dest_path} successful"; \
     patch_level=""; \
     patch=""; \
     for tar in $${tar_list}; do \
@@ -76,7 +76,7 @@ define rsync_and_patch
                 echo "  tar -xvjf $${tar} failed!"; \
                 exit 1; \
             fi; \
-            echo "  tar -xvzf $${tar} was successfull"; \
+            echo "  tar -xvzf $${tar} was successful"; \
         else \
             cd $${dest_path}; \
             tar -xvzf $${tar}; \
@@ -84,7 +84,7 @@ define rsync_and_patch
                 echo "  tar -xvjf $${tar} failed!"; \
                 exit 1; \
             fi; \
-            echo "  tar -xvzf $${tar} was successfull"; \
+            echo "  tar -xvzf $${tar} was successful"; \
         fi; \
     done; \
     if [[ -n $${delete} ]]; then \
@@ -105,7 +105,7 @@ define rsync_and_patch
                 echo "  patch $${patch_level} < $${patch} failed!"; \
                 exit 1; \
             fi; \
-            echo "  patch $${patch_level} < $${patch} successfull"; \
+            echo "  patch $${patch_level} < $${patch} successful"; \
             patch_level=""; \
         done; \
     fi; \
