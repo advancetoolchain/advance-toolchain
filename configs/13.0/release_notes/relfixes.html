@@ -11,6 +11,105 @@
 <p>Since the end of August 2019, Advance Toolchain has been available from a new FTP server: <a href="ftp://public.dhe.ibm.com/">public.dhe.ibm.com</a></p>
 <p>Please be advised the FTP server at Unicamp won't be updated any longer.</p>
 
+<h3>New features in 13.0-1</h3>
+<ul>
+	<li>GCC provides:</li>
+	<ul>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=57082">brace initialization requires public destructor</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=60228">ICE using lambda in #pragma omp declare reduction</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61414">enum class bitfield size-checking needs a separate warning flag controlling it</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61761">[C++11] std::proj returns incorrect values</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=70010">powerpc: -flto forgets 'no-vsx' function attributes</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85254">boost::is_final does not work for template types</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89164">can construct vector with non-copyable-but-trivially-copyable elements</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90682">std::terminate() will happily call a null terminate handler</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91456">std::function and std::is_invocable_r do not understand guaranteed elision</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91790">ICE: verify_ssa failed (error: definition in block 2 follows the use)</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91926">assumed rank optional</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92050">internal compiler error: in gfc_conv_procedure_call</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92059">Crash on tr2::dynamic_bitset::operator=() with optimization</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92100">Formatted stream IO irreproducible read with binary data in file</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92143">std::pmr::polymorphic_allocator&lt;char&gt; throws bad_alloc on macOS</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92150">Partial specializations of class templates with class NTTP fails</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92343">[[likely]]/[[unlikely]] prevent method from being a constant expression</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92357">ICE in IPA pass fnsummary in openmp offload</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92446">[C++20] template argument deduction fails for custom non-type parameters</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92470">CFI_address wrongly assumes that lower bounds are at zero – invalid for pointers + allocatables</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92575">couple of suspicious assignments in expect.c</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92629">internal compiler error: in convert_mpz_to_unsigned, at fortran/simplify.c:173</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92648">Handling of unknown attributes</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92664">Wrong .debug_line section information when compiling stdin input with -g3</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92695">P1064R0 - virtual constexpr fails if object taken from array</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92732">Bit-field of scoped enumeration type cannot be initialized</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92781">ICE in convert_nonlocal_reference_op, at tree-nested.c:1065</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92831">CWG1299 extend_ref_init_temps_1 punts on COND_EXPRs</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92859">compiler treats enum type as an integer during overload resolution when a bit-field of this enum is considered</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92971">Suspicious code in cgraph_edge_brings_all_agg_vals_for_node(), ipa-cp.c</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92977">ICE in gfc_trans_omp_atomic, at fortran/trans-openmp.c:3526</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92992">Side-effects dropped when decltype(nullptr) typed expression is passed to ellipsis</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93065">libgomp: destructor missing to delete goacc_cleanup_key</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93087">Bogus `-Wsuggest-attribute=cold` on function already marked as `__attribute__((cold))`</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93219">unused return value in affinity-fmt.c</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93228">[[deprecated(&quot;message&quot;)]] on template struct/class drops message</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93234">INQUIRE on pre-assigned files of ROUND and SIGN properties fails</a>.</li>
+	  <li><a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93541">OpenMP module description incomplete in gcc/fortran/intrinsic.texi – missing PARAMETER</a>.</li>
+	</ul>
+	<li>GNU C Library provides:</li>
+	<ul>
+	  <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25204">CVE-2019-19126: LD_PREFER_MAP_32BIT_EXEC not ignored in setuid binaries</a>.</li>
+	  <li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25401">pvalloc must not have __attribute_alloc_size__</a>.</li>
+	  <li>login: Use pread64 in utmp implementation.</li>
+	  <li>Add nocancel version of pread64().</li>
+	  <li>login: Introduce matches_last_entry to utmp processing.</li>
+	  <li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24882">login: pututline uses potentially outdated cache</a>.</li>
+	  <li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24899">Missing nonstring attributes in &lt;utmp.h&gt;, &lt;utmpx.h&gt;</a>.</li>
+	  <li>login: Remove double-assignment of fl.l_whence in try_file_lock.</li>
+	  <li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24902">login: Repeating pututxline on EINTR/EAGAIN causes stale utmp entries</a>.</li>
+	  <li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24880">login: utmp implementation uses struct flock with fcntl64</a>.</li>
+	  <li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24879">login: utmp alarm timer can arrive after lock acquisition</a>.</li>
+	  <li>login: Fix updwtmp, updwtmx unlocking.</li>
+	  <li>login: Replace macro-based control flow with function calls in utmp.</li>
+	  <li>login: Assume that _HAVE_UT_* constants are true.</li>
+	  <li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23518">Eliminate __libc_utmp_jump_table</a>.</li>
+	  <li>misc/test-errno-linux: Handle EINVAL from quotactl.</li>
+	  <li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25232">&lt;string.h&gt; does not enable const correctness for strchr et al. for Clang++</a>.</li>
+	  <li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25203">Disable libio vtable validation for interposed pre-2.1 stdio handles</a>.</li>
+	  <li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25226">strstr: Invalid result if needle crosses page on s390-z15 ifunc variant</a>.</li>
+	  <li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25189">glibc's __glibc_has_include causes issues with clang -frewrite-includes</a>.</li>
+	  <li>malloc: Various cleanups for malloc/tst-mxfast.</li>
+	  <li>Add glibc.malloc.mxfast tunable.</li>
+	  <li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24026">malloc_info() returns wrong numbers</a>.</li>
+	  <li>[powerpc] No need to enter "Ignore Exceptions Mode".</li>
+	  <li>[powerpc] Rename fesetenv_mode to fesetenv_control.</li>
+	  <li>[powerpc] libc_feholdsetround_noex_ppc_ctx: optimize FPSCR write.</li>
+	  <li>[powerpc] Rename fegetenv_status to fegetenv_control.</li>
+	  <li>[powerpc] __fesetround_inline optimizations.</li>
+	  <li>[powerpc] libc_feupdateenv_test: optimize FPSCR access.</li>
+	  <li>[powerpc] fenv_private.h clean up.</li>
+	  <li>[powerpc] SET_RESTORE_ROUND optimizations and bug fix.</li>
+	  <li>[powerpc] fegetenv_status: simplify instruction generation.</li>
+	  <li>[powerpc] fesetenv: optimize FPSCR access.</li>
+	  <li>[powerpc] SET_RESTORE_ROUND improvements.</li>
+	  <li>[powerpc] fe{en,dis}ableexcept, fesetmode: optimize FPSCR accesses.</li>
+	  <li>[powerpc] fe{en,dis}ableexcept optimize bit translations.</li>
+	  <li>S390: Add new s390 platform z15.</li>
+	  <li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24642">Gold missing armv8 from may_use_v5t_interworking() results in less efficient v4t stubs</a>.</li>
+	  <li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24867">Unintended malloc_info formatting changes</a>.</li>
+	  <li>Make tst-strftime2 and tst-strftime3 depend on locale generation.</li>
+	</ul>
+	<li>Binutils provides:</li>
+	<ul>
+	  <li>Version 2.34, see the <a href="https://lists.gnu.org/archive/html/info-gnu/2020-02/msg00000.html">release notes</a> for details.</li>
+	</ul>
+	<li>GNU Debugger provides:</li>
+	<ul>
+	  <li>Version 8.3.1, see the <a href="https://lists.gnu.org/archive/html/info-gnu/2019-09/msg00006.html">release notes</a> for details.</li>
+	</ul>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 13.0-0</h3>
 <ul>
 	<li>Support for RHEL 8.</li>
@@ -59,9 +158,6 @@
 	</ul>
 	<li>Provides a new component: Power Vector Library (pveclib).</li>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 12.0-1</h3>
 <ul>
