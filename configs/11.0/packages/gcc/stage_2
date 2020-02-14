@@ -121,7 +121,7 @@ atcfg_configure() {
 			--with-mpc-lib=${libdir} \
 			--with-as="${at_dest}/bin/as" \
 			--with-ld="${at_dest}/bin/ld" \
-			--with-stage1-ldflags="-Wl,--dynamic-linker=${ldso}"
+			--with-stage1-ldflags="-Wl,--dynamic-linker=${ldso},-rpath=${libdir}"
 	else
 		# Configure command for cross builds
 		CC="${system_cc}" \
