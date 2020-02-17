@@ -62,11 +62,6 @@ atsrc_get_patches ()
 		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/GCC%20libstdc%2B%2B%20PowerPC%20Patches/9/0001-libstdc-Prevent-LD_LIBRARY_PATH-from-leaking-to-msgf.patch' \
 		9cba9a9b94ca9c1b8958c0d722a9c06b || return ${?}
 
-	# Skip machine_name fix on GCC fixincludes step.
-	at_get_patch \
-		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/fb462137df68be149d94b1cbde1dd141f32361fa/GCC%20PowerPC%20Backport/9/0001-Skip-machine_name-fix-for-powerpc-on-fixincludes-ste.patch' \
-		7b6e39981c83b5f4634693034c7ffbc7 || return ${?}
-
 	return 0
 }
 
@@ -78,9 +73,5 @@ atsrc_apply_patches ()
 
 	patch -p1 \
 	      < 0001-libstdc-Prevent-LD_LIBRARY_PATH-from-leaking-to-msgf.patch \
-		|| return ${?}
-
-	patch -p1 \
-	      < 0001-Skip-machine_name-fix-for-powerpc-on-fixincludes-ste.patch \
 		|| return ${?}
 }
