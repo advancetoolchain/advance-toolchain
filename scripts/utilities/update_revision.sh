@@ -153,13 +153,18 @@ get_latest_revision ()
 		fi
 		# Get which branch is being used.
 		local branch=$(git branch -r --contains ${ATSRC_PACKAGE_REV} \
-			| cut -d/ -f2-)
+				   | cut -d/ -f2- \
+				   | grep -vw "^users")
 		# When the revision is in HEAD we got a string like:
 		# master -> HEAD
 		# origin/master
 		if [[ $(expr index "${branch}" "HEAD") -ne 0 ]]; then
 			branch="HEAD"
 		else
+		    if [[ $(echo "${branch}" | wc -w) -ne 1 ]]; then
+			echo "The commit id was found in more than one branch."
+			return 1
+		    fi
 		    # Since GCC moved to git (January 2020), the name of the branch
 		    # has looked like: ibm/<branch>
 		    if [[ $package == "gcc" ]] && [[ $configset != "next" ]]; then
