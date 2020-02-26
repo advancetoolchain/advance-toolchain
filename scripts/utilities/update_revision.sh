@@ -154,7 +154,7 @@ get_latest_revision ()
 		# Get which branch is being used.
 		local branch=$(git branch -r --contains ${ATSRC_PACKAGE_REV} \
 				   | cut -d/ -f2- \
-				   | grep -vw "^users")
+				   | grep -Evw "(backport|users)")
 		# When the revision is in HEAD we got a string like:
 		# master -> HEAD
 		# origin/master
