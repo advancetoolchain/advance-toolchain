@@ -9,6 +9,38 @@
 <li>Support for <a href="http://golang.org/">Go Programming Language</a>.</li>
 <li>Support for split stack.</li>
 
+<h3>New features in 11.0-6</h3>
+<ul>
+	<li>GCC provides:</li>
+	<ul>
+		<li>Fix for <a href=https://gcc.gnu.org/bugzilla/show_bug.cgi?id=69455>[F08] Assembler error(s) when using intrinsic modules in two BLOCK</a>.</li>
+		<li>Fix for <a href=https://gcc.gnu.org/bugzilla/show_bug.cgi?id=86248>LEN_TRIM in specification expression causes link failure</a>.</li>
+		<li>Fix for <a href=https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89721>__builtin_mffs sometimes optimized away</a>.</li>
+		<li>Fix for <a href=https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91275>__builtin_crypto_vpmsumd gives different results -O[123] vs -O0</a>.</li>
+		<li>Fix for <a href=https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91812>GCC ignores volatile modifier</a>.</li>
+		<li>Fix for <a href=https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91887>-fdebug-types-section ICE building chromium</a>.</li>
+		<li>Fix for <a href=https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92093>New test case gcc.target/powerpc/pr91275.c from r276410 fails on BE</a>.</li>
+		<li>Fix for <a href=https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92131>incorrect assumption that (ao &gt;= 0) is always false</a>.</li>
+	</ul>
+	<li>The GNU C Library provides:</li>
+	<ul>
+		<li>Fix for <a href=https://sourceware.org/bugzilla/show_bug.cgi?id=25204>(CVE-2019-19126) LD_PREFER_MAP_32BIT_EXEC not ignored in setuid binaries</a>.</li>
+		<li>Fix for <a href=https://sourceware.org/bugzilla/show_bug.cgi?id=25414>(CVE-2020-1752) 'glob' use-after-free bug</a>.</li>
+		<li>Fix for <a href=https://sourceware.org/bugzilla/show_bug.cgi?id=25423>(CVE-2020-1751) Array overflow in backtrace on powerpc</a>.</li>
+		<li>Fix for <a href=https://sourceware.org/bugzilla/show_bug.cgi?id=20191>libio: vtables hardening</a>.</li>
+		<li>Fix for <a href=https://sourceware.org/bugzilla/show_bug.cgi?id=20568>Segfault with wide characters and setlocale/fgetwc/UTF-8</a>.</li>
+		<li>Fix for <a href=https://sourceware.org/bugzilla/show_bug.cgi?id=21270>mmap64 silently truncates large offset values</a>.</li>
+		<li>Fix for <a href=https://sourceware.org/bugzilla/show_bug.cgi?id=23313>libio vtables validation and standard file object interposition</a>.</li>
+		<li>Fix for <a href=https://sourceware.org/bugzilla/show_bug.cgi?id=23637>Generic strstr/strcasestr fails with huge needles</a>.</li>
+		<li>Fix for <a href=https://sourceware.org/bugzilla/show_bug.cgi?id=24180>pthread_mutex_trylock does not use the correct order of instructions while maintaining the robust mutex list due to missing compiler barriers</a>.</li>
+		<li>Fix for <a href=https://sourceware.org/bugzilla/show_bug.cgi?id=24531>Malloc tunables give tcache assertion failures</a>.</li>
+		<li>Fix for <a href=https://sourceware.org/bugzilla/show_bug.cgi?id=25203>Disable libio vtable validation for interposed pre-2.1 stdio handles</a>.</li>
+	</ul>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 11.0-5</h3>
 <ul>
 	<li>GCC provides:</li>
@@ -92,9 +124,6 @@
 	<li>OpenSSL provides version 1.1.0l, see the <a href="https://www.openssl.org/news/openssl-1.1.0-notes.html">release notes</a> for details.</li>
 	<li>Expat provides version 2.2.7, see the <a href="https://github.com/libexpat/libexpat/blob/R_2_2_7/expat/Changes">release notes</a> for details.</li>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 11.0-4</h3>
 <ul>
