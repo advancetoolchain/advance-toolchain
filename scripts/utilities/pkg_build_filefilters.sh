@@ -218,7 +218,8 @@ function group_filelists_cross()
 	      "${dynamic_spec}"/cross.list* \
 	      "${dynamic_spec}"/cross-common.list* \
 	      "${dynamic_spec}"/cross-runtime-extras.list* \
-	      "${dynamic_spec}"/cross-mcore-libs.list*
+	      "${dynamic_spec}"/cross-mcore-libs.list* \
+	      "${dynamic_spec}"/cross-libnxz.list*
 	sort -u "${dynamic_spec}"/devel.list >> "${dynamic_spec}"/cross_files.list
 	sort -u "${dynamic_spec}"/devel.listfile >> "${dynamic_spec}"/cross_files.listfile
 	sort -u "${dynamic_spec}"/runtime.list >> "${dynamic_spec}"/cross_files.list
@@ -261,6 +262,17 @@ function group_filelists_cross()
 		sort -u "${dynamic_spec}"/mcore-libs.listfile | tee \
 			>(egrep "${common_regex2}" >> "${dynamic_spec}"/cross-common.listfile) | \
 			  egrep -v "${common_regex2}" > "${dynamic_spec}"/cross-mcore-libs.listfile
+		[[ ${?} -ne 0 ]] && exit 1
+	fi
+
+	if [[ -e "${dynamic_spec}"/libnxz.list ]]; then
+		sort -u "${dynamic_spec}"/libnxz.list | tee \
+			>(egrep "${common_regex1}" >> "${dynamic_spec}"/cross-common.list) | \
+			  egrep -v "${common_regex1}" > "${dynamic_spec}"/cross-libnxz.list
+		[[ ${?} -ne 0 ]] && exit 1
+		sort -u "${dynamic_spec}"/libnxz.listfile | tee \
+			>(egrep "${common_regex2}" >> "${dynamic_spec}"/cross-common.listfile) | \
+			  egrep -v "${common_regex2}" > "${dynamic_spec}"/cross-libnxz.listfile
 		[[ ${?} -ne 0 ]] && exit 1
 	fi
 

@@ -38,6 +38,11 @@ if [[ ${at_major_version%%.*} -le 12 ]]; then
         src_list=${src_list}" oprofile"
 fi
 
+# Start distributing libnxz on AT 14.0
+if [[ ${at_major_version%%.*} -ge 14 ]]; then
+	src_list=${src_list}" libnxz"
+fi
+
 file_list=$( tar -tzf ${src_file} | awk -F'[/]' '{print $1}' | uniq )
 if [[ $? != 0 || ${file_list} == "" ]]; then
 	echo "Source code extraction failed."
