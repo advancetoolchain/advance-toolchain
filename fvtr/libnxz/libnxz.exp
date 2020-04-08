@@ -1,0 +1,49 @@
+#! /usr/bin/expect
+# Copyright 2020 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Check if libnxz headers are provides in the correct location, i.e.:
+# under a libnxz/ sub-directory.
+#
+
+source ./shared.exp
+
+# Check if the package is available on this build of the toolchain.
+if { [array names env -exact "AT_LIBNXZ_VER"] == "" } {
+	printit "Skipping: libnxz is not available on this build\t\[SUCCESS\]"
+	exit $ENOSYS
+}
+if { $TARGET32 } {
+	printit "Skipping: libnxz is not available in 32 bits\t\[SUCCESS\]"
+	exit $ENOSYS
+}
+
+set at_dir $env(AT_DEST)
+set CC [compiler_path]
+set CFLAGS "-O2 -Wall -c -lnxz"
+set rc 0
+set tmp_file [exec mktemp]
+
+printit "Testing 64 bits..."
+if [ compile "${CC} -m64 ${CFLAGS} $FULLPATH/test.c -o ${tmp_file}" ] {
+	set rc 1
+} else {
+	printitcont "\t\t\t Compiling in 64-bits mode with libnxz headers succeeded"
+}
+if { $rc == 0 } {
+	printit "Using libnxz headers:\t\t\t\t\t\[SUCCESS\]"
+}
+exec rm -f ${tmp_file}
+exit $rc

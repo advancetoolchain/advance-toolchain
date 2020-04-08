@@ -149,6 +149,9 @@ for pkg in $(awk '/^Package:/ { print $2 }' ${deb_d}/control | grep -v dbg); do
 		"runtime-compat")
 			apkg="compat"
 			;;
+		*libnxz)
+			apkg="libnxz"
+			;;
 		cross-ppc*)
 			# In AT versions that support the cross-common package,
 			# the list of files for the main cross package is

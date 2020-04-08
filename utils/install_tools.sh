@@ -38,6 +38,9 @@ install_native ()
 		if [ -e advance-toolchain-golang* ]; then
 			sudo dpkg -i advance-toolchain-golang* || return ${?}
 		fi
+		if [ -e advance-toolchain-*libnxz* ]; then
+			sudo dpkg -i advance-toolchain-*libnxz* || return ${?}
+		fi
 	else
 		sudo rpm -${2}v advance-toolchain-*runtime-${version}* \
 			advance-toolchain-*runtime-debuginfo* \
@@ -46,6 +49,9 @@ install_native ()
 			advance-toolchain-*perf* || return ${?}
 		if [ -e advance-toolchain-golang* ]; then
 			sudo rpm -iv advance-toolchain-golang* || return ${?}
+		fi
+		if [ -e advance-toolchain-*libnxz* ]; then
+			sudo rpm -iv advance-toolchain-*libnxz* || return ${?}
 		fi
 	fi
 }
@@ -61,9 +67,15 @@ install_cross ()
 			|| return ${?}
 		sudo dpkg -i advance-toolchain-at*cross-ppc*mcore* \
 			advance-toolchain-at*cross-ppc*extras* || return ${?}
+		if [ -e advance-toolchain-*libnxz* ]; then
+			sudo dpkg -i advance-toolchain-*libnxz* || return ${?}
+		fi
 	else
 		sudo rpm -${1}v advance-toolchain-*common* || return ${?}
 		sudo rpm -${1}v advance-toolchain-*cross-ppc* || return ${?}
+		if [ -e advance-toolchain-*libnxz* ]; then
+			sudo rpm -iv advance-toolchain-*libnxz* || return ${?}
+		fi
 	fi
 }
 
@@ -101,6 +113,9 @@ install_last_native ()
 		   advance-toolchain-at${version}-mcore-libs* \
 		   advance-toolchain-at${version}-perf* \
 		   || return ${?}
+		if [ -e advance-toolchain-at${version}-libnxz* ]; then
+			sudo dpkg -i advance-toolchain-at${version}-libnxz* || return ${?}
+		fi
 	else
 		local os=$(cat /etc/os-release | grep "^ID=" | cut -d '"' -f2)
 		if [[ ${os} == "sles" ]]; then
@@ -111,6 +126,9 @@ install_last_native ()
 			   advance-toolchain-at${version}-mcore-libs* \
 			   advance-toolchain-at${version}-perf* \
 			   || return ${?}
+			if [ -e advance-toolchain-at${version}-libnxz* ]; then
+				sudo zypper install -y advance-toolchain-at${version}-libnxz* || return ${?}
+			fi
 		else
 			sudo yum install -y \
 			   advance-toolchain-at${version}-runtime \
@@ -119,6 +137,9 @@ install_last_native ()
 			   advance-toolchain-at${version}-mcore-libs* \
 			   advance-toolchain-at${version}-perf* \
 			   || return ${?}
+			if [ -e advance-toolchain-at${version}-libnxz* ]; then
+				sudo yum install -y advance-toolchain-at${version}-libnxz* || return ${?}
+			fi
 		fi
 	fi
 }
