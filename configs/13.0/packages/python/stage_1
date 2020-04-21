@@ -47,7 +47,9 @@ atcfg_configure() {
 		--enable-shared \
 		--enable-loadable-sqlite-extensions \
 		--with-openssl="${at_dest}" \
-		--with-ssl-default-suites=openssl
+		--with-ssl-default-suites=openssl \
+		--enable-optimizations \
+		--with-lto
 }
 
 atcfg_make() {
