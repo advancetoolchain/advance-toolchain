@@ -45,7 +45,9 @@ atcfg_configure() {
 		--exec-prefix=${at_dest} \
 		--libdir="${at_dest}/lib${compiler##32}" \
 		--enable-shared \
-		--enable-loadable-sqlite-extensions
+		--enable-loadable-sqlite-extensions \
+		--enable-optimizations \
+		--with-lto
 }
 
 atcfg_make() {
