@@ -95,12 +95,6 @@ if { ${TARGET64} } {
 # Some files were included in Valgrind 3.7.
 if {${major} > 3 || [expr ${major} == 3 && ${minor} >= 7]} {
 	lappend exe_list vgdb
-	if { ${TARGET32} } {
-		lappend lib_list vgpreload_exp-sgcheck-${arch32}-linux
-	}
-	if { ${TARGET64} } {
-		lappend lib_list vgpreload_exp-sgcheck-${arch64}-linux
-	}
 }
 
 # Check if expected executables are available.
@@ -131,9 +125,7 @@ foreach lib ${lib_list} {
 				  -${arch32}-linux {} \
 				  -${arch64}-linux {}] \
 		      ${lib}]
-	# Temporarily ignore exp-sgcheck in order to work around BZ #98458.
-	if {![string equal ${tool} core]
-	    && ![string equal ${tool} exp-sgcheck]} {
+	if {![string equal ${tool} core]} {
 		lappend plugin_list ${tool}
 	}
 }
