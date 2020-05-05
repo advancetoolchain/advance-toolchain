@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+#
+# Copyright 2020 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# <package_name> source package and build info
+# ==============================================================
+#
+
+# TODO Add package name
+ATSRC_PACKAGE_NAME=""
+# TODO Add package version
+ATSRC_PACKAGE_VER=""
+# TODO Add package hash revision
+ATSRC_PACKAGE_REV=
+# TODO List every licence the package needs. For exame "Apache License 2.0 and GPL 2.0"
+ATSRC_PACKAGE_LICENSE=""
+# TODO Hyperlink for the packages documentation.
+ATSRC_PACKAGE_DOCLINK=""
+ATSRC_PACKAGE_RELFIXES=
+ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
+ATSRC_PACKAGE_VERID="${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
+ATSRC_PACKAGE_PRE="test -d <project_name>-${ATSRC_PACKAGE_VERID}"
+# TODO Add the command to get the source code of you project
+ATSRC_PACKAGE_CO=([0]="wget -O <project_name>-${ATSRC_PACKAGE_VERID}.tar.gz https://github.com/<project_name>/power-gzip/archive/${ATSRC_PACKAGE_REV}.tar.gz")
+ATSRC_PACKAGE_GIT=""
+# TODO Add a command that will run after the package is fetched.
+# Here is the point to extract a tarball or rename the source directory.
+ATSRC_PACKAGE_POST="tar xzf <project_name>-${ATSRC_PACKAGE_VERID}.tar.gz --transform=s/power-gzip-[^\\/]*/<project_name>-${ATSRC_PACKAGE_VERID}/"
+# TODO Add the path to the downloaded source code
+ATSRC_PACKAGE_SRC=${AT_BASE}/sources/<project_name>-${ATSRC_PACKAGE_VERID}
+# TODO Add the work path for your project.
+ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/<project_name>
+ATSRC_PACKAGE_MLS=
+ATSRC_PACKAGE_ALOC=
+ATSRC_PACKAGE_PATCHES=
+ATSRC_PACKAGE_TARS=
+ATSRC_PACKAGE_MAKE_CHECK=
+# TODO Select if this project will be distrubuted on the AT release
+ATSRC_PACKAGE_DISTRIB=yes
+# TODO If the project will be distributed select which bundle will include it.
+# The standard options are:
+# * toolchain_extra
+# * mcore-libs
+# * devel
+# * main_toolchain
+#
+ATSRC_PACKAGE_BUNDLE=
