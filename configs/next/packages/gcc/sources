@@ -23,7 +23,7 @@ ATSRC_PACKAGE_NAME="GCC (GNU Compiler Collection)"
 ATSRC_PACKAGE_SUBPACKAGE_NAME_0="GNU Standard C++ Library v3 (Libstdc++-v3)"
 ATSRC_PACKAGE_SUBPACKAGE_NAME_1="GNU Libgomp"
 ATSRC_PACKAGE_VER=11.0.0
-ATSRC_PACKAGE_REV=a33649e66640
+ATSRC_PACKAGE_REV=53b4d52f1141
 ATSRC_PACKAGE_LICENSE="GPL 3.0"
 ATSRC_PACKAGE_DOCLINK="https://gcc.gnu.org/onlinedocs/gcc/"
 ATSRC_PACKAGE_SUBPACKAGE_DOCLINK_0="https://gcc.gnu.org/libstdc++/"
@@ -54,8 +54,8 @@ atsrc_get_patches ()
 
 	# Avoid a misconfiguration of tuned libraries as seen in issue #204.
 	at_get_patch \
-		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/a51115f619a5210d868819d41ba5f021327ba83a/GCC%20PowerPC%20Backport/9/0001-libssp-Ignore-vsnprintf-test-when-ssp_have_usable_vs.patch' \
-		8ad129baf6f4a6f61572d5c36c57536b || return ${?}
+		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/e33a3dd405ee40492b9f25fc1ece49cdecc00c93/GCC%20PowerPC%20Backport/9/0001-libssp-Ignore-vsnprintf-test-when-ssp_have_usable_vs.patch' \
+		2a757025a949d5d7e5e675bafa423e9a || return ${?}
 
 	# Avoid an error on libstdc++ when running msgfmt.
 	at_get_patch \
