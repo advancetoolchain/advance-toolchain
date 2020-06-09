@@ -11,6 +11,82 @@
 <p>Since the end of August 2019, Advance Toolchain has been available from a new FTP server: <a href="ftp://public.dhe.ibm.com/">public.dhe.ibm.com</a></p>
 <p>Please be advised the FTP server at Unicamp won't be updated any longer.</p>
 
+<h3>New features in 13.0-2</h3>
+<ul>
+  <li>GCC provides:</li>
+  <ul>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=60503">gcc looks for C++ attributes in the wrong place in a lambda-expression</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61414">enum class bitfield size-checking needs a separate warning flag controlling it</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=78552">std::locale::classic() Needless Race</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85982">ICE in resolve_component, at fortran/resolve.c:13696</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87560">ICE in curr_insn_transform, at lra-constraints.c:3892</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87583">error: unrecognizable insn on ppc64le</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88395">ICE: Segmentation fault signal terminated program cc1plus, with -std=c++2a -fconcepts</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90763">PowerPC vec_xl_len should take const</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91118">ubsan does not work with openmp default (none) directive</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91276">Doc typos in __builtin_crypto_vpmsum*</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91910">Debug mode: there is a racing condition between destructors of iterator and the associated container.</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92398">error in update of gcc.target/powerpc/pr72804.c in r277872</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92757">Documentation ambiguous/misleading about interplay of optimization and warning flags</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92886">Inappropriate comment for std::ios_base::trunc</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93047">frename-registers does not work well with __builtin_return</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93205">std::discrete_distribution's operator&gt;&gt; causes OOM</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93244">std::filesystem::path::generic_string doesn't convert the first slash on Windows</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93325">libstdc++ wrongly uses direct clock_gettime syscall on non-glibc, breaks time64</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93381">points-to wrong for integer offsetting and field-sensitive analysis</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93463">ICE in oacc_code_to_statement, at fortran/openmp.c:6007</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93515">OpenMP target teams distribute parallel for with defaultmap not mapping correctly</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93555">ICE in simd_clone_struct_copy, at omp-simd-clone.c:84</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93557">__builtin_convertvector doesn't mark input as used</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93658">infinite loop building ghostscript and icu with -O3 on powerpc64le-linux-gnu</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93709">fortran.dg/minlocval_4.f90 fails on power 9 after r10-4161</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93800">GCC adds unwanted nops to align loops on powerpc 8xx since r9-1623</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93819">PPC64 builtin vec_rlnm() argument order is wrong.</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93888">Incorrect DW_AT_location generated for copy-constructed function argument</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93913">r10-6762 breaks gcc.target/powerpc/fold-vec-st-*.c test cases</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93931">ICE using lambda capture in openMP parallel for reduction</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93932">PowerPC vec_extract with variable element number has code regressions for V2DI/V2DF vectors</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93960">std::to_address doesn't work with past-the-end Debug Mode iterators</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93965">Problematic ld_date configure check</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94036">gcc.target/powerpc/pr72804.c fails</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94167">pr71109.c -fcompare-debug failures on x86_64 and powerpc64le</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94199">std::experimental::net::v1::make_service function template not instantiatable</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94206">Wrong optimization: memset of n-bit integer types (from bit-fields) is truncated to n bits (instead of sizeof)</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94348">gfortran 8/9 reject module procedure definition in same module as function interface</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94459">Missing c++ debug information for 'auto&amp;' return type</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94477">ICE in tsubst_expr, at cp/pt.c:18181</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94505">Logical operator inside fold-expression: strange warning</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94557">r9-8486 causes several builtin instruction test case execution failures on power 9</a>.</li>
+  </ul>
+  <li>GNU C Library provides:</li>
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25414">(CVE-2020-1752) 'glob' use-after-free bug (CVE-2020-1752)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25423">(CVE-2020-1751) Array overflow in backtrace on powerpc (CVE-2020-1751)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25506">configure: broken detection of STT_GNU_IFUNC when GCC defaults to PIE</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25715">system() returns wrong errors when posix_spawn fails</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25896">Incorrect prctl</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25902">Bad LOADARGS_N</a>.</li>
+  </ul>
+  <li>Binutils provides:</li>
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24511">nm should not mark symbols in .init_array as &quot;t&quot;</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25355">nm reports data variable as &quot;T&quot; with -flto</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25447">objcopy : free() invalid pointer in _bfd_coff_free_symbols</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25584">ar and ranlib should not call lto-wrapper for LTO bytecode</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25585">error: PHDR segment not covered by LOAD segment</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25640">nm shows symbol as 'U' while showed as 'T'</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25745">powerpc64-unknown-linux-gnu-ld overflows string buffer in --stats mode</a>.</li>
+    <li>Fix for powerpc64-ld infinite loop</li>
+  </ul>
+  <li>Python provides:</li>
+  <ul>
+    <li>Adding the following flags when building python: --enable-optimizations and --with-lto</li>
+  </ul>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 13.0-1</h3>
 <ul>
 	<li>GCC provides:</li>
@@ -106,9 +182,6 @@
 	  <li>Version 8.3.1, see the <a href="https://lists.gnu.org/archive/html/info-gnu/2019-09/msg00006.html">release notes</a> for details.</li>
 	</ul>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 13.0-0</h3>
 <ul>
