@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+#
+# Copyright 2020 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+source ${AT_BASE}/scripts/utilities/bitsize_selection.sh
+
+# NX GZIP library build parameters for stage 1  64 bits
+# ======================================================================
+#
+
+# Tell the build system to hold the temp install folder
+ATCFG_HOLD_TEMP_INSTALL='no'
+# Tell the build system to hold the temp build folder
+ATCFG_HOLD_TEMP_BUILD='no'
+# Build in a new directory
+ATCFG_BUILD_STAGE_T='dir'
+
+atcfg_pre_configure() {
+	# The bin and lib directories depend on the word size, e.g.
+	# configure_bindir may be set to bin, bin32, or bin64.
+	configure_libdir=${configure_prefix}/$(find_build_libdir ${AT_BIT_SIZE})
+}
+
+atcfg_configure() {
+	# libnxz do not use autoconf
+	${SUB_MAKE} clean -C ${ATSRC_PACKAGE_WORK}
+	true
+}
+
+atcfg_make() {
+	# In gcc10 the default is now -fno-common. In order to not have multiple
+	# definitions -fcommon is needed.
+	configure_cc="${at_dest}/bin/${target64:-${target}}-gcc"
+	PATH="${at_dest}/bin:${PATH}" \
+	${SUB_MAKE} -C ${ATSRC_PACKAGE_WORK} \
+	CC="${configure_cc} -m${AT_BIT_SIZE}" \
+	FLG="-std=gnu11 -fcommon -g"
+}
+
+atcfg_make_check() {
+	# Package testing is not done on a cross build.
+	if [[ "${cross_build}" == 'no' ]]; then
+		PATH=${at_dest}/bin:${PATH} ${SUB_MAKE} check -C ${ATSRC_PACKAGE_WORK}
+	fi
+}
+
+atcfg_pre_install() {
+	if [[ "${cross_build}" == "yes" ]]; then
+		install_dir="${install_transfer_cross}/usr"
+	else
+		install_dir="${install_transfer}"
+	fi
+	mkdir -p ${install_dir}/${configure_libdir}
+	mkdir -p ${install_dir}/include/libnxz
+}
+
+atcfg_install() {
+	# libnxz does not have a make install
+	install -m 755 ${ATSRC_PACKAGE_WORK}/libnxz.so ${install_dir}/${configure_libdir}/libnxz.so
+	install -m 644 ${ATSRC_PACKAGE_WORK}/libnxz.a ${install_dir}/${configure_libdir}/libnxz.a
+	install -m 644 ${ATSRC_PACKAGE_WORK}/inc_nx/nxu.h ${install_dir}/include/libnxz/
+	install -m 644 ${ATSRC_PACKAGE_WORK}/inc_nx/nx_dbg.h ${install_dir}/include/libnxz/
+	install -m 644 ${ATSRC_PACKAGE_WORK}/nx_zlib.h ${install_dir}/include/libnxz/
+}
+

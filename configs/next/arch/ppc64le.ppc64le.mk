@@ -1,1 +1,1 @@
-../../13.0/arch/ppc64le.ppc64le.mk
+../../14.0/arch/ppc64le.ppc64le.mk
