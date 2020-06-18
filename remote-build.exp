@@ -96,8 +96,8 @@ set_def default_timeout 30; # 30 seconds
 # $trayprefix/$atdir and install to $destprefix/$atdir. The order of
 # preference for these variables is:
 # Parameters > Configuration file > Default values
-set_def trayprefix ~/tmp/at-build-tray
-set_def destprefix ~/opt
+set_def trayprefix tmp/at-build-tray
+set_def destprefix opt
 set_def atdir ""
 
 # Parse optional arguments
@@ -159,15 +159,6 @@ if { ! [file exists configs/${at_version}] } {
 puts "AT version: $at_version"
 puts "Servers: $servers"
 
-# Please note that using "set tray_dir" and "set destdir" implies that
-# if you try to set those on your config file, they will be overridden
-# here, so please use trayprefix, destprefix and atdir to specify the
-# desired paths.
-
-# Directory used by the script to save its files.
-set tray_dir [file normalize $trayprefix/$atdir]
-# Directory where AT will be installed (aka DESTDIR).
-set destdir [file normalize $destprefix/$atdir]
 set timeout $default_timeout
 
 spawn make pack
@@ -214,6 +205,36 @@ foreach server $servers {
 			exit
 		}
 	}
+
+	set host_trayprefix $trayprefix
+	set host_destprefix $destprefix
+
+	if { [string range "$host_trayprefix" 0 0] != "/" ||
+	     [string range "$host_destprefix" 0 0] != "/" } then {
+
+		# Retrieve HOME from the remote host
+		# and prepend it where needed
+
+		send "eval echo ~\r"
+		expect -re "(/.*)\r"
+		set home $expect_out(1,string)
+		if { [string range "$host_trayprefix" 0 0] != "/" } then {
+			set host_trayprefix $home/$host_trayprefix
+		}
+		if { [string range "$host_destprefix" 0 0] != "/" } then {
+			set host_destprefix $home/$host_destprefix
+		}
+	}
+
+	# Please note that using "set tray_dir" and "set destdir" implies that
+	# if you try to set those on your config file, they will be overridden
+	# here, so please use trayprefix, destprefix and atdir to specify the
+	# desired paths.
+
+	# Directory used by the script to save its files.
+	set tray_dir $host_trayprefix/$atdir
+	# Directory where AT will be installed (aka DESTDIR).
+	set destdir $host_destprefix/$atdir
 
 	send "mkdir -p ${tray_dir}\n"
 	expect {
