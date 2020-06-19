@@ -206,6 +206,8 @@ foreach server $servers {
 		}
 	}
 
+	flush_expect
+
 	set host_trayprefix $trayprefix
 	set host_destprefix $destprefix
 
