@@ -19,7 +19,7 @@
 # ==================================
 #
 ATSRC_PACKAGE_NAME="Boost"
-ATSRC_PACKAGE_VER=1.70.0
+ATSRC_PACKAGE_VER=1.73.0
 ATSRC_PACKAGE_VERID="${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
 ATSRC_PACKAGE_DOCLINK="http://www.boost.org/doc/libs/${ATSRC_PACKAGE_VER//./_}/"
 ATSRC_PACKAGE_RELFIXES=
@@ -37,16 +37,3 @@ ATSRC_PACKAGE_TARS=""
 ATSRC_PACKAGE_MAKE_CHECK=""
 ATSRC_PACKAGE_DISTRIB=no
 ATSRC_PACKAGE_BUNDLE=mcore-libs
-
-atsrc_get_patches ()
-{
-        at_get_patch \
-                https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/Boost%20Patches/boost_1_70_cross.patch \
-                63898e34aea9aeecfa5fd1834b41f67a || return ${?}
-}
-
-atsrc_apply_patches ()
-{
-        patch -p1 < boost_1_70_cross.patch \
-                || return ${?}
-}
