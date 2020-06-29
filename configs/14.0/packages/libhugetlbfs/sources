@@ -19,7 +19,7 @@
 # ==========================================
 #
 ATSRC_PACKAGE_NAME="Libhugetlbfs"
-ATSRC_PACKAGE_VER=master
+ATSRC_PACKAGE_VER=2.22
 ATSRC_PACKAGE_REV=e6499ff92b4a
 ATSRC_PACKAGE_LICENSE="Lesser GPL 2.1"
 ATSRC_PACKAGE_DOCLINK="https://github.com/libhugetlbfs/libhugetlbfs"
