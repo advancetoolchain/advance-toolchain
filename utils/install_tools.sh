@@ -48,10 +48,10 @@ install_native ()
 			advance-toolchain-*mcore* \
 			advance-toolchain-*perf* || return ${?}
 		if [ -e advance-toolchain-golang* ]; then
-			sudo rpm -iv advance-toolchain-golang* || return ${?}
+			sudo rpm -${2}v advance-toolchain-golang* || return ${?}
 		fi
-		if [ -e advance-toolchain-*libnxz* ]; then
-			sudo rpm -iv advance-toolchain-*libnxz* || return ${?}
+		if [ -e advance-toolchain-*libnxz-${version}* ]; then
+			sudo rpm -${2}v advance-toolchain-*libnxz* || return ${?}
 		fi
 	fi
 }
@@ -67,15 +67,12 @@ install_cross ()
 			|| return ${?}
 		sudo dpkg -i advance-toolchain-at*cross-ppc*mcore* \
 			advance-toolchain-at*cross-ppc*extras* || return ${?}
-		if [ -e advance-toolchain-*libnxz* ]; then
-			sudo dpkg -i advance-toolchain-*libnxz* || return ${?}
+		if [ -e advance-toolchain-at*cross-ppc*libnxz* ]; then
+			sudo dpkg -i advance-toolchain-at*cross-ppc*libnxz* || return ${?}
 		fi
 	else
 		sudo rpm -${1}v advance-toolchain-*common* || return ${?}
 		sudo rpm -${1}v advance-toolchain-*cross-ppc* || return ${?}
-		if [ -e advance-toolchain-*libnxz* ]; then
-			sudo rpm -iv advance-toolchain-*libnxz* || return ${?}
-		fi
 	fi
 }
 

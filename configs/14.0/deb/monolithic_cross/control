@@ -89,9 +89,9 @@ Description: Advance Toolchain
  This package provides the necessary libraries to build multi-threaded
  applications.
 
-Package: advance-toolchain-libnxz
-Architecture: ppc64el
-Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz (= __AT_FULL_VER__)
+Package: advance-toolchain-cross__BUILD_ARCH__-libnxz
+Architecture: any
+Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__-libnxz (= __AT_FULL_VER__)
 Depends: ${shlibs:Depends} ${misc:Depends}
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
@@ -100,7 +100,7 @@ Description: Advance Toolchain
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__-libnxz
 Architecture: any
-Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross (= __AT_FULL_VER__)
+Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__ (= __AT_FULL_VER__)
 Depends: ${shlibs:Depends} ${misc:Depends}
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview

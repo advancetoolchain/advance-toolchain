@@ -169,11 +169,15 @@ Description: Advance Toolchain
  toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
  This package contains the NX GZIP Library.
 
+Package: advance-toolchain-libnxz-dbg
+Architecture: ppc64el
+Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz-dbg (= __AT_FULL_VER__)
+Description: Advance Toolchain
+ This package contains the NX GZIP Library debugging information.
+
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz-dbg
 Architecture: ppc64el
 Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz (= __AT_FULL_VER__)
 Depends: ${shlibs:Depends} ${misc:Depends}
 Description: Advance Toolchain
- The advance toolchain is a self contained toolchain which provides preview
- toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
  This package contains the NX GZIP Library debugging information.
