@@ -15,8 +15,8 @@
 
 #include <stdint.h>
 #include <stdio.h>
-#include <zlib.h>
-#include <libnxz/nx_zlib.h>
+#include <stdlib.h>
+#include <libnxz.h>
 
 #define BUFFER_SIZE 10
 

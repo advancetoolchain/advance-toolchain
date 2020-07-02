@@ -25,8 +25,8 @@ source ${AT_BASE}/scripts/utilities/bitsize_selection.sh
 ATCFG_HOLD_TEMP_INSTALL='no'
 # Tell the build system to hold the temp build folder
 ATCFG_HOLD_TEMP_BUILD='no'
-# Build in a new directory
-ATCFG_BUILD_STAGE_T='dir'
+# Build in the same directory
+ATCFG_BUILD_STAGE_T='link'
 
 atcfg_pre_configure() {
 	# The bin and lib directories depend on the word size, e.g.
@@ -36,8 +36,12 @@ atcfg_pre_configure() {
 
 atcfg_configure() {
 	# libnxz do not use autoconf
-	${SUB_MAKE} clean -C ${ATSRC_PACKAGE_WORK}
-	true
+	${SUB_MAKE} clean
+	# Hack to get the version outside the git repository.
+	cat lib/Makefile | \
+		sed "s/git describe --tags | cut -d - -f 1,2 | tr - ./echo ${ATSRC_PACKAGE_VER}/" \
+		> lib/Makefile.temp
+        [[ ${?} -eq 0 ]] && mv lib/Makefile.temp lib/Makefile || exit 1
 }
 
 atcfg_make() {
@@ -45,7 +49,7 @@ atcfg_make() {
 	# definitions -fcommon is needed.
 	configure_cc="${at_dest}/bin/${target64:-${target}}-gcc"
 	PATH="${at_dest}/bin:${PATH}" \
-	${SUB_MAKE} -C ${ATSRC_PACKAGE_WORK} \
+	${SUB_MAKE} \
 	CC="${configure_cc} -m${AT_BIT_SIZE}" \
 	FLG="-std=gnu11 -fcommon -g"
 }
@@ -53,7 +57,7 @@ atcfg_make() {
 atcfg_make_check() {
 	# Package testing is not done on a cross build.
 	if [[ "${cross_build}" == 'no' ]]; then
-		PATH=${at_dest}/bin:${PATH} ${SUB_MAKE} check -C ${ATSRC_PACKAGE_WORK}
+		PATH=${at_dest}/bin:${PATH} ${SUB_MAKE} check
 	fi
 }
 
@@ -63,16 +67,13 @@ atcfg_pre_install() {
 	else
 		install_dir="${install_transfer}"
 	fi
-	mkdir -p ${install_dir}/${configure_libdir}
-	mkdir -p ${install_dir}/include/libnxz
 }
 
+
 atcfg_install() {
-	# libnxz does not have a make install
-	install -m 755 ${ATSRC_PACKAGE_WORK}/libnxz.so ${install_dir}/${configure_libdir}/libnxz.so
-	install -m 644 ${ATSRC_PACKAGE_WORK}/libnxz.a ${install_dir}/${configure_libdir}/libnxz.a
-	install -m 644 ${ATSRC_PACKAGE_WORK}/inc_nx/nxu.h ${install_dir}/include/libnxz/
-	install -m 644 ${ATSRC_PACKAGE_WORK}/inc_nx/nx_dbg.h ${install_dir}/include/libnxz/
-	install -m 644 ${ATSRC_PACKAGE_WORK}/nx_zlib.h ${install_dir}/include/libnxz/
+	PATH="${at_dest}/bin:${PATH}" \
+	PREFIX="${install_dir}" \
+	LIBDIR="${install_dir}/${configure_libdir}/" \
+	${SUB_MAKE} install
 }
 
