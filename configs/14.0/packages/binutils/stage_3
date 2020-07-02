@@ -41,6 +41,7 @@ atcfg_configure() {
 		--libdir="${at_dest}/lib" \
 		--disable-nls \
 		--disable-gdb \
+		--disable-gdbserver \
 		--disable-readline \
 		--disable-libdecnumber \
 		--disable-sim \
