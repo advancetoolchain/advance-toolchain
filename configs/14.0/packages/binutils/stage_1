@@ -42,6 +42,7 @@ atcfg_configure() {
 					--with-sysroot=${sysroot} \
 					--prefix=${at_dest} \
 					--disable-gdb \
+					--disable-gdbserver \
 					--disable-readline \
 					--disable-libdecnumber \
 					--disable-sim \

@@ -72,11 +72,12 @@ atcfg_configure() {
 
 atcfg_make() {
 	PATH=${at_dest}/bin:${PATH} \
-		${SUB_MAKE} all-gdb
+		${SUB_MAKE} all-gdbsupport all-gdb all-gdbserver
 }
 
 
 atcfg_install() {
 	PATH=${at_dest}/bin:${PATH} \
-		${SUB_MAKE} install-gdb DESTDIR=${install_place}
+		${SUB_MAKE} install-gdbsupport install-gdb install-gdbserver \
+			    DESTDIR=${install_place}
 }

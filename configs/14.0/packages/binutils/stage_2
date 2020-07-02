@@ -38,6 +38,7 @@ atcfg_configure() {
 						--prefix=${at_dest} \
 						--libdir=${at_dest}/lib${compiler##32} \
 						--disable-gdb \
+						--disable-gdbserver \
 						--disable-readline \
 						--disable-libdecnumber \
 						--disable-sim \
@@ -62,6 +63,7 @@ atcfg_configure() {
 						--with-sysroot=${dest_cross} \
 						--prefix=${at_dest} \
 						--disable-gdb \
+						--disable-gdbserver \
 						--disable-readline \
 						--disable-libdecnumber \
 						--disable-sim \

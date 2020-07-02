@@ -43,7 +43,7 @@ regexp "($gcc_ver\[^\[:blank:\]\]+)" \
 set as_exec {ar as ld nm objcopy objdump ranlib strip}
 
 set alt_exec $as_exec
-lappend addr2line c++filt size strings
+lappend alt_exec addr2line c++filt size strings
 
 set n_exec $alt_exec
 lappend n_exec c++ g++ gcc gfortran
@@ -63,7 +63,7 @@ if { $env(AT_MAJOR_VERSION) >= 9.0 } {
 }
 
 # Binaries distributed with a different name on cross and non-cross
-set dif_exec {cpp elfedit embedspu gprof readelf}
+set dif_exec {cpp elfedit embedspu gdb gdbserver gprof readelf}
 if { $env(AT_CROSS_BUILD) == "yes" } {
 	set alt_exec [concat ${alt_exec} ${dif_exec}]
 	set tgt_exec [concat ${tgt_exec} ${dif_exec}]
