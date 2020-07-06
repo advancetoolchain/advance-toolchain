@@ -96,7 +96,7 @@ if { [array names env -exact "AT_PYTHON_VER"] != "" } {
 		fvtr_error "Couldn't determine Python version from \
 $env(AT_PYTHON_VER)."
 	}
-	if { ${py_ver} >= 3.4 } {
+	if { ${py_ver} >= 3.4 && ${py_ver} < 3.8 } {
 		set libname "libpython${py_ver}m"
 	} else {
 		set libname "libpython${py_ver}"
