@@ -151,9 +151,9 @@ create_config ()
 			# internal config files of the referred XL compiler, so
 			# it doesn't touch those configs inside Advance
 			# Toolchain folder tree, generated above.
-			echo "    ${config_script} -at"
+			echo "    ${config_script} -at ${at}"
 			{
-				${config_script} -at
+				${config_script} -at ${at}
 			}  &> ${logfile}
 		# Without a valid license, instruct user and abort configuration
 		else
@@ -161,7 +161,7 @@ create_config ()
 			     "Aborting XLC/XLF config file generation."
 			echo "A log is available at ${logfile}"
 			echo "Please accept the XLC/XLF license prior to" \
-			     "this, and only then run '${config_script} -at'" \
+			     "this, and only then run '${config_script} -at ${at}'" \
 			     "manually."
 			exit 1
 		fi
@@ -172,7 +172,7 @@ create_config ()
 			echo "Your XLC/XLF license wasn't accepted yet." \
 			     "Aborting XLC/XLF config file generation."
 			echo "A log is available at ${logfile}"
-			echo "Run '${new_install} -at' manually."
+			echo "Run '${new_install} -at ${at}' manually."
 			exit 1
 		fi
 
