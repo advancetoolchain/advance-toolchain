@@ -126,7 +126,7 @@ pre {
 
 	<li>The gpg public key <code>gpg-pubkey-6976a827-5164221b</code> is provided in the IBM repositories. This public key is used to verify the authenticity of both the Advance Toolchain packages and the repository contents. Download the gpg public key for your Linux distribution and import it using the following commands:
 <pre>
-wget ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL7/gpg-pubkey-6976a827-5164221b
+wget https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL7/gpg-pubkey-6976a827-5164221b
 rpm --import gpg-pubkey-6976a827-5164221b
 </pre>
 <p>Notes:</p>
@@ -136,11 +136,11 @@ rpm --import gpg-pubkey-6976a827-5164221b
 # Begin of configuration file
 [advance-toolchain]
 name=Advance Toolchain IBM FTP
-baseurl=ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/<em>RHELX</em>
+baseurl=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/<em>RHELX</em>
 failovermethod=priority
 enabled=1
 gpgcheck=1
-gpgkey=ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/<em>RHELX</em>/gpg-pubkey-6976a827-5164221b
+gpgkey=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/<em>RHELX</em>/gpg-pubkey-6976a827-5164221b
 # End of configuration file
 </pre>
 <p>Replace <em>RHELX </em>with the Red Hat release that you are using.</p>
@@ -160,7 +160,7 @@ gpgkey=ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/
 
 	<li>The gpg public key <code>gpg-pubkey-6976a827-5164221b</code> is provided in the IBM repositories. This public key is used to verify the authenticity of both the Advance Toolchain packages and the repository contents. Download the gpg public key for your Linux distribution and import it using the following commands:
 <pre>
-wget ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL7/gpg-pubkey-6976a827-5164221b
+wget https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL7/gpg-pubkey-6976a827-5164221b
 rpm --import gpg-pubkey-6976a827-5164221b
 </pre>
 </li>
@@ -169,11 +169,11 @@ rpm --import gpg-pubkey-6976a827-5164221b
 # Begin of configuration file
 [advance-toolchain]
 name=Advance Toolchain IBM FTP
-baseurl=ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_12
+baseurl=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_12
 failovermethod=priority
 enabled=1
 gpgcheck=1
-gpgkey=ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_12/gpg-pubkey-6976a827-5164221b
+gpgkey=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_12/gpg-pubkey-6976a827-5164221b
 # End of configuration file
 </pre>
 </li>
@@ -195,7 +195,7 @@ gpgkey=ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SL
 
 <ol><li>As root, add the IBM FTP to the repository list:
 <pre>
-zypper addrepo ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_12 "Advance Toolchain"
+zypper addrepo https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_12 "Advance Toolchain"
 </pre>
 <p>This will create a new repository entry called "Advance Toolchain" pointing to the IBM FTP site</p>
 <li>To install the cross-compiler, run the following command: <code>zypper install advance-toolchain-atX.X-cross-ppc64</code>
@@ -214,14 +214,14 @@ zypper addrepo ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at
 
 	<li>The gpg public key <code>gpg-pubkey-6976a827-5164221b</code> is provided in the repositories. This public key is used to verify the authenticity of both the Advance Toolchain packages and the repository contents. Download the gpg public key for your Linux distribution and import it using the following commands:
 <pre>
-wget ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists/trusty/6976a827.gpg.key
+wget https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists/trusty/6976a827.gpg.key
 sudo apt-key add 6976a827.gpg.key
 </pre>
 </li>
 <li>Configure the Advance Toolchain repositories by adding the following line to <code>/etc/apt/sources.list</code>:
 <p>On ppc64el or amd64:</p>
 <pre>
-deb ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu trusty atX.X
+deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu trusty atX.X
 </pre>
 
 <p>Notes:</p>
@@ -229,15 +229,15 @@ deb ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu tru
 <ul>
 	<li>When installing on Ubuntu 16.04 (xenial) or Ubuntu 14.10 (utopic), point to its respective repository:
 <pre>
-deb ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu xenial atX.X
-deb ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu utopic atX.X
+deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu xenial atX.X
+deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu utopic atX.X
 </pre>
 	</li>
 
 
     	<li>When installing on Debian 8 (jessie), point to its respective repository:
 <pre>
-deb ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian jessie atX.X
+deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian jessie atX.X
 </pre>
 	</li>
 </ul>
