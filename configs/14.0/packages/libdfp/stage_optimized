@@ -62,8 +62,7 @@ atcfg_make_check() {
 
 atcfg_install() {
 	PATH=${at_dest}/bin:${PATH} \
-	install_root=${install_place} \
-	${SUB_MAKE} install
+	${SUB_MAKE} install DESTDIR=${install_place}
 }
 
 
