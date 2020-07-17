@@ -318,6 +318,9 @@ for DIR in $(find %{_prefix}/lib/debug/%{_prefix}/lib*/ -type d \
     dest=${DIR#%{_prefix}/lib/debug}
     mkdir -p ${dest}/.debug/
     ln -sf ${DIR}/* ${dest}/.debug/
+    for FILE in $(ls -1 ${DIR}/*.debug 2>/dev/null); do
+        ln -sf ${FILE} ${dest}/.debug/$(basename ${FILE} .debug)
+    done
 done
 
 #---------------------------------------------------
@@ -329,6 +332,9 @@ for DIR in $(find %{_prefix}/lib/debug/%{_prefix}/lib*/ -type d \
     dest=${DIR#%{_prefix}/lib/debug}
     mkdir -p ${dest}/.debug/
     ln -sf ${DIR}/* ${dest}/.debug/
+    for FILE in $(ls -1 ${DIR}/*.debug 2>/dev/null); do
+        ln -sf ${FILE} ${dest}/.debug/$(basename ${FILE} .debug)
+    done
 done
 
 #---------------------------------------------------
@@ -340,6 +346,9 @@ for DIR in $(find %{_prefix}/lib/debug/%{_prefix}/lib*/ -type d \
     dest=${DIR#%{_prefix}/lib/debug}
     mkdir -p ${dest}/.debug/
     ln -sf ${DIR}/* ${dest}/.debug/
+    for FILE in $(ls -1 ${DIR}/*.debug 2>/dev/null); do
+        ln -sf ${FILE} ${dest}/.debug/$(basename ${FILE} .debug)
+    done
 done
 
 #---------------------------------------------------
@@ -351,6 +360,9 @@ for DIR in $(find %{_prefix}/lib/debug/%{_prefix}/lib*/ -type d \
     dest=${DIR#%{_prefix}/lib/debug}
     mkdir -p ${dest}/.debug/
     ln -sf ${DIR}/* ${dest}/.debug/
+    for FILE in $(ls -1 ${DIR}/*.debug 2>/dev/null); do
+        ln -sf ${FILE} ${dest}/.debug/$(basename ${FILE} .debug)
+    done
 done
 
 #---------------------------------------------------
@@ -362,6 +374,9 @@ for DIR in $(find %{_prefix}/lib/debug/%{_prefix}/lib*/ -type d \
     dest=${DIR#%{_prefix}/lib/debug}
     mkdir -p ${dest}/.debug/
     ln -sf ${DIR}/* ${dest}/.debug/
+    for FILE in $(ls -1 ${DIR}/*.debug 2>/dev/null); do
+        ln -sf ${FILE} ${dest}/.debug/$(basename ${FILE} .debug)
+    done
 done
 
 ####################################################
