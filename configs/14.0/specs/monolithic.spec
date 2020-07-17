@@ -1,4 +1,4 @@
-# Copyright 2017 IBM Corporation
+# Copyright 2020 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -302,57 +302,70 @@ restorecon -R %{_prefix}/share/zoneinfo
 
 #---------------------------------------------------
 %post runtime-debuginfo
-# Create symlinks to the debuginfo files in .debug subdirectories so valgrind
-# and oprofile can find the symbols.
-for DIR in $(find %{_prefix}/lib/debug/%{_prefix}/lib*/ -type d \
+# Create symlinks to the debuginfo files in .debug subdirectories so valgrind,
+# gdb, and perf can find the symbols.
+for DIR in $(find %{_prefix}/lib/debug/%{_prefix}/*/ -type d \
              | grep -v build-id); do
     dest=${DIR#%{_prefix}/lib/debug}
     mkdir -p ${dest}/.debug/
     ln -sf ${DIR}/* ${dest}/.debug/
-done
-
+    for FILE in $(ls -1 ${DIR}/*.debug 2>/dev/null); do
+        ln -sf ${FILE} ${dest}/.debug/$(basename ${FILE} .debug)
+    done
 #---------------------------------------------------
 %post devel-debuginfo
-# Create symlinks to the debuginfo files in .debug subdirectories so valgrind
-# and oprofile can find the symbols.
-for DIR in $(find %{_prefix}/lib/debug/%{_prefix}/lib*/ -type d \
+# Create symlinks to the debuginfo files in .debug subdirectories so valgrind,
+# gdb, and perf can find the symbols.
+for DIR in $(find %{_prefix}/lib/debug/%{_prefix}/*/ -type d \
              | grep -v build-id); do
     dest=${DIR#%{_prefix}/lib/debug}
     mkdir -p ${dest}/.debug/
     ln -sf ${DIR}/* ${dest}/.debug/
+    for FILE in $(ls -1 ${DIR}/*.debug 2>/dev/null); do
+        ln -sf ${FILE} ${dest}/.debug/$(basename ${FILE} .debug)
+    done
 done
 
 #---------------------------------------------------
 %post mcore-libs-debuginfo
-# Create symlinks to the debuginfo files in .debug subdirectories so valgrind
-# and oprofile can find the symbols.
-for DIR in $(find %{_prefix}/lib/debug/%{_prefix}/lib*/ -type d \
+# Create symlinks to the debuginfo files in .debug subdirectories so valgrind,
+# gdb, and perf can find the symbols.
+for DIR in $(find %{_prefix}/lib/debug/%{_prefix}/*/ -type d \
              | grep -v build-id); do
     dest=${DIR#%{_prefix}/lib/debug}
     mkdir -p ${dest}/.debug/
     ln -sf ${DIR}/* ${dest}/.debug/
+    for FILE in $(ls -1 ${DIR}/*.debug 2>/dev/null); do
+        ln -sf ${FILE} ${dest}/.debug/$(basename ${FILE} .debug)
+    done
 done
 
 #---------------------------------------------------
 %post perf-debuginfo
-# Create symlinks to the debuginfo files in .debug subdirectories so valgrind
-# and oprofile can find the symbols.
-for DIR in $(find %{_prefix}/lib/debug/%{_prefix}/lib*/ -type d \
+# Create symlinks to the debuginfo files in .debug subdirectories so valgrind,
+# gdb, and perf can find the symbols.
+for DIR in $(find %{_prefix}/lib/debug/%{_prefix}/*/ -type d \
              | grep -v build-id); do
     dest=${DIR#%{_prefix}/lib/debug}
     mkdir -p ${dest}/.debug/
     ln -sf ${DIR}/* ${dest}/.debug/
+    for FILE in $(ls -1 ${DIR}/*.debug 2>/dev/null); do
+        ln -sf ${FILE} ${dest}/.debug/$(basename ${FILE} .debug)
+    done
 done
 
 #---------------------------------------------------
 %post libnxz-debuginfo
-# Create symlinks to the debuginfo files in .debug subdirectories so valgrind
-# and oprofile can find the symbols.
-for DIR in $(find %{_prefix}/lib/debug/%{_prefix}/lib*/ -type d \
+# Create symlinks to the debuginfo files in .debug subdirectories so valgrind,
+# gdb, and perf can find the symbols.
+for DIR in $(find %{_prefix}/lib/debug/%{_prefix}/*/ -type d \
              | grep -v build-id); do
     dest=${DIR#%{_prefix}/lib/debug}
     mkdir -p ${dest}/.debug/
     ln -sf ${DIR}/* ${dest}/.debug/
+    for FILE in $(ls -1 ${DIR}/*.debug 2>/dev/null); do
+        ln -sf ${FILE} ${dest}/.debug/$(basename ${FILE} .debug)
+    done
 done
 
 ####################################################
@@ -480,6 +493,26 @@ if [ $1 -eq 0 ] ; then  # final removal
     semanage fcontext -d -t etc_t '%{_prefix}/etc(/.*)?' 2>/dev/null
     restorecon -R %{_prefix}/etc
 fi
+
+%postun runtime-debuginfo
+# Delete symlinks to the now-deleted debuginfo files in .debug subdirectories.
+find -L %{_prefix} -path '*/.debug/*' -type l -exec rm -f {} \;
+
+%postun devel-debuginfo
+# Delete symlinks to the now-deleted debuginfo files in .debug subdirectories.
+find -L %{_prefix} -path '*/.debug/*' -type l -exec rm -f {} \;
+
+%postun mcore-libs-debuginfo
+# Delete symlinks to the now-deleted debuginfo files in .debug subdirectories.
+find -L %{_prefix} -path '*/.debug/*' -type l -exec rm -f {} \;
+
+%postun perf-debuginfo
+# Delete symlinks to the now-deleted debuginfo files in .debug subdirectories.
+find -L %{_prefix} -path '*/.debug/*' -type l -exec rm -f {} \;
+
+%postun libnxz-debuginfo
+# Delete symlinks to the now-deleted debuginfo files in .debug subdirectories.
+find -L %{_prefix} -path '*/.debug/*' -type l -exec rm -f {} \;
 
 
 ####################################################

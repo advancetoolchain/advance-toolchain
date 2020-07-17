@@ -1,0 +1,59 @@
+#!/usr/bin/expect
+# Copyright 2020 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Check if the `perf` command can utilize AT debuginfo.
+
+source ./shared.exp
+
+set traced_events "/sys/kernel/debug/tracing/uprobe_events"
+
+if {![file writable $traced_events]} {
+	printit "$traced_events is not writable." $WARNING
+	printit "  You may be able to resolve this by:"
+	printit "  $ /usr/bin/sudo mount -o remount,mode=755 /sys/kernel/debug"
+	printit "  $ /usr/bin/sudo mount -o remount,mode=755 /sys/kernel/debug/tracing"
+	printit "  $ /usr/bin/sudo chmod a+rw /sys/kernel/debug/tracing/uprobe_events"
+	printit "Skipping..."
+	exit $ENOSYS
+}
+
+set fail 0
+
+printit "Attempt to create a probe using a variable name..."
+
+set at_object "ld"
+set at_object_path "$env(AT_DEST)/bin/$at_object"
+set at_object_sym "main"
+set at_object_arg "argc"
+
+# Attempt to set a user probe in `ld` at `main`, variable `argc`.
+# All of these are arbitrary, and perhaps a bit fragile, as they
+# depend on a certain binary (`ld`) containing a certain symbol (`main')
+# which accepts a certain named argument (`argc`), but they are arguably
+# less fragile than most other choices.
+
+set status [catch {exec perf probe -v -x $at_object_path \
+			"test_perf_debug=$at_object_sym $at_object_arg" 2>@1} out]
+printit $out
+
+if { $status > 0 } {
+	incr fail
+} else {
+	set out [exec perf probe --list]
+	printit $out
+	set out [exec perf probe -v --del=probe_$at_object:test_perf_debug 2>@1]
+	printit $out
+}
+exit $fail

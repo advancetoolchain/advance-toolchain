@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2017 IBM Corporation
+# Copyright 2020 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,12 +16,15 @@
 #
 
 if [[ "${1}" == configure ]]; then
-	# Create symlinks to the debuginfo files in .debug subdirectories so valgrind
-	# and oprofile can find the symbols.
-	for DIR in $(find __AT_DEST__/lib/debug/__AT_DEST__/lib*/ -type d \
+	# Create symlinks to the debuginfo files in .debug subdirectories so
+	# valgrind, gdb, and perf can find the symbols.
+	for DIR in $(find __AT_DEST__/lib/debug/__AT_DEST__/*/ -type d \
 		     | grep -v build-id); do
 		dest=${DIR#__AT_DEST__/lib/debug}
 		mkdir -p ${dest}/.debug/
 		ln -sf ${DIR}/* ${dest}/.debug/
+		for FILE in $(ls -1 ${DIR}/*.debug 2>/dev/null); do
+			ln -sf ${FILE} ${dest}/.debug/$(basename ${FILE} .debug)
+		done
 	done
 fi
