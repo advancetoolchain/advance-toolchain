@@ -13,12 +13,13 @@
 # limitations under the License.
 #
 import gdb
+import sys
 class HelloGdb(gdb.Command):
 
   def __init__ (self):
     super (HelloGdb, self).__init__("hello-gdb", gdb.COMMAND_USER)
 
   def invoke(self, arg, from_tty):
-    print "Hello GDB from Python!"
+    print ("Hello GDB from Python!")
 
 HelloGdb()
