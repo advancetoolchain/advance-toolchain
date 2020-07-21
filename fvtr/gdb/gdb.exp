@@ -56,12 +56,6 @@ set CFLAGS "-O0 -Wall -g"
 
 set fail 0
 
-if { [string index $env(AT_PYTHON_VER) 0] == "3" } {
-	set pytest "hello3-gdb.py"
-} else {
-	set pytest "hello-gdb.py"
-}
-
 if { $TARGET32} {
 	printit "Starting 32-bit compile..."
 	compile "${CC} -m32 ${CFLAGS} ${FULLPATH}/gdbtest.c -o \
@@ -73,7 +67,7 @@ ${FULLPATH}/at-gdbtest-32"
 	if { $rc > 0 } { incr fail }
 	printit "Running 32 bit gdb python testcase"
 	set rc [ gdb_python_test "$GDB" "${FULLPATH}/at-gdbtest-32" \
-				 "$env(AT_DEST)/lib" "$pytest"]
+				 "$env(AT_DEST)/lib" "hello-gdb.py"]
 	if { $rc > 0 } { incr fail }
 	file delete -force ${FULLPATH}/at-gdbtest-32
 }
@@ -89,7 +83,7 @@ ${FULLPATH}/at-gdbtest-64"
 
 	printit "Running 64 bit gdb python testcase"
 	set rc [ gdb_python_test "$GDB" "${FULLPATH}/at-gdbtest-64" \
-				 "$env(AT_DEST)/lib64" "$pytest" ]
+				 "$env(AT_DEST)/lib64" "hello-gdb.py" ]
 	if { $rc > 0 } { incr fail }
 	file delete -force ${FULLPATH}/at-gdbtest-64
 }
