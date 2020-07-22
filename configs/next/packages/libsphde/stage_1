@@ -94,7 +94,7 @@ atcfg_configure ()
 	CC="${configure_cc}" \
 	CXX="${configure_cxx}" \
 	CFLAGS="-Wl,-zrelro -m${AT_BIT_SIZE} -O3 -g" \
-	CXXFLAGS="-m${AT_BIT_SIZE} -O3 -g" \
+	CXXFLAGS="-m${AT_BIT_SIZE} -O3 -g -Wno-nonnull" \
 		${ATSRC_PACKAGE_WORK}/configure \
 			--build=${configure_build} \
 			--host=${configure_host} \
