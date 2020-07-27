@@ -342,7 +342,7 @@ ${server}.\n"
 	set screen 1
 	send "which screen\n"
 	expect {
-		-re $prompt { }
+		"/screen" { }
 		"no screen" {
 			set screen 0 }
 		default {
