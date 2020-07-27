@@ -15,7 +15,7 @@
 %description
 The advance toolchain is a self contained toolchain which provides preview
 toolchain functionality in GCC, binutils and GLIBC, as well as the debug and
-profile tools GDB, Valgrind and OProfile.
+profile tools GDB and Valgrind.
 It also provides a group of optimized threading libraries as well.
 
 ####################################################
@@ -38,7 +38,7 @@ BuildRequires: systemd
 
 %description runtime
 The advance toolchain is a self contained toolchain which provides preview
-toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
 
 
 ####################################################
@@ -51,7 +51,7 @@ Provides: advance-toolchain-devel = %{at_major_version}-%{at_revision_number}
 
 %description devel
 The advance toolchain is a self contained toolchain which provides preview
-toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
 This package provides the packages necessary to build applications that use the
 features provided by the Advance Toolchain.
 
@@ -66,7 +66,7 @@ Provides: advance-toolchain-mcore-libs = %{at_major_version}-%{at_revision_numbe
 
 %description mcore-libs
 The advance toolchain is a self contained toolchain which provides preview
-toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
 This package provides the necessary libraries to build multi-threaded applications
 using the specialized multi-threaded libraries Amino-CBB, URCU and Threading
 Building Blocks.
@@ -82,9 +82,9 @@ Provides: advance-toolchain-perf = %{at_major_version}-%{at_revision_number}
 
 %description perf
 The advance toolchain is a self contained toolchain which provides preview
-toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
 This package 'perf' package contains the performance library install targets
-for Valgrind and OProfile.
+for Valgrind.
 
 
 ####################################################
@@ -97,7 +97,7 @@ Provides: advance-toolchain-libnxz = %{at_major_version}-%{at_revision_number}
 
 %description libnxz
 The advance toolchain is a self contained toolchain which provides preview
-toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
 This package provides the NX GZIP Library.
 
 
@@ -111,7 +111,7 @@ Group: Development/Libraries
 
 %description selinux
 The advance toolchain is a self contained toolchain which provides preview
-toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
 The 'selinux' package contains the required labels for a system
 running SElinux.
 
@@ -252,15 +252,6 @@ if [[ ${GLIBC_ABS} -gt %{at_glibc_ver} ]]; then
     echo "Your current glibc version ${GLIBC_VER} is higher than the one provided by the advance toolchain glibc."
     echo "Please, consider the possibility of installing a newer version of advance toolchain."
 fi
-
-#---------------------------------------------------
-%pre perf
-# We need to create this special user for OProfile
-getent group oprofile >/dev/null || groupadd -r oprofile
-getent passwd oprofile >/dev/null || \
-useradd -r -g oprofile -d /home/oprofile -s /sbin/nologin \
--c "Special user account to be used by OProfile" oprofile
-exit 0
 
 ####################################################
 %post runtime
