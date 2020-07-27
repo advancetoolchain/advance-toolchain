@@ -52,14 +52,15 @@ BUILD_GCC_LANGUAGES := c,c++,fortran,go
 # List supported CPUs to build for active, compat and embed
 # =========================================================
 # - List of valid CPUs for active and compat:
-#   * power4, power5, power5+, power6, power6x and power7
+#   * power4, power5, power5+, power6, power6x, power7, power8, power9 and
+#     power10
 
 # CPU base on ppc64le is power8.
 # Otherwise, CPU base is power7.
 ifeq ($(BUILD_ARCH),ppc64le)
-    BUILD_ACTIVE_MULTILIBS := power9
+    BUILD_ACTIVE_MULTILIBS := power9 power10
 else
-    BUILD_ACTIVE_MULTILIBS := power8 power9
+    BUILD_ACTIVE_MULTILIBS := power8 power9 power10
 endif
 
 # Download options
