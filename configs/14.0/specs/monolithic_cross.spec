@@ -63,7 +63,7 @@ Provides: advance-toolchain-mcore-libs = %{at_major_version}-%{at_revision_numbe
 
 %description mcore-libs
 The advance toolchain is a self contained toolchain which provides preview
-toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
 This package provides the necessary libraries to build multi-threaded applications
 using the specialized multi-threaded libraries Boost, SPHDE, URCU and Threading
 Building Blocks.
@@ -78,7 +78,7 @@ Provides: advance-toolchain-libnxz = %{at_major_version}-%{at_revision_number}
 
 %description libnxz
 The advance toolchain is a self contained toolchain which provides preview
-toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
 This package provides the NX GZIP Library.
 
 ####################################################

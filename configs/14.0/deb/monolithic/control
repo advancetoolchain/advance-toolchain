@@ -22,7 +22,7 @@ Architecture: ppc64el
 Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__)
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
- toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+ toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime
 Architecture: ppc64el
@@ -30,7 +30,7 @@ Build-Depends: dh-systemd
 Depends: ${shlibs:Depends} ${misc:Depends}
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
- toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+ toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
 
 Package: advance-toolchain-runtime-dbg
 Architecture: ppc64el
@@ -51,7 +51,7 @@ Conflicts: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime
 Depends: ${shlibs:Depends}
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
- toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+ toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
 
 Package: advance-toolchain-devel
 Architecture: ppc64el
@@ -59,7 +59,7 @@ Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-devel (= __AT_FULL_VER__)
 Depends: ${shlibs:Depends} ${misc:Depends}
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
- toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+ toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
  This package provides the packages necessary to build applications that use the
  features provided by the Advance Toolchain.
 
@@ -70,7 +70,7 @@ Depends: ${shlibs:Depends} ${misc:Depends}
 Suggests: environment-modules
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
- toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+ toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
  This package provides the packages necessary to build applications that use the
  features provided by the Advance Toolchain.
 
@@ -92,7 +92,7 @@ Architecture: ppc64el
 Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-mcore-libs (= __AT_FULL_VER__)
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
- toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+ toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
  This package provides the necessary libraries to build multi-threaded
  applications.
 
@@ -102,7 +102,7 @@ Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__)
 Depends: ${shlibs:Depends} ${misc:Depends}
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
- toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+ toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
  This package provides the necessary libraries to build multi-threaded
  applications.
 
@@ -124,9 +124,8 @@ Architecture: ppc64el
 Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-perf (= __AT_FULL_VER__)
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
- toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
- This package contains the performance library install targets for Valgrind
- and OProfile.
+ toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
+ This package contains the performance library install targets for Valgrind.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-perf
 Architecture: ppc64el
@@ -134,9 +133,8 @@ Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__)
 Depends: ${shlibs:Depends} ${misc:Depends}
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
- toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
- This package contains the performance library install targets for Valgrind
- and OProfile.
+ toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
+ This package contains the performance library install targets for Valgrind.
 
 Package: advance-toolchain-perf-dbg
 Architecture: ppc64el
@@ -157,7 +155,7 @@ Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz (= __AT_FULL_VER__)
 Depends: ${shlibs:Depends} ${misc:Depends}
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
- toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+ toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
  This package contains the NX GZIP Library.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz
@@ -166,7 +164,7 @@ Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__)
 Depends: ${shlibs:Depends} ${misc:Depends}
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
- toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+ toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
  This package contains the NX GZIP Library.
 
 Package: advance-toolchain-libnxz-dbg

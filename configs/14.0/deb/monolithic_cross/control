@@ -75,7 +75,7 @@ Architecture: any
 Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__-mcore-libs (= __AT_FULL_VER__)
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
- toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+ toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
  This package provides the necessary libraries to build multi-threaded
  applications.
 
@@ -85,7 +85,7 @@ Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__ (= __AT
 Depends: ${shlibs:Depends} ${misc:Depends}
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
- toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+ toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
  This package provides the necessary libraries to build multi-threaded
  applications.
 
@@ -95,7 +95,7 @@ Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__-libnxz 
 Depends: ${shlibs:Depends} ${misc:Depends}
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
- toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+ toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
  This package contains the NX GZIP Library.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__-libnxz
@@ -104,5 +104,5 @@ Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__ (= __AT
 Depends: ${shlibs:Depends} ${misc:Depends}
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
- toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+ toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
  This package contains the NX GZIP Library.
