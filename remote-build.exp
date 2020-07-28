@@ -227,6 +227,8 @@ foreach server $servers {
 			set host_destprefix $home/$host_destprefix
 		}
 	}
+	set host_trayprefix [string trimright "$host_trayprefix" /]
+	set host_destprefix [string trimright "$host_destprefix" /]
 
 	# Please note that using "set tray_dir" and "set destdir" implies that
 	# if you try to set those on your config file, they will be overridden
@@ -234,9 +236,9 @@ foreach server $servers {
 	# desired paths.
 
 	# Directory used by the script to save its files.
-	set tray_dir $host_trayprefix/$atdir
+	set tray_dir [string trimright "$host_trayprefix/$atdir" /]
 	# Directory where AT will be installed (aka DESTDIR).
-	set destdir $host_destprefix/$atdir
+	set destdir [string trimright "$host_destprefix/$atdir" /]
 
 	send "mkdir -p ${tray_dir}\n"
 	expect {
@@ -406,7 +408,7 @@ DESTDIR=${destdir}"
 	} else {
 		set tmux_parms "new -s at-build"
 		send_user "tmux ${tmux_parms} ${parent_cmd} make ${make_parms}\n"
-		send "tmux ${tmux_parms} ${parent_cmd} make ${make_parms} \\; pipe-pane 'cat > screen.log'\n"
+		send "tmux ${tmux_parms} ${parent_cmd} make ${make_parms} \\; pipe-pane 'cat >'${tray_dir}'/screen.log'\n"
 	}
 	expect {
 		"command not found" {
