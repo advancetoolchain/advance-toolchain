@@ -29,7 +29,6 @@
 ./old_patches
 ./pack.txt
 ./patches
-./remote-build.exp
 ./scripts/.svn
 ./scripts/helpers/.svn
 ./scripts/skeletons/.svn
