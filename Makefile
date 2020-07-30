@@ -110,6 +110,9 @@ FETCH_PATCHES := $(AT_BASE)/patches
 # Define the build timestamp
 AT_TODAY := $(shell date "+%Y%m%d")
 
+# Define the format of the running timestamp
+TIME := date -u +%Y-%m-%d_%H.%M.%S
+
 # Only set build environment for targets other the 'clone', 'edit' and 'pack'
 ifneq "$(MAKECMDGOALS)" "clone"
 ifneq "$(MAKECMDGOALS)" "edit"
@@ -544,9 +547,8 @@ define set_provides_arch
 endef
 
 define collect_logs
-    @dt=$$(date -u +"%Y-%m-%d_%H.%M.%S"); \
-    fname=collected_logs-$(AT_VER_REV_INTERNAL).$(BUILD_ID)_$${dt}.tar.gz; \
-    echo -en "Collecting log information to $${fname}... "; \
+    @fname=collected_logs-$(AT_VER_REV_INTERNAL).$(BUILD_ID)_$$($(TIME)).tar.gz; \
+    echo -e "$$($(TIME)) Collecting log information to $${fname}... "; \
     { unset commit_info; \
         if [[ -f commit.info ]]; then \
             cp -p commit.info $(AT_WD); \
@@ -555,12 +557,11 @@ define collect_logs
         cd $(AT_WD) && \
         tar czf collected_logs.tar.gz \
             ./logs/* ./dynamic $${commit_info} \
-            $$(find ./builds -name 'config.[hlms]*' \
-                    -print); \
+            $$(find ./builds -name 'config.[hlms]*' -print); \
         mv -f $(AT_WD)/collected_logs.tar.gz $(AT_BASE)/$${fname}; \
         unset commit_info; \
-    } > /dev/null 2>&1
-    @echo 'done!'
+    } > /dev/null 2>&1; \
+    echo "$$($(TIME)) Log information collected!"
 endef
 
 # This is a simple heuristics to find out if we need to build the atXX-compat
@@ -846,7 +847,7 @@ test: fvtr tarball_test
 fvtr: $(RCPTS)/fvtr.rcpt
 
 $(RCPTS)/fvtr.rcpt: $(RCPTS)/package.rcpt
-	@echo "Running FVTR for $(AT_VER_REV_INTERNAL)..."
+	@echo "$$($(TIME)) Running FVTR for $(AT_VER_REV_INTERNAL)..."
 	@+{ cd fvtr; \
 	   AT_WD=$(AT_WD) \
 	   AT_PREVIOUS_VERSION=$(AT_PREVIOUS_VERSION) \
@@ -860,7 +861,7 @@ $(RCPTS)/fvtr.rcpt: $(RCPTS)/package.rcpt
 	};
 
 tarball_test: $(RCPTS)/source_tarball.rcpt
-	@+{ echo "Checking the source tarball..."; \
+	@+{ echo "$$($(TIME)) Checking the source tarball..."; \
 	    if [[ "$(CROSS_BUILD)" == "no" ]]; then \
 	        $(call runandlog,$(LOGS)/_tarball_check.log,$(UTILITIES_ROOT)/check_tarball.sh $(AT_MAJOR_VERSION) $(SRC_TAR_FILE)); \
 	        if [[ $${ret} -ne 0 ]]; then \
@@ -868,20 +869,20 @@ tarball_test: $(RCPTS)/source_tarball.rcpt
 	            exit 1; \
 	        fi; \
 	    fi; \
-	    echo "Completed source tarball check!"; \
+	    echo "$$($(TIME)) Completed source tarball check!"; \
 	};
 
 clean: destclean
 
 cleanall: destclean
-	@echo "Cleaning pristine sources and patches..."
+	@echo "$$($(TIME)) Cleaning pristine sources and patches..."
 	@echo "- $(FETCH_SOURCES)"
 	@rm -rf $(FETCH_SOURCES)
 	@echo "- $(FETCH_PATCHES)"
 	@rm -rf $(FETCH_PATCHES)
 
 destclean: localclean
-	@echo "Removing installation from $(AT_DEST)..."
+	@echo "$$($(TIME)) Removing installation from $(AT_DEST)..."
 	@echo "- $(AT_DEST)"
 	@rm -rf $(AT_DEST)/*
 	@+{ rmdir $(AT_DEST); \
@@ -892,17 +893,17 @@ destclean: localclean
 	};
 
 clean-fvtr: $(RCPTS)/collect-fvtr.rcpt
-	@echo "Cleaning FVTR logs... "
+	@echo "$$($(TIME)) Cleaning FVTR logs... "
 	@find fvtr/ -name '*.log' -delete
-	@echo "Cleaning FVTR output files... "
+	@echo "$$($(TIME)) Cleaning FVTR output files... "
 	@find fvtr/ -name '*.out*' -delete
 
 clean-temp:
-	@echo "Cleaning $(TEMP_INSTALL)"
+	@echo "$$($(TIME)) Cleaning $(TEMP_INSTALL)"
 	@rm -rf ${TEMP_INSTALL}
 
 localclean: collect clean-temp clean-fvtr
-	@echo "Cleaning build related folders..."
+	@echo "$$($(TIME)) Cleaning build related folders..."
 	@echo "- $(AT_WD)"
 	@rm -rf $(AT_WD)
 	@echo "- $(FETCH_SOURCES)/*.lock"
@@ -924,7 +925,7 @@ collect-fvtr: $(RCPTS)/collect-fvtr.rcpt
 # This is useful for the BuildBot in order to find all of these files in a
 # standard place.
 collect-artifacts:
-	@echo "Collecting artifacts..."
+	@echo "$$($(TIME)) Collecting artifacts..."
 	@$(call copy_if_exists,$(CONFIG_EXPT),$(ARTIFACTS))
 	@$(call copy_if_exists,$(AT_BASE)/sanity.log,$(ARTIFACTS))
 	@$(call copy_if_exists,$(shell ls -t $(AT_BASE)/collected_logs-* \
@@ -965,7 +966,7 @@ endif
 
 clone:
 	@+{ if [[ -n "$(FROM)" && -n "$(TO)" ]]; then \
-	        echo "Clonning config from $(FROM) to $(TO)..."; \
+	        echo "$$($(TIME)) Cloning config from $(FROM) to $(TO)..."; \
 	        { pushd "$(CONFIG_ROOT)"; \
 	          find $(FROM) -type d -print | sed 's/^$(FROM)*/$(TO)/g' | xargs mkdir -p; \
 	          contents=$$(find $(FROM) ! -type d -print); \
@@ -995,7 +996,7 @@ clone:
 
 edit:
 	@+{ if [[ -n "$(FROM)" && -n "$(TYPE)" ]]; then \
-	        echo "Materializing config files of type $(TYPE) of config version $(FROM)..."; \
+	        echo "$$($(TIME)) Materializing config files of type $(TYPE) of config version $(FROM)..."; \
 	        { pushd "$(CONFIG_ROOT)/$(FROM)/$(TYPE)"; \
 	          if [[ -n "$(FILE)" ]]; then \
 	              cp -L $(FILE) $(FILE).orig && rm -rf $(FILE) && mv $(FILE).orig $(FILE); \
@@ -1013,7 +1014,7 @@ edit:
 
 # Generate a pack for usage on a build pack area
 pack: hash
-	@echo "Preparing the build pack..."
+	@echo "$$($(TIME)) Preparing the build pack..."
 	@+{ TMP_DIR=$$(mktemp -d "/tmp/atpack-XXXXXXX"); \
 	    tar -cpvz -X "$(HELPERS_ROOT)/pack-exclude.lst" -f "$${TMP_DIR}/at-$(AT_TODAY).tgz" ./ > \
 	        "$${TMP_DIR}/at-$(AT_TODAY).included" 2>&1; \
@@ -1021,8 +1022,8 @@ pack: hash
 	    mv "$${TMP_DIR}/at-$(AT_TODAY).included" . ; \
 	    rm -rf "$${TMP_DIR}"; \
 	} > /dev/null 2>&1
-	@echo "- Built pack tarball: at-$(AT_TODAY).tgz"
-	@echo "- Included file list: at-$(AT_TODAY).included"
+	@echo "$$($(TIME)) - Built pack tarball: at-$(AT_TODAY).tgz"
+	@echo "$$($(TIME)) - Included file list: at-$(AT_TODAY).included"
 
 # Update the commit.info with the branch/commit in use
 hash:
@@ -1114,7 +1115,7 @@ $(RCPTS)/package.rcpt: $(RCPTS)/$(pack-sys).rcpt $(RCPTS)/source_tarball.rcpt
 # Build and include the monitor (watch_ldconfig) utility
 # RPM distros use a systemd service and DEB distros use a cronjob.
 $(RCPTS)/monitor.rcpt: $(RCPTS)/toolchain.rcpt
-	@echo "Preparing the system's ld.so.cache monitor"
+	@echo "$$($(TIME)) Preparing the system's ld.so.cache monitor"
 	@+{ $(AT_DEST)/bin/gcc -O2 -DAT_LDCONFIG_PATH=$(AT_DEST)/sbin/ldconfig \
 	         $(SCRIPTS_ROOT)/utilities/watch_ldconfig.c -o $(AT_DEST)/bin/watch_ldconfig; \
 	    echo "Monitor sucesfully compiled."; \
@@ -1160,14 +1161,14 @@ $(RCPTS)/debug.rcpt: $(gdb_1-archdeps) $(debug-reqs)
 
 # Generate release-notes
 $(RCPTS)/release-notes.rcpt:
-	@echo "Begin generating the release-notes for $(AT_VER_REV_INTERNAL)..."
+	@echo "$$($(TIME)) Begin generating the release-notes for $(AT_VER_REV_INTERNAL)..."
 	@+{ echo "Building release-notes.$(AT_MAJOR).html"; \
 	    export utilities=$(UTILITIES_ROOT); \
 	    $(call runandlog,$(LOGS)/_release_notes_build.log,\
 		   $(call build_release_notes,$(PACKAGES_LIST))); \
 	    echo "Completed release-notes.$(AT_MAJOR).html build"; \
 	} > $(LOGS)/_release_notes.log 2>&1
-	@echo "Completed release-notes for $(AT_VER_REV_INTERNAL)"
+	@echo "$$($(TIME)) Completed release-notes for $(AT_VER_REV_INTERNAL)"
 	@touch $@
 
 # Extra libraries
@@ -1181,7 +1182,7 @@ $(RCPTS)/tuned.rcpt: $(tuned-targets)
 
 # DEB packages build
 $(RCPTS)/deb.rcpt: $(RCPTS)/build.rcpt $(RCPTS)/distributed_scripts.rcpt
-	@echo "Begin DEB packaging for $(AT_FULL_VER)..."
+	@echo "$$($(TIME)) Begin DEB packaging for $(AT_FULL_VER)..."
 	@+{ echo "Buiding DEB packages for $(AT_FULL_VER)."; \
 	    export AT_STEPID=deb; \
 	    echo "- Preparing the environment vars."; \
@@ -1203,13 +1204,13 @@ $(RCPTS)/deb.rcpt: $(RCPTS)/build.rcpt $(RCPTS)/distributed_scripts.rcpt
 	    fi; \
 	    echo "Everything completed."; \
 	} > $(LOGS)/_deb.log 2>&1
-	@echo "Completed DEB packages for $(AT_FULL_VER)"
+	@echo "$$($(TIME)) Completed DEB packages for $(AT_FULL_VER)"
 	@touch $@
 
 
 # RPM packages build
 $(RCPTS)/rpm.rcpt: $(RCPTS)/build.rcpt $(RCPTS)/distributed_scripts.rcpt
-	@echo "Begin RPM packaging for $(AT_VER_REV_INTERNAL)..."
+	@echo "$$($(TIME)) Begin RPM packaging for $(AT_VER_REV_INTERNAL)..."
 	@+{ echo "Buiding RPM packages for $(AT_VER_REV_INTERNAL)."; \
 	    export AT_STEPID=rpm; \
 	    echo "- Preparing the environment vars."; \
@@ -1231,18 +1232,18 @@ $(RCPTS)/rpm.rcpt: $(RCPTS)/build.rcpt $(RCPTS)/distributed_scripts.rcpt
 	    fi; \
 	    echo "Everything completed."; \
 	} > $(LOGS)/_rpm.log 2>&1
-	@echo "Completed RPM packages for $(AT_VER_REV_INTERNAL)"
+	@echo "$$($(TIME)) Completed RPM packages for $(AT_VER_REV_INTERNAL)"
 	@touch $@
 
 # Create the source code tarball.
 # We can't create it until the build is ready, because some stages apply
 # patches to the source code.
 $(RCPTS)/source_tarball.rcpt: $(RCPTS)/build.rcpt $(RCPTS)/distributed_scripts.rcpt
-	@echo "Begin to package source code for $(AT_VER_REV_INTERNAL)..."
+	@echo "$$($(TIME)) Begin to package source code for $(AT_VER_REV_INTERNAL)..."
 	@+{ echo "Packing distributable sources in a tarball..."; \
 	    $(call pack_source_pkgs,$(call get_built_packages)); \
 	} > $(LOGS)/_source_tarball.log 2>&1
-	@echo "Completed packaging source code for $(AT_VER_REV_INTERNAL)"
+	@echo "$$($(TIME)) Completed packaging source code for $(AT_VER_REV_INTERNAL)"
 	@touch $@
 
 # Cross builds don't require compat, corelibs neither 3rdparty
@@ -1254,7 +1255,7 @@ ifeq ($(CROSS_BUILD),no)
 endif
 $(RCPTS)/build.rcpt: $(RCPTS)/toolchain.rcpt $(RCPTS)/debug.rcpt \
                      $(build-reqs) $(build_targets)
-	@echo "Running ldconfig with final configs on installed" \
+	@echo "$$($(TIME)) Running ldconfig with final configs on installed" \
 	      "$(AT_VER_REV_INTERNAL)"
 	@+{ set -x; \
 	    if [[ "$(CROSS_BUILD)" == "no" ]]; then \
@@ -1264,7 +1265,7 @@ $(RCPTS)/build.rcpt: $(RCPTS)/toolchain.rcpt $(RCPTS)/debug.rcpt \
 	    fi; \
 	    set +x; \
 	} > $(LOGS)/_build.log 2>&1
-	@echo "Completed $(AT_VER_REV_INTERNAL) build"
+	@echo "$$($(TIME)) Completed $(AT_VER_REV_INTERNAL) build"
 	@touch $@
 
 
@@ -1273,18 +1274,18 @@ ifeq ($(BUILD_ENVIRONMENT_MODULES),yes)
 endif
 
 $(RCPTS)/environment_modules.rcpt: $(RCPTS)/build.rcpt
-	@echo "Creating and installing environment modules..."
+	@echo "$$($(TIME)) Creating and installing environment modules..."
 	@mkdir -p $(AT_DEST)/share/modules/modulefiles
 	@$(call runandlog,$(LOGS)/_environment_modules.log, \
 	       $(UTILITIES_ROOT)/pkg_build_environment_modules.sh $(AT_DEST) \
 	       $(AT_DIR_NAME) $(TARGET) \
 	       $(DYNAMIC_SPEC)/main_toolchain/environment-modules.filelist \
 	       $(CROSS_BUILD));
-	@echo "Completed install of environment modules!"
+	@echo "$$($(TIME)) Completed install of environment modules!"
 	@touch $@
 
 $(RCPTS)/distributed_scripts.rcpt: $(ENVIRONMENT_MODULES)
-	@echo "Installing package scripts..."
+	@echo "$$($(TIME)) Installing package scripts..."
 	@+{ echo "Setting final destination for package scripts."; \
 	    if [[ "$(CROSS_BUILD)" == "no" ]]; then \
 	        mkdir -p $(AT_DEST)/scripts; \
@@ -1293,7 +1294,7 @@ $(RCPTS)/distributed_scripts.rcpt: $(ENVIRONMENT_MODULES)
 	        echo "Completed copy."; \
 	    fi; \
 	} > $(LOGS)/_distributed_scripts.log
-	@echo "Completed install of package scripts!"
+	@echo "$$($(TIME)) Completed install of package scripts!"
 	@touch $@
 
 
@@ -1308,7 +1309,7 @@ $(RCPTS)/ldconfig_2.rcpt: $(glibc_2-archdeps) \
                           $(zlib_1-archdeps) \
                           $(zlib_tuned-archdeps) \
                           $(ldconfig_2-reqs)
-	@echo "Second dynamic loader cache update..."
+	@echo "$$($(TIME)) Second dynamic loader cache update..."
 	@+{ echo "Run needed dependency"; \
 	    if [[ "$(CROSS_BUILD)" == "no" ]]; then \
 	        export AT_STEPID=ldconfig_2; \
@@ -1319,11 +1320,11 @@ $(RCPTS)/ldconfig_2.rcpt: $(glibc_2-archdeps) \
 	        fi; \
 	    fi; \
 	} > $(LOGS)/_ldconfig_2.log
-	@echo "Completed second dynamic loader cache update!"
+	@echo "$$($(TIME)) Completed second dynamic loader cache update!"
 	@touch $@
 
 $(RCPTS)/ldconfig_1.rcpt: $(glibc_1-archdeps)
-	@echo "First dynamic loader cache update..."
+	@echo "$$($(TIME)) First dynamic loader cache update..."
 	@+{ echo "Run needed dependency"; \
 	    if [[ "$(CROSS_BUILD)" == "no" ]]; then \
 	        export AT_STEPID=ldconfig_1; \
@@ -1334,11 +1335,11 @@ $(RCPTS)/ldconfig_1.rcpt: $(glibc_1-archdeps)
 	       fi; \
 	    fi; \
 	} > $(LOGS)/_ldconfig_1.log
-	@echo "Completed first dynamic loader cache update!"
+	@echo "$$($(TIME)) Completed first dynamic loader cache update!"
 	@touch $@
 
 $(RCPTS)/%.b.rcpt: $(RCPTS)/%.a.rcpt
-	@echo "Starting the build of $(*F)..."
+	@echo "$$($(TIME)) Starting the build of $(*F)..."
 	@+{ echo "Checking dependencies"; \
 	    pkg="$(shell echo $(*F) | grep -E -o '^[^_-]+_*' | grep -E -o '[^_-]+')"; \
 	    stage_n="$(shell echo $(*F) | sed 's/.*_\([^._-]\+\)-\?.*/\1/g')"; \
@@ -1377,11 +1378,11 @@ $(RCPTS)/%.b.rcpt: $(RCPTS)/%.a.rcpt
 			$(LOGS)/_$${AT_STEPID}-5_clean_stage.log 2>&1; \
 	    echo "Everything completed."; \
 	} > $(LOGS)/_$(*F).log 2>&1
-	@echo "Completed the build of $(*F)!"
+	@echo "$$($(TIME)) Completed the build of $(*F)!"
 	@touch $@
 
 $(RCPTS)/bso_clearance.rcpt:
-	@echo "Checking and clearing the outbound BSO..."
+	@echo "$$($(TIME)) Checking and clearing the outbound BSO..."
 	@bso_active=$$(curl http://www.ibm.com/us/en -s -k -o - | grep -o 'Firewall'); \
 	if [[ "$${bso_active}" == "Firewall" ]]; then \
 	    echo "BSO Firewall closed. Inform your credentials:"; \
@@ -1393,12 +1394,13 @@ $(RCPTS)/bso_clearance.rcpt:
 	    sed -e 's:.*<H1>::g' -e 's:</H1>.*::g' -e 's:<[^>]*>:\n:g' | \
 	    head -n 3; \
 	fi
-	@echo "Completed the outbound BSO clearing!"
+	@echo "$$($(TIME)) Completed the outbound BSO clearing!"
 	@touch $@
 
 $(RCPTS)/collect-fvtr.rcpt:
-	@echo "Collecting FVTR logs... "
+	@echo "$$($(TIME)) Collecting FVTR logs... "
 	@find fvtr/ -name '*.log' -exec cp --parents -t $(LOGS) {} +
+	@echo "$$($(TIME)) Completed collecting FVTR logs!"
 
 $(RCPTS)/rsync_%.rcpt: $(RCPTS)/copy_%.rcpt \
                        $(RCPTS)/patch_%.rcpt
@@ -1406,7 +1408,7 @@ $(RCPTS)/rsync_%.rcpt: $(RCPTS)/copy_%.rcpt \
 
 $(RCPTS)/copy_%.rcpt: $(RCPTS)/fetch_%_source.rcpt \
                       $(RCPTS)/fetch_%_patches.rcpt
-	@echo "Starting $(*F) copy..."
+	@echo "$$($(TIME)) Starting $(*F) copy..."
 	@+{ echo "Preparing the copy environemnt."; \
 	    export AT_BASE=$(AT_BASE); \
 	    export AT_KERNEL=$(AT_KERNEL); \
@@ -1422,11 +1424,11 @@ $(RCPTS)/copy_%.rcpt: $(RCPTS)/fetch_%_source.rcpt \
 	              $$(cat $(TEMP_INSTALL)/$(*F)-copy-queue); \
 	    fi; \
 	} > $(LOGS)/_copy_$(*F).log 2>&1
-	@echo "Completed $(*F) copy!"
+	@echo "$$($(TIME)) Completed $(*F) copy!"
 	@touch $@
 
 $(RCPTS)/patch_%.rcpt: $(RCPTS)/copy_%.rcpt
-	@echo "Applying patches to $(*F)..."
+	@echo "$$($(TIME)) Applying patches to $(*F)..."
 	@+{ echo "Preparing the patch environment."; \
 	    export AT_BASE=$(AT_BASE); \
 	    export AT_KERNEL=$(AT_KERNEL); \
@@ -1442,7 +1444,7 @@ $(RCPTS)/patch_%.rcpt: $(RCPTS)/copy_%.rcpt
 	        echo "$(*F) doesn't have patches."; \
 	    fi; \
 	} > $(LOGS)/_patch_$(*F).log 2>&1
-	@echo "Applied patches to $(*F)!"
+	@echo "$$($(TIME)) Applied patches to $(*F)!"
 	@touch $@
 
 # Enable secondary expansion for the targets following the next one.

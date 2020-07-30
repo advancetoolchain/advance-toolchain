@@ -19,7 +19,7 @@ $(RCPTS)/fetch_%.rcpt: $(RCPTS)/fetch_%_patches.rcpt $(RCPTS)/fetch_%_source.rcp
 	@touch $@
 
 $(RCPTS)/fetch_%_source.rcpt: $(RCPTS)/bso_clearance.rcpt
-	@echo "Starting $* pristine source fetch for AT$(AT_CONFIGSET)...";
+	@echo "$$($(TIME)) Starting $* pristine source fetch for AT$(AT_CONFIGSET)...";
 	@{  echo "Setting required variables"; \
 	    export AT_STEPID=$(notdir $(basename $@)); \
 	    export AT_BASE=$(AT_BASE); \
@@ -40,11 +40,11 @@ $(RCPTS)/fetch_%_source.rcpt: $(RCPTS)/bso_clearance.rcpt
 	        done; \
 	    fi; \
 	} > $(LOGS)/_$(notdir $(basename $@)).log 2>&1
-	@echo "Completed $* pristine source fetch!";
+	@echo "$$($(TIME)) Completed $* pristine source fetch!";
 	@touch $@
 
 $(RCPTS)/fetch_%_patches.rcpt: $(RCPTS)/bso_clearance.rcpt
-	@echo "Starting $* patches fetch for AT$(AT_CONFIGSET)...";
+	@echo "$$($(TIME)) Starting $* patches fetch for AT$(AT_CONFIGSET)...";
 	@{ echo "Setting required variables"; \
 	    export AT_STEPID=$(notdir $(basename $@)); \
 	    export AT_BASE=$(AT_BASE); \
@@ -78,5 +78,5 @@ $(RCPTS)/fetch_%_patches.rcpt: $(RCPTS)/bso_clearance.rcpt
 	        done; \
 	    fi; \
 	} > $(LOGS)/_$(notdir $(basename $@)).log 2>&1
-	@echo "Completed $* patches fetch!";
+	@echo "$$($(TIME)) Completed $* patches fetch!";
 	@touch $@
