@@ -103,7 +103,14 @@ if [[ "${cross_build}" != "yes" ]]; then
 	if (( ${at_version} >= 9 )) || [[ "${at_version}" == next ]]; then
 		pushd ${deb_d} > /dev/null
 		cp /usr/bin/dh_strip .
-		patch -p1 < ${at_supported_distros}_dh_change_dest.patch
+
+		# For some distros, make sure we also use 'strip' and 'objcopy' from
+		# the binutils we just built instead of the ones from the system. This
+		# specific change will only be applied to distros with a reference to
+		# __AT_BIN__ in their *dh_change_dest.patch file.
+		patch -p1 < <(sed -e "s/__AT_BIN__/${at_dest//\//\\/}\/bin\//g" \
+				${at_supported_distros}_dh_change_dest.patch)
+
 		popd > /dev/null
 	fi
 fi
