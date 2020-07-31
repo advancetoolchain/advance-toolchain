@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
---- a/dh_strip
-+++ b/dh_strip
+--- a/dh_strip	2020-03-27
++++ b/dh_strip	2020-07-31
 @@ -15,7 +15,7 @@
  
  =head1 SYNOPSIS
@@ -120,3 +120,14 @@
  	}
  
  	# No reason for this to be executable.
+@@ -337,8 +364,8 @@
+ sub process_packages {
+ 	foreach my $package (@_) {
+ 		my $tmp=tmpdir($package);
+-		my $objcopy = cross_command($package, "objcopy");
+-		my $strip = cross_command($package, "strip");
++		my $objcopy = cross_command($package, "__AT_BIN__"."objcopy");
++		my $strip = cross_command($package, "__AT_BIN__"."strip");
+ 
+ 		# Support for keeping the debugging symbols in a detached file.
+ 		my $keep_debug=$dh{K_FLAG};
