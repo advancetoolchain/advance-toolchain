@@ -14,7 +14,7 @@
 #
 Source: advance-toolchain-__AT_MAJOR_INTERNAL__
 Section: devel
-Priority: extra
+Priority: optional
 Maintainer: Advance Toolchain
 
 Package: advance-toolchain-runtime
