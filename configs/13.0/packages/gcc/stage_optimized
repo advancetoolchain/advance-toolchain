@@ -26,12 +26,17 @@ ATCFG_BUILD_STAGE_T='dir'
 
 
 atcfg_pre_configure() {
+	# Avoid enabling cross compiling mode by default.
+	cross=no
 	# Check the need of a cross-compiler build
-	if [[ "${at_build_cpu}" == "${AT_OPTIMIZE_CPU}" ]]; then
-		echo cross-compiling=no  >> ./configparms
-	else
-		echo cross-compiling=yes >> ./configparms
+	if [[ "${at_build_cpu}" != "${AT_OPTIMIZE_CPU}" ]]; then
+		cross=yes
 	fi
+	echo cross_compiling=${cross} >> ./configparms
+	# Libraries require the previous variable to be passed in
+	# target_configargs
+	echo target_configargs=cross_compiling=${cross} >> ./configparms
+
 	glibc=$(CC="${at_dest}/bin/${target}-gcc" \
 		  ${utilities}/get_glibc_version.sh)
 }
@@ -55,6 +60,7 @@ atcfg_configure() {
 		--build=${target64:-$target} \
 		--host=${target64:-$target} \
 		--target=${target64:-$target} \
+		--cache-file=configparms \
 		--prefix="${at_dest}" \
 		${with_longdouble:+--with-long-double-128} \
 		${with_dfp_standalone:+--enable-decimal-float} \
