@@ -38,7 +38,8 @@ ifeq (__USE_SYSTEMD__, yes)
 endif
 
 # Copy the packages' files.
-	dh_install --fail-missing
+	dh_install
+	dh_missing --fail-missing
 ifeq (__USE_SYSTEMD__, yes)
 	dh_systemd_start
 endif
