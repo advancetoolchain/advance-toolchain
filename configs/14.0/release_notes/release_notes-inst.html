@@ -289,6 +289,39 @@ sudo apt-get install advance-toolchain-__VERSION__-runtime \
 				<p>Aptitude and apt support package upgrades for new revision releases (i.e. 10.0-0 to 10.0-1).  For new major releases, install as if a new installation.</p>
 endif_ubuntu-18 -->
 
+<!-- if_ubuntu-20
+                        <p>The gpg public key <span class="code">xxxxxxxx-gpg.key</span>will be provided in the repository where these release notes were found.  The public key can be used to verify the authenticity of both the Advance Toolchain install packages and the repository contents. After downloading the gpg public key, it can be imported as follows:</p>
+                        <p class="code">sudo apt-key add xxxxxxxx.gpg.key</p>
+                        <h3>Using aptitude or apt</h3>
+                                <p>If the Advance Toolchain repository has not already been configured, that must be done first.  As <i>root</i>, edit the following file, adding one of the lines as needed for the installed system:
+                                <p class="code">/etc/apt/sources.list</p>
+                                <ul>
+                                        <li>For amd64 workstations or POWER servers (ppc64le) add the line:</li>
+                                        <p class="code">deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu focal __VERSION__ </p>
+                                </ul>
+                                <p>To install using aptitude:</p>
+                                <pre class="codebox">
+# If the repository has just been configured, refresh the aptitude cache
+sudo aptitude update
+# Install the Advance Toolchain packages
+sudo aptitude install advance-toolchain-__VERSION__-runtime \
+                      advance-toolchain-__VERSION__-devel \
+                      advance-toolchain-__VERSION__-perf \
+                      advance-toolchain-__VERSION__-mcore-libs
+                                </pre>
+                                <p>To install using apt:</p>
+                                <pre class="codebox">
+#If the repository has just been configured, refresh the apt cache
+sudo apt-get update
+#Install the Advance Toolchain packages
+sudo apt-get install advance-toolchain-__VERSION__-runtime \
+                     advance-toolchain-__VERSION__-devel \
+                     advance-toolchain-__VERSION__-perf \
+                     advance-toolchain-__VERSION__-mcore-libs
+                                </pre>
+                                <p>Aptitude and apt support package upgrades for new revision releases (i.e. 10.0-0 to 10.0-1).  For new major releases, install as if a new installation.</p>
+endif_ubuntu-20 -->
+
 <!-- if_debian-10
 			<p>The gpg public key <span class="code">xxxxxxxx-gpg.key</span>will be provided in the repository where these release notes were found.  The public key can be used to verify the authenticity of both the Advance Toolchain install packages and the repository contents. After downloading the gpg public key, it can be imported as follows:</p>
 			<p class="code">sudo apt-key add xxxxxxxx.gpg.key</p>
