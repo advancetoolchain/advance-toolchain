@@ -129,8 +129,6 @@ pre {
 wget https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL7/gpg-pubkey-6976a827-5164221b
 rpm --import gpg-pubkey-6976a827-5164221b
 </pre>
-<p>Notes:</p>
-<ul><li>If you are installing on Red Hat 6, you must include two gpg public keys: <code>gpg-pubkey-6976a827-5164221b</code> and <code>gpg-pubkey-3052930d-5175955a</code>.</li></ul>
 <li>Create a configuration file for the Advance Toolchain repository configuration file: <code>/etc/yum.repos.d/<em>advance-toolchain.repo</em></code>. Add the following content:
 <pre>
 # Begin of configuration file
@@ -214,30 +212,31 @@ zypper addrepo https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/
 
 	<li>The gpg public key <code>gpg-pubkey-6976a827-5164221b</code> is provided in the repositories. This public key is used to verify the authenticity of both the Advance Toolchain packages and the repository contents. Download the gpg public key for your Linux distribution and import it using the following commands:
 <pre>
-wget https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists/trusty/6976a827.gpg.key
+wget https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists/focal/6976a827.gpg.key
 sudo apt-key add 6976a827.gpg.key
 </pre>
 </li>
 <li>Configure the Advance Toolchain repositories by adding the following line to <code>/etc/apt/sources.list</code>:
 <p>On ppc64el or amd64:</p>
 <pre>
-deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu trusty atX.X
+deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu focal atX.X
 </pre>
 
 <p>Notes:</p>
 
 <ul>
-	<li>When installing on Ubuntu 16.04 (xenial) or Ubuntu 14.10 (utopic), point to its respective repository:
+	<li>When installing on Ubuntu 18.04 (bionic) or Ubuntu 16.04 (xenial), point to its respective repository:
 <pre>
+deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu bionic atX.X
 deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu xenial atX.X
-deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu utopic atX.X
 </pre>
 	</li>
 
 
-    	<li>When installing on Debian 8 (jessie), point to its respective repository:
+    	<li>When installing on Debian 10 (buster) or Debian 9 (stretch), point to its respective repository:
 <pre>
-deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian jessie atX.X
+deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian buster atX.X
+deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian stretch atX.X
 </pre>
 	</li>
 </ul>
