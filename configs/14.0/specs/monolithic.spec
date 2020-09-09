@@ -241,7 +241,8 @@ echo "enable %{at_ver_alternative}-cachemanager.service" \
 ####################################################
 %pre runtime
 _host_power_arch=$(LD_SHOW_AUXV=1 /bin/true | grep AT_PLATFORM | grep -i power | sed 's/.*power//')
-if [[ "${_host_power_arch}" != "" && "${_host_power_arch}" < "%{_min_power_arch}" ]]; then
+if [[ "${_host_power_arch}" != "" \
+      && "%{_min_power_arch}" != $(echo -e "%{_min_power_arch}\n${_host_power_arch}" | sort -V | head -n 1) ]]; then
     echo "The system is power${_host_power_arch} but must be at least power%{_min_power_arch} to install this RPM."
     exit 1
 fi
