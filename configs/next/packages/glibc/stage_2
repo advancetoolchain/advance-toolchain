@@ -95,7 +95,10 @@ atcfg_configure() {
 	CXX="${at_dest}/bin/g++ -m${AT_BIT_SIZE}" \
 	CFLAGS="-g -O3 \
 		${with_longdouble:+-mlong-double-128} \
-		-fcommon" \
+		-fcommon \
+		-Wno-error=array-bounds \
+		-Wno-error=array-parameter \
+		-Wno-error=stringop-overflow" \
 	CPPFLAGS="-isystem $(pwd)/systemtap" \
 	CXXFLAGS="-g -O3" \
 	${ATSRC_PACKAGE_WORK}/configure --build=${host} \
