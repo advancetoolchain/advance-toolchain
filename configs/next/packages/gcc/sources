@@ -23,7 +23,7 @@ ATSRC_PACKAGE_NAME="GCC (GNU Compiler Collection)"
 ATSRC_PACKAGE_SUBPACKAGE_NAME_0="GNU Standard C++ Library v3 (Libstdc++-v3)"
 ATSRC_PACKAGE_SUBPACKAGE_NAME_1="GNU Libgomp"
 ATSRC_PACKAGE_VER=11.0.0
-ATSRC_PACKAGE_REV=661ee09b8ba9
+ATSRC_PACKAGE_REV=37c3c297396af
 ATSRC_PACKAGE_LICENSE="GPL 3.0"
 ATSRC_PACKAGE_DOCLINK="https://gcc.gnu.org/onlinedocs/gcc/"
 ATSRC_PACKAGE_SUBPACKAGE_DOCLINK_0="https://gcc.gnu.org/libstdc++/"
@@ -68,6 +68,12 @@ atsrc_get_patches ()
 		0a24779059c2041828023fca1f4233c2 \
 		libffi-notoc.patch || return ${?}
 
+	# Fix gold + libgo split-stack issue [PR97107]
+	at_get_patch \
+		https://gcc.gnu.org/bugzilla/attachment.cgi?id=49241 \
+		0b795ba319690bb73626daac511e693e \
+		gold-libgo.patch || return ${?}
+
 	return 0
 }
 
@@ -82,4 +88,6 @@ atsrc_apply_patches ()
 		|| return ${?}
 
 	patch -p1 < libffi-notoc.patch || return ${?}
+
+	patch -p1 < gold-libgo.patch || return ${?}
 }
