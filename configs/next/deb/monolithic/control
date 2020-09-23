@@ -19,7 +19,7 @@ Maintainer: Advance Toolchain
 
 Package: advance-toolchain-runtime
 Architecture: ppc64el
-Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__)
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__)
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
  toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
@@ -34,14 +34,14 @@ Description: Advance Toolchain
 
 Package: advance-toolchain-runtime-dbg
 Architecture: ppc64el
-Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime-dbg (= __AT_FULL_VER__)
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime-dbg (= __AT_FULL_VER__)
 Description: Advance Toolchain
  The advance toolchain debugging information.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime-dbg
 Architecture: ppc64el
-Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__)
-Depends: ${shlibs:Depends} ${misc:Depends}
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__),
+         ${shlibs:Depends} ${misc:Depends}
 Description: Advance Toolchain
  The advance toolchain debugging information.
 
@@ -55,8 +55,8 @@ Description: Advance Toolchain
 
 Package: advance-toolchain-devel
 Architecture: ppc64el
-Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-devel (= __AT_FULL_VER__)
-Depends: ${shlibs:Depends} ${misc:Depends}
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-devel (= __AT_FULL_VER__),
+         ${shlibs:Depends} ${misc:Depends}
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
  toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
@@ -65,8 +65,8 @@ Description: Advance Toolchain
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-devel
 Architecture: ppc64el
-Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__)
-Depends: ${shlibs:Depends} ${misc:Depends}
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__),
+         ${shlibs:Depends} ${misc:Depends}
 Suggests: environment-modules
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
@@ -76,20 +76,20 @@ Description: Advance Toolchain
 
 Package: advance-toolchain-devel-dbg
 Architecture: ppc64el
-Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-devel-dbg (= __AT_FULL_VER__)
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-devel-dbg (= __AT_FULL_VER__)
 Description: Advance Toolchain
  The advance toolchain debugging information.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-devel-dbg
 Architecture: ppc64el
-Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-devel (= __AT_FULL_VER__)
-Depends: ${shlibs:Depends} ${misc:Depends}
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-devel (= __AT_FULL_VER__),
+         ${shlibs:Depends} ${misc:Depends}
 Description: Advance Toolchain
  The advance toolchain debugging information.
 
 Package: advance-toolchain-mcore-libs
 Architecture: ppc64el
-Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-mcore-libs (= __AT_FULL_VER__)
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-mcore-libs (= __AT_FULL_VER__)
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
  toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
@@ -98,8 +98,8 @@ Description: Advance Toolchain
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-mcore-libs
 Architecture: ppc64el
-Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__)
-Depends: ${shlibs:Depends} ${misc:Depends}
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__),
+         ${shlibs:Depends} ${misc:Depends}
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
  toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
@@ -108,20 +108,20 @@ Description: Advance Toolchain
 
 Package: advance-toolchain-mcore-libs-dbg
 Architecture: ppc64el
-Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-mcore-libs-dbg (= __AT_FULL_VER__)
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-mcore-libs-dbg (= __AT_FULL_VER__)
 Description: Advance Toolchain
  The advance toolchain debugging information.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-mcore-libs-dbg
 Architecture: ppc64el
-Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-mcore-libs (= __AT_FULL_VER__)
-Depends: ${shlibs:Depends} ${misc:Depends}
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-mcore-libs (= __AT_FULL_VER__),
+         ${shlibs:Depends} ${misc:Depends}
 Description: Advance Toolchain
  The advance toolchain debugging information.
 
 Package: advance-toolchain-perf
 Architecture: ppc64el
-Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-perf (= __AT_FULL_VER__)
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-perf (= __AT_FULL_VER__)
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
  toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
@@ -129,8 +129,8 @@ Description: Advance Toolchain
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-perf
 Architecture: ppc64el
-Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__)
-Depends: ${shlibs:Depends} ${misc:Depends}
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__),
+         ${shlibs:Depends} ${misc:Depends}
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
  toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
@@ -138,20 +138,20 @@ Description: Advance Toolchain
 
 Package: advance-toolchain-perf-dbg
 Architecture: ppc64el
-Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-perf-dbg (= __AT_FULL_VER__)
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-perf-dbg (= __AT_FULL_VER__)
 Description: Advance Toolchain
  The advance toolchain debugging information.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-perf-dbg
 Architecture: ppc64el
-Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-perf (= __AT_FULL_VER__)
-Depends: ${shlibs:Depends} ${misc:Depends}
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-perf (= __AT_FULL_VER__),
+         ${shlibs:Depends} ${misc:Depends}
 Description: Advance Toolchain
  The advance toolchain debugging information.
 
 Package: advance-toolchain-libnxz
 Architecture: ppc64el
-Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz (= __AT_FULL_VER__)
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz (= __AT_FULL_VER__)
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
  toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
@@ -159,8 +159,8 @@ Description: Advance Toolchain
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz
 Architecture: ppc64el
-Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__)
-Depends: ${shlibs:Depends} ${misc:Depends}
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__),
+         ${shlibs:Depends} ${misc:Depends}
 Description: Advance Toolchain
  The advance toolchain is a self contained toolchain which provides preview
  toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
@@ -168,13 +168,13 @@ Description: Advance Toolchain
 
 Package: advance-toolchain-libnxz-dbg
 Architecture: ppc64el
-Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz-dbg (= __AT_FULL_VER__)
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz-dbg (= __AT_FULL_VER__)
 Description: Advance Toolchain
  This package contains the NX GZIP Library debugging information.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz-dbg
 Architecture: ppc64el
-Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz (= __AT_FULL_VER__)
-Depends: ${shlibs:Depends} ${misc:Depends}
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz (= __AT_FULL_VER__),
+         ${shlibs:Depends} ${misc:Depends}
 Description: Advance Toolchain
  This package contains the NX GZIP Library debugging information.

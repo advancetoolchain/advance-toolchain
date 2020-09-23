@@ -68,6 +68,13 @@ proc process_deb {package expected} {
 	set at_full_ver [append_at_internal ${at_ver_rev}]
 	set version "(= ${at_full_ver})"
 
+	# On AT 15.0, all Pre-Depends have been replaced with Depends.
+	if { $::env(AT_MAJOR_VERSION) >= 15.0 } {
+		set depends_str "Depends"
+	} else {
+		set depends_str "Pre-Depends"
+	}
+
 	if { ![info exists ::env(AT_WD)] } {
 		if { [catch {exec dpkg-query --status ${expected}}] } {
 			printit "User didn't install package ${expected}.\
@@ -84,14 +91,15 @@ ${at_full_ver}. Can't run this test."
 			return ${ENOSYS}
 		}
 
-		# Parse the Pre-Depends field from the dummy package.
+		# Parse the Depends/Pre-Depends field from the dummy package.
 		# It must contain the actual package.
 		set depends [string trimleft \
 				    [exec dpkg-query --status ${expected} \
-					 | grep -E "Pre-Depends"] \
-				    "Pre-Depends: "]
+					 | grep -E "$depends_str"] \
+				    "$depends_str: "]
 
-		# Check if the Pre-Depends field references the actual package.
+		# Check if the Depends/Pre-Depends field references the actual
+		# package.
 		if { [string first "${package} ${version}" ${depends}] < 0 } {
 			printit "Package ${expected} doesn't depend on\
 \"${package} ${version}\"" ${ERROR}
@@ -108,15 +116,16 @@ ${at_full_ver}. Can't run this test."
 				 [string first "_" ${package}] \
 				 [string length ${package}]]
 
-		# Parse the Pre-Depends field from the dummy package.
+		# Parse the Depends/Pre-Depends field from the dummy package.
 		# It must contain the actual package.
 		set depends [string trimleft \
 				    [exec dpkg --info \
 				          ${deb_path}/${dpkg} \
-					 | grep -E "Pre-Depends"] \
-				    "Pre-Depends: "]
+					 | grep -E "$depends_str"] \
+				    "$depends_str: "]
 
-		# Check if the Pre-Depends field references the actual package.
+		# Check if the Depends/Pre-Depends field references the actual
+		# package.
 		if { [string first "${rpkg} ${version}" ${depends}] < 0 } {
 			printit "Package ${dpkg} doesn't depend on\
 \"${rpkg} ${version}\"" ${ERROR}
@@ -161,8 +170,8 @@ proc check_rpms {packages} {
 	return ${rc}
 }
 
-# Get each package that needs be checked and compare the string in Pre-Depends
-# of the correspondent DEB dummy package one by one.
+# Get each package that needs be checked and compare the string in Depends or
+# Pre-Depends of the correspondent DEB dummy package one by one.
 # packages - list of packages names.
 proc check_debs {packages} {
 	global at_ver_rev
