@@ -64,12 +64,6 @@ atsrc_get_patches ()
 		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/GCC%20libstdc%2B%2B%20PowerPC%20Patches/9/0001-libstdc-Prevent-LD_LIBRARY_PATH-from-leaking-to-msgf.patch' \
 		9cba9a9b94ca9c1b8958c0d722a9c06b || return ${?}
 
-	# Fix missing notoc in libffi.
-	at_get_patch \
-		https://github.com/tuliom/gcc/commit/ba9a5fba9571bc7728b868bf8f812d7733488812.patch \
-		0a24779059c2041828023fca1f4233c2 \
-		libffi-notoc.patch || return ${?}
-
 	return 0
 }
 
@@ -82,6 +76,4 @@ atsrc_apply_patches ()
 	patch -p1 \
 	      < 0001-libstdc-Prevent-LD_LIBRARY_PATH-from-leaking-to-msgf.patch \
 		|| return ${?}
-
-	patch -p1 < libffi-notoc.patch || return ${?}
 }
