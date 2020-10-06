@@ -39,10 +39,14 @@ ATSRC_PACKAGE_BUNDLE=main_toolchain
 
 atsrc_get_patches ()
 {
-	return 0
+	# Fix TLS issues when PC-rel is enabled (POWER10).  Remove this later
+	# after merging it upstream.
+	at_get_patch \
+		'https://patchwork.sourceware.org/project/glibc/patch/20200930195512.724059-1-tuliom@linux.ibm.com/mbox/' \
+		14231edd3e971aa85c19bee7ea70ca6f tls.patch
 }
 
 atsrc_apply_patches ()
 {
-	return 0
+	patch -p1 < tls.patch
 }
