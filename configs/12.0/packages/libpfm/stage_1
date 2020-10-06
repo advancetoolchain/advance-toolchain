@@ -34,12 +34,11 @@ atcfg_pre_configure() {
 	# Clean any previous build mess
         ${SUB_MAKE} distclean >/dev/null
 }
-atcfg_configure() {
-	cat config.mk | \
-		sed -e "s/^PREFIX=.*$/PREFIX="${at_dest//\//\\/}"/g" > config.mk.tmp
-	[[ ${?} -eq 0 ]] && mv config.mk.tmp config.mk || exit 1
-}
 
+# Configure step not needed for pfmlib
+atcfg_configure() {
+	echo "No configure step required."
+}
 
 # Libpfm doesn't support parallel builds
 atcfg_make() {
@@ -47,8 +46,8 @@ atcfg_make() {
 	local base_libdir=$(find_build_libdir ${AT_BIT_SIZE})
 	PATH="${at_dest}/bin:${PATH}" \
 	CC="${at_dest}/bin/gcc" \
-	${SUB_MAKE} LIBDIR=${at_dest}/${base_libdir} \
-		BITMODE=${AT_BIT_SIZE} \
+	${SUB_MAKE} PREFIX=${at_dest} \
+		LIBDIR=${at_dest}/${base_libdir} \
 		OPTIM="-m${AT_BIT_SIZE} -O3 -Wno-error=format-truncation"
 }
 
@@ -60,7 +59,8 @@ atcfg_make() {
 atcfg_install() {
 	local base_libdir=$(find_build_libdir ${AT_BIT_SIZE})
 	PATH="${at_dest}/bin:${PATH}" \
-	${SUB_MAKE} LDCONFIG=true LIBDIR=${at_dest}/${base_libdir} \
-	BITMODE=${AT_BIT_SIZE} \
-	DESTDIR=${install_place} install
+	${SUB_MAKE} PREFIX=${at_dest} \
+		LDCONFIG=true \
+		LIBDIR=${at_dest}/${base_libdir} \
+		DESTDIR=${install_place} install
 }
