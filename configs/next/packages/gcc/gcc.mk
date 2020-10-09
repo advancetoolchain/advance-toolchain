@@ -15,7 +15,6 @@
 #
 #
 $(eval $(call set_provides,gcc_1,single,cross_yes))
-$(eval $(call set_provides,gcc_2,single,cross_yes))
 $(eval $(call set_provides,gcc_3,single,cross_yes))
 $(eval $(call set_provides,gcc_4,single,cross_yes))
 
@@ -32,8 +31,6 @@ endif
 
 gcc_1: $(RCPTS)/gcc_1.rcpt
 
-gcc_2: $(RCPTS)/gcc_2.rcpt
-
 gcc_3: $(RCPTS)/gcc_3.rcpt
 
 gcc_4: $(RCPTS)/gcc_4.rcpt
@@ -41,9 +38,6 @@ gcc_4: $(RCPTS)/gcc_4.rcpt
 gcc_tuned: $(RCPTS)/gcc_tuned.rcpt
 
 $(RCPTS)/gcc_1.rcpt: $(gcc_1-archdeps)
-	@touch $@
-
-$(RCPTS)/gcc_2.rcpt: $(gcc_2-archdeps)
 	@touch $@
 
 $(RCPTS)/gcc_3.rcpt: $(gcc_3-archdeps)
@@ -59,13 +53,8 @@ $(RCPTS)/gcc_1.a.rcpt: $(RCPTS)/binutils_1.rcpt \
                        $(RCPTS)/rsync_gcc.rcpt
 	@touch $@
 
-$(RCPTS)/gcc_2.a.rcpt: $(RCPTS)/gcc_1.rcpt \
-                       $(RCPTS)/glibc_1.rcpt \
-                       $(RCPTS)/ldconfig_1.rcpt
-	@touch $@
-
 $(RCPTS)/gcc_3.a.rcpt: $(RCPTS)/ldconfig_1.rcpt \
-                       $(RCPTS)/gcc_2.rcpt
+                       $(RCPTS)/glibc_1.rcpt
 	@touch $@
 
 $(RCPTS)/gcc_4.a.rcpt: $(RCPTS)/binutils_2.rcpt \
