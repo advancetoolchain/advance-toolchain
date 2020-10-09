@@ -30,11 +30,22 @@ fi
 
 # Required pre build hacks
 atcfg_pre_hacks() {
-	# Clean static lib hack done on gcc stage 2 for GLIBC build.
-	for Z in $(find "${at_dest}/lib" -name libgcc.a); do
-		[[ -h ${Z%\.a}_s.a ]] && rm -f ${Z%\.a}_s.a
-		[[ -h ${Z%\.a}_eh.a ]] && rm -f ${Z%\.a}_eh.a
-	done
+	# Revision 224095 on gcc introduces the --with-advance-toolchain
+	# option, which can be used to select the dynamic linker from the
+	# Advance Toolchain, instead of the one provided by the system.
+	# However, this switch assumes that the Advance Toolchain is installed
+	# under /opt/atx.x, which is not necessarily true during advance
+	# toolchain builds.
+	#
+	# The following lines patch the gcc source, in order to allow the use
+	# of the --with-advance-toolchain during advance toolchain builds.
+	echo ${destdir}
+	if ! grep "${destdir}" "${ATSRC_PACKAGE_WORK}/gcc/config.gcc"; then
+		sed -i -e \
+		    "/\/opt\/\$with_advance_toolchain/s@/opt@${destdir}@" \
+		    "${ATSRC_PACKAGE_WORK}/gcc/config.gcc"
+	fi
+
 	# Should run only on a native build... Skip these on cross
 	if [[ "${cross_build}" == "no" ]]; then
 		# Hack required to avoid a bug where gcc picks up the wrong crti.o,
@@ -67,10 +78,20 @@ atcfg_posti_hacks() {
 
 # Conditional pre configure settings or commands to run
 atcfg_pre_configure() {
+	libdir="${at_dest}/lib"
+	if [[ "${cross_build}" == "no" && "${build_arch}" == ppc64* ]]; then
+		libdir="${at_dest}/lib64"
+	fi
 	if [[ "${cross_build}" == "no" ]]; then
-		libdir="${at_dest}/tmp/gcc_3"
+		gcclibdir="${at_dest}/tmp/gcc_3"
 		glibc=$(CC="${at_dest}/bin/${target}-gcc" \
 				${utilities}/get_glibc_version.sh)
+
+		case "${build_arch}" in
+			ppc) ldso="${libdir}/ld.so.1" ;;
+			ppc64) ldso="${libdir}/ld64.so.1" ;;
+			ppc64le) ldso="${libdir}/ld64.so.2" ;;
+		esac
 	fi
 }
 
@@ -87,8 +108,8 @@ atcfg_configure() {
 		RANLIB="${at_dest}/bin/ranlib" \
 		CFLAGS="-O2 -mminimal-toc" \
 		CXXFLAGS="-O2 -mminimal-toc" \
-		LDFLAGS="-L${libdir}" \
-		POSTSTAGE1_LDFLAGS="-L${libdir} -lstdc++ -lsupc++ -lm -lgmp -lgmpxx -lmpfr -lmpc" \
+		LDFLAGS="-L${gcclibdir}" \
+		POSTSTAGE1_LDFLAGS="-L${gcclibdir} -lstdc++ -lsupc++ -lm -lgmp -lgmpxx -lmpfr -lmpc" \
 		${ATSRC_PACKAGE_WORK}/configure \
 			--build=${target64:-$target} \
 			--host=${target64:-$target} \
@@ -120,36 +141,86 @@ atcfg_configure() {
 			--without-libelf \
 			--with-as="${at_dest}/bin/as" \
 			--with-ld="${at_dest}/bin/ld" \
+			--with-stage1-ldflags="-Wl,--dynamic-linker=${ldso}" \
 			--with-cpu=${build_base_arch} \
 			--with-tune=${build_optimization}
 	else
-		echo "No configure on gcc_3 cross stage"
+		# Configure command for cross builds
+		CC="${system_cc}" \
+		CXX="${system_cxx}" \
+		LD_FOR_TARGET="${at_dest}/bin/${target}-ld" \
+		AS_FOR_TARGET="${at_dest}/bin/${target}-as" \
+		AR_FOR_TARGET="${at_dest}/bin/${target}-ar" \
+		NM_FOR_TARGET="${at_dest}/bin/${target}-nm" \
+		RANLIB_FOR_TARGET="${at_dest}/bin/${target}-ranlib" \
+		${ATSRC_PACKAGE_WORK}/configure \
+			--build=${host} \
+			--host=${host} \
+			--target=${target64:-${target}} \
+			--with-cpu=${default_cpu} \
+			--prefix=${at_dest} \
+			${with_longdouble:+--with-long-double-128} \
+			${secure_plt:+--enable-secureplt} \
+			${disable_multilib:+--disable-multilib} \
+			--with-advance-toolchain=$(basename ${at_dest}) \
+			--with-local-prefix=${at_dest} \
+			--enable-languages=c \
+			--enable-__cxa_atexit \
+			--enable-threads=posix \
+			--disable-libmudflap \
+			--disable-libssp \
+			--disable-libgomp \
+			--disable-libatomic \
+			--disable-libquadmath \
+			--disable-lto \
+			--disable-decimal-float \
+			--disable-libcc1 \
+			--disable-plugin \
+			--with-mpfr-include="${tmp_dir}/include" \
+			--with-mpfr-lib="${tmp_dir}/lib" \
+			--with-gmp-include="${tmp_dir}/include" \
+			--with-gmp-lib="${tmp_dir}/lib" \
+			--with-mpc-include="${tmp_dir}/include" \
+			--with-mpc-lib="${tmp_dir}/lib" \
+			--without-ppl \
+			--without-cloog \
+			--with-host-libstdcxx="-L${libdir} -L${tmp_dir}/lib -lstdc++ -lsupc++ -lm -lgmp -lgmpxx -lmpfr -lmpc" \
+			--with-build-sysroot="${dest_cross}" \
+			--with-sysroot="${dest_cross}" \
+			--with-native-system-header-dir="/usr/include"
 	fi
 }
 
 # Make build command
 atcfg_make() {
-	if [[ "${cross_build}" == "no" ]]; then
-		PATH=${at_dest}/bin:${PATH} \
-			${SUB_MAKE} all
-	else
-		echo "No make all on gcc_3 cross stage"
-	fi
+	PATH=${at_dest}/bin:${PATH} \
+		${SUB_MAKE} all
 }
 
 # Conditional install build command
 atcfg_install() {
-	if [[ "${cross_build}" == "no" ]]; then
-		make install -j1 DESTDIR=${install_place}
-	else
-		echo "No make install on gcc_3 cross stage"
-	fi
+	make install -j1 DESTDIR=${install_place}
 }
 
 # Conditional post install settings or commands to run
 atcfg_post_install() {
-	if [[ "${cross_build}" == "no" ]]; then
-		# Remove unnecessary python scripts
-		find "${install_place}/${at_dest}/lib" "${install_place}/${at_dest}/lib64" -name "libstdc++.so.*-gdb.py" -print -delete
+	# Fixes to cross build install
+	if [[ "${cross_build}" == "yes" ]]; then
+		# Create the required symlinks to install
+		pushd ${install_place}/${at_dest}/bin
+		if [[ ! -e ${target}-gcc ]]; then
+			echo -e "#!/bin/bash\nexec ${at_dest}/bin/gcc \"${@}\"" > ${target}-gcc
+			chmod a+x ${target}-gcc
+		fi
+		if [[ ! -e ${target}-g++ ]]; then
+			echo -e "#!/bin/bash\nexec ${at_dest}/bin/g++ \"${@}\"" > ${target}-g++
+			chmod a+x ${target}-g++
+		fi
+		if [[ ! -e ${target}-c++ ]]; then
+			ln -f ${target}-g++ ${target}-c++
+		fi
+		popd
 	fi
+	# Remove unnecessary python scripts
+	find "${install_place}/${at_dest}" -name "libstdc++.so.*-gdb.py" -print -delete
 }
