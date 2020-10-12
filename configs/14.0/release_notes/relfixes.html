@@ -12,6 +12,120 @@
 <p>Since the end of August 2019, Advance Toolchain has been available from a new FTP server: <a href="ftp://public.dhe.ibm.com/">public.dhe.ibm.com</a></p>
 <p>Please be advised the FTP server at Unicamp won't be updated any longer.</p>
 
+<h3>New features in 14.0-1</h3>
+<ul>
+  <li>GCC provides:</li>
+  <ul>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=71960">__glibcxx_assert and Debug Mode checks can't be used in constexpr functions</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85830">vec_popcntd is improperly defined in altivec.h</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88240">Potential optimization bug: invalid pre-load of floating-point value could cause SIGFPE-underflow if value is integer</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92978">std::gcd mishandles mixed-signedness</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93423">ICE on invalid with argument list for module procedure</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93553">ICE in scan_omp_1_op, at omp-low.c:3485</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93865">.debug_line with LTO refers to bogus file-names</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94160">std::pmr::pool_options::max_blocks_per_chunk=1 causes pool resources to return null pointers</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94235">worse debug info with O0 than with O2 with flto</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94311">LTO produces line info entries with invalid line numbers</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94672">gfortran/OpenMP chokes on PRESENT(array) despite of SHARED(array): Error: ‘array’ not specified in enclosing ‘parallel’</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94681">filesystem::sysmlink_status using stat instead of lstat when --disable-libstdcxx-filesystem-ts</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94690">[OpenMP] omp ... distribute – lastprivate not permitted and more issues</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95109">ICE in gfortran.dg/gomp/target1.f90 after r11-349</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95164">ICE regression starting with 9.3</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95320">ICE in odr_type_p, at ipa-utils.h:246, during IPA pass: pure-const</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95398">ICE on invalid code</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95428">ABI breakage for &quot;base object constructor&quot; for final classes</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95450">Wrong long double folding</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95604">LTO doesn't pick up -fcf-protection flag for the link step</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95882">ICE in gfc_get_derived_type, at fortran/trans-types.c:2729</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96041">ICE in gfortran.dg/pr93423.f90 after r11-1792</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96139">Vector element extract mistypes long long int down to long int</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96157">d: No NRVO when returning an array of a non-POD struct</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96203">LTO bootstrap with --enable-cet is broken</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96250">d: Field access in parentheses causes error: need 'this' for 'field' of type 'type'</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96254">d: ICE using non-local variable: internal compiler error: Segmentation fault</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96349">ICE: SSA corruption (Unable to coalesce ssa_names 2 and 3 which are marked as MUST COALESCE.) [in fail_abnormal_edge_coalesce]</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96369">Wrong evaluation order of || operator</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96370">ICE with -ffast-math since r7-950-g8a85cee26eabf5cf</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96385">GCC generates separate debug info with undefined symbols without relocations</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96459">OpenMP host teams reductions ignored</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96486">get_environment_variable crashes for environment variables that are empty strings</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96497">Compare std::variant with int using C++20 &lt;=&gt; is not a constant expression</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96522">Incorrect with with -O -fno-tree-pta</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96545">ICE in get_atomic_generic_size</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96549">Wrong evaluation of a comparison between long &amp; short</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96571">Bad &quot;set but not used&quot; warning with _Generic</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96579">ICE in gimple check: expected gimple_assign(error_mark), have gimple_nop() in gimple_assign_rhs1, at gimple.h:2605 since r7-950-g8a85cee26eabf5cf</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96597">valgrind error in do_hoist_insertion during O3 build</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96690">ICE in write_type since r10-6087</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96718">25_algorithms/pstl/feature_test-3.cc has excess error</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96722">Clobbers on NULL since r8-1519</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96729">slow compile with `-g -O3` since r11-39-gf9e1ea10e657af9f</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96766">std::swap(std::variant, std::variant) triggers undefined behavior sanitizer</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96803">std::tuple chooses wrong constructor for uses-allocator construction</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96808">MMA built-in dies with incorrect sharing of tree nodes error</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96820">ICE in verify_sra_access_forest with array and out of bounds reference</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96851">operator&lt; on std::array&lt;T, N&gt; does not work in constexpr, for sizeof(T) == 1, and N &gt; 1</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96859">Wrong answer with intrinsic merge_bits</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96862">-frounding-math -std=c++2a error: '(1.29e+2 * 6.9314718055994529e-1)' is not a constant expression</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96890">Wrong answer with intrinsic IALL</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96924">d: ICE in create_tmp_var, at gimple-expr.c:482</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96935">ICE in subspan, at input.h:69</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97043">latent wrong-code with SLP vectorization</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97053">an O2, O3 codegen bug</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97101">noexcept specifier in std::bind_front()</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97166">libffi build issue when compiling with -mcpu=power10</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97167">string_view bounds error in filesystem::path</a>.</li>
+  </ul>
+  <li>GNU C Library provides:</li>
+  <ul>
+    <li>Fix for <a href="https://patchwork.sourceware.org/project/glibc/patch/20200930195512.724059-1-tuliom@linux.ibm.com/">powerpc64: Implement TLS using PC-relative addressing</a>.</li>
+  </ul>
+  <li>Binutils provides:</li>
+  <ul>
+    <li>Version 2.35.1, see the <a href="https://lists.gnu.org/archive/html/info-gnu/2020-09/msg00007.html">release notes</a> for details.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=26520">&quot;objdump: DWARF error: could not find variable specification at offset ...&quot; when generating assembly listing of .elf file containing symbols from libstdc++.a</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=26655">Power10 libstdc++.so R_PPC64_NONE dynamic relocs</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=26656">power10 libstdc++.so segfault in __cxxabiv1::__cxa_throw</a>.</li>
+  </ul>
+  <li>OpenSSL provides:</li>
+  <ul>
+    <li>Version 1.1.1h, see the <a href="https://www.openssl.org/news/openssl-1.1.1-notes.html">release notes</a> for details.</li>
+  </ul>
+  <li>Expat provides:</li>
+  <ul>
+    <li>Fix for <a href="https://github.com/libexpat/libexpat/issues/409">cmake .. -G &quot;Visual Studio 16 2019&quot; &amp;&amp; msbuild /m expat.sln - failed</a>.</li>
+    <li>Fix for <a href="https://github.com/libexpat/libexpat/issues/412">Get rid of unsigned integer overflow in column calculation by boris-kolpackov</a>.</li>
+    <li>Fix for <a href="https://github.com/libexpat/libexpat/issues/413">Add an option to install pkg-config file </a>.</li>
+    <li>Fix for <a href="https://github.com/libexpat/libexpat/issues/414">CMake: Introduce option EXPAT_BUILD_PKGCONFIG (fixes #413) by hartwork</a>.</li> 
+    <li>Fix for <a href="https://github.com/libexpat/libexpat/issues/418">Build fails on Windows with Visual Studio 2019 and non-English language pack</a>.</li>
+    <li>Fix for <a href="https://github.com/libexpat/libexpat/issues/419">control build options by variables on usage by cmake FetchContent command by gittiver</a>.</li>
+    <li>Fix for <a href="https://github.com/libexpat/libexpat/issues/420">AppVeyor: Cover Visual Studio 16 2019 (related to #418) by hartwork</a>.</li>
+    <li>Fix for <a href="https://github.com/libexpat/libexpat/issues/421">qa.sh: Enable LeakSanitizer by hartwork</a>.</li>
+    <li>Fix for <a href="https://github.com/libexpat/libexpat/issues/424">CMake: Support &quot;make package&quot; based on CPack by hartwork</a>.</li>
+  </ul>
+  <li>Libhugetlbfs provides:</li>
+  <ul>
+    <li>Version 2.23, see the <a href="https://github.com/libhugetlbfs/libhugetlbfs/blob/2.23/NEWS">release notes</a> for details.</li>
+  </ul>
+  <li>Python provides:</li>
+  <ul>
+    <li>Version 3.8.6, see the <a href="https://www.python.org/downloads/release/python-386/">release notes</a> for details.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue40105">Updating zip comment doesn't truncate the zip file</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue41602">Python doesn't exit with proper resultcode on SIGINT in runpy (pymain_run_module)</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue41774">Add programming FAQ entry: remove multiple entries from list</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue41775">IDLE: change Shell window title</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue41802">Missing documentation for 'PyDict_DelItem' behavior</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue41858">Fix incomplete line on optparse documentation</a>.</li>
+  </ul>
+  <li>Valgrind provides:</li>
+  <ul>
+    <li>Version 3.16.1, see the <a href="http://valgrind.org/docs/manual/dist.news.html">release notes</a> for details.</li>
+  </ul>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 14.0-0</h3>
 <ul>
   <li>Support for Ubuntu 20.04.</li>
@@ -78,9 +192,6 @@
   </ul>
   <li>Provides a new component: NX zlib compliant software (libnxz).</li>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 13.0-2</h3>
 <ul>
