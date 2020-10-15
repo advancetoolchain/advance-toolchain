@@ -130,6 +130,7 @@ atcfg_configure() {
 			--enable-gnu-indirect-function \
 			--enable-linker-build-id \
 			--disable-libgomp \
+			--disable-lto \
 			--with-gmp-include="${at_dest}/include" \
 			--with-gmp-lib=${libdir} \
 			--with-mpfr-include="${at_dest}/include" \
