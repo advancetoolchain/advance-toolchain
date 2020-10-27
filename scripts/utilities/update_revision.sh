@@ -158,7 +158,7 @@ get_latest_revision ()
 		# When the revision is in HEAD we got a string like:
 		# master -> HEAD
 		# origin/master
-		if [[ $(expr index "${branch}" "HEAD") -ne 0 ]]; then
+		if [[ "${branch}" = *"HEAD"* ]]; then
 			branch="HEAD"
 		else
 		    if [[ $(echo "${branch}" | wc -w) -ne 1 ]]; then
