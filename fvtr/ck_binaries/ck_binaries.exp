@@ -63,10 +63,10 @@ if { $env(AT_MAJOR_VERSION) >= 9.0 } {
 }
 
 # Binaries distributed with a different name on cross and non-cross
-set dif_exec {cpp elfedit embedspu gdb gprof readelf}
+set dif_exec {cpp elfedit embedspu gprof readelf}
 if { $env(AT_CROSS_BUILD) == "yes" } {
 	set alt_exec [concat ${alt_exec} ${dif_exec}]
-	set tgt_exec [concat ${tgt_exec} ${dif_exec}]
+	set tgt_exec [concat ${tgt_exec} ${dif_exec} gdb]
 } else {
 	set n_exec [concat ${n_exec} ${dif_exec} gdbserver]
 }
@@ -83,6 +83,7 @@ if { [string match no $env(AT_CROSS_BUILD)] } {
 }
 
 foreach exe $tgt_exec {
+	printitcont "Checking tgt file: $at_dir/bin/$env(AT_TARGET)-$exe"
 	if { ![file exists $at_dir/bin/$env(AT_TARGET)-$exe] } {
 		printitcont "Error:  File \
 $at_dir/bin/$env(AT_TARGET)-$exe is missing."
@@ -93,6 +94,7 @@ $at_dir/bin/$env(AT_TARGET)-$exe is missing."
 
 # Check architecture based executables
 foreach exe ${plt_exec} {
+	printitcont "Checking plt file: $at_dir/$env(AT_TARGET)/bin/$exe"
 	if { [file exists $at_dir/$env(AT_TARGET)/bin/$exe] == 0 } {
 		printitcont "Error: File $at_dir/$env(AT_TARGET)/bin/$exe is missing."
 		set rc 1
