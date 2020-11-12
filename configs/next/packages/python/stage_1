@@ -44,6 +44,7 @@ atcfg_configure() {
 		--prefix=${at_dest} \
 		--exec-prefix=${at_dest} \
 		--libdir="${at_dest}/lib${compiler##32}" \
+		--with-platlibdir="lib${compiler##32}" \
 		--enable-shared \
 		--enable-loadable-sqlite-extensions \
 		--with-openssl="${at_dest}" \
