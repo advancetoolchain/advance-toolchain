@@ -45,7 +45,7 @@ if { [array names env -exact "AT_PYTHON_VER"] == "" } {
 
 # AT 5.0 and 6.0 doesn't have all the Python fixes implemented on AT >= 7.0,
 # which may cause Python expected failures on Python testcases.
-if { [regexp "5\..*|6\..*" $env(AT_MAJOR_VERSION)] } {
+if { [regexp "\A5\..*|\A6\..*" $env(AT_MAJOR_VERSION)] } {
 	printit "This test doesn't work on AT 5.0 or 6.0." $WARNING
 	printit "Skipping..."
 	exit $ENOSYS
