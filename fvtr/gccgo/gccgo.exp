@@ -25,10 +25,7 @@ source ./shared.exp
 set GCCGO [compiler_path gccgo]
 set CFLAGS "-O2 -Wall"
 
-if { [regexp "5\..*|6\..*|7.0" $env(AT_MAJOR_VERSION)] } {
-	printit "gccgo is not supported prior to AT 7.1\t\[SUCCESS\]"
-	exit $ENOSYS
-}
+check_minimum_version 7.1 "gccgo is not supported prior to AT 7.1\t\[SUCCESS\]"
 
 printit "Running gccgo tests..."
 
@@ -39,7 +36,7 @@ $at_dir/bin/$env(AT_TARGET)-gccgo is missing."
 }
 
 # GCC Go <= 5 do not support split-stack.
-if { ! [regexp "7\.1|8\.0|9\.0" $env(AT_MAJOR_VERSION)] } {
+if { ! [regexp "^7\.1|^8\.0|^9\.0" $env(AT_MAJOR_VERSION)] } {
 	printit "Test if libgo.so supports split-stack..."
 	set libs [ exec find ${at_dir} -type f -name libgo.so* ]
 	foreach f ${libs} {

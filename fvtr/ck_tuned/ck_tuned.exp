@@ -12,10 +12,7 @@ set libs {libc.so libcrypto.so libdfp.so libgcc_s.so libz.so}
 set rc 0
 set libs2 {}
 
-if { [regexp "5\..*|6\..*" $env(AT_MAJOR_VERSION)] } {
-	printit "Tuned libraries had different settings prior to AT 7.0."
-	exit $ENOSYS
-}
+check_minimum_version 7.0 "Tuned libraries had different settings prior to AT 7.0."
 
 if { $env(AT_CROSS_BUILD) == "yes" } {
 	printit "AT doesn't distribute tuned libraries in the cross compiler."

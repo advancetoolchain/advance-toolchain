@@ -27,12 +27,7 @@ if { [array names env -exact "AT_GDB_VER"] == "" } {
 # AT 5.0 and 6.0 used to use development versions of GDB, instead of stable
 # versions like AT >= 7.0.  Which causes issues when trying to run this
 # testcase, like when testing for GDB version.
-if { [regexp "\A5\..*|\A6\..*" $env(AT_MAJOR_VERSION)] } {
-	printit "This test doesn't work on AT 5.0 or 6.0." $WARNING
-	printit "Skipping..."
-	exit $ENOSYS
-}
-
+check_minimum_version 7.0 "This test doesn't work prior to AT 7.0."
 
 # Get GDB version in the format: X.Y.Z
 set GDB [compiler_path gdb]

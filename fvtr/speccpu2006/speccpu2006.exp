@@ -65,10 +65,10 @@ if { $TARGET64 } {
 # Different versions of the compiler, requires different flags for specific
 # benchmarks.  A good example is what happened with 416.gamess on GCC 4.8.
 switch -regexp $env(AT_MAJOR_VERSION) {
-	5.0|6.0 {
+	"^5.0|^6.0" {
 		set cfg_set ""
 	}
-	7.0|7.1|8.0|9.0 {
+	"^7.0|^7.1|^8.0|^9.0" {
 		set cfg_set "7.0"
 	}
 	default {

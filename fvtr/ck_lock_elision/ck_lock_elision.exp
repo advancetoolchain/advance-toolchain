@@ -24,10 +24,7 @@ set CFLAGS "-O2 -Wall -pthread"
 
 printit "Checking if lock elision is enabled on libpthread..."
 
-if { [regexp "5\..*|6\..*|7\..*|8\..*" $env(AT_MAJOR_VERSION)] } {
-	printit "Lock elision is not supported prior to AT 9.0."
-	exit $ENOSYS
-}
+check_minimum_version 9.0 "Lock elision is not supported prior to AT 9.0."
 
 if { $env(AT_CROSS_BUILD) == "yes" } {
 	printit "Lock elision testing can only be performed on a supported host."
