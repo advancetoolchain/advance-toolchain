@@ -23,10 +23,7 @@ set CFLAGS "-O2 -Wall"
 
 printit "Checking if binutils has been built with the gold linker..."
 
-if { [regexp "5\..*|6\..*|7\..|8\..*" $env(AT_MAJOR_VERSION)] } {
-	printit "gold linker is not built prior to AT 9.0."
-	exit $ENOSYS
-}
+check_minimum_version 9.0 "gold linker is not built prior to AT 9.0."
 
 #
 # Gold is enabled by passing the --enable-gold when building

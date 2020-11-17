@@ -531,6 +531,14 @@ ${pkg_name}."
 	return ${packages}
 }
 
+proc check_minimum_version {minversion errmsg} {
+    if { $::env(AT_MAJOR_VERSION) < $minversion } {
+	printit $errmsg $WARNING
+	printit "Skipping..."
+	exit $ENOSYS
+    }
+}
+
 # Variables used in most testcases
 set FULLPATH [pwd]
 set CURTEST [lindex $argv 0]

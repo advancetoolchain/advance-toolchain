@@ -67,11 +67,11 @@ if { [array names env -exact "AT_OPROFILE_VER"] == "" } {
 # Check if libjvmti_oprofile.so and libjvmpi_oprofile.so are available for 32
 # and 64 bits.
 switch -regexp $env(AT_MAJOR_VERSION) {
-	"5\..*" {
+	"^5\..*" {
 		# AT 5.0 supports jvmpi only (kernel limits?).
 		set java_libs {"libjvmpi_oprofile"}
 	}
-	"6\..*|7\.0" {
+	"^6\..*|^7\.0" {
 		# AT 6.0 and 7.0 support both jvmti and jvmpi.
 		set java_libs {"libjvmti_oprofile" "libjvmpi_oprofile"}
 	}
