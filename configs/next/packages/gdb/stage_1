@@ -45,7 +45,8 @@ atcfg_configure() {
 			${disable_multilib: +--disable_multilb} \
 			--with-separate-debug-dir="/usr/lib64/debug" \
 			--enable-werror=no \
-			--with-libexpat-prefix=${tmp_dir}
+			--with-libexpat-prefix=${tmp_dir} \
+			--with-libgmp-prefix=${tmp_dir}
 	else
 		if [[ "${build_arch}" == "ppc" ]]; then
 			base_libdir="lib"
@@ -64,6 +65,7 @@ atcfg_configure() {
 			${enable_bfd} \
 			--disable-sim \
 			--with-python="${at_dest}/bin/python3" \
+			--with-libgmp-prefix=${tmp_dir} \
 			--with-separate-debug-dir="${at_dest}/lib/debug:/usr/lib/debug" \
 			--enable-werror=no
 	fi
