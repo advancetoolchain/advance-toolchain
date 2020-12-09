@@ -11,6 +11,179 @@
 <p>Since the end of August 2019, Advance Toolchain has been available from a new FTP server: <a href="ftp://public.dhe.ibm.com/">public.dhe.ibm.com</a></p>
 <p>Please be advised the FTP server at Unicamp won't be updated any longer.</p>
 
+<h3>New features in 13.0-3</h3>
+<ul>
+  <li>GCC provides:</li>
+  <ul>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=39695">ProcPtr function results: wrong name in error message</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=43486">Preserve variable-use locations</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=50392">SIGSEGV in gfc_trans_label_assign</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=59107">Spurious &quot;Type specified for intrinsic function 'command_argument_count' at (1) is ignored&quot; under -Wsurprising</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=64636">LTO PGO bootstrap fails on linux-sparc64 in stream_out_histogram_value</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=71706">ICE on using sync images with integer(kind&lt;&gt;4), with -fcoarray=lib -fcheck=bounds</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=71960">__glibcxx_assert and Debug Mode checks can't be used in constexpr functions</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=79585">spurious -Wunused-variable on a pointer with attribute unused in function template</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80219">relative line numbers only working if gcc_{error,warning}_prefix defined</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85303">dg-message not supported</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88115">Incorrect result from alignof in templates, if also using __alignof__</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88379">ICE with allocatable coarray, class and associate in resolve_assoc_var, at fortran/resolve.c:8750</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89510">new_allocator::construct needs to be constrained</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89574">internal compiler error: in conv_function_val, at fortran/trans-expr.c:3792</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90212">by-ref capture of constexpr class object rejected</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91518">segfault when run CPU2006 465.tonto since r263875</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91529">-fmerge-all-constants leads to corrupt output without inlining</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91807">std::variant with multiple identical types assignment fail to compile</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92216">GDC generate duplicate symbols when mixins and interfaces are used to gather</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92923">__builtin_vec_xor() causes subregs to be used when not using V4SImode vectors</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92978">std::gcd mishandles mixed-signedness</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93136">gcc.dg/vmx/ops.c and several other test break after r279772</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93245">std::experimental::filesystem::path::generic_string() doesn't normalize</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93337">ICE in gfc_dt_upper_string, at fortran/module.c:441</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93423">ICE on invalid with argument list for module procedure</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93497">ICE in gfc_conv_array_constructor_expr, at fortran/trans-expr.c:7594</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93553">ICE in scan_omp_1_op, at omp-low.c:3485</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93581">ICE in gfc_get_dataptr_offset, at fortran/trans-array.c:6951</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93592">Invalid UP/DOWN rounding with EN descriptor</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93674">GCC eliminates conditions it should not, when strict-enums is on</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93822">ICE in make_ssa_name_fn, at tree-ssanames.c:279 since r7-536-g381cdae49785fc4b</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93956">Wrong array creation with p =&gt; array_dt(1:n)%component</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94033">is_trivially_copy_constructible&lt;&gt; fails with compiler error on complicated object with private default constructor</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94077">gcc.dg/gomp/pr82374.c fails on power 7</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94109">Memory leak introduced in 8.3.0-&gt;8.3.1</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94145">Longcalls mis-optimize loading the function address</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94160">std::pmr::pool_options::max_blocks_per_chunk=1 causes pool resources to return null pointers</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94203">experimental/executor and socket header issues-</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94242">filesystem::path::generic_string() only works with std::allocator</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94325">UBSAN: &quot;invalid vptr&quot; false positive for virtual inheritance with -fno-sanitize-recover=all</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94361">Memory leak in nested types with final</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94397">the compiler consider &quot;type is( real(kind(1.)) )&quot; as a syntax error since r10-7369-gc38daa7976886a59</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94524">wrong code with vector modulo operation since r0-117580</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94571">Error: Expected comma or semicolon, comma found</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94618">'-fcompare-debug' failure (length) with -O2 -fnon-call-exceptions since r8-565-g7581ce9a1ad6df9c</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94621">GCC 9.2.1 segfaults when compiling file with -O3 since r9-5354</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94627">std::match_results equality comparisons should not be noexcept</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94641">-Wpadded -fsanitize=undefined together cause warning on main()</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94681">filesystem::sysmlink_status using stat instead of lstat when --disable-libstdcxx-filesystem-ts</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94705">internal compiler error: tree check: expected class ‘type’, have ‘exceptional’ (error_mark) in diag_attr_exclusions, at attribs.c:396 since r8-5161</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94710">Assembler messages: Error: operand out of range (4 is not between 0 and 3) (xxsldwi 0,32,33,4)</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94742">Incorrect &quot;no return statement&quot; warning with [[noreturn]] and __FUNCTION__</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94755">internal compiler error: Segmentation fault</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94788">Severe regression leading to double free in tcache</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94809">Different results between gcc-9 and gcc-6</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94812">ppc incorrect mffs-based emulation of mffsl</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94826">ICE in gcc.dg/pr94780.c after r10-7999</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94842">internal compiler error: in gimplify_label_expr, at gimplify.c:2573</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94906">memory corruption in std::pmr::monotonic_buffer_resource</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94910">detect_stack_use_after_return=1 is much slower than clang's</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94936">pmr::synchronized_pool_resource crashes without -pthread</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94946">error: ‘template&lt;class returnType&gt; JSC::FunctionPtr::FunctionPtr(returnType (*)())’ cannot be overloaded since r10-7998-g5f1cd1da1a805c3d</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94947">-fipa-pta + pthread_once crash since r6-5684-g47e5754e17e9ac3b</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94951">dereferencing type-punned pointer will break strict-aliasing rules when using super class for a template type</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94954">Wrong code generation for vec_pack_to_short_fp32 builtin for Power</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94964">ICE in add_phi_arg, at tree-phinodes.c:359 since r8-2993-ga7976089dba5e227</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94969">Invalid loop distribution since r8-2390-gdfbddbeb1ca912c9</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94970">internal compiler error: in verify_gimple_stmt, at tree-cfg.c:4959</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95049">GCC never terminates with trivial input program</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95080">-fcompare-debug failure (length) with -Og -fcse-follow-jumps -fnon-call-exceptions</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95091">ICE in gfc_hash_value, at fortran/class.c:538</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95104">Segfault on a legal WAIT statement</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95106">Bogus warning from module with long name and an equivalence</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95110">new test case in r11-345 error: gcc.dg/tree-ssa/pr94969.c: dump file does not exist</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95119">CLOSE hangs when -fopenmp is specified in compilation</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95155">wrong vtable offset in virtual function call</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95158">Templates + Diamond Inheritance + Final = Pure Virtual Function Call</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95173">ICE on some architecture targets when trying to use unknown attribute</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95191">Hang in WAIT with a bad ID= value if threading specified</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95250">ICE instead of error when trying to use bad template type inside template</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95328">structured binding of template type inside template function is reported as &quot;incomplete class type&quot;</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95344">Wparentheses (assignment used as truth value) on parenthesized ternary conditional E2</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95373">ICE in build_reference_type, at tree.c:7942</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95500">Segfault compiling extra interface on intrinsic</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95503">ICE in gfc_is_simply_contiguous, at fortran/expr.c:5844</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95530">ICE in gfortran.dg/equiv_11.f90 after r11-594</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95537">gfortran.dg/pr95090.f90 since r11-670</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95560">ICE in comptypes, at cp/typeck.c:1498 since r7-4206-g84ff4775d41b716c</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95585">ICE in gfc_check_reshape, at fortran/check.c:4751</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95587">ICE in gfc_target_encode_expr, at fortran/target-memory.c:362</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95611">ICE in access_attr_decl, at fortran/decl.c:9075</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95612">ICE in gfc_check_pointer_assign, at fortran/expr.c:4274</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95614">ICE in build_field, at fortran/trans-common.c:301</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95638">Legit-looking code doesn't work with -O2</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95678">ICE in dependent_type_p, at cp/pt.c:25610</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95689">ICE in check_sym_interfaces, at fortran/interface.c:2015</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95708">ICE in resolve_fl_procedure, at fortran/resolve.c:13002</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95709">ICE in gfc_resolve_code, at fortran/resolve.c:11807</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95717">ICE during GIMPLE pass: vect: verify_ssa failed since r9-5325-gf25507d041de4df6</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95743">bogus recursive call to nonrecursive procedure with -fcheck=recursion</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95749">std::filesystem::file_size returns wrong size for large files on Windows</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95804">ICE in generate_code_for_partition, at tree-loop-distribution.c:1323 since r11-1565-g2c0069fafb53ccb7</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95810">Spurious UBSan warning when computing the opposite of the absolute value of INT_MIN</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95829">Bogus error with additional blanks in type(*)</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95857">Silencing an unused label warning with (void)&amp;&amp;label; can make gcc segfault</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95880">ICE in gfc_add_type, at fortran/symbol.c:2030 since r11-524-geb069ae8819c3a84</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95881">ICE in resolve_symbol, at fortran/resolve.c:15175 since r7-5348-g6479f45b31c13f30</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95882">ICE in gfc_get_derived_type, at fortran/trans-types.c:2729</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96018">Optimization issue with external HDF5 library</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96041">ICE in gfortran.dg/pr93423.f90 after r11-1792</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96139">Vector element extract mistypes long long int down to long int</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96220">-fc-prototypes forgets types for doubles</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96426">__builtin_convertvector ICE without lhs</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96459">OpenMP host teams reductions ignored</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96484">Horrible performance of std::read_symlink</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96486">get_environment_variable crashes for environment variables that are empty strings</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96545">ICE in get_atomic_generic_size</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96571">Bad &quot;set but not used&quot; warning with _Generic</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96722">Clobbers on NULL since r8-1519</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96729">slow compile with `-g -O3` since r11-39-gf9e1ea10e657af9f</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96766">std::swap(std::variant, std::variant) triggers undefined behavior sanitizer</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96803">std::tuple chooses wrong constructor for uses-allocator construction</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96862">-frounding-math -std=c++2a error: '(1.29e+2 * 6.9314718055994529e-1)' is not a constant expression</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96890">Wrong answer with intrinsic IALL</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97053">an O2, O3 codegen bug</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97063">The value of result is wrong when vector (step size is negative) * matrix</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97069">Zero valued #line directive results in excessively large blocks of memory being allocated</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97101">noexcept specifier in std::bind_front()</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97132">assume_aligned is not constexpr</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97167">string_view bounds error in filesystem::path</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97193">.gcno files are not written to same directory as the object file</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97272">Wrong answer from MAXLOC with character arg</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97295">ICE on firefox built with lto+pgo: dist/include/mozilla/Casting.h:64:1: internal compiler error: in to_frequency, at profile-count.c:273</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97392">g++.dg/asan/asan_test.C compilation failure starting with r11-3827</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97439">Wrong min value generated for DFP numbers</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97652">New gfortran.dg/pdt_14.f03 failure after g:617695cdc2b3d950f1e4deb5ea85d5cc302943f4</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97731">terminate called in std::experimental::filesystem::recursive_directory_iterator</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97798">FTB msp430-elf error: the value of '__gnu_cxx::__numeric_traits_integer&lt;__int20&gt;::__max' is not usable in a constant expression</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97918">ICE near htab_hash_string when LTO, -O &amp; -g</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=98001">ext/stdio_filebuf/char/79820.cc is broken</a>.</li>
+  </ul>
+  <li>GNU C Library provides:</li>
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25976">internal_end*ent in nss_compat may clobber errno, hiding ERANGE</a>.</li>
+  </ul>
+  <li>Binutils provides:</li>
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25993">Bug in bfd causes crashes with DXVK</a>.</li>
+  </ul>
+  <li>Userspace RCU provides:</li>
+  <ul>
+    <li>Version 0.11.2, see the <a href="https://raw.githubusercontent.com/urcu/userspace-rcu/v0.11.2/ChangeLog">release notes</a> for details.</li>
+    <li>Fix for explicitly include urcu/config.h in files using CONFIG_RCU_ defines.</li>
+    <li>Fix for add -lurcu-common to pkg-config libs for each flavor.</li>
+    <li>Fix race between rcu_barrier() and call_rcu_data_free().</li>
+  </ul>
+  <li>TBB provides:</li>
+  <ul>
+    <li>Version 2019_U9, see the <a href="https://github.com/oneapi-src/oneTBB/blob/tbb_2019/CHANGES">release notes</a> for details.</li>
+  </ul>
+  <li>TCMalloc provides:</li>
+  <ul>
+    <li>Version 2.8, see the <a href="https://raw.githubusercontent.com/gperftools/gperftools/gperftools-2.8/NEWS">release notes</a> for details.</li>
+  </ul>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 13.0-2</h3>
 <ul>
   <li>GCC provides:</li>
@@ -83,9 +256,6 @@
     <li>Adding the following flags when building python: --enable-optimizations and --with-lto</li>
   </ul>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 13.0-1</h3>
 <ul>
