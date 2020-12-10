@@ -152,29 +152,17 @@ get_latest_revision ()
 		    git fetch origin
 		fi
 		# Get which branch is being used.
-		local branch=$(git branch -r --contains ${ATSRC_PACKAGE_REV} \
-				   | cut -d/ -f2- \
-				   | grep -Evw "(backport|users)")
-		# When the revision is in HEAD we got a string like:
-		# master -> HEAD
-		# origin/master
-		if [[ "${branch}" = *"HEAD"* ]]; then
-			branch="HEAD"
+		local branch=${ATSRC_PACKAGE_BRANCH}
+		[[ -z "$branch" ]] && branch="HEAD"
+		# Since GCC moved to git (January 2020), the IBM branches have been
+		# relocated within the vendors directory.
+		if [[ $package == "gcc" ]] && [[ $configset != "next" ]]; then
+		    branch="refs/vendors/ibm/heads/${branch}"
 		else
-		    if [[ $(echo "${branch}" | wc -w) -ne 1 ]]; then
-			echo "The commit id was found in more than one branch."
-			return 1
-		    fi
-		    # Since GCC moved to git (January 2020), the name of the branch
-		    # has looked like: ibm/<branch>
-		    if [[ $package == "gcc" ]] && [[ $configset != "next" ]]; then
-			branch="refs/vendors/ibm/heads/${branch#*/}"
-		    else
-			branch="refs/heads/${branch}"
-		    fi
+		    branch="refs/heads/${branch}"
 		fi
 		hash=$(git ls-remote ${url} ${branch} | cut -f1)
-		hash=$(git rev-parse --short=12 ${hash});
+		[[ -n "$hash" ]] && hash=$(git rev-parse --short=12 ${hash})
 		popd > /dev/null
 		rm -rf ${tmp_dir}
 	else
@@ -518,6 +506,6 @@ for co in "${ATSRC_PACKAGE_CO[@]}"; do
 	    fi
 	    break;
 	else
-	    print_msg 0 "Unable to connect to ${repo}"
+	    print_msg 0 "Unable to connect to ${repo} or wrong branch name"
 	fi
 done;
