@@ -17,6 +17,11 @@
 
 source ./shared.exp
 
+if { $env(AT_CROSS_BUILD) == "yes" } {
+	printit "This is a cross build. Skipping this test..."
+	exit $ENOSYS
+}
+
 set traced_events "/sys/kernel/debug/tracing/uprobe_events"
 
 if {![file writable $traced_events]} {
