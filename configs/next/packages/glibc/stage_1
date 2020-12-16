@@ -157,7 +157,8 @@ atcfg_configure()
 			-fcommon \
 			-Wno-error=array-bounds \
 			-Wno-error=array-parameter \
-			-Wno-error=stringop-overflow" \
+			-Wno-error=stringop-overflow \
+			-Wno-error=stringop-overread" \
 		CXX="/bin/false" \
 		libc_cv_forced_unwind="yes" \
 		libc_cv_c_cleanup="yes" \
@@ -189,7 +190,8 @@ atcfg_configure()
 		CFLAGS="-g -O2 \
 			-Wno-error=array-bounds \
 			-Wno-error=array-parameter \
-			-Wno-error=stringop-overflow" \
+			-Wno-error=stringop-overflow \
+			-Wno-error=stringop-overread" \
 		CPPFLAGS="-isystem $(pwd)/systemtap" \
 		CXX="/bin/false" \
 		AR="${at_dest}/bin/${target}-ar" \

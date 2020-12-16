@@ -98,7 +98,8 @@ atcfg_configure() {
 		-fcommon \
 		-Wno-error=array-bounds \
 		-Wno-error=array-parameter \
-		-Wno-error=stringop-overflow" \
+		-Wno-error=stringop-overflow \
+		-Wno-error=stringop-overread" \
 	CPPFLAGS="-isystem $(pwd)/systemtap" \
 	CXXFLAGS="-g -O3" \
 	${ATSRC_PACKAGE_WORK}/configure --build=${host} \
