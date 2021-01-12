@@ -158,8 +158,6 @@ get_latest_revision ()
 		# relocated within the vendors directory.
 		if [[ $package == "gcc" ]] && [[ $configset != "next" ]]; then
 		    branch="refs/vendors/ibm/heads/${branch}"
-		else
-		    branch="refs/heads/${branch}"
 		fi
 		hash=$(git ls-remote ${url} ${branch} | cut -f1)
 		[[ -n "$hash" ]] && hash=$(git rev-parse --short=12 ${hash})
