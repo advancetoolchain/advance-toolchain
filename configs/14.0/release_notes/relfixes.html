@@ -12,6 +12,225 @@
 <p>Since the end of August 2019, Advance Toolchain has been available from a new FTP server: <a href="ftp://public.dhe.ibm.com/">public.dhe.ibm.com</a></p>
 <p>Please be advised the FTP server at Unicamp won't be updated any longer.</p>
 
+<h3>New features in 14.0-2</h3>
+<ul>
+  <li>GCC provides:</li>
+  <ul>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=43486">Preserve variable-use locations</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=64194">[C++14] &lt;unresolved overloaded function type&gt; for function template with auto return</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67453">vtable not emitted for class with no key method and defaulted destructor with attribute((used))</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80219">relative line numbers only working if gcc_{error,warning}_prefix defined</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85303">[testsuite, libgomp] dg-message not supported</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85796">ICE: Floating point exception</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88115">Incorrect result from alignof in templates, if also using __alignof__.</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90254">ice on aggregate initialization of unmovable base</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92103">constraints not checked on nested class template</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92285">Layout of istreambuf_iterator subobject depends on -std mode</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92546">Large increase in preprocessed file sizes in C++2a mode</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92587">Compiler is unable to generate finalization wrapper</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92793">Fortran Location Data for Diagnostic lacks the column number – when passing on to ME</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93083">[C++20] copy deduction rejected when doing CTAD for NTTP</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93456">No overflow check in __atomic_futex_unsigned_base::_M_futex_wait_until</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93685">ICE in gfc_constructor_append_expr, at fortran/constructor.c:135</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93711">ICE: [[no_unique_address] when constructing via template helper</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95132">Concept checked after auto return type deduction</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95171">ICE: verify_flow_info failed (error: wrong outgoing edge flags at end of bb 2)</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95189">memcmp being wrongly stripped like strcmp</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95322">std::list | take | transform, expression does not work cbegin() == end()</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95342">ICE in gfc_match_subroutine, at fortran/decl.c:7913</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95614">ICE in build_field, at fortran/trans-common.c:301</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95694">ICE in trunc_int_for_mode, at explow.c:59 since r9-7156-g33579b59aaf02eb7</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95788">std::ranges::construct_at's placement new not intercepted</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95886">suboptimal memcpy with embedded zero bytes</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95979">ICE in get_kind, at fortran/simplify.c:129</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95989">Segmentation fault compiling with static libraries and using jthread::request_stop</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96042">Reference type of std::ranges::iota is __int128 with -std=c++2a?!</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96075">bogus alignment for negative step grouped access</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96100">ICE in gimplify_expr, at gimplify.c:14638</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96101">ICE in fold_convert_loc, at fold-const.c:2398</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96199">internal compiler error: in tsubst_copy with CTAD for alias templates</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96229">Invalid specialization accepted when also constrained in base template template parameter</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96241">ICE in verify_ctor_sanity</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96269">optional comparison with nullopt fails</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96320">gfortran 8-10 shape mismatch in assumed-length dummy argument character array</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96394">ICE in add_new_edges_to_heap, at ipa-inline.c:1746 (-O3 PGO)</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96470">gnat.dg/opt39.adb is not scalarized</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96698">ICE during GIMPLE pass:vect</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96805">ICE: Segmentation fault in instantiate_template / pop_nested_class()</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96913">gcov TOPN streaming is incorrect for shared libraries</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96920">ICE segmentation fault in tree-vectorizer at -O3</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96979">Switch with case values derived from constexpr function takes unreasonable time to compile</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96994">Missing code from consteval constructor initializing const variable</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97010">C++20 ADL and function templates that are not visible (P0846R0) fails on call with templated type</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97060">Missing DW_AT_declaration=1 in dwarf data</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97063">[MATMUL intrinsic] The value of result is wrong when vector (step size is negative) * matrix</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97069">Zero valued #line directive results in excessively large blocks of memory being allocated</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97132">assume_aligned is not constexpr</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97145">Sanitizer pointer-subtract breaks constexpr functions subtracting pointers</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97163">Build error with -mcpu=power9 on ppc64</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97183">zstd build failure for gcc 10 on Ubuntu 16.04</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97193">.gcno files are not written to same directory as the object file</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97195">construct_at on a union member is not a constant expression</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97197">With -O2, Incorrect -Werror=maybe-uninitialized thrown, leads to 'target_mem_ref' and 'dump_expr&lt;expression error&gt;' in message</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97255">Vectorizer gives a boolean a value of 255</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97272">Wrong answer from MAXLOC with character arg</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97290">Segmentation fault in lto-wrapper</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97294">ASAN &quot;dynamic-stack-buffer-overflow&quot; false positive with OpenMP reduction to std::vector</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97295">ICE on firefox built with lto+pgo: dist/include/mozilla/Casting.h:64:1: internal compiler error: in to_frequency, at profile-count.c:273</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97328">ICE in verify_ctor_sanity, at cp/constexpr.c:3995 since r10-7313-gb599bf9d6d1e180d</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97357">Unable to coalesce ssa_names  which are marked as MUST COALESCE.</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97360">ICE in range_on_exit</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97362">`__deref` in &lt;functional&gt; in debug mode clashes with internal macro in Windows system header</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97386">wrong code with __builtin_bswap16() of rotated 64bit value</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97392"> g++.dg/asan/asan_test.C compilation failure starting with r11-3827</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97412">[concepts] ICE with requires requires and parameter packs</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97414">AddressSanitizer CHECK failed: detect_stack_use_after_return and detect_invalid_pointer_pairs</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97438">[accepts-invalid] coroutines accepts prmomise type with both return_value() and return_void()</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97439">Wrong min value generated for DFP numbers</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97456">An incorrect optimization causes a function to always return the same value when using -flto</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97491">Wrong restriction for VALUE arguments of pure procedures</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97508">ICE: decompressed stream: Destination buffer is too small</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97539">ICE verify_ssa failed since r10-4200-gb7ff7cef5005721e</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97554">ICE: during RTL pass: cprop /segfault in sbitmap</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97652">New gfortran.dg/pdt_14.f03 failure after g:617695cdc2b3d950f1e4deb5ea85d5cc302943f4</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97663">[c++17] Function with return type 'unsigned' in nested namespace misinterpreted as deduction guide</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97731">terminate called in std::experimental::filesystem::recursive_directory_iterator</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97748">Preincrement of _Complex gives bogus warning = &quot;value computed is not used&quot;</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97760">GCC outputs wrong values when compiling the testcase with -O3 since r10-4200-gb7ff7cef5005721e</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97768">32-bit f951 ICE on code from OpenMolcas</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97782">[Fortran] Confused location information for OpenACC compute constructs</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97790">constexpr evaluation reports false positive memory leak</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97797">internal compiler error: in build2, at tree.c:4814</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97828">std::ranges::search_n does not work with counted_iterator&lt;_List_iterator&lt;...&gt;&gt;</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97842">ice compiling dxml</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97843">Bad code gen when concatenating to array</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97869">&lt;version&gt; defines __cpp_lib_span even when &lt;span&gt; doesn't provide an implementation</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97876">stop_token header doesn't compile on clang-8 with -std=c++20</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97889">d: OutOfMemoryError thrown when appending to an array with a side effect</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97918">ICE near htab_hash_string when LTO, -O &amp; -g</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97935">Missing subsumption in iterator category detection</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97958">ICE in build2, at tree.c:4868</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=98001">ext/stdio_filebuf/char/79820.cc is broken</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=98002">gcc.dg/strncmp-2.c frees mproptected memory</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=98230">incorrect Type'Mod during a loop whose range is computed by a variable</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=98307">Dependency check fails when using &quot;allocatable&quot; instead of &quot;pointer&quot; (forall_3.f90)</a>.</li>
+  </ul>
+  <li>GNU C Library provides:</li>
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=19519">(CVE-2016-10228) iconv(1) with -c option hangs on illegal multi-byte sequences (CVE-2016-10228)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24973">(CVE-2019-25013) iconv encounters segmentation fault when converting 0x00 0xfe in EUC-KR to UTF-8 (CVE-2019-25013)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25399">undefined reference to `__warn_memset_zero_len' when changing gnuc version</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=26224">(CVE-2020-27618) iconv hangs when converting some invalid inputs from several IBM character sets (CVE-2020-27618)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=26383">bind_textdomain_codeset doesn't accept //TRANSLIT anymore</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=26600">Transaction ID collisions cause slow DNS lookups in getaddrinfo</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=26636">32-bit shmctl(IPC_INFO) crashes when shminfo struct is at the end of a memory mapping</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=26637">semctl SEM_STAT_ANY fails to pass the buffer specified by the caller to the kernel</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=26639">msgctl IPC_INFO and MSG_INFO return garbage</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=26700">glibc 2.32 has default_cflags=&quot;-g -O&quot; instead of &quot;-g -O2&quot;</a>.</li>
+  </ul>
+  <li>Binutils provides:</li>
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25878">Error: file table slot 1 is already occupied by a different file</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=26302">nm -D -u now by default displays symbol versions, adding --with-symbol-versions duplicates them</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=26382">Inconsistent undefined versioned symbols</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=26711">-z ibt and -z shstk are mishandled</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=26740">Extra filename generated by --gdwarf-4</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=26778">Error: file table slot 1 is already occupied by a different file</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=26808">[2.36 Regression] readelf: Warning: DIE at offset 0x232 refers to abbreviation number 77 which does not exist</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=26869">ld: assertion fail ../../bfd/elflink.c:14806 on i686-linux-gnu since 382aae06322799a25ea52fe61b243cbca4db8d66</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=26902">gold powerpc inserts jump to middle of long branch stub</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=26929">[readelf] crash with ASAN in print_dynamic_symbol</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=27128">nm -P portable output format regression</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=27140">ppc32 segmentation fault in make_stub</a>.</li>
+  </ul>
+  <li>OpenSSL provides:</li>
+  <ul>
+    <li>Version 1.1.1i, see the <a href="https://www.openssl.org/news/openssl-1.1.1-notes.html">release notes</a> for details.</li>
+    <li>Fix for OPENSSL_cpuid_setup FreeBSD PowerPC.</li>
+    <li>Fix for [crypto/dh] side channel hardening for computing DH shared keys .</li>
+    <li>Fix for NULL pointer access caused by X509_ATTRIBUTE_create().</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/12199">Broken on 32 bit big endian</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/13183">SSL_CTX_sess_accept gives negative value</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/13291">nginx 1.19.4 feature &quot;ssl_reject_handshake&quot; does not work as intended with openssl</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/13649">Low Memory SegFault in dtls</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/13698">X509_cmp fails since 1.1.1f</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/13739">Regression in `X509_verify_cert`</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/13840">UTF8 BOM should be ignored when reading the configuration file</a>.</li>
+  </ul>
+  <li>Expat provides:</li>
+  <ul>
+    <li>Version 2.2.10, see the <a href="https://github.com/libexpat/libexpat/blob/R_2_2_10/expat/Changes">release notes</a> for details.</li>
+    <li>Fix for <a href="https://github.com/libexpat/libexpat/issues/428">Make testrunner output more helpful (related to #382) by hartwork</a>.</li>
+    <li>Fix for <a href="https://github.com/libexpat/libexpat/issues/434">Detect unsupported VS at configure time (and not at compile time) by tbeu</a>.</li>
+    <li>Fix for <a href="https://github.com/libexpat/libexpat/issues/436">Obsolescent macro AC_HEADER_STDC </a>.</li>
+    <li>Fix for <a href="https://github.com/libexpat/libexpat/issues/437">Protect installed expat_config.h from regression + drop obsolescent macro AC_HEADER_STDC (#436) by hartwork</a>.</li>
+  </ul>
+  <li>Python provides:</li>
+  <ul>
+    <li>Version 3.8.7, see the <a href="https://www.python.org/downloads/release/python-387/">release notes</a> for details.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue12766">strange interaction between __slots__ and class-level attributes</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue14491">fixcid.py is using <> instead of !=</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue20530">Change the text signature format (again) to be more robust</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue20536">statistics._decimal_to_ratio() produces non-integer ratio</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue23159">argparse: Provide equivalent of optparse.OptionParser.{option_groups,option_list,get_option}</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue23281">Access violation - pyc file</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue23446">Use PyMem_New instead of PyMem_Malloc</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue23467">Improve byte formatting compatibility between Py2 and Py3</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue23577">Add tests for wsgiref.validate</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue23658">multiprocessing: string arg to SystemExit</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue23693">timeit accuracy could be better</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue23742">expandvars removes single quotes ( ' )</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue23784">Reloading tokenize module leads to error</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue23787">sum() function docstring lists arguments incorrectly</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue23861">Make stdprinter use DebugOutputString when no stdout/stderr available</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue23874">Encrypted MSI fails to install with code 2755</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue23944">Argument Clinic: wrap impl's declaration if it's too long</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue23955">Add python.ini file for embedded/applocal installs</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue23962">Incorrect TimeoutError referenced in concurrent.futures documentation</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue23965">test_ssl failure on Fedora 22</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue23966">More clearly expose/explain native and cross-build target information</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue23968">rename the platform directory from plat-$(MACHDEP) to plat-$(PLATFORM_TRIPLET)</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue23973">PEP 484 implementation</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue23999">Undefined behavior in dtoa.c (rshift 32 of 32bit data type)</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24009">Get rid of rare format units in PyArg_Parse*</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24016">Add a Sprints organization/preparation section to devguide</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24021">Add docstring to urllib.urlretrieve</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24022">Python heap corruption issue</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24025">str(bytes_obj) should raise an error</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24026">Python hangs forever in wait() of threading.py</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24036">GB2312 codec is using a wrong covert table</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24037">Argument Clinic: add the boolint converter</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24060">Clearify necessities for logging with timestamps</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24076">sum() several times slower on Python 3 64-bit</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24077">man page says -I implies -S. code says -s.</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24078">inspect.getsourcelines ignores context and returns wrong line #</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24080">asyncio.Event.wait() Task was destroyed but it is pending</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24082">Obsolete note in argument parsing (c-api/arg.rst)</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24088">yield expression confusion</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24089">argparse crashes with AssertionError</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24093">Use after free in Element.remove</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24100">Use after free in siftdown (2)</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24101">Use after free in siftup</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24110">zipfile.ZipFile.write() does not accept bytes arcname</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24113">shlex constructor unreachable code</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24116">--with-pydebug has no effect when the final python binary is compiled</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24120">pathlib.(r)glob stops on PermissionDenied exception</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24129">Incorrect (misleading) statement in the execution model documentation</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24183">ABCMeta classes do not support the **kwargs standard class interface</a>.</li>
+  </ul>
+  <li>Userspace RCU provides:</li>
+  <ul>
+    <li>Fix for configure: support Autoconf 2.70.</li>
+    <li>Fix for bump tests thread limit to 4096.</li>
+    <li>Fix for explicitly include urcu/config.h in files using CONFIG_RCU_ defines.</li>
+    <li>Fix for add -lurcu-common to pkg-config libs for each flavor.</li>
+    <li>Fix for race between rcu_barrier() and call_rcu_data_free().</li>
+  </ul>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 14.0-1</h3>
 <ul>
   <li>GCC provides:</li>
@@ -122,9 +341,6 @@
     <li>Version 3.16.1, see the <a href="http://valgrind.org/docs/manual/dist.news.html">release notes</a> for details.</li>
   </ul>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 14.0-0</h3>
 <ul>
