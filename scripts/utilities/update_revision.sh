@@ -139,6 +139,29 @@ ghapi_call ()
 	     -H "Authorization: token $GITHUB_TOKEN" ${@}
 }
 
+# This function makes a request to the GitHub GraphQL API. It returns the HTTP
+# status code for the request and saves any output to outfile. Any
+# extra parameters are passed directly as arguments to curl.
+#
+# Parameters:
+#     $1 - outfile
+#     $2 - input file (containing the JSON payload)
+ghapi_gql_call ()
+{
+	if [[ ${#} -lt 2 ]]; then
+		echo "Function ghapi_call expects at least 2 parameters."
+		return 1
+	fi
+
+	outfile="${1}"
+	jsonfile="${2}"
+	url="https://api.github.com/graphql"
+	shift 2
+
+	curl ${url} -s -X POST -o ${outfile} -w '%{http_code}' \
+	     -H "Authorization: bearer $GITHUB_TOKEN" -d "@${jsonfile}" ${@}
+}
+
 # This function returns the latest revision from a git/svn repository
 #
 # Parameters:
@@ -465,6 +488,47 @@ EOF
 		if [[ ${status} -eq 201 ]];
 		then
 			print_msg 0 "Pull request creation successful!"
+			pr_number=$(grep -oE '"number": [0-9]+' ${out} | cut -d' ' -f2)
+
+			# Enabling auto-merge on a PR is only available through
+			# the GraphQL API. First we need to get the PR's id
+			cat > payload.json <<EOF
+{
+  "query": "query FindPullRequestID {
+    repository(owner: \"advancetoolchain\", name: \"advance-toolchain\") {
+      pullRequest(number: ${pr_number}) {
+        id
+      }
+    }
+  }"
+}
+EOF
+
+			if [[ ${status} -eq 200 ]]; then
+				pr_id="$(cat ${out} | jq -r '.data.repository.pullRequest.id')"
+				echo "PR ID: ${pr_id}"
+
+				cat > payload.json <<EOF
+{
+  "query": "mutation EnableAutoMerge {
+    enablePullRequestAutoMerge(input: {pullRequestId: \"${pr_id}\", mergeMethod: REBASE}){
+      actor {
+        login
+      }
+    }
+  }"
+}
+EOF
+
+				status=$(ghapi_gql_call ${out} 'payload.json')
+
+				if [[ ${status} -eq 200 ]]; then
+					print_msg 0 "Successfully enabled auto-merge for pull request."
+				else
+					print_msg 0 "Failed to enable auto-merge for pull request."
+					cat ${out}
+				fi
+			fi
 		else
 			print_msg 0 "Pull request creation failed. cURL message:"
 			cat ${out}
