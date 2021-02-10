@@ -117,6 +117,28 @@ print_msg ()
 	echo ${2}
 }
 
+# This function makes a request to the GitHub REST API. It returns the HTTP
+# status code for the request and saves any output to outfile. Any
+# extra parameters are passed directly as arguments to curl.
+#
+# Parameters:
+#     $1 - outfile
+#     $2 - endpoint
+ghapi_call ()
+{
+	if [[ ${#} -lt 2 ]]; then
+		echo "Function ghapi_call expects at least 2 parameters."
+		return 1
+	fi
+
+	outfile="${1}"
+	url="https://api.github.com/${2}"
+	shift 2
+
+	curl ${url} -si -o ${outfile} -w '%{http_code}' \
+	     -H "Authorization: token $GITHUB_TOKEN" ${@}
+}
+
 # This function returns the latest revision from a git/svn repository
 #
 # Parameters:
@@ -294,6 +316,9 @@ send_to_github ()
 	pkg=$(echo ${1} | awk -F "/" '{ print $(NF-1) }')
 	cfg=$(echo ${1} | awk -F "/" '{ print $(NF-3) }')
 
+        # Temp file to save output of REST calls to the GitHub API
+	out=$(mktemp '/tmp/ghapi-XXXXX.out')
+
 	print_msg 1 "Preparing commit to send for review."
 
 	# Check connection to GitHub
@@ -311,16 +336,14 @@ send_to_github ()
 		print_msg 2 "Checking if the token provided grants pull request creation \
 rights"
 
-		authtxt=$(curl https://api.github.com/user -si\
-		-H "Authorization: token $GITHUB_TOKEN")
-
+                status=$(ghapi_call ${out} "user")
 		if [[ $? -ne 0 ]];
 		then
 			print_msg 0 "cURL to GitHub API exited with non zero status."
 			return 1
-		elif [[ $(echo "$authtxt" | grep -c 'Status: 200 OK') -gt 0 ]];
+		elif [[ ${status} -eq 200 ]];
 		then
-			if [[ $(echo "$authtxt" | grep 'X-OAuth-Scopes:'\
+			if [[ $(grep -i 'x-oauth-scopes:' ${out}\
 				| grep -cE -e "public_repo" -e "repo([[:cntrl:]]*$|,)") -gt 0 ]];
 			then
 				print_msg 0 "The token provides the necessary rights!"
@@ -330,8 +353,7 @@ public_repo scope enabled."
 				return 1
 			fi
 		else
-			print_msg 0 "Unexpected error. Here's the status GitHub API returned:"
-			echo "$authtxt" | grep "Status:"
+			print_msg 0 "Unexpected error. Here's the status GitHub API returned: ${status}"
 			return 1
 		fi
 
@@ -348,16 +370,15 @@ already exists, to avoid overwriting."
 		searchparams=$(printf "+%s" "${searchparamslist[@]}")
 		searchparams=${searchparams:1}
 
-		prexists=$(curl https://api.github.com/search/issues?q=$searchparams \
-		-si -H "Authorization: token $GITHUB_TOKEN")
+                status=$(ghapi_call ${out} "search/issues?q=$searchparams")
 
 		if [[ $? -ne 0 ]];
 		then
 			print_msg 0 "cURL to GitHub API exited with non zero status."
 			return 1
-		elif [[ $(echo "$prexists" | grep -c 'Status: 200 OK') -gt 0 ]];
+		elif [[ ${status} -eq 200 ]];
 		then
-			if [[ $(echo "$prexists" | grep -m 1 "total_count" \
+			if [[ $(grep -m 1 "total_count" ${out} \
 			   | grep -oE "[0-9]+") -gt 0 ]];
 			then
 				print_msg 0 "There already is an open pull request for $pkg on AT \
@@ -368,8 +389,7 @@ $cfg. Aborting operation..."
 exists!"
 			fi
 		else
-			print_msg 0 "Unexpected error. Here's the status GitHub API returned:"
-			echo "$prexists" | grep "Status:"
+			print_msg 0 "Unexpected error. Here's the status GitHub API returned: ${status}"
 			return 1
 		fi
 	fi
@@ -429,7 +449,7 @@ Signed-off-by: ${GITHUB_SIGNATURE}"
 
 	if [[ ! -z "$GITHUB_TOKEN" ]];
 	then
-		pulljson=$(cat <<EOF
+		cat > ${out} <<EOF
 {
 "title": "Update ${pkg} on AT ${cfg}",
 "body": "Bump to revision ${2}",
@@ -437,19 +457,16 @@ Signed-off-by: ${GITHUB_SIGNATURE}"
 "base": "master"
 }
 EOF
-		)
 
-		pulltxt=$(curl -si \
-		https://api.github.com/repos/advancetoolchain/advance-toolchain/pulls \
-		-H "Authorization: token $GITHUB_TOKEN"\
-		--data "$pulljson")
+		status=$(ghapi_call ${out} "repos/advancetoolchain/advance-toolchain/pulls"\
+				    --data "@${out}")
 
-		if [[ $(echo "$pulltxt" | grep -c 'Status: 201 Created') -eq 0 ]];
+		if [[ ${status} -eq 201 ]];
 		then
-			print_msg 0 "Pull request creation failed. cURL message:"
-			echo -e "$pulltxt"
-		else
 			print_msg 0 "Pull request creation successful!"
+		else
+			print_msg 0 "Pull request creation failed. cURL message:"
+			cat ${out}
 		fi
 	fi
 
@@ -483,6 +500,7 @@ update_revision ()
 	print_msg 0 "Update complete.";
 }
 
+set -x
 package=$(readlink -f $1 | tr "/" "\n" | tail -n 2 | head -n 1)
 configset=$(readlink -f $1 | tr "/" "\n" | tail -n 4 | head -n 1)
 for co in "${ATSRC_PACKAGE_CO[@]}"; do
