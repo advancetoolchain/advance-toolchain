@@ -82,13 +82,13 @@ for file in "${@}"; do
 		exit 1
 	fi;
 
-	# Get the RUNPATH.  The RUNPATH will tell us if this file was built
-	# using AT or not.
-	runpath=$(${readelf_path} -d ${file} \
-			| grep 'RUNPATH' \
-			| sed 's/^.*\: \[\(.*\)\]$/\1/')
-	at_path=${runpath%%/lib*}
-	if [[ ${is_cross} != "yes" && ${runpath} == /opt/at* ]]; then
+	# Get the interpreter.  The interpreter will tell us if this file was
+	# built using AT or not.
+	interpreter=$(${readelf_path} -e ${file} \
+			| grep 'interpreter' \
+			| sed 's/\[.*\: \(.*\)\]/\1/')
+	at_path=${interpreter%%/lib*}
+	if [[ ${is_cross} != "yes" && ${interpreter} == /opt/at* ]]; then
 		ldd_path=${at_path}/bin/ldd
 	else
 		ldd_path=$(which ldd)

@@ -54,7 +54,7 @@ endif
 	dh_compress
 	dh_makeshlibs --version-info
 	dh_installdeb
-	dh_shlibdeps --exclude=typedef --exclude=testdata
+	dh_shlibdeps --exclude=typedef --exclude=testdata -l__AT_DEST__/lib -l__AT_DEST__/lib64
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
