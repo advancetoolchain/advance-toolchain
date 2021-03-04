@@ -49,7 +49,9 @@ binary-arch: build binary-cp
 	dh_installdeb
 # Avoid including PPC libraries as they could break system's ldd.
 	dh_shlibdeps --exclude=__DEST_CROSS__ \
-		--exclude=__AT_DEST__/__TARGET__
+		--exclude=__AT_DEST__/__TARGET__ \
+		-l__AT_DEST__/lib64 \
+		-l__AT_DEST__/lib
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
