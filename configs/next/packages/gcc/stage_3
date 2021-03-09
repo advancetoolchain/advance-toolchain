@@ -106,8 +106,8 @@ atcfg_configure() {
 		AR="${at_dest}/bin/ar" \
 		NM="${at_dest}/bin/nm" \
 		RANLIB="${at_dest}/bin/ranlib" \
-		CFLAGS="-O2 -mminimal-toc" \
-		CXXFLAGS="-O2 -mminimal-toc" \
+		CFLAGS="-O2 -mminimal-toc -Wl,--dynamic-linker=${ldso}" \
+		CXXFLAGS="-O2 -mminimal-toc -Wl,--dynamic-linker=${ldso}" \
 		LDFLAGS="-L${gcclibdir}" \
 		POSTSTAGE1_LDFLAGS="-L${gcclibdir} -lstdc++ -lsupc++ -lm -lgmp -lgmpxx -lmpfr -lmpc" \
 		${ATSRC_PACKAGE_WORK}/configure \
