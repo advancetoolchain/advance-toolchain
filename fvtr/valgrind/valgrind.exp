@@ -30,7 +30,16 @@ if { [array names env -exact "AT_VALGRIND_VER"] == "" } {
 	exit ${ENOSYS}
 }
 
-if {![regexp "(\[^\.\]*)\.(\[^\.\]*)\..*" $env(AT_VALGRIND_VER) \
+# On AT next we use 'master' as the version before the release. So make sure it
+# matches the format 'XX.YY.ZZ' like the actual version numbers and is higher
+# than any release to keep comparisons working.
+if { $env(AT_VALGRIND_VER) == "master" } {
+    set version "999.999.0"
+} else {
+    set version $env(AT_VALGRIND_VER)
+}
+
+if {![regexp "(\[^\.\]*)\.(\[^\.\]*)\..*" $version \
 	  match major minor]} then {
 	fvtr_error "Unrecognized version $env(AT_VALGRIND_VER)"
 }
@@ -108,12 +117,18 @@ if { ${rc} == 0} {
 	printit "All executables are available and functional"
 }
 
+# The path for internal libraries changed on Valgrind 3.17
+if {${major} < 3 || [expr ${major} == 3 && ${minor} <= 16]} {
+	set libprefix $env(AT_DEST)/lib/valgrind
+} else {
+	set libprefix $env(AT_DEST)/libexec/valgrind
+}
 
 # Check if all expected libraries are available.
 foreach lib ${lib_list} {
-	if {![file exists $env(AT_DEST)/lib/valgrind/${lib}.so]} {
-		printit "library $env(AT_DEST)/lib/valgrind/${lib}.so \
-is missing" ${ERROR}
+	set fullpathlib ${libprefix}/${lib}.so
+	if {![file exists ${fullpathlib} ]} {
+		printit "library ${fullpathlib} is missing" ${ERROR}
 		set rc 1
 	}
 }
