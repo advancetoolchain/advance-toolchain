@@ -12,6 +12,54 @@
 
 <p>IBM Advance Toolchain 12.0 will be the last version that includes OProfile and Libpfm. Future versions of IBM Advance Toolchain will not include OProfile nor Libpfm in favor of <a href="https://perf.wiki.kernel.org/index.php/Main_Page">the Linux perf command and the perf_events set of performance tools</a> available from the supported distributions.</p>
 
+<h3>New features in 12.0-5</h3>
+<ul>
+  <li>GCC provides:</li>
+  <ul>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=43486">Preserve variable-use locations</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=65480">libstdc++-prettyprinters/libfundts.cc test failures on powerpc64</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80219">relative line numbers only working if gcc_{error,warning}_prefix defined</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82481">dangling reference in mutex:693</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85303">dg-message not supported</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91953">G++ rejects lambda with constexpr variable</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92978">std::gcd mishandles mixed-signedness</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94947">-fipa-pta + pthread_once crash since r6-5684-g47e5754e17e9ac3b</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94964">ICE in add_phi_arg, at tree-phinodes.c:359 since r8-2993-ga7976089dba5e227</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95158">Templates + Diamond Inheritance + Final = Pure Virtual Function Call</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97063">The value of result is wrong when vector (step size is negative) * matrix</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97439">Wrong min value generated for DFP numbers</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97554">ICE: during RTL pass: cprop /segfault in sbitmap</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97731">terminate called in std::experimental::filesystem::recursive_directory_iterator</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97918">ICE near htab_hash_string when LTO, -O &amp; -g</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=98001">ext/stdio_filebuf/char/79820.cc is broken</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=98002">gcc.dg/strncmp-2.c frees mproptected memory</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=98230">incorrect Type'Mod during a loop whose range is computed by a variable</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=98307">Dependency check fails when using &quot;allocatable&quot; instead of &quot;pointer&quot; (forall_3.f90)</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=98605">clang-tidy error parsing &lt;mutex&gt; on libstdc++-v3</a>.</li>
+  </ul>
+  <li>GNU C Library provides:</li>
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=27256">(CVE-2021-3326) Assertion failure in ISO-2022-JP-3 gconv module related to combining characters (CVE-2021-3326)</a>.</li>
+  </ul>
+  <li>Python provides:</li>
+  <ul>
+    <li>Fix for <a href="https://bugs.python.org/issue22579">Posix module init function name should not be compiler-dependent</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue22882">Document Linux packages you need to compile Python with all dependencies</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue23231">Fix codecs.iterencode/decode() by allowing data parameter to be omitted</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue23767">Library and include paths not added when cross-compiling on localized system</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24037">Argument Clinic: add the boolint converter</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24042">Convert os._getfullpathname() and os._isdir() to Argument Clinic</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24054">Invalid syntax in inspect_fodder2.py (on Python 2.x)</a>.</li>
+  </ul>
+  <li>TBB provides:</li>
+  <ul>
+    <li>Version 2018_U6, see the <a href="https://github.com/oneapi-src/oneTBB/blob/2018_U6/CHANGES">release notes</a> for details.</li>
+  </ul>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 12.0-4</h3>
 <ul>
   <li>GCC provides:</li>
@@ -145,9 +193,6 @@
     <li>Disable large allocation report by default.</li>
   </ul>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 12.0-3</h3>
 <ul>
