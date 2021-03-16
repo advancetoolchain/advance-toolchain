@@ -66,6 +66,10 @@ atsrc_get_patches ()
 		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/GCC%20PowerPC%20Backport/11/Revert-Default-to-DWARF5.patch' \
 		0cc724faa8c2db5e686d70900b323365 || return ${?}
 
+	at_get_patch \
+		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/GCC%20PowerPC%20Backport/11/0001-powerpc-Remove-forced-runpath-from-with-advance-tool.patch' \
+		2a4d7864672f6227f33687a834e7dca4 || return ${?}
+
 	return 0
 }
 
@@ -81,5 +85,9 @@ atsrc_apply_patches ()
 
 	patch -p1 \
 	      < Revert-Default-to-DWARF5.patch \
+		|| return ${?}
+
+	patch -p1 \
+	      < 0001-powerpc-Remove-forced-runpath-from-with-advance-tool.patch \
 		|| return ${?}
 }
