@@ -37,17 +37,3 @@ ATSRC_PACKAGE_PORTS=
 ATSRC_PACKAGE_DISTRIB=yes
 ATSRC_PACKAGE_BUNDLE=main_toolchain
 
-atsrc_get_patches ()
-{
-	# Patch that is applied to every ibm branch
-	at_get_patch \
-		https://raw.githubusercontent.com/powertechpreview/powertechpreview/93fef0c7170ccc1ee36a63fc25e4074e9e3b7e0c/GLIBC%20PowerPC%20Backport/master/0001-Remove-assert-if-DT_RUNPATH-and-DT_RPATH-flags-are-f.patch \
-		6cb72e98670c1c7671c9aa704f586d68 || return ${?}
-}
-
-atsrc_apply_patches ()
-{
-	patch -p1 < 0001-Remove-assert-if-DT_RUNPATH-and-DT_RPATH-flags-are-f.patch || return ${?}
-
-	return 0
-}
