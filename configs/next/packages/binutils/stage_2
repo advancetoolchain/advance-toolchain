@@ -48,7 +48,8 @@ atcfg_configure() {
 						--enable-shared \
 						--enable-plugins \
 						--enable-install-libiberty=./ \
-						--enable-gold
+						--enable-gold \
+						--enable-follow-debug-links=no
 	else
 		# Configure command for cross builds
 		# TODO: Since Binutils 2.31, gold requires to build with
@@ -71,7 +72,8 @@ atcfg_configure() {
 						--disable-sim \
 						--disable-nls \
 						--enable-plugins \
-						--enable-gold
+						--enable-gold \
+						--enable-follow-debug-links=no
 	fi
 }
 
