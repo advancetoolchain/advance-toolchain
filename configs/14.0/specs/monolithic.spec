@@ -313,6 +313,7 @@ for DIR in $(find %{_prefix}/lib/debug/%{_prefix}/*/ -type d \
     for FILE in $(ls -1 ${DIR}/*.debug 2>/dev/null); do
         ln -sf ${FILE} ${dest}/.debug/$(basename ${FILE} .debug)
     done
+done
 #---------------------------------------------------
 %post devel-debuginfo
 # Create symlinks to the debuginfo files in .debug subdirectories so valgrind,
