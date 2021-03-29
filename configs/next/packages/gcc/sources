@@ -22,8 +22,8 @@
 ATSRC_PACKAGE_NAME="GCC (GNU Compiler Collection)"
 ATSRC_PACKAGE_SUBPACKAGE_NAME_0="GNU Standard C++ Library v3 (Libstdc++-v3)"
 ATSRC_PACKAGE_SUBPACKAGE_NAME_1="GNU Libgomp"
-ATSRC_PACKAGE_VER=11.0.0
-ATSRC_PACKAGE_REV=93e8054406e8
+ATSRC_PACKAGE_VER=11.0.1
+ATSRC_PACKAGE_REV=3cb9e3aee98a
 ATSRC_PACKAGE_LICENSE="GPL 3.0"
 ATSRC_PACKAGE_DOCLINK="https://gcc.gnu.org/onlinedocs/gcc/"
 ATSRC_PACKAGE_SUBPACKAGE_DOCLINK_0="https://gcc.gnu.org/libstdc++/"
@@ -70,6 +70,10 @@ atsrc_get_patches ()
 		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/GCC%20PowerPC%20Backport/11/0001-powerpc-Remove-forced-runpath-from-with-advance-tool.patch' \
 		2a4d7864672f6227f33687a834e7dca4 || return ${?}
 
+	at_get_patch \
+		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/b1e3af97ffc725624c22a95897f888383287f3d5/GCC%20PowerPC%20Backport/11/0001-Honor-disable-decimal-float-on-PowerPC-Decimal-Float.patch' \
+		48de511bc467b2fc36214cb7adcc65c2 || return ${?}
+
 	return 0
 }
 
@@ -90,4 +94,9 @@ atsrc_apply_patches ()
 	patch -p1 \
 	      < 0001-powerpc-Remove-forced-runpath-from-with-advance-tool.patch \
 		|| return ${?}
+
+	patch -p1 \
+	      < 0001-Honor-disable-decimal-float-on-PowerPC-Decimal-Float.patch \
+		|| return ${?}
+
 }
