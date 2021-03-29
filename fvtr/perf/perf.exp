@@ -49,8 +49,9 @@ set at_object_arg "argc"
 # which accepts a certain named argument (`argc`), but they are arguably
 # less fragile than most other choices.
 
+set probe_name "test_perf_debug_[exp_pid]"
 set status [catch {exec perf probe -v -x $at_object_path \
-			"test_perf_debug=$at_object_sym $at_object_arg" 2>@1} out]
+			"$probe_name=$at_object_sym $at_object_arg" 2>@1} out]
 printit $out
 
 if { $status > 0 } {
@@ -58,7 +59,7 @@ if { $status > 0 } {
 } else {
 	set out [exec perf probe --list]
 	printit $out
-	set out [exec perf probe -v --del=probe_$at_object:test_perf_debug 2>@1]
+	set out [exec perf probe -v --del=probe_$at_object:$probe_name 2>@1]
 	printit $out
 }
 exit $fail
