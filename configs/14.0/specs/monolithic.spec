@@ -259,7 +259,7 @@ fi
 # Automatically set the timezone
 rm -f %{_prefix}/etc/localtime
 ln -s /etc/localtime %{_prefix}/etc/localtime
-systemctl --no-reload preset %{at_ver_alternative}-cachemanager.service \
+systemctl preset %{at_ver_alternative}-cachemanager.service \
     > /dev/null 2>&1 || :
 systemctl restart %{at_ver_alternative}-cachemanager.service
 
