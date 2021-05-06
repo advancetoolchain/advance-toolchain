@@ -12,6 +12,86 @@
 <p>Since the end of August 2019, Advance Toolchain has been available from a new FTP server: <a href="ftp://public.dhe.ibm.com/">public.dhe.ibm.com</a></p>
 <p>Please be advised the FTP server at Unicamp won't be updated any longer.</p>
 
+<h3>New features in 14.0-3</h3>
+<ul>
+  <li>GCC provides:</li>
+  <ul>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90779">Fortran array initialization in offload regions</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91416">ICE in cp_check_const_attributes, at cp/decl2.c:1408</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96029">Inconsistencies with associative/unordered containers</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97966">maybe_instantiate_noexcept</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97973">ICE in tsubst_copy_and_build, at cp/pt.c:19577 since r265609</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=98947">Incorrect warning when using a ternary operator to select one of two volatile variables to write to</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99120">ICE in -Wshadow in templated member function</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99176">GCC rejects const_cast of null pointer in constant expressions</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99331">-Wconversion false-positive in immediate context</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99374">C++17/20 mode fails to recognise pointer-to-member functions of incomplete types in conditional expression</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99805">filesystem::path::parent_path got a wrong path</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99806">ICE: in tsubst_copy, at cp/pt.c:17247</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99817">ICE in create_function_arglist, at fortran/trans-decl.c:2838 (etc.)</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99831">ICE: in reshape_init, at cp/decl.c:6720</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99983">ICE in bootstrap while building libstdc++</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99985">bits/hashtable.h:483:9: error: body of ‘constexpr’ function ... not a return-statement</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100044">ranges::subrange CTAD for __iterator_sentinel_pair not work</a>.</li>
+  </ul>
+  <li>GNU C Library provides:</li>
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=26690">Aliasing violation in __vfscanf_internal</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=27256">(CVE-2021-3326) Assertion failure in ISO-2022-JP-3 gconv module related to combining characters</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=27462">(CVE-2021-27645) double-free in nscd</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=27471">GLIBC_TUNABLES aren't parsed properly in AT_SECURE binaries</a>.</li>
+  </ul>
+  <li>Binutils provides:</li>
+  <ul>
+    <li>Version 2.35.2, see the <a href="https://lists.gnu.org/archive/html/info-gnu/2021-01/msg00019.html">release notes</a> for details.</li>
+  </ul>
+  <li>OpenSSL provides:</li>
+  <ul>
+    <li>Version 1.1.1k, see the <a href="https://www.openssl.org/news/openssl-1.1.1-notes.html">release notes</a> for details.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/14147">EVP_PKEY_cmp() fails Identical keys</title></a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/14667">d2i_ASN1_OBJECT leaks the &#39;sn&#39; and &#39;ln&#39; fields of ASN1_OBJECT</title></a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/14913">a double free bug in crypto/srp/srp_vfy.c</title></a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/14914">a double free bug in crypto/ts/ts_rsp_verify.c</title></a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/14915">a double free bug in engines/e_loader_attic.c</title></a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/14981">Makefile in master removes possible current release tarball</title></a>.</li>
+  </ul>
+  <li>Expat provides:</li>
+  <ul>
+    <li>Fix for <a href="https://github.com/libexpat/libexpat/issues/438">xmlparse.c: Reject missing call to XML_GetBuffer in XML_ParseBuffer</a>.</li>
+    <li>Fix for <a href="https://github.com/libexpat/libexpat/issues/439">xmlwf: Add argument -k to allow continuing after non-fatal errors</a>.</li>
+    <li>Fix for <a href="https://github.com/libexpat/libexpat/issues/441">fuzzers: Address Clang warning -Wunused-parameter</a>.</li>
+    <li>Fix for <a href="https://github.com/libexpat/libexpat/issues/442">CMake: Only set CMAKE_CXX_FLAGS after enable_language(CXX)</a>.</li>
+  </ul>
+  <li>Python provides:</li>
+  <ul>
+    <li>Version 3.8.9, see the <a href="https://www.python.org/downloads/release/python-389/">release notes</a> for details.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue28577">ipaddress.ip_network(...).hosts() returns nothing for an IPv4 /32</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue34463">Discrepancy between traceback.print_exception and sys.__excepthook__</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue36540">PEP 570: Python Positional-Only Parameters</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue42248">Raised exception in Enum keeping user objects alive unnecessarily</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue43522">SSLContext.hostname_checks_common_name appears to have no effect</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue43655">Tkinter: make X window & macOS recognize dialogs as such</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue43723">Deprecate camelCase aliases from threading.py</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue43811">Run GHA CI with multiple OpenSSL versions</a>.</li>
+  </ul>
+  <li>Userspace RCU provides:</li>
+  <ul>
+    <li>Version 0.12.2, see the <a href="https://github.com/urcu/userspace-rcu/blob/v0.12.2/ChangeLog">release notes</a> for details.</li>
+    <li>Fix for rculist header: use parenthesis around macro parameters.</li>
+    <li>Fix for rcuhlist header: use parenthesis around macro parameters.</li>
+    <li>Fix for hlist header: use parenthesis around macro parameters.</li>
+    <li>Fix for list.h: use parenthesis around macro parameters, caa_container_of().</li>
+    <li>Fix for hlist iteration relies on undefined behavior.</li>
+    <li>Fix for use __atomic_load() rather than atomic load explicit.</li>
+    <li>Fix for use atomic load memory_order_consume for rcu_dereference on C11/C++11.</li>
+    <li>Fix for HAVE_SCHED_SETAFFINITY is not defined.</li>
+    <li>Fix for shadowed local variable (-Wshadow).</li>
+  </ul>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 14.0-2</h3>
 <ul>
   <li>GCC provides:</li>
@@ -227,9 +307,6 @@
     <li>Fix for race between rcu_barrier() and call_rcu_data_free().</li>
   </ul>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 14.0-1</h3>
 <ul>
