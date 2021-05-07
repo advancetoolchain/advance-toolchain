@@ -29,9 +29,7 @@ atcfg_configure() {
 		CC=${at_dest}/bin/gcc \
 		CXX=${at_dest}/bin/g++ \
 		CFLAGS="-g -O2 -Wno-error=stringop-truncation" \
-		CXXFLAGS="-g -O2 \
-			  -Wno-error=deprecated-declarations \
-			  -Wno-error=stringop-overflow" \
+		CXXFLAGS="-g -O2 -Wno-error=stringop-overflow" \
 		${ATSRC_PACKAGE_WORK}/configure --build=${host} \
 						--host=${target} \
 						--target=${target} \
