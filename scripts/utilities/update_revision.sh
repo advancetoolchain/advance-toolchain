@@ -212,6 +212,74 @@ get_latest_revision ()
 	echo ${hash}
 }
 
+# This function returns the version of a package based on a revision.
+# It returns an empty string unless the found version isn't the same as
+# the current known version.
+#
+# Parameters:
+#    $1 - package
+#    $2 - revision
+get_version ()
+{
+	local package=${1}
+	local revision=${2}
+
+	if [[ "${ATSRC_PACKAGE_VER}" == "master" ]]; then
+		echo ""
+		return 0
+	fi
+	case "$package" in
+	    binutils)
+		out=$(wget -qO - "https://sourceware.org/git/?p=binutils-gdb.git;a=blob_plain;f=bfd/version.m4;hb=${revision}" | grep "^m4_define" | sed "s/^.*\[\([0-9\.][0-9\.]*\)].*$/\1/")
+		;;
+	    expat)
+		out=$(wget -qO - "https://raw.githubusercontent.com/libexpat/libexpat/${revision}/expat/lib/expat.h" | grep "XML_M.*_VERSION" | sed "s/^.*VERSION //" | paste -d "." - - -)
+		;;
+	    gcc)
+		out=$(wget -qO - "https://gcc.gnu.org/git/?p=gcc.git;a=blob_plain;f=gcc/BASE-VER;hb=${revision}")
+		;;
+	    gdb)
+		out=$(wget -qO - "https://sourceware.org/git/?p=binutils-gdb.git;a=blob_plain;f=gdb/version.in;hb=${revision}" | cut -d. -f1-3)
+		;;
+	    glibc)
+		out=$(wget -qO - "https://sourceware.org/git/?p=glibc.git;a=blob_plain;f=version.h;hb=${revision}" | grep -w "VERSION" | sed "s/^.*\"\([0-9\.][0-9\.]*\)\".*$/\1/")
+		;;
+	    golang)
+		out=$(wget -qO - "https://raw.githubusercontent.com/powertechpreview/go/${revision}/VERSION" | head -n 1 | cut -c3-6)
+		;;
+	    libdfp)
+		out=$(wget -qO - "https://raw.githubusercontent.com/libdfp/libdfp/${revision}/configure" | grep "PACKAGE_VERSION=" | sed "s/^.*'\([0-9\.][0-9\.]*\)'.*$/\1/")
+		;;
+	    libhugetlbfs)
+		out=$(wget -qO - "https://raw.githubusercontent.com/libhugetlbfs/libhugetlbfs/${revision}/NEWS" | head -1 | sed "s/^.* \([0-9\.][0-9\.]*\) .*$/\1/")
+		;;
+	    libpfm)
+		out=$(wget -qO - "https://sourceforge.net/p/perfmon2/libpfm4/ci/${revision}/tree/debian/changelog?format=raw" | grep -m1 "libpfm4" | sed "s/^libpfm4 (\([0-9]*\)\.\([0-9]*\)).*$/4.\1.\2/")
+		;;
+	    liburcu)
+		out=$(wget -qO - "http://git.liburcu.org/?p=userspace-rcu.git;a=blob_plain;f=configure.ac;hb=${revision}" | grep "AC_INIT" | sed "s/^.*\[\([0-9\.][0-9\.]*\)].*$/\1/")
+		;;
+	    openssl)
+		out=$(wget -qO - "https://raw.githubusercontent.com/openssl/openssl/${revision}/CHANGES" | grep -m1 "^ Changes between .* and .*xx XXX xxxx" | sed "s/^.* \([0-9\.][0-9\.]*[a-z]\) and .*$/\1/")
+		;;
+	    python)
+		out=$(wget -qO - "https://raw.githubusercontent.com/python/cpython/${revision}/README.rst" | head -n1 | grep "This is Python version " | sed "s/^.* \([0-9\.][0-9\.]*\).*$/\1/")
+		;;
+	    tbb)
+		out=$(wget -qO - "https://raw.githubusercontent.com/01org/tbb/${revision}/include/tbb/tbb_stddef.h" | grep "TBB_VERSION_M[AI]" | sort | sed "s/[^0-9]*//g" | tr "\n" "." | cut -d. -f1-2)
+		;;
+	    valgrind)
+		out=$(wget -qO - "https://sourceware.org/git/?p=valgrind.git;a=blob_plain;f=configure.ac;hb=${revision}" | grep -m 1 "^AC_INIT" | sed "s/^.*\[\([0-9\.][0-9\.]*\)].*$/\1/")
+		;;
+	    *)
+		echo "Function get_version doesn't know the package $package"
+		return 1
+		;;
+	esac
+	[[ "${ATSRC_PACKAGE_VER}" == "$out" ]] && out=""
+	echo "$out"
+}
+
 # This function checks Gerrit for an open change in the topic.
 # If so, it returns the change Id and review label.
 #
@@ -327,6 +395,7 @@ Bump to revision ${2}\n\n"
 # Parameters:
 #    $1 - sources config path
 #    $2 - revision ID
+#    $3 - version (optional)
 send_to_github ()
 {
 	# Get AT config and package being updated.
@@ -446,9 +515,12 @@ exists!"
 	print_msg 2 "Generating a patch"
 	file=$(basename $(dirname ${1}))/$(basename ${1})
 
+	local version_str=""
+	[[ -n "${3}" ]] && version_str="Bump to version ${3}\n"
+
 	git add ${1}
 	local msg="Update ${pkg} on AT ${cfg}\n\n\
-Bump to revision ${2}\n\n\
+${version_str}Bump to revision ${2}\n\n\
 \
 Signed-off-by: ${GITHUB_SIGNATURE}"
 
@@ -463,7 +535,7 @@ Signed-off-by: ${GITHUB_SIGNATURE}"
 		cat > ${out} <<EOF
 {
 "title": "Update ${pkg} on AT ${cfg}",
-"body": "Bump to revision ${2}",
+"body": "${version_str}Bump to revision ${2}",
 "head": "${GITHUB_USER}:${target_branch}",
 "base": "master"
 }
@@ -472,14 +544,15 @@ EOF
 		status=$(ghapi_call ${out} "repos/advancetoolchain/advance-toolchain/pulls"\
 				    --data "@${out}")
 
-		if [[ ${status} -eq 201 ]];
-		then
-			print_msg 0 "Pull request creation successful!"
-			pr_number=$(grep -oE '"number": [0-9]+' ${out} | cut -d' ' -f2)
+		if [[ ${status} -eq 201 ]]; then
+                        # Enabling auto-merge if the version wasn't updated.
+                        if [[ -z "${3}" ]]; then
+				print_msg 0 "Pull request creation successful!"
+				pr_number=$(grep -oE '"number": [0-9]+' ${out} | cut -d' ' -f2)
 
-			# Enabling auto-merge on a PR is only available through
-			# the GraphQL API. First we need to get the PR's id
-			cat > payload.json <<EOF
+				# Enabling auto-merge on a PR is only available through
+				# the GraphQL API. First we need to get the PR's id
+				cat > payload.json <<EOF
 {
   "query": "query FindPullRequestID {
     repository(owner: \"advancetoolchain\", name: \"advance-toolchain\") {
@@ -491,11 +564,11 @@ EOF
 }
 EOF
 
-			if [[ ${status} -eq 200 ]]; then
-				pr_id="$(cat ${out} | jq -r '.data.repository.pullRequest.id')"
-				echo "PR ID: ${pr_id}"
+				if [[ ${status} -eq 200 ]]; then
+					pr_id="$(cat ${out} | jq -r '.data.repository.pullRequest.id')"
+					echo "PR ID: ${pr_id}"
 
-				cat > payload.json <<EOF
+					cat > payload.json <<EOF
 {
   "query": "mutation EnableAutoMerge {
     enablePullRequestAutoMerge(input: {pullRequestId: \"${pr_id}\", mergeMethod: REBASE}){
@@ -507,13 +580,14 @@ EOF
 }
 EOF
 
-				status=$(ghapi_gql_call ${out} 'payload.json')
+					status=$(ghapi_gql_call ${out} 'payload.json')
 
-				if [[ ${status} -eq 200 ]]; then
-					print_msg 0 "Successfully enabled auto-merge for pull request."
-				else
-					print_msg 0 "Failed to enable auto-merge for pull request."
-					cat ${out}
+					if [[ ${status} -eq 200 ]]; then
+						print_msg 0 "Successfully enabled auto-merge for pull request."
+					else
+						print_msg 0 "Failed to enable auto-merge for pull request."
+						cat ${out}
+					fi
 				fi
 			fi
 		else
@@ -531,10 +605,11 @@ EOF
 # Parameters:
 #    $1 - sources config path
 #    $2 - revision ID
+#    $3 - version (optional)
 update_revision ()
 {
-	if [[ ${#} -ne  2 ]]; then
-		echo "Function update_revision expects 2 parameter."
+	if [[ ${#} -lt  2 ]]; then
+		echo "Function update_revision expects at least 2 parameters."
 		return 1
 	fi
 
@@ -544,10 +619,13 @@ update_revision ()
 		exit 0
 	fi
 
-	print_msg 1 "Updating ${1} to the latest revision.";
-	sed -e "s/ATSRC_PACKAGE_REV=.*/ATSRC_PACKAGE_REV=${2}/g" \
-		${1} > ${1}.temp
-	mv ${1}.temp ${1}
+	print_msg 1 "Updating ${1} to the latest revision."
+	sed -i -e "s/ATSRC_PACKAGE_REV=.*/ATSRC_PACKAGE_REV=${2}/g" ${1}
+
+	if [[ -n "${3}" ]]; then
+		print_msg 1 "Updating ${1} to a new version."
+		sed -i -e "s/ATSRC_PACKAGE_VER=.*/ATSRC_PACKAGE_VER=${3}/g" ${1}
+	fi
 
 	print_msg 0 "Update complete."
 }
@@ -561,13 +639,18 @@ for co in "${ATSRC_PACKAGE_CO[@]}"; do
 	[[ -z "${repo}" ]] && continue
 
 	hash=$(get_latest_revision ${repo} ${package} ${configset})
-
-	if [[ -n "${hash}" ]]; then
+	if [[ $? == 0 && -n "${hash}" ]]; then
 	    echo ""
 	    print_msg 0 "The latest revision of ${repo} is ${hash}"
-	    update_revision ${1} ${hash}
+
+	    version=$(get_version ${package} ${hash})
+	    if [[ $? != 0 ]]; then
+		print_msg 0 "Warning: $version"
+		version=""
+	    fi
+	    update_revision ${1} ${hash} ${version}
 	    if [[ ${service} = "github" ]]; then
-		send_to_github ${1} ${hash}
+		send_to_github ${1} ${hash} ${version}
 	    else
 		send_to_gerrit ${1} ${hash}
 	    fi
