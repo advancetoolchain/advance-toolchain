@@ -58,14 +58,13 @@
 
 # This script requires 3 or 4 parameters.
 if [[ ${#} -lt  3 ]] || [[ ${#} -gt 5 ]]; then
-	echo "update_revision.sh expects 3 to 5 parameters.";
-	exit 1;
+	echo "update_revision.sh expects 3 to 5 parameters."
+	exit 1
 fi
 
-if [[ $2 -ne "github" ]] && [[ $2 -ne "gerrit" ]];
-then
+if [[ $2 -ne "github" ]] && [[ $2 -ne "gerrit" ]]; then
 	echo "$2 is an invalid service. Please pick 'github' or 'gerrit'."
-	exit 1;
+	exit 1
 fi
 
 service="$2"
@@ -80,24 +79,21 @@ GERRIT_USER=$(whoami)
 GERRIT_SERVER=${3}
 GERRIT_PORT=${4}
 
-source ${1};
+source ${1}
 
 # If ATSRC_PACKAGE_CO is not defined, we skip the revision check.
 if ! [ -n "${ATSRC_PACKAGE_CO}" ] || ! [ -n "${ATSRC_PACKAGE_REV}" ]; then
-	exit 0;
+	exit 0
 fi
 
-if [[ "${service}" = "github" ]];
-then
-	if [[ -z "${GITHUB_SIGNATURE}" ]];
-	then
+if [[ "${service}" = "github" ]]; then
+	if [[ -z "${GITHUB_SIGNATURE}" ]]; then
 		GIT_USER=$(git config --global user.name)
 		GIT_EMAIL=$(git config --global user.email)
 
-		if [[ "${GIT_USER}" = "" ]] || [[ "${GIT_EMAIL}" = "" ]];
-		then
+		if [[ "${GIT_USER}" = "" ]] || [[ "${GIT_EMAIL}" = "" ]]; then
 			echo "Error: Git's user.name or user.email not configured."
-			exit 1;
+			exit 1
 		fi
 
 		GITHUB_SIGNATURE="${GIT_USER} <${GIT_EMAIL}>"
@@ -171,15 +167,15 @@ ghapi_gql_call ()
 get_latest_revision ()
 {
 	if [[ ${#} -ne 3 ]]; then
-		echo "Function get_latest_revision expects 3 parameters.";
-		return 1;
+		echo "Function get_latest_revision expects 3 parameters."
+		return 1
 	fi
 
 	local url=${1}
 	local package=${2}
 	local configset=${3}
 	local isGit=$(echo ${url} | grep -ce "git:" -e "\.git$")
-	local hash="";
+	local hash=""
 
 	if [[ "${isGit}" == 1 ]]; then
 		local tmp_dir=$(mktemp -d)
@@ -213,7 +209,7 @@ get_latest_revision ()
 			| cut -d: -f2)
 	fi
 
-	echo ${hash};
+	echo ${hash}
 }
 
 # This function checks Gerrit for an open change in the topic.
@@ -279,7 +275,7 @@ port ${GERRIT_PORT} with user \"${GERRIT_USER}\"."
 		print_msg 0 "Found pending change with Id: ${change_id}"
 		if [[ "${topic_status[1]}" -eq -1 ]]; then
 			print_msg 0 "Change with review label -1. \
-Aborting the update.";
+Aborting the update."
 			return 0
 		fi
 	else
@@ -301,7 +297,7 @@ Aborting the update.";
 hooks/commit-msg ${gitdir}/hooks/
 	fi
 
-        print_msg 2 "Generating a patch";
+        print_msg 2 "Generating a patch"
         file=$(basename $(dirname ${1}))/$(basename ${1})
 
         git add ${1}
@@ -355,21 +351,17 @@ send_to_github ()
 		print_msg 0 "SSH is okay."
 	fi
 
-	if [[ ! -z "$GITHUB_TOKEN" ]];
-	then
+	if [[ ! -z "$GITHUB_TOKEN" ]]; then
 		print_msg 2 "Checking if the token provided grants pull request creation \
 rights"
 
                 status=$(ghapi_call ${out} "user")
-		if [[ $? -ne 0 ]];
-		then
+		if [[ $? -ne 0 ]]; then
 			print_msg 0 "cURL to GitHub API exited with non zero status."
 			return 1
-		elif [[ ${status} -eq 200 ]];
-		then
+		elif [[ ${status} -eq 200 ]]; then
 			if [[ $(grep -i 'x-oauth-scopes:' ${out}\
-				| grep -cE -e "public_repo" -e "repo([[:cntrl:]]*$|,)") -gt 0 ]];
-			then
+				| grep -cE -e "public_repo" -e "repo([[:cntrl:]]*$|,)") -gt 0 ]]; then
 				print_msg 0 "The token provides the necessary rights!"
 			else
 				print_msg 0 "Please make sure the provided token has the \
@@ -396,15 +388,12 @@ already exists, to avoid overwriting."
 
                 status=$(ghapi_call ${out} "search/issues?q=$searchparams")
 
-		if [[ $? -ne 0 ]];
-		then
+		if [[ $? -ne 0 ]]; then
 			print_msg 0 "cURL to GitHub API exited with non zero status."
 			return 1
-		elif [[ ${status} -eq 200 ]];
-		then
+		elif [[ ${status} -eq 200 ]]; then
 			if [[ $(grep -m 1 "total_count" ${out} \
-			   | grep -oE "[0-9]+") -gt 0 ]];
-			then
+			   | grep -oE "[0-9]+") -gt 0 ]]; then
 				print_msg 0 "There already is an open pull request for $pkg on AT \
 $cfg. Aborting operation..."
 				return 1
@@ -440,8 +429,7 @@ exists!"
 	print_msg 2 "Checking ${pkg} revision on the topic branch"
 
 	if [[ $(git ls-remote -h ${target_remote} | grep -c ${target_branch}) = 1 ]] \
-		 && git diff --exit-code TMP_DIFF/${target_branch} -- ${1};
-	then
+		 && git diff --exit-code TMP_DIFF/${target_branch} -- ${1}; then
 		print_msg 0 "$pkg revision is already up to date, new commit not necessary"
 
 		git remote remove TMP_DIFF
@@ -455,7 +443,7 @@ exists!"
 
 	git remote remove TMP_DIFF
 
-	print_msg 2 "Generating a patch";
+	print_msg 2 "Generating a patch"
 	file=$(basename $(dirname ${1}))/$(basename ${1})
 
 	git add ${1}
@@ -471,8 +459,7 @@ Signed-off-by: ${GITHUB_SIGNATURE}"
 	git push --force ${target_remote} HEAD:${target_branch}
 
 
-	if [[ ! -z "$GITHUB_TOKEN" ]];
-	then
+	if [[ ! -z "$GITHUB_TOKEN" ]]; then
 		cat > ${out} <<EOF
 {
 "title": "Update ${pkg} on AT ${cfg}",
@@ -547,14 +534,14 @@ EOF
 update_revision ()
 {
 	if [[ ${#} -ne  2 ]]; then
-		echo "Function update_revision expects 2 parameter.";
-		return 1;
+		echo "Function update_revision expects 2 parameter."
+		return 1
 	fi
 
 	# TODO: weak check - some revisions have less than 12 chars.
 	if [[ ${2} == ${ATSRC_PACKAGE_REV} ]]; then
 		print_msg 0 "Sources at latest revision already. Nothing to be done."
-		exit 0;
+		exit 0
 	fi
 
 	print_msg 1 "Updating ${1} to the latest revision.";
@@ -562,7 +549,7 @@ update_revision ()
 		${1} > ${1}.temp
 	mv ${1}.temp ${1}
 
-	print_msg 0 "Update complete.";
+	print_msg 0 "Update complete."
 }
 
 package=$(readlink -f $1 | tr "/" "\n" | tail -n 2 | head -n 1)
@@ -584,8 +571,8 @@ for co in "${ATSRC_PACKAGE_CO[@]}"; do
 	    else
 		send_to_gerrit ${1} ${hash}
 	    fi
-	    break;
+	    break
 	else
 	    print_msg 0 "Unable to connect to ${repo} or wrong branch name"
 	fi
-done;
+done
