@@ -1,1 +1,1 @@
-../../14.0/distros/ubuntu-20.mk
+../../15.0/distros/ubuntu-20.mk
