@@ -1,4 +1,4 @@
-# Copyright 2017 IBM Corporation
+# Copyright 2021 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,8 +47,8 @@
 #                       further restricted by distro specific settings)
 #
 AT_NAME := at
-AT_MAJOR_VERSION := 15.0
+AT_MAJOR_VERSION := 16.0
 AT_REVISION_NUMBER := 0
 AT_INTERNAL := alpha
-AT_PREVIOUS_VERSION := 14.0
+AT_PREVIOUS_VERSION := 15.0
 AT_DIR_NAME := at-next-$(AT_MAJOR_VERSION)-$(AT_REVISION_NUMBER)-$(AT_INTERNAL)

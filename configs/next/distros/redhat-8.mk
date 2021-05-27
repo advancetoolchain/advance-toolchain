@@ -1,1 +1,1 @@
-../../14.0/distros/redhat-8.mk
+../../15.0/distros/redhat-8.mk

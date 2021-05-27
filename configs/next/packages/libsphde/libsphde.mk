@@ -1,1 +1,1 @@
-../../../14.0/packages/libsphde/libsphde.mk
+../../../15.0/packages/libsphde/libsphde.mk
