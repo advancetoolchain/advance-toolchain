@@ -36,7 +36,7 @@ atcfg_pre_configure() {
 
 	# Reconfigure the build with the buildconf.
 	if [[ -e ./buildconf.sh ]]; then
-		sh ./buildconf.sh || exit 1
+		./buildconf.sh || exit 1
 	else
 		aclocal
 		automake --add-missing 2>/dev/null || true
