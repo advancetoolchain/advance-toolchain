@@ -27,8 +27,10 @@ install_native ()
 {
 	local version=${1}
 
+	# Allowing AT next to be installed. AT next packages don't have 'next'
+	# in their name but a version number.
+	[[ "${version}" == "next" ]] && version=[0-9]
 	if [[ ${debian} == "yes" ]]; then
-		[[ "${version}" == "next" ]] && version=
 		sudo dpkg -i advance-toolchain-at*runtime_${version}* \
 			|| return ${?}
 		sudo dpkg -i advance-toolchain-at*devel_* \
