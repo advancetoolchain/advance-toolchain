@@ -95,8 +95,6 @@ if [[ "${service}" = "github" ]]; then
 			echo "Error: Git's user.name or user.email not configured."
 			exit 1
 		fi
-
-		GITHUB_SIGNATURE="${GIT_USER} <${GIT_EMAIL}>"
 	fi
 fi
 
@@ -522,9 +520,9 @@ exists!"
 	local msg="Update ${pkg} on AT ${cfg}\n\n\
 ${version_str}Bump to revision ${2}\n\n\
 \
-Signed-off-by: ${GITHUB_SIGNATURE}"
+${GITHUB_SIGNATURE:+Signed-off-by: ${GITHUB_SIGNATURE}}"
 
-	echo -e ${msg} | git commit -F -
+	echo -e ${msg} | git commit -s -F -
 
 	# Now we send the commit to GitHub
 	print_msg 2 "Sending commit to GitHub"
