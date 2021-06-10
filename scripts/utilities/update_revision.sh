@@ -562,6 +562,8 @@ EOF
 }
 EOF
 
+				status=$(ghapi_gql_call ${out} 'payload.json')
+
 				if [[ ${status} -eq 200 ]]; then
 					pr_id="$(cat ${out} | jq -r '.data.repository.pullRequest.id')"
 					echo "PR ID: ${pr_id}"
