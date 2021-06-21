@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2019 IBM Corporation
+# Copyright 2021 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@
 #
 
 ATSRC_PACKAGE_NAME="Power Vector Library"
-ATSRC_PACKAGE_VER=1.0.3
-ATSRC_PACKAGE_REV=76ca105829a3
+ATSRC_PACKAGE_VER=1.0.4
+ATSRC_PACKAGE_REV=5901c9cc5b9f
 ATSRC_PACKAGE_LICENSE="Apache License 2.0"
 ATSRC_PACKAGE_DOCLINK="https://github.com/open-power-sdk/pveclib/wiki"
 ATSRC_PACKAGE_RELFIXES=
