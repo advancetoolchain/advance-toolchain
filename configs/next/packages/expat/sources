@@ -40,3 +40,4 @@ ATSRC_PACKAGE_TARS=
 ATSRC_PACKAGE_MAKE_CHECK=
 ATSRC_PACKAGE_DISTRIB=no
 ATSRC_PACKAGE_BUNDLE=main_toolchain
+ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://raw.githubusercontent.com/libexpat/libexpat/__REVISION__/expat/lib/expat.h" | grep "XML_M.*_VERSION" | sed "s/^.*VERSION //" | paste -d "." - - -'

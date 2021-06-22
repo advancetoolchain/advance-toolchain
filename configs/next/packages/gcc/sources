@@ -44,6 +44,7 @@ ATSRC_PACKAGE_TARS=
 ATSRC_PACKAGE_MAKE_CHECK=
 ATSRC_PACKAGE_DISTRIB=yes
 ATSRC_PACKAGE_BUNDLE=main_toolchain
+ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://gcc.gnu.org/git/?p=gcc.git;a=blob_plain;f=gcc/BASE-VER;hb=__REVISION__"'
 
 atsrc_get_patches ()
 {

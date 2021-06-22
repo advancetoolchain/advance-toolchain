@@ -39,3 +39,4 @@ ATSRC_PACKAGE_PATCHES=
 ATSRC_PACKAGE_MAKE_CHECK=""
 ATSRC_PACKAGE_DISTRIB=yes
 ATSRC_PACKAGE_BUNDLE=devel
+ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://sourceware.org/git/?p=binutils-gdb.git;a=blob_plain;f=gdb/version.in;hb=__REVISION__" | cut -d. -f1-3'

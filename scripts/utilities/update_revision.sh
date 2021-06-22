@@ -226,54 +226,11 @@ get_version ()
 		echo ""
 		return 0
 	fi
-	case "$package" in
-	    binutils)
-		out=$(wget -qO - "https://sourceware.org/git/?p=binutils-gdb.git;a=blob_plain;f=bfd/version.m4;hb=${revision}" | grep "^m4_define" | sed "s/^.*\[\([0-9\.][0-9\.]*\)].*$/\1/")
-		;;
-	    expat)
-		out=$(wget -qO - "https://raw.githubusercontent.com/libexpat/libexpat/${revision}/expat/lib/expat.h" | grep "XML_M.*_VERSION" | sed "s/^.*VERSION //" | paste -d "." - - -)
-		;;
-	    gcc)
-		out=$(wget -qO - "https://gcc.gnu.org/git/?p=gcc.git;a=blob_plain;f=gcc/BASE-VER;hb=${revision}")
-		;;
-	    gdb)
-		out=$(wget -qO - "https://sourceware.org/git/?p=binutils-gdb.git;a=blob_plain;f=gdb/version.in;hb=${revision}" | cut -d. -f1-3)
-		;;
-	    glibc)
-		out=$(wget -qO - "https://sourceware.org/git/?p=glibc.git;a=blob_plain;f=version.h;hb=${revision}" | grep -w "VERSION" | sed "s/^.*\"\([0-9\.][0-9\.]*\)\".*$/\1/")
-		;;
-	    golang)
-		out=$(wget -qO - "https://raw.githubusercontent.com/powertechpreview/go/${revision}/VERSION" | head -n 1 | cut -c3-6)
-		;;
-	    libdfp)
-		out=$(wget -qO - "https://raw.githubusercontent.com/libdfp/libdfp/${revision}/configure" | grep "PACKAGE_VERSION=" | sed "s/^.*'\([0-9\.][0-9\.]*\)'.*$/\1/")
-		;;
-	    libhugetlbfs)
-		out=$(wget -qO - "https://raw.githubusercontent.com/libhugetlbfs/libhugetlbfs/${revision}/NEWS" | head -1 | sed "s/^.* \([0-9\.][0-9\.]*\) .*$/\1/")
-		;;
-	    libpfm)
-		out=$(wget -qO - "https://sourceforge.net/p/perfmon2/libpfm4/ci/${revision}/tree/debian/changelog?format=raw" | grep -m1 "libpfm4" | sed "s/^libpfm4 (\([0-9]*\)\.\([0-9]*\)).*$/4.\1.\2/")
-		;;
-	    liburcu)
-		out=$(wget -qO - "http://git.liburcu.org/?p=userspace-rcu.git;a=blob_plain;f=configure.ac;hb=${revision}" | grep "AC_INIT" | sed "s/^.*\[\([0-9\.][0-9\.]*\)].*$/\1/")
-		;;
-	    openssl)
-		out=$(wget -qO - "https://raw.githubusercontent.com/openssl/openssl/${revision}/CHANGES" | grep -m1 "^ Changes between .* and .*xx XXX xxxx" | sed "s/^.* \([0-9\.][0-9\.]*[a-z]\) and .*$/\1/")
-		;;
-	    python)
-		out=$(wget -qO - "https://raw.githubusercontent.com/python/cpython/${revision}/README.rst" | head -n1 | grep "This is Python version " | sed "s/^.* \([0-9\.][0-9\.]*\).*$/\1/")
-		;;
-	    tbb)
-		out=$(wget -qO - "https://raw.githubusercontent.com/01org/tbb/${revision}/include/tbb/tbb_stddef.h" | grep "TBB_VERSION_M[AI]" | sort | sed "s/[^0-9]*//g" | tr "\n" "." | cut -d. -f1-2)
-		;;
-	    valgrind)
-		out=$(wget -qO - "https://sourceware.org/git/?p=valgrind.git;a=blob_plain;f=configure.ac;hb=${revision}" | grep -m 1 "^AC_INIT" | sed "s/^.*\[\([0-9\.][0-9\.]*\)].*$/\1/")
-		;;
-	    *)
-		echo "Function get_version doesn't know the package $package"
-		return 1
-		;;
-	esac
+        if [[ -z "${ATSRC_PACKAGE_UPSTREAM}" ]]; then
+                echo "ATSRC_PACKAGE_UPSTREAM isn't defined for the package $package"
+                return 1
+        fi
+        out=$(eval $(echo "${ATSRC_PACKAGE_UPSTREAM}" | sed "s/__REVISION__/$revision/g"))
 	[[ "${ATSRC_PACKAGE_VER}" == "$out" ]] && out=""
 	echo "$out"
 }

@@ -35,3 +35,5 @@ ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/userspace-rcu
 ATSRC_PACKAGE_MAKE_CHECK=""
 ATSRC_PACKAGE_DISTRIB=yes
 ATSRC_PACKAGE_BUNDLE=mcore-libs
+# Not needed because file follows master branch
+# ATSRC_PACKAGE_UPSTREAM=
