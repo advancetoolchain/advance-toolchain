@@ -36,3 +36,4 @@ ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/userspace-rcu
 ATSRC_PACKAGE_MAKE_CHECK=""
 ATSRC_PACKAGE_DISTRIB=yes
 ATSRC_PACKAGE_BUNDLE=mcore-libs
+ATSRC_PACKAGE_UPSTREAM='wget -qO - "http://git.liburcu.org/?p=userspace-rcu.git;a=blob_plain;f=configure.ac;hb=__REVISION__" | grep "urcu_version_[mp][a-z]*]" | sort | sed "s/^.* \[\([0-9]*\)].*$/\1/" | tr "\n" "." | cut -d. -f1-3'

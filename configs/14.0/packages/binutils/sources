@@ -41,6 +41,7 @@ ATSRC_PACKAGE_PATCHES=
 ATSRC_PACKAGE_TARS=
 ATSRC_PACKAGE_DISTRIB=yes
 ATSRC_PACKAGE_BUNDLE=main_toolchain
+ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://sourceware.org/git/?p=binutils-gdb.git;a=blob_plain;f=bfd/version.m4;hb=__REVISION__" | grep "^m4_define" | sed "s/^.*\[\([0-9\.][0-9\.]*\)].*$/\1/"'
 
 atsrc_get_patches ()
 {

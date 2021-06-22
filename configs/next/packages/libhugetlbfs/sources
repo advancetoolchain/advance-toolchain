@@ -38,3 +38,5 @@ ATSRC_PACKAGE_TARS=""
 ATSRC_PACKAGE_MAKE_CHECK=
 ATSRC_PACKAGE_DISTRIB=yes
 ATSRC_PACKAGE_BUNDLE=toolchain_extra
+# Not needed because file follows master branch
+# ATSRC_PACKAGE_UPSTREAM=
