@@ -186,6 +186,7 @@ atcfg_configure()
 			--without-gd \
 			--without-selinux \
 			--enable-kernel="${kernel}" \
+			--sysconfdir="${dest_cross}/etc" \
 			${disable_ssp:+libc_cv_ssp="no"}
 	fi
 }
