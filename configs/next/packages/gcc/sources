@@ -23,7 +23,7 @@ ATSRC_PACKAGE_NAME="GCC (GNU Compiler Collection)"
 ATSRC_PACKAGE_SUBPACKAGE_NAME_0="GNU Standard C++ Library v3 (Libstdc++-v3)"
 ATSRC_PACKAGE_SUBPACKAGE_NAME_1="GNU Libgomp"
 ATSRC_PACKAGE_VER=12.0.0
-ATSRC_PACKAGE_REV=0f3cd532fa02
+ATSRC_PACKAGE_REV=4546f423ecff
 ATSRC_PACKAGE_LICENSE="GPL 3.0"
 ATSRC_PACKAGE_DOCLINK="https://gcc.gnu.org/onlinedocs/gcc/"
 ATSRC_PACKAGE_SUBPACKAGE_DOCLINK_0="https://gcc.gnu.org/libstdc++/"
@@ -70,6 +70,14 @@ atsrc_get_patches ()
 		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/GCC%20PowerPC%20Backport/11/0001-powerpc-Remove-forced-runpath-from-with-advance-tool.patch' \
 		2a4d7864672f6227f33687a834e7dca4 || return ${?}
 
+	at_get_patch \
+		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/25cc9095a4591a2cde8adc2a74f417e3ff667f3a/GCC%20PowerPC%20Backport/12/0001-Revert-Improve-global-state-for-options.patch' \
+		75484046f079e39a71545b391661ca08 || return ${?}
+
+        at_get_patch \
+		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/a68de5295ccdf27bdfd1bd7cca07cabdc013cf44/GCC%20libstdc%2B%2B%20PowerPC%20Patches/12/libstdcpp-check-gthreads.patch' \
+		ebf3bb59e8a586c1fb05a5715fa4f480 || return ${?}
+
 	return 0
 }
 
@@ -89,5 +97,13 @@ atsrc_apply_patches ()
 
 	patch -p1 \
 	      < 0001-powerpc-Remove-forced-runpath-from-with-advance-tool.patch \
+		|| return ${?}
+
+	patch -p1 \
+	      < 0001-Revert-Improve-global-state-for-options.patch \
+		|| return ${?}
+
+	patch  -p1 \
+	      < libstdcpp-check-gthreads.patch \
 		|| return ${?}
 }
