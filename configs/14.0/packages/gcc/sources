@@ -65,6 +65,11 @@ atsrc_get_patches ()
 		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/GCC%20libstdc%2B%2B%20PowerPC%20Patches/9/0001-libstdc-Prevent-LD_LIBRARY_PATH-from-leaking-to-msgf.patch' \
 		9cba9a9b94ca9c1b8958c0d722a9c06b || return ${?}
 
+	# Fix segmentation fault when mixing TOC-less and TOC-based code (issue
+	# #2204).
+	at_get_patch \
+		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/c48d790482fe9620dfc4f7599bce1f693a04c63d/GCC%20PowerPC%20Backport/10/issue2204.patch' \
+		f2d34a13b2872ba1056aa89f71c94ebe || return ${?}
 	return 0
 }
 
@@ -76,5 +81,9 @@ atsrc_apply_patches ()
 
 	patch -p1 \
 	      < 0001-libstdc-Prevent-LD_LIBRARY_PATH-from-leaking-to-msgf.patch \
+		|| return ${?}
+
+	patch -p1 \
+	      < issue2204.patch \
 		|| return ${?}
 }
