@@ -51,6 +51,9 @@ if { $env(AT_CROSS_BUILD) == "yes" } {
 
 # Starting with glibc 2.34 (2.33.9000 dev version) libpthread was moved into
 # libc.so. Use 'sort' to properly compare the version strings.
+# Also, before that same version, glibc installed libc.so.SONAME as a symlink to
+# libc-<version>.so. But this has changed and now the former is a regular file
+# and the latter does not exist anymore.
 if {[catch {exec echo -e "$env(AT_GLIBC_VER)\n2.33.9000" | sort -V | tail -n1} \
 	normalized_version]} {
 	printit "Failed to normalize glibc version: $::errorInfo"
@@ -58,20 +61,20 @@ if {[catch {exec echo -e "$env(AT_GLIBC_VER)\n2.33.9000" | sort -V | tail -n1} \
 }
 
 if { $normalized_version != $env(AT_GLIBC_VER) } {
-	set libbasename "libpthread"
+	set libname "libpthread-*.so"
 } else {
-	set libbasename "libc"
+	set libname "libc.so.6"
 }
 
 if { $TARGET32 } {
-	set lib [glob $install_prefix/lib/$libbasename-*.so]
+	set lib [glob $install_prefix/lib/$libname]
 	if {[check_systemtap $readelf_exe $lib]} {
 		set ret 1
 	}
 }
 
 if { $TARGET64 } {
-	set lib [glob $install_prefix/lib64/$libbasename-*.so]
+	set lib [glob $install_prefix/lib64/$libname]
 	if {[check_systemtap $readelf_exe $lib]} {
 		set ret 1
 	}
