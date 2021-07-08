@@ -59,6 +59,7 @@ atcfg_configure() {
 			${with_dfp_standalone:+--enable-decimal-float} \
 			${secure_plt:+--enable-secureplt} \
 			${disable_multilib:+--disable-multilib} \
+			--with-long-double-format=ibm \
 			--with-advance-toolchain=$(basename ${at_dest}) \
 			--with-glibc-version=${glibc} \
 			--with-local-prefix=${at_dest} \
@@ -153,6 +154,14 @@ atcfg_pre_make() {
 			exit 1
 		fi
 		popd
+
+		# Setup the multilib directory
+		mkdir -p "${at_dest}/lib64/ieee128"
+		cp ${at_dest}/lib64/crt*.o ${at_dest}/lib64/ieee128/
+		if [[ ${?} -ne 0 ]]; then
+			echo "Error copying crt*.o files!"
+			exit 1
+		fi
 	fi
 }
 
@@ -257,4 +266,9 @@ atcfg_post_install() {
 		done
 		set +e
 	fi
+
+	# Include crti.o, crtn.o and crt1.o from the multilibs directory in the
+	# RPM/DEB package.
+	ls ${at_dest}/lib64/ieee128/crt*.o \
+	  >> ${dynamic_spec}/main_toolchain/${stepid}.filelist
 }
