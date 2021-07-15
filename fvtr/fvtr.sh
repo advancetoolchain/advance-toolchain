@@ -58,7 +58,7 @@ function usage () {
 
 runall()
 {
-	TEMPS2RUN=$(find -type d | sort)
+	TEMPS2RUN=$(\cd "$FVTR_DIR" && find -mindepth 1 -type d | sort)
 	rdot='.'
 	rslash='/'
 	# rebuld this list with out the ./
@@ -71,9 +71,11 @@ runall()
 	done
 }
 
+FVTR_DIR=$(dirname $0)
+
 if [[ ${1} = "report" ]];
 then
-	if [ ! -e "report.log" ];
+	if [ ! -e "$FVTR_DIR/report.log" ];
 	then
 		echo "Error: no logs for previous tests were found."
 		exit 1
@@ -81,7 +83,7 @@ then
 
 	printcount=0
 
-	logname=$(awk 'NR==1' report.log)
+	logname=$(awk 'NR==1' "$FVTR_DIR/report.log")
 	while read line
 	do
 		testname=$(awk '{print $1}' <<< "$line")
@@ -99,11 +101,11 @@ then
 		# lines have the same length, for readability purposes
 		bar=$(printf "%0.s*" $(seq $((22-${#testname}))))
 
-		echo "*** Log file content (./$testname/$logname): $bar"
+		echo "*** Log file content ($FVTR_DIR/$testname/$logname): $bar"
 		echo "------------------------------------------------------------------"
-		cat "./$testname/$logname"
+		cat "$FVTR_DIR/$testname/$logname"
 		echo ""
-	done <<< "$(tail --lines=+2 report.log)"
+	done <<< "$(tail --lines=+2 $FVTR_DIR/report.log)"
 
 	if [[ $printcount = 0 ]];
 	then
@@ -169,31 +171,26 @@ export PATH=${AT_DEST}/bin:${PATH}
 
 if [ $LOUD = "OFF" ]
 then
-	DIRECTOUTPUT=$(date +%Y%m%d)"fvtr.log"
-	if [ -e "$DIRECTOUTPUT" ]
+	DIRECTOUTPUT="$(date +%Y%m%d)fvtr.log"
+	if [ -e "$FVTR_DIR/$DIRECTOUTPUT" ]
 	then
-		rm "$DIRECTOUTPUT"
-	fi
-
-	if [ -e "report.log" ]
-	then
-		rm "report.log"
+		rm "$FVTR_DIR/$DIRECTOUTPUT"
 	fi
 
 	# In case logs are being generated for each test,
 	# we create a file to save results of all tests,
 	# so fvtr.sh can know, when it is later called,
 	# which tests failed
-	echo "$DIRECTOUTPUT" >> report.log
+	echo "$DIRECTOUTPUT" > "$FVTR_DIR"/report.log
 else
 	DIRECTOUTPUT="stdout"
 fi
 
 # Create a file to hold the auxv info.
 # Scripts can read if they need any system info.
-LD_SHOW_AUXV=1 /bin/true > auxv_info.txt
+LD_SHOW_AUXV=1 /bin/true > "$FVTR_DIR"/auxv_info.txt
 
-PLATFORM="$(grep AT_PLATFORM auxv_info.txt |  awk -F':' '{print $2}' \
+PLATFORM="$(grep AT_PLATFORM "$FVTR_DIR"/auxv_info.txt |  awk -F':' '{print $2}' \
 	    | sed 's/^ *//')"
 
 rdot='.'
@@ -217,12 +214,14 @@ total_failed=0
 
 for i in $TESTS2RUN
 do
-	if [ -e "./"$i"/"$i".exp" ]
+	if [ -e "$FVTR_DIR/$i/$i.exp" ]
 	then
 		# Do not run a testcase if it has already been run (a log file
 		# is available).
-		if ! ls ./${i}/*fvtr.log &> /dev/null || [ $FORCE = "ON" ]
+		if ! ls "$FVTR_DIR/$i/*fvtr.log" &> /dev/null || [ $FORCE = "ON" ]
 		then
+			pushd "$FVTR_DIR" >/dev/null
+
 			# Always print $PLATFORM at char position 25.
 			# As it's necessary to add a space between the name of
 			# the testcase and $PLATFORM, that leaves 23 characters
@@ -238,7 +237,7 @@ do
 			# Limit the name of the testcase in 23 characters.
 			echo -ne "${i:0:23}${indent}$PLATFORM: "
 
-			"./"$i"/"$i".exp" $i $DIRECTOUTPUT $PLATFORM
+			"./$i/$i.exp" $i $DIRECTOUTPUT $PLATFORM
 			rc=$?
 			case "$rc" in
 				"0")
@@ -258,6 +257,8 @@ do
 
 					ret=1 ;;
 			esac
+
+			popd >/dev/null
 		else
 			echo "$i test already run.  Use the -f option to" \
 			     "force it to run."
@@ -273,9 +274,9 @@ echo "Failed tests: ${total_failed}"
 echo "***********************************************"
 
 # clean up
-if [ -e auxv_info.txt ]
+if [ -e "$FVTR_DIR"/auxv_info.txt ]
 then
-	rm auxv_info.txt
+	rm "$FVTR_DIR"/auxv_info.txt
 fi
 
 exit $ret
