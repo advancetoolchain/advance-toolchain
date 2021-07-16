@@ -60,7 +60,7 @@ rm -f ${debs}/*.deb
 # Clear a previous build
 if [[ -e debian/rules ]]; then
 	pushd ${base} > /dev/null
-	fakeroot make -f debian/rules clean
+	strace -f fakeroot make -f debian/rules clean
 	popd > /dev/null
 fi
 
