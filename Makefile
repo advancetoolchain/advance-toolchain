@@ -351,7 +351,7 @@ define runandlog
       echo; \
       date; \
       echo "-----------------------------------------------------"; \
-    } >> $1 2>&1
+    } &>> $1
 endef
 
 # Create path if needed and return its name
@@ -1017,7 +1017,7 @@ pack: hash
 	@echo "$$($(TIME)) Preparing the build pack..."
 	@+{ TMP_DIR=$$(mktemp -d "/tmp/atpack-XXXXXXX"); \
 	    tar -cpvz -X "$(HELPERS_ROOT)/pack-exclude.lst" -f "$${TMP_DIR}/at-$(AT_TODAY).tgz" ./ > \
-	        "$${TMP_DIR}/at-$(AT_TODAY).included" 2>&1; \
+	        "$${TMP_DIR}/at-$(AT_TODAY).included"; \
 	    mv "$${TMP_DIR}/at-$(AT_TODAY).tgz"      . ; \
 	    mv "$${TMP_DIR}/at-$(AT_TODAY).included" . ; \
 	    rm -rf "$${TMP_DIR}"; \
@@ -1137,7 +1137,7 @@ $(RCPTS)/monitor.rcpt: $(RCPTS)/toolchain.rcpt
 	             >> $(DYNAMIC_SPEC)/$${group}/ldconfig.filelist; \
 	    fi; \
 	    echo "All done."; \
-	} > $(LOGS)/_watch_ldconfig.log 2>&1
+	} &> $(LOGS)/_watch_ldconfig.log
 	@touch $@
 
 $(RCPTS)/toolchain.rcpt: $(RCPTS)/gcc_4.rcpt \
@@ -1167,7 +1167,7 @@ $(RCPTS)/release-notes.rcpt:
 	    $(call runandlog,$(LOGS)/_release_notes_build.log,\
 		   $(call build_release_notes,$(PACKAGES_LIST))); \
 	    echo "Completed release-notes.$(AT_MAJOR).html build"; \
-	} > $(LOGS)/_release_notes.log 2>&1
+	} &> $(LOGS)/_release_notes.log
 	@echo "$$($(TIME)) Completed release-notes for $(AT_VER_REV_INTERNAL)"
 	@touch $@
 
@@ -1186,8 +1186,8 @@ $(RCPTS)/deb.rcpt: $(RCPTS)/build.rcpt $(RCPTS)/distributed_scripts.rcpt
 	@+{ echo "Buiding DEB packages for $(AT_FULL_VER)."; \
 	    export AT_STEPID=deb; \
 	    echo "- Preparing the environment vars."; \
-	    { $(call deb_setenv); } > \
-	        $(LOGS)/_$${AT_STEPID}-01_deb_setenv.log 2>&1; \
+	    { $(call deb_setenv); } &> \
+	        $(LOGS)/_$${AT_STEPID}-01_deb_setenv.log; \
 	    echo "- Preparing the filelist of included packages..."; \
 	    $(call runandlog,$(LOGS)/_$${AT_STEPID}-02_pkg_set_filelists.log, \
 	           $(UTILITIES_ROOT)/pkg_build_filelists.sh $(TARGET)); \
@@ -1203,7 +1203,7 @@ $(RCPTS)/deb.rcpt: $(RCPTS)/build.rcpt $(RCPTS)/distributed_scripts.rcpt
 	        exit 1; \
 	    fi; \
 	    echo "Everything completed."; \
-	} > $(LOGS)/_deb.log 2>&1
+	} &> $(LOGS)/_deb.log
 	@echo "$$($(TIME)) Completed DEB packages for $(AT_FULL_VER)"
 	@touch $@
 
@@ -1214,8 +1214,8 @@ $(RCPTS)/rpm.rcpt: $(RCPTS)/build.rcpt $(RCPTS)/distributed_scripts.rcpt
 	@+{ echo "Buiding RPM packages for $(AT_VER_REV_INTERNAL)."; \
 	    export AT_STEPID=rpm; \
 	    echo "- Preparing the environment vars."; \
-	    { $(call rpm_setenv); } > \
-		$(LOGS)/_$${AT_STEPID}-01_rpm_setenv.log 2>&1; \
+	    { $(call rpm_setenv); } &> \
+		$(LOGS)/_$${AT_STEPID}-01_rpm_setenv.log; \
 	    echo "- Preparing the filelist of included packages..."; \
 	    $(call runandlog,$(LOGS)/_$${AT_STEPID}-02_pkg_build_filelists.log, \
 	           $(UTILITIES_ROOT)/pkg_build_filelists.sh $(TARGET)); \
@@ -1231,7 +1231,7 @@ $(RCPTS)/rpm.rcpt: $(RCPTS)/build.rcpt $(RCPTS)/distributed_scripts.rcpt
 	        exit 1; \
 	    fi; \
 	    echo "Everything completed."; \
-	} > $(LOGS)/_rpm.log 2>&1
+	} &> $(LOGS)/_rpm.log
 	@echo "$$($(TIME)) Completed RPM packages for $(AT_VER_REV_INTERNAL)"
 	@touch $@
 
@@ -1242,7 +1242,7 @@ $(RCPTS)/source_tarball.rcpt: $(RCPTS)/build.rcpt $(RCPTS)/distributed_scripts.r
 	@echo "$$($(TIME)) Begin to package source code for $(AT_VER_REV_INTERNAL)..."
 	@+{ echo "Packing distributable sources in a tarball..."; \
 	    $(call pack_source_pkgs,$(call get_built_packages)); \
-	} > $(LOGS)/_source_tarball.log 2>&1
+	} &> $(LOGS)/_source_tarball.log
 	@echo "$$($(TIME)) Completed packaging source code for $(AT_VER_REV_INTERNAL)"
 	@touch $@
 
@@ -1264,7 +1264,7 @@ $(RCPTS)/build.rcpt: $(RCPTS)/toolchain.rcpt $(RCPTS)/debug.rcpt \
 	        $(AT_DEST)/sbin/ldconfig; \
 	    fi; \
 	    set +x; \
-	} > $(LOGS)/_build.log 2>&1
+	} &> $(LOGS)/_build.log
 	@echo "$$($(TIME)) Completed $(AT_VER_REV_INTERNAL) build"
 	@touch $@
 
@@ -1293,7 +1293,7 @@ $(RCPTS)/distributed_scripts.rcpt: $(ENVIRONMENT_MODULES)
 	        cp $(SCRIPTS_ROOT)/distributed/* $(AT_DEST)/scripts; \
 	        echo "Completed copy."; \
 	    fi; \
-	} > $(LOGS)/_distributed_scripts.log
+	} &> $(LOGS)/_distributed_scripts.log
 	@echo "$$($(TIME)) Completed install of package scripts!"
 	@touch $@
 
@@ -1319,7 +1319,7 @@ $(RCPTS)/ldconfig_2.rcpt: $(glibc_2-archdeps) \
 	            exit 1; \
 	        fi; \
 	    fi; \
-	} > $(LOGS)/_ldconfig_2.log
+	} &> $(LOGS)/_ldconfig_2.log
 	@echo "$$($(TIME)) Completed second dynamic loader cache update!"
 	@touch $@
 
@@ -1334,7 +1334,7 @@ $(RCPTS)/ldconfig_1.rcpt: $(glibc_1-archdeps)
 	            exit 1; \
 	       fi; \
 	    fi; \
-	} > $(LOGS)/_ldconfig_1.log
+	} &> $(LOGS)/_ldconfig_1.log
 	@echo "$$($(TIME)) Completed first dynamic loader cache update!"
 	@touch $@
 
@@ -1360,24 +1360,24 @@ $(RCPTS)/%.b.rcpt: $(RCPTS)/%.a.rcpt
 		stage_file=stage_$${stage_n}; \
 	    fi; \
 	    echo "Preparing the build environment vars."; \
-	    { $(call build_setenv); } > \
-			$(LOGS)/_$${AT_STEPID}-1_build_setenv.log 2>&1; \
+	    { $(call build_setenv); } &> \
+			$(LOGS)/_$${AT_STEPID}-1_build_setenv.log; \
 	    echo "Configuring source and build paths."; \
 	    source $(CONFIG)/packages/$${pkg}/sources; \
 	    echo "Setting the required stage configs."; \
 	    source $(CONFIG)/packages/$${pkg}/$${stage_file}; \
 	    echo "Preparing the build path and move there."; \
-	    { $(call build_stage2,$${ATSRC_PACKAGE_WORK},$${ATCFG_BUILD_STAGE_T},$(*F)); } > \
-			$(LOGS)/_$${AT_STEPID}-2_build_stage.log 2>&1; \
+	    { $(call build_stage2,$${ATSRC_PACKAGE_WORK},$${ATCFG_BUILD_STAGE_T},$(*F)); } &> \
+			$(LOGS)/_$${AT_STEPID}-2_build_stage.log; \
 	    echo "Doing the actual build and install steps."; \
 	    { source $(SCRIPTS_ROOT)/utils.sh; \
 	      $(call standard_buildf); \
-	    } > $(LOGS)/_$${AT_STEPID}-3_standard_buildf.log 2>&1; \
+	    } &> $(LOGS)/_$${AT_STEPID}-3_standard_buildf.log; \
 	    echo "Completed main build, cleaning it now."; \
-	    { $(call clean_stage); } > \
-			$(LOGS)/_$${AT_STEPID}-5_clean_stage.log 2>&1; \
+	    { $(call clean_stage); } &> \
+			$(LOGS)/_$${AT_STEPID}-5_clean_stage.log; \
 	    echo "Everything completed."; \
-	} > $(LOGS)/_$(*F).log 2>&1
+	} &> $(LOGS)/_$(*F).log
 	@echo "$$($(TIME)) Completed the build of $(*F)!"
 	@touch $@
 
@@ -1416,14 +1416,14 @@ $(RCPTS)/copy_%.rcpt: $(RCPTS)/fetch_%_source.rcpt \
 	    export AT_STEPID=copy_$(*F); \
 	    source $(CONFIG)/packages/$(*F)/sources; \
 	    echo "Copying the source code."; \
-	    { $(call rsync_and_patch,$${ATSRC_PACKAGE_SRC},$${ATSRC_PACKAGE_WORK},$(FETCH_PATCHES),$${ATSRC_PACKAGE_PATCHES},$${ATSRC_PACKAGE_TARS},delete); } > \
-	                $(LOGS)/_$${AT_STEPID}-rsync_and_patch.log 2>&1; \
+	    { $(call rsync_and_patch,$${ATSRC_PACKAGE_SRC},$${ATSRC_PACKAGE_WORK},$(FETCH_PATCHES),$${ATSRC_PACKAGE_PATCHES},$${ATSRC_PACKAGE_TARS},delete); } &> \
+	                $(LOGS)/_$${AT_STEPID}-rsync_and_patch.log; \
 	    if [[ -e $(TEMP_INSTALL)/$(*F)-copy-queue ]]; then \
 	        echo "Copying patches."; \
 	        cp -v -t $${ATSRC_PACKAGE_WORK} \
 	              $$(cat $(TEMP_INSTALL)/$(*F)-copy-queue); \
 	    fi; \
-	} > $(LOGS)/_copy_$(*F).log 2>&1
+	} &> $(LOGS)/_copy_$(*F).log
 	@echo "$$($(TIME)) Completed $(*F) copy!"
 	@touch $@
 
@@ -1443,7 +1443,7 @@ $(RCPTS)/patch_%.rcpt: $(RCPTS)/copy_%.rcpt
 	    else \
 	        echo "$(*F) doesn't have patches."; \
 	    fi; \
-	} > $(LOGS)/_patch_$(*F).log 2>&1
+	} &> $(LOGS)/_patch_$(*F).log
 	@echo "$$($(TIME)) Applied patches to $(*F)!"
 	@touch $@
 
