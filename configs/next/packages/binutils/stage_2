@@ -28,8 +28,8 @@ atcfg_configure() {
 		# Configure command for native builds
 		CC=${at_dest}/bin/gcc \
 		CXX=${at_dest}/bin/g++ \
-		CFLAGS="-g -O2 -Wno-error=stringop-truncation" \
-		CXXFLAGS="-g -O2 -Wno-error=stringop-overflow" \
+		CFLAGS="-g -O2 -Wno-error=array-bounds" \
+		CXXFLAGS="-g -O2" \
 		${ATSRC_PACKAGE_WORK}/configure --build=${host} \
 						--host=${target} \
 						--target=${target} \
