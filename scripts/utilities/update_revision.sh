@@ -203,8 +203,13 @@ get_latest_revision ()
 		popd > /dev/null
 		rm -rf ${tmp_dir}
 	else
-		hash=$(svn info ${url} | grep "Last Changed Rev:" \
-			| cut -d: -f2)
+		local isTgz=$(echo ${url} | grep -c "\.tar\.[bg]z")
+		if [[ "${isTgz}" == 1 ]]; then
+			echo "URL is a tarball, nothing to do."
+			return 1
+		fi
+		# It's not a tarball, let's assume it's a SVN URL
+		hash=$(svn info ${url} | grep "Last Changed Rev:" | cut -d: -f2)
 	fi
 
 	echo ${hash}
@@ -613,6 +618,6 @@ for co in "${ATSRC_PACKAGE_CO[@]}"; do
 	    fi
 	    break
 	else
-	    print_msg 0 "Unable to connect to ${repo} or wrong branch name"
+	    [[ -n "${hash}" ]] && print_msg 0 "${hash}"
 	fi
 done
