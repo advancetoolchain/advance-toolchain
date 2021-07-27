@@ -96,7 +96,8 @@ atcfg_configure ()
 	if [[ ${AT_BIT_SIZE} -eq 32 || "${cross_build}" == "yes" ]]; then
 		local extra_parms="--without-libraries=python"
 	else
-		local python_exe=$(ls -d ${at_dest}/bin/python[0-9].[0-9])
+		local python_exe=$(find ${at_dest}/bin -maxdepth 1 \
+                                   -regex '.*python[0-9]+\.[0-9]+')
 		local extra_parms="--with-python=${python_exe} \
 				   --with-python-root=${at_dest}"
 	fi
