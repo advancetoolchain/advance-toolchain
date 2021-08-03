@@ -21,20 +21,7 @@
 #include <err.h>
 /* These are public headers which uses the internal ones.  */
 #include <tbb/tbb.h>
-#include <tbb/flow_graph.h>
-#include <tbb/parallel_while.h>
-#include <tbb/tbbmalloc_proxy.h>
-#include <tbb/tbb_config.h>
-#include <tbb/tbb_machine.h>
-#include <tbb/tbb_profiling.h>
-#include <tbb/blocked_range.h>
 #include <tbb/parallel_for.h>
-#include <tbb/task_scheduler_init.h>
-#include <tbb/internal/_aggregator_impl.h>
-/* These are not included in the public ones.  */
-#define __TBB_tbb_windef_H
-#define _MT
-#include <tbb/internal/_tbb_windef.h>
 
 /* Struct that does the computation.  */
 struct
@@ -74,7 +61,11 @@ int main()
   free(block);
 
   /* Tests the function using 18 threads.  */
+#ifdef ONETBB_SPEC_VERSION
+  oneapi::tbb::task_arena arena(18);
+#else
   tbb::task_scheduler_init init(18);
+#endif
   execute job;
   struct trigger trig(job);
   tbb::parallel_for(tbb::blocked_range<size_t>(0,1000),trig);

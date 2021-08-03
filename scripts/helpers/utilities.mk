@@ -256,6 +256,8 @@ define build_setenv
     export build_old_at_install=$(BUILD_OLD_AT_INSTALL); \
     echo "  - Setting distro suppoted java versions to '$(AT_JAVA_VERSIONS)'"; \
     export java_versions="$(AT_JAVA_VERSIONS)"; \
+    echo "  - Setting make check to '$(AT_MAKE_CHECK)'"; \
+    export make_check="$(AT_MAKE_CHECK)"; \
     echo "* Finished build env variables."
 endef
 
