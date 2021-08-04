@@ -222,6 +222,7 @@ atcfg_post_install() {
 		popd
 	else
 		pushd ${install_place}/${at_dest}/bin
+		[[ -x gfortran && ! -e f95 ]] && ln -s gfortran f95
 		# This is necessary for some applications to work
 		if [[ ! -e "cc" ]]; then
 			ln -s "gcc" "cc"
