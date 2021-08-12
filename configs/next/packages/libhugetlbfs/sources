@@ -40,3 +40,29 @@ ATSRC_PACKAGE_DISTRIB=yes
 ATSRC_PACKAGE_BUNDLE=toolchain_extra
 # Not needed because file follows master branch
 # ATSRC_PACKAGE_UPSTREAM=
+
+atsrc_get_patches ()
+{
+    # Disable usage of morecore
+    at_get_patch \
+	'https://raw.githubusercontent.com/powertechpreview/powertechpreview/6d9a43ebbfa3a788922612b95ad358f4f0cb4495/Libhugetlbfs%20Patches/disable-morecore.patch' \
+	d3860602e4a81b252c94b519d7935624 || return ${?}
+
+    # Always use bash as the shell for make
+    at_get_patch \
+	'https://raw.githubusercontent.com/powertechpreview/powertechpreview/3c37c1a4031b272dcb3c80d4688436f28744f654/Libhugetlbfs%20Patches/always-use-bash.patch' \
+	7be7a8d9c2a00ffaa0b59f5fd60fd80d || return ${?}
+
+    return 0
+}
+
+atsrc_apply_patches ()
+{
+    patch -p1 \
+	  < disable-morecore.patch \
+	|| return ${?}
+
+    patch -p1 \
+	  < always-use-bash.patch \
+	|| return ${?}
+}
