@@ -23,7 +23,7 @@ ATSRC_PACKAGE_NAME="GCC (GNU Compiler Collection)"
 ATSRC_PACKAGE_SUBPACKAGE_NAME_0="GNU Standard C++ Library v3 (Libstdc++-v3)"
 ATSRC_PACKAGE_SUBPACKAGE_NAME_1="GNU Libgomp"
 ATSRC_PACKAGE_VER=12.0.0
-ATSRC_PACKAGE_REV=fcc7c6369f7f
+ATSRC_PACKAGE_REV=f0fca213bc52
 ATSRC_PACKAGE_LICENSE="GPL 3.0"
 ATSRC_PACKAGE_DOCLINK="https://gcc.gnu.org/onlinedocs/gcc/"
 ATSRC_PACKAGE_SUBPACKAGE_DOCLINK_0="https://gcc.gnu.org/libstdc++/"
@@ -71,9 +71,15 @@ atsrc_get_patches ()
 		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/GCC%20PowerPC%20Backport/11/0001-powerpc-Remove-forced-runpath-from-with-advance-tool.patch' \
 		2a4d7864672f6227f33687a834e7dca4 || return ${?}
 
+	# The following 2 patches revert changes in libstdc++ that are causing
+	# issues while building Boost.
 	at_get_patch \
-		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/25cc9095a4591a2cde8adc2a74f417e3ff667f3a/GCC%20PowerPC%20Backport/12/0001-Revert-Improve-global-state-for-options.patch' \
-		75484046f079e39a71545b391661ca08 || return ${?}
+		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/969f5ad0cce09c1d95afb53c62525c627570ee78/GCC%20libstdc%2B%2B%20PowerPC%20Patches/12/0001-Revert-libstdc-Add-conditional-noexcept-to-std-excha.patch' \
+		3eec8e72318e25648084bbb992e7ebad || return ${?}
+
+	at_get_patch \
+		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/969f5ad0cce09c1d95afb53c62525c627570ee78/GCC%20libstdc%2B%2B%20PowerPC%20Patches/12/0001-Revert-libstdc-Reduce-header-dependencies-on-array-a.patch' \
+		5408b4d0cd5503e74782b2622caf8006 || return ${?}
 
 	return 0
 }
@@ -97,6 +103,10 @@ atsrc_apply_patches ()
 		|| return ${?}
 
 	patch -p1 \
-	      < 0001-Revert-Improve-global-state-for-options.patch \
+	      < 0001-Revert-libstdc-Add-conditional-noexcept-to-std-excha.patch \
+		|| return ${?}
+
+	patch -p1 \
+	      < 0001-Revert-libstdc-Reduce-header-dependencies-on-array-a.patch \
 		|| return ${?}
 }
