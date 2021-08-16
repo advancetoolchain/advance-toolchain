@@ -94,9 +94,7 @@ SHELL := /bin/bash
 USER  ?= $(shell whoami)
 
 # Set some basic path information
-ifndef AT_BASE
-    AT_BASE := $(shell pwd)
-endif
+AT_BASE ?= $(shell pwd)
 CONFIG_ROOT := $(AT_BASE)/configs
 SCRIPTS_ROOT := $(AT_BASE)/scripts
 SCRIPTS_REPO := $(SCRIPTS_ROOT)/repository
@@ -114,720 +112,705 @@ AT_TODAY := $(shell date "+%Y%m%d")
 TIME := date -u +%Y-%m-%d_%H.%M.%S
 
 # Only set build environment for targets other the 'clone', 'edit' and 'pack'
-ifneq "$(MAKECMDGOALS)" "clone"
-ifneq "$(MAKECMDGOALS)" "edit"
-ifneq "$(MAKECMDGOALS)" "pack"
+ifeq (,$(findstring $(MAKECMDGOALS),clone edit pack))
 
-# Begin setting build environment                     *****
-# *********************************************************
+    # Begin setting build environment                     *****
+    # *********************************************************
 
-# Find the host arch where the AT is being build
-HOST_ARCH := $(shell uname -m 2>&1)
+    # Find the host arch where the AT is being build
+    HOST_ARCH := $(shell uname -m 2>&1)
 
-# Check for the required config parameter (config path)
-ifndef AT_CONFIGSET
-    AT_CONFIGSET := $(shell ls -d $(CONFIG_ROOT)/[0-9]*.[0-9] | awk -F '/' '{ print $$NF }' | sort -n | tail -1)
-    ifeq ($(AT_CONFIGSET),)
-        $(error Couldn't infer AT_CONFIGSET variable, and no hint was given... Bailing out!)
-    else
-        $(warning AT_CONFIGSET variable not informed... Using latest one ($(AT_CONFIGSET)).)
+    # Check for the required config parameter (config path)
+    ifndef AT_CONFIGSET
+        AT_CONFIGSET := $(shell ls -d $(CONFIG_ROOT)/[0-9]*.[0-9] | awk -F '/' '{ print $$NF }' | sort -n | tail -1)
+        ifeq ($(AT_CONFIGSET),)
+            $(error Couldn't infer AT_CONFIGSET variable, and no hint was given... Bailing out!)
+        else
+            $(warning AT_CONFIGSET variable not informed... Using latest one ($(AT_CONFIGSET)).)
+        endif
     endif
-endif
 
-# Verify the setting of AT_MAKE_CHECK
+    # Verify the setting of AT_MAKE_CHECK
 
-ifdef AT_MAKE_CHECK
-    ifneq ($(AT_MAKE_CHECK),none)
-    ifneq ($(AT_MAKE_CHECK),strict_fail)
-    ifneq ($(AT_MAKE_CHECK),silent_fail)
+    AT_MAKE_CHECK ?= none
+    ifeq (,$(findstring $(AT_MAKE_CHECK),none strict_fail silent_fail))
         $(warning unrecognized value for AT_MAKE_CHECK... value none assumed.)
         AT_MAKE_CHECK := none
     endif
-    endif
-    endif
-else
-    AT_MAKE_CHECK := none
-endif
 
-CONFIG := $(CONFIG_ROOT)/$(AT_CONFIGSET)
-CONFIG_SPEC := $(CONFIG)/specs
-DEBH_ROOT   := $(CONFIG)/deb
+    CONFIG := $(CONFIG_ROOT)/$(AT_CONFIGSET)
+    CONFIG_SPEC := $(CONFIG)/specs
+    DEBH_ROOT   := $(CONFIG)/deb
 
-# Load all config directives for the build
-include $(CONFIG)/base.mk
-include $(CONFIG)/build.mk
-include $(CONFIG)/sanity.mk
+    # Load all config directives for the build
+    include $(CONFIG)/base.mk
+    include $(CONFIG)/build.mk
+    include $(CONFIG)/sanity.mk
 
-
-# Define a simple check for file validation
-# $(call file_exists,<filename>)
-define file_exists
-    if [[ -r $1 ]]; then \
-        echo "found"; \
-    else \
-        echo "none"; \
-    fi
-endef
-
-# Define a verification for progname
-# $(call find_prg,<progname>)
-define find_prg
-    for DIR in $$(echo $${PATH} | tr ":" "\t"); do \
-        if [[ -x "$${DIR}/$1" ]]; then \
-            echo "$${DIR}/$1"; \
-            break; \
-        fi; \
-    done
-endef
-
-# Assign some essential tools for the build to defines and verify its existence
-# lsb_release
-LSBTOOL := $(strip $(shell $(call find_prg,lsb_release)))
-ifeq ($(LSBTOOL),)
-    $(error Program lsb_release not installed... Bailing out!)
-endif
-# ld
-GCC_LD := $(strip $(shell $(call find_prg,ld)))
-ifeq ($(GCC_LD),)
-    $(error Program linker not found... Bailing out!)
-endif
-# as
-GCC_AS := $(strip $(shell $(call find_prg,as)))
-ifeq ($(GCC_AS),)
-    $(error Basic assembler not found... Bailing out!)
-endif
-# gcc
-SYSTEM_CC := $(strip $(shell $(call find_prg,gcc)))
-ifeq ($(SYSTEM_CC),)
-    $(error No gcc system toolchain installed... Bailing out!)
-endif
-# g++
-SYSTEM_CXX := $(strip $(shell $(call find_prg,g++)))
-ifeq ($(SYSTEM_CXX),)
-    $(error No g++ system toolchain installed... Bailing out!)
-endif
-# autoconf
-AUTOCONF := $(strip $(shell $(call find_prg,autoconf)))
-ifeq ($(AUTOCONF),)
-    $(error No autoconf installed... Bailing out!)
-endif
-
-# Load basic utilities
-ifeq ($(strip $(shell $(call file_exists,$(HELPERS_ROOT)/utilities.mk))),found)
-    include $(HELPERS_ROOT)/utilities.mk
-else
-    $(error Couldn't find the utilities helper macro... Bailing out!)
-endif
-
-# Collect the distro version in which it's being run
-DISTRO_INFO := $(shell $(call get_distro_info))
-DISTRO_ID := $(shell echo $(DISTRO_INFO) | cut -d ' ' -f 1)
-DISTRO_AB := $(shell echo $(DISTRO_INFO) | cut -d ' ' -f 2)
-DISTRO_FM := $(shell echo $(DISTRO_ID) | cut -d '-' -f 1)
-DISTRO_FILE := $(CONFIG)/distros/$(DISTRO_ID).mk
-
-# Check if the running distro is supported for builds
-ifeq ($(strip $(shell $(call file_exists,$(DISTRO_FILE)))),found)
-    include $(DISTRO_FILE)
-else
-    $(error Distro $(DISTRO_ID) not supported... Bailing out!)
-endif
-
-# When doing a cross build, if the executables should be 32 bit
-# reset the HOST_ARCH from x86_64 to i686.
-ifeq ($(HOST_ARCH),x86_64)
-    ifeq ($(BUILD_CROSS_32),yes)
-        HOST_ARCH := i686
-    endif
-endif
-
-# Prepare the SUB_MAKE variable to use in recipes sub make calls
-export SUB_MAKE = $(MAKE)
-
-# Set more path information
-BUILD_ID := $(DISTRO_ID)_$(HOST_ARCH)_$(BUILD_ARCH)
-
-# First things first... Check for general build sanity before proceeding
-BASE_SANITY := $(strip $(shell $(call base_sanity)))
-
-# Define some internal version name variables
-AT_VER_REV := $(AT_MAJOR_VERSION)-$(AT_REVISION_NUMBER)
-AT_MAJOR := $(AT_NAME)$(AT_MAJOR_VERSION)
-ifeq ($(AT_INTERNAL),none)
-    AT_FULL_VER := $(AT_VER_REV)
-else
-    AT_FULL_VER := $(AT_VER_REV)-$(AT_INTERNAL)
-endif
-AT_VER_REV_INTERNAL := $(AT_NAME)$(AT_FULL_VER)
-
-# Macro to check the terminal in which we are being executed
-define check_terminal
-    if [[ ! (("$${TERM:0:6}" == "screen" || $${#TMUX} -gt 0)) ]]; then \
-        echo "no_session"; \
-    else \
-        echo "session"; \
-    fi
-endef
-
-# Check which kind of terminal are we running on...
-TERMINAL := $(shell $(call check_terminal))
-# If its not a session safe terminal kind, issue a warning...
-ifeq ($(TERMINAL),no_session)
-    $(warning **************************************************)
-    $(warning You are running this build from a bare shell...)
-    $(warning Please consider using screen or tmux for this.)
-    $(warning **************************************************)
-endif
-
-# Macro to get all packages name's
-define get_package_list
-    for package in $$(find $(CONFIG)/packages/* -type d -print); do \
-        [[ -r $${package}/sources ]] && \
-            echo $$(basename $${package}); \
-    done
-endef
-
-# Macro to get all packages built.
-# Extract the list from $(build_targets) variable.
-define get_built_packages
-    $(sort $(foreach name,$(basename $(notdir $(build_targets))),\
-        $(shell echo $(name) | cut -d_ -f1)))
-endef
-
-# Export settings for the FVTR
-# $(call build_fvtr_conf,<package_list>)
-define build_fvtr_conf
-    AT_KERNEL=$(AT_KERNEL); \
-    utilities=$(UTILITIES_ROOT); \
-    echo "AT_NAME=\"${AT_NAME}\"" > $(CONFIG_EXPT); \
-    echo "AT_MAJOR_VERSION=\"${AT_MAJOR_VERSION}\"" >> $(CONFIG_EXPT); \
-    echo "AT_REVISION_NUMBER=\"${AT_REVISION_NUMBER}\"" >> $(CONFIG_EXPT); \
-    echo "AT_INTERNAL=\"${AT_INTERNAL}\"" >> $(CONFIG_EXPT); \
-    echo "AT_DEST=\"${AT_DEST}\"" >> $(CONFIG_EXPT); \
-    echo "AT_BUILD_ARCH=\"${BUILD_ARCH}\"" >> $(CONFIG_EXPT); \
-    echo "AT_CROSS_BUILD=\"${CROSS_BUILD}\"" >> $(CONFIG_EXPT); \
-    echo "AT_TARGET=\"${TARGET}\"" >> $(CONFIG_EXPT); \
-    echo "AT_HOST_ARCH=\"${HOST_ARCH}\"" >> $(CONFIG_EXPT); \
-    echo "AT_BUILD_LOAD_ARCH=\"${BUILD_LOAD_ARCH}\"" >> $(CONFIG_EXPT); \
-    echo "AT_OPTMD_LIBS=\"${BUILD_ACTIVE_MULTILIBS}\"" >> $(CONFIG_EXPT); \
-    for PKG in $1; do \
-        source $(CONFIG)/packages/$${PKG}/sources; \
-        PKG_NAME=$$(echo "$${PKG}" | awk '{print toupper($$0)}'); \
-        echo "AT_$${PKG_NAME}_VER=$${ATSRC_PACKAGE_VER}" >> $(CONFIG_EXPT); \
-    done; \
-    echo created
-endef
-
-# Pack the assigned source packages to include them into the distribution
-# tarball
-# $(call pack_source_pkgs,<package_list>)
-define pack_source_pkgs
-    set -e; \
-    AT_KERNEL=$(AT_KERNEL); \
-    utilities=$(UTILITIES_ROOT); \
-    rm -f $(SRC_TAR_FILE); \
-    for PKG in $1; do \
-        source $(CONFIG)/packages/$${PKG}/sources; \
-        if [[ "$${ATSRC_PACKAGE_DISTRIB}" == "yes" ]]; then \
-            tar_pkgs="$${tar_pkgs} $$(basename $${ATSRC_PACKAGE_WORK})"; \
-        fi; \
-        unset $${!ATSRC_PACKAGE_*}; \
-    done; \
-    tar_pkgst=$$(echo $${tar_pkgs#$${tar_pkgs%%[![:space:]]*}}); \
-    tar cpzf $(SRC_TAR_FILE) -C $(SOURCE) $${tar_pkgst}; \
-    set +e
-endef
-
-# Define a logging macro for a given command
-# $(call runandlog,<logfile>,<command>)
-define runandlog
-    { echo "Logging the following command at:"; \
-      date; \
-      echo; \
-      set -x; \
-      $2; \
-      ret=$${?}; \
-      set +x; \
-      echo; \
-      date; \
-      echo "-----------------------------------------------------"; \
-    } &>> $1
-endef
-
-# Create path if needed and return its name
-# $(call mkpath,<pathname>,<force_clean>)
-define mkpath
-    if [[ -n "$1" ]]; then \
-        fpath=$$(echo $1 | sed 's|//*|/|g'); \
-        if [[ -r $${fpath} ]]; then \
-            if [[ "$2" == "yes" ]]; then \
-                rm -rf $${fpath}/*; \
-            fi; \
-        elif [[ -e $${fpath} ]]; then \
-            echo "You can't access this path: $${fpath}. Aborting."; \
-            exit 1; \
+    # Define a simple check for file validation
+    # $(call file_exists,<filename>)
+    define file_exists
+        if [[ -r $1 ]]; then \
+            echo "found"; \
         else \
-            mkdir -p $${fpath}; \
-        fi; \
-        echo $${fpath}; \
-        unset fpath; \
-    else \
-        echo $1; \
-    fi
-endef
+            echo "none"; \
+        fi
+    endef
 
-# Find the number of SMT cores available
-# $(call get_smt_cores)
-define get_smt_cores
-    if [[ -r /proc/cpuinfo ]]; then \
-        CPU_TYPE=$$(cat /proc/cpuinfo | grep cpu | cut -f 2 -d ':' | sort -u | sed 's@^ @@' | cut -f 1 -d ' '); \
-        CORES_FOUND=$$(cat /proc/cpuinfo | grep "processor" | wc -l); \
-        echo $${CORES_FOUND}; \
-    else \
-        echo 0; \
-    fi
-endef
+    # Define a verification for progname
+    # $(call find_prg,<progname>)
+    define find_prg
+        for DIR in $$(echo $${PATH} | tr ":" "\t"); do \
+            if [[ -x "$${DIR}/$1" ]]; then \
+                echo "$${DIR}/$1"; \
+                break; \
+            fi; \
+        done
+    endef
 
-# Sanity checks for ld and gcc
-# $(call sanity_gcc)
-define sanity_gcc
-    if [[ $$(gcc -v --help 2>&1 | grep secure-plt | wc -l) -eq 0 ]]; then \
-        echo "Failure. Host GCC is too old."; \
-        exit 1; \
-    fi
-endef
-# $(call sanity_ld)
-define sanity_ld
-    if [[ $$($(GCC_LD) --help 2>&1 | grep bss-plt | wc -l) -eq 0 ]]; then \
-        echo "Failure. Host $(GCC_LD) is too old."; \
-        exit 1; \
-    fi
-endef
-
-# Create a script to call make again with the same arguments
-# $(call create_remake)
-define create_remake
-    echo "#/bin/bash" > remake.sh; \
-    echo -n "make DESTDIR='$(DESTDIR)'" >> remake.sh; \
-    echo -n " AT_CONFIGSET='$(AT_CONFIGSET)'" >> remake.sh; \
-    echo -n " BUILD_ARCH='$(BUILD_ARCH)'" >> remake.sh; \
-    echo -n " AT_DIR_NAME='$(AT_DIR_NAME)' \"\$${@}\"" >> remake.sh; \
-    chmod +x remake.sh; \
-    echo created
-endef
-
-# Set the required variables for optimized libraries targets.
-#
-# Parameters:
-# 1. <component name>: Name of the component being built, e.g.: glibc
-#
-# Description:
-# This macro filters the conditions to call provide_proc_tuned macro and
-# clears the $(<component>_tuned-archdeps) variable.
-# In the end the following variables will be properly configured:
-# - tuned_targets
-# - <component>_tuned-archdeps
-# - <component>_<processor>-deps      - only if necessary
-# - <component>_<processor>-32-deps   - only if necessary
-# - <component>_<processor>-64-deps   - only if necessary
-#
-# Example:
-# $(call provide_tuneds,<component>)
-define provide_tuneds
-    # Hack around an issue where foreach iterates over a null variable
-    ifneq ($(TUNED_PROCESSORS),)
-        # List this package as a dependency in the global tuned target
-        tuned-targets += $(RCPTS)/$(1)_tuned.rcpt
-        $(foreach proc,$(TUNED_PROCESSORS),\
-               $(eval $(call provide_proc_tuned,$(1),$(proc))))
-        $(1)_tuned-archdeps += $($(1)_tuned-32-archdeps) \
-                               $($(1)_tuned-64-archdeps)
+    # Assign some essential tools for the build to defines and verify its existence
+    # lsb_release
+    LSBTOOL := $(strip $(shell $(call find_prg,lsb_release)))
+    ifeq ($(LSBTOOL),)
+        $(error Program lsb_release not installed... Bailing out!)
     endif
-endef
+    # ld
+    GCC_LD := $(strip $(shell $(call find_prg,ld)))
+    ifeq ($(GCC_LD),)
+        $(error Program linker not found... Bailing out!)
+    endif
+    # as
+    GCC_AS := $(strip $(shell $(call find_prg,as)))
+    ifeq ($(GCC_AS),)
+        $(error Basic assembler not found... Bailing out!)
+    endif
+    # gcc
+    SYSTEM_CC := $(strip $(shell $(call find_prg,gcc)))
+    ifeq ($(SYSTEM_CC),)
+        $(error No gcc system toolchain installed... Bailing out!)
+    endif
+    # g++
+    SYSTEM_CXX := $(strip $(shell $(call find_prg,g++)))
+    ifeq ($(SYSTEM_CXX),)
+        $(error No g++ system toolchain installed... Bailing out!)
+    endif
+    # autoconf
+    AUTOCONF := $(strip $(shell $(call find_prg,autoconf)))
+    ifeq ($(AUTOCONF),)
+        $(error No autoconf installed... Bailing out!)
+    endif
 
-# Setup the variables of a optimized library according to the processor
-# and depending on cross compiler settings.
-#
-# Parameters:
-# 1. <component name>: Name of the component being built, e.g.: glibc
-# 2. <processor>: Name of the processor to which this component is going to be
-#                 optimized to, e.g.: power7
-define provide_proc_tuned
-    ifeq (x$(CROSS_BUILD),xyes)
-        ifeq (x$(BUILD_TUNED_ON_CROSS),xyes)
+    # Load basic utilities
+    ifeq ($(strip $(shell $(call file_exists,$(HELPERS_ROOT)/utilities.mk))),found)
+        include $(HELPERS_ROOT)/utilities.mk
+    else
+        $(error Couldn't find the utilities helper macro... Bailing out!)
+    endif
+
+    # Collect the distro version in which it's being run
+    DISTRO_INFO := $(shell $(call get_distro_info))
+    DISTRO_ID := $(shell echo $(DISTRO_INFO) | cut -d ' ' -f 1)
+    DISTRO_AB := $(shell echo $(DISTRO_INFO) | cut -d ' ' -f 2)
+    DISTRO_FM := $(shell echo $(DISTRO_ID) | cut -d '-' -f 1)
+    DISTRO_FILE := $(CONFIG)/distros/$(DISTRO_ID).mk
+
+    # Check if the running distro is supported for builds
+    ifeq ($(strip $(shell $(call file_exists,$(DISTRO_FILE)))),found)
+        include $(DISTRO_FILE)
+    else
+        $(error Distro $(DISTRO_ID) not supported... Bailing out!)
+    endif
+
+    # When doing a cross build, if the executables should be 32 bit
+    # reset the HOST_ARCH from x86_64 to i686.
+    ifeq ($(HOST_ARCH),x86_64)
+        ifeq ($(BUILD_CROSS_32),yes)
+            HOST_ARCH := i686
+        endif
+    endif
+
+    # Prepare the SUB_MAKE variable to use in recipes sub make calls
+    export SUB_MAKE = $(MAKE)
+
+    # Set more path information
+    BUILD_ID := $(DISTRO_ID)_$(HOST_ARCH)_$(BUILD_ARCH)
+
+    # First things first... Check for general build sanity before proceeding
+    BASE_SANITY := $(strip $(shell $(call base_sanity)))
+
+    # Define some internal version name variables
+    AT_VER_REV := $(AT_MAJOR_VERSION)-$(AT_REVISION_NUMBER)
+    AT_MAJOR := $(AT_NAME)$(AT_MAJOR_VERSION)
+    ifeq ($(AT_INTERNAL),none)
+        AT_FULL_VER := $(AT_VER_REV)
+    else
+        AT_FULL_VER := $(AT_VER_REV)-$(AT_INTERNAL)
+    endif
+    AT_VER_REV_INTERNAL := $(AT_NAME)$(AT_FULL_VER)
+
+    # Macro to check the terminal in which we are being executed
+    define check_terminal
+        if [[ ! (("$${TERM:0:6}" == "screen" || $${#TMUX} -gt 0)) ]]; then \
+            echo "no_session"; \
+        else \
+            echo "session"; \
+        fi
+    endef
+
+    # Check which kind of terminal are we running on...
+    TERMINAL := $(shell $(call check_terminal))
+    # If its not a session safe terminal kind, issue a warning...
+    ifeq ($(TERMINAL),no_session)
+        $(warning **************************************************)
+        $(warning You are running this build from a bare shell...)
+        $(warning Please consider using screen or tmux for this.)
+        $(warning **************************************************)
+    endif
+
+    # Macro to get all packages name's
+    define get_package_list
+        for package in $$(find $(CONFIG)/packages/* -type d -print); do \
+            [[ -r $${package}/sources ]] && \
+                echo $$(basename $${package}); \
+        done
+    endef
+
+    # Macro to get all packages built.
+    # Extract the list from $(build_targets) variable.
+    define get_built_packages
+        $(sort $(foreach name,$(basename $(notdir $(build_targets))),\
+            $(shell echo $(name) | cut -d_ -f1)))
+    endef
+
+    # Export settings for the FVTR
+    # $(call build_fvtr_conf,<package_list>)
+    define build_fvtr_conf
+        AT_KERNEL=$(AT_KERNEL); \
+        utilities=$(UTILITIES_ROOT); \
+        echo "AT_NAME=\"${AT_NAME}\"" > $(CONFIG_EXPT); \
+        echo "AT_MAJOR_VERSION=\"${AT_MAJOR_VERSION}\"" >> $(CONFIG_EXPT); \
+        echo "AT_REVISION_NUMBER=\"${AT_REVISION_NUMBER}\"" >> $(CONFIG_EXPT); \
+        echo "AT_INTERNAL=\"${AT_INTERNAL}\"" >> $(CONFIG_EXPT); \
+        echo "AT_DEST=\"${AT_DEST}\"" >> $(CONFIG_EXPT); \
+        echo "AT_BUILD_ARCH=\"${BUILD_ARCH}\"" >> $(CONFIG_EXPT); \
+        echo "AT_CROSS_BUILD=\"${CROSS_BUILD}\"" >> $(CONFIG_EXPT); \
+        echo "AT_TARGET=\"${TARGET}\"" >> $(CONFIG_EXPT); \
+        echo "AT_HOST_ARCH=\"${HOST_ARCH}\"" >> $(CONFIG_EXPT); \
+        echo "AT_BUILD_LOAD_ARCH=\"${BUILD_LOAD_ARCH}\"" >> $(CONFIG_EXPT); \
+        echo "AT_OPTMD_LIBS=\"${BUILD_ACTIVE_MULTILIBS}\"" >> $(CONFIG_EXPT); \
+        for PKG in $1; do \
+            source $(CONFIG)/packages/$${PKG}/sources; \
+            PKG_NAME=$$(echo "$${PKG}" | awk '{print toupper($$0)}'); \
+            echo "AT_$${PKG_NAME}_VER=$${ATSRC_PACKAGE_VER}" >> $(CONFIG_EXPT); \
+        done; \
+        echo created
+    endef
+
+    # Pack the assigned source packages to include them into the distribution
+    # tarball
+    # $(call pack_source_pkgs,<package_list>)
+    define pack_source_pkgs
+        set -e; \
+        AT_KERNEL=$(AT_KERNEL); \
+        utilities=$(UTILITIES_ROOT); \
+        rm -f $(SRC_TAR_FILE); \
+        for PKG in $1; do \
+            source $(CONFIG)/packages/$${PKG}/sources; \
+            if [[ "$${ATSRC_PACKAGE_DISTRIB}" == "yes" ]]; then \
+                tar_pkgs="$${tar_pkgs} $$(basename $${ATSRC_PACKAGE_WORK})"; \
+            fi; \
+            unset $${!ATSRC_PACKAGE_*}; \
+        done; \
+        tar_pkgst=$$(echo $${tar_pkgs#$${tar_pkgs%%[![:space:]]*}}); \
+        tar cpzf $(SRC_TAR_FILE) -C $(SOURCE) $${tar_pkgst}; \
+        set +e
+    endef
+
+    # Define a logging macro for a given command
+    # $(call runandlog,<logfile>,<command>)
+    define runandlog
+        { echo "Logging the following command at:"; \
+          date; \
+          echo; \
+          set -x; \
+          $2; \
+          ret=$${?}; \
+          set +x; \
+          echo; \
+          date; \
+          echo "-----------------------------------------------------"; \
+        } &>> $1
+    endef
+
+    # Create path if needed and return its name
+    # $(call mkpath,<pathname>,<force_clean>)
+    define mkpath
+        if [[ -n "$1" ]]; then \
+            fpath=$$(echo $1 | sed 's|//*|/|g'); \
+            if [[ -r $${fpath} ]]; then \
+                if [[ "$2" == "yes" ]]; then \
+                    rm -rf $${fpath}/*; \
+                fi; \
+            elif [[ -e $${fpath} ]]; then \
+                echo "You can't access this path: $${fpath}. Aborting."; \
+                exit 1; \
+            else \
+                mkdir -p $${fpath}; \
+            fi; \
+            echo $${fpath}; \
+            unset fpath; \
+        else \
+            echo $1; \
+        fi
+    endef
+
+    # Find the number of SMT cores available
+    # $(call get_smt_cores)
+    define get_smt_cores
+        if [[ -r /proc/cpuinfo ]]; then \
+            CPU_TYPE=$$(cat /proc/cpuinfo | grep cpu | cut -f 2 -d ':' | sort -u | sed 's@^ @@' | cut -f 1 -d ' '); \
+            CORES_FOUND=$$(cat /proc/cpuinfo | grep "processor" | wc -l); \
+            echo $${CORES_FOUND}; \
+        else \
+            echo 0; \
+        fi
+    endef
+
+    # Sanity checks for ld and gcc
+    # $(call sanity_gcc)
+    define sanity_gcc
+        if [[ $$(gcc -v --help 2>&1 | grep secure-plt | wc -l) -eq 0 ]]; then \
+            echo "Failure. Host GCC is too old."; \
+            exit 1; \
+        fi
+    endef
+    # $(call sanity_ld)
+    define sanity_ld
+        if [[ $$($(GCC_LD) --help 2>&1 | grep bss-plt | wc -l) -eq 0 ]]; then \
+            echo "Failure. Host $(GCC_LD) is too old."; \
+            exit 1; \
+        fi
+    endef
+
+    # Create a script to call make again with the same arguments
+    # $(call create_remake)
+    define create_remake
+        echo "#/bin/bash" > remake.sh; \
+        echo -n "make DESTDIR='$(DESTDIR)'" >> remake.sh; \
+        echo -n " AT_CONFIGSET='$(AT_CONFIGSET)'" >> remake.sh; \
+        echo -n " BUILD_ARCH='$(BUILD_ARCH)'" >> remake.sh; \
+        echo -n " AT_DIR_NAME='$(AT_DIR_NAME)' \"\$${@}\"" >> remake.sh; \
+        chmod +x remake.sh; \
+        echo created
+    endef
+
+    # Set the required variables for optimized libraries targets.
+    #
+    # Parameters:
+    # 1. <component name>: Name of the component being built, e.g.: glibc
+    #
+    # Description:
+    # This macro filters the conditions to call provide_proc_tuned macro and
+    # clears the $(<component>_tuned-archdeps) variable.
+    # In the end the following variables will be properly configured:
+    # - tuned_targets
+    # - <component>_tuned-archdeps
+    # - <component>_<processor>-deps      - only if necessary
+    # - <component>_<processor>-32-deps   - only if necessary
+    # - <component>_<processor>-64-deps   - only if necessary
+    #
+    # Example:
+    # $(call provide_tuneds,<component>)
+    define provide_tuneds
+        # Hack around an issue where foreach iterates over a null variable
+        ifneq ($(TUNED_PROCESSORS),)
+            # List this package as a dependency in the global tuned target
+            tuned-targets += $(RCPTS)/$(1)_tuned.rcpt
+            $(foreach proc,$(TUNED_PROCESSORS),\
+               $(eval $(call provide_proc_tuned,$(1),$(proc))))
+            $(1)_tuned-archdeps += $($(1)_tuned-32-archdeps) \
+                                   $($(1)_tuned-64-archdeps)
+        endif
+    endef
+
+    # Setup the variables of a optimized library according to the processor
+    # and depending on cross compiler settings.
+    #
+    # Parameters:
+    # 1. <component name>: Name of the component being built, e.g.: glibc
+    # 2. <processor>: Name of the processor to which this component is going to be
+    #                 optimized to, e.g.: power7
+    define provide_proc_tuned
+        ifeq (x$(CROSS_BUILD),xyes)
+            ifeq (x$(BUILD_TUNED_ON_CROSS),xyes)
+                $(call set_provides_arch_tuned,$(1),$(2))
+            endif
+        else
             $(call set_provides_arch_tuned,$(1),$(2))
         endif
-    else
-        $(call set_provides_arch_tuned,$(1),$(2))
-    endif
-endef
+    endef
 
-# Define the required variables of optimized libraries according to its target.
-#
-# Parameters:
-# 1. <component name>: Name of the component being built, e.g.: glibc
-# 2. <processor>: Name of the processor to which this component is going to be
-#                 optimized to, e.g.: power7
-# Check if this target doesn't require bi-arch tuned libs.
-define set_provides_arch_tuned
-    ifdef $(1)_tuned-deps
-        $(1)_tuned-archdeps += $(RCPTS)/$(1)_$(2).tuned.b.rcpt
-        $(1)_$(2)-deps := $($(1)_tuned-deps)
-    else
-        ifdef BUILD_TARGET_ARCH32
-            $(1)_tuned-32-archdeps += $(RCPTS)/$(1)_$(2)-32.tuned.b.rcpt
-            $(1)_$(2)-32-deps := $($(1)_tuned-32-deps)
+    # Define the required variables of optimized libraries according to its target.
+    #
+    # Parameters:
+    # 1. <component name>: Name of the component being built, e.g.: glibc
+    # 2. <processor>: Name of the processor to which this component is going to be
+    #                 optimized to, e.g.: power7
+    # Check if this target doesn't require bi-arch tuned libs.
+    define set_provides_arch_tuned
+        ifdef $(1)_tuned-deps
+            $(1)_tuned-archdeps += $(RCPTS)/$(1)_$(2).tuned.b.rcpt
+            $(1)_$(2)-deps := $($(1)_tuned-deps)
+        else
+            ifdef BUILD_TARGET_ARCH32
+                $(1)_tuned-32-archdeps += $(RCPTS)/$(1)_$(2)-32.tuned.b.rcpt
+                $(1)_$(2)-32-deps := $($(1)_tuned-32-deps)
+            endif
+            ifdef BUILD_TARGET_ARCH64
+                $(1)_tuned-64-archdeps += $(RCPTS)/$(1)_$(2)-64.tuned.b.rcpt
+                $(1)_$(2)-64-deps := $($(1)_tuned-64-deps)
+            endif
         endif
-        ifdef BUILD_TARGET_ARCH64
-            $(1)_tuned-64-archdeps += $(RCPTS)/$(1)_$(2)-64.tuned.b.rcpt
-            $(1)_$(2)-64-deps := $($(1)_tuned-64-deps)
-        endif
-    endif
-endef
+    endef
 
-# This macro filters and prepares the requirements for the given target_name
-#
-# Parameters:
-# 1. <target_name>: This is the target name to base your requirements.
-# 2. <kind_of_requires>: This is the kind of requires to define (multi =
-#                        32/64 deps, single = no 32/64 deps).
-# 3. <cross_build>: This informs the inclusion of this dependency for cross
-#                   builds (cross_yes = build on cross, cross_no = don't
-#                   build on cross).
-# 4. <skip_arch>:   (Optional) This informs to skip this dependency for
-#                   builds on given arch (skip_ppc64 = skip on ppc64 build,
-#                   skip_ppc64le = skipe on ppc64le build).
-#
-# Description:
-# This macro filters the conditions to call the set_provides_arch macro and
-# clears the $(<target_name>-archdeps) variable.
-#
-# Example:
-# $(call set_provides,<target_name>,<kind_of_requires>,<cross_build>[,<skip_arch>])
-define set_provides
-    $(1)-archdeps :=
-    ifneq ($(CROSS_BUILD),yes)
-        ifneq ($(4),skip_$(BUILD_ARCH))
-            $(call set_provides_arch,$(1),$(2))
+    # This macro filters and prepares the requirements for the given target_name
+    #
+    # Parameters:
+    # 1. <target_name>: This is the target name to base your requirements.
+    # 2. <kind_of_requires>: This is the kind of requires to define (multi =
+    #                        32/64 deps, single = no 32/64 deps).
+    # 3. <cross_build>: This informs the inclusion of this dependency for cross
+    #                   builds (cross_yes = build on cross, cross_no = don't
+    #                   build on cross).
+    # 4. <skip_arch>:   (Optional) This informs to skip this dependency for
+    #                   builds on given arch (skip_ppc64 = skip on ppc64 build,
+    #                   skip_ppc64le = skipe on ppc64le build).
+    #
+    # Description:
+    # This macro filters the conditions to call the set_provides_arch macro and
+    # clears the $(<target_name>-archdeps) variable.
+    #
+    # Example:
+    # $(call set_provides,<target_name>,<kind_of_requires>,<cross_build>[,<skip_arch>])
+    define set_provides
+        $(1)-archdeps :=
+        ifneq ($(CROSS_BUILD),yes)
+            ifneq ($(4),skip_$(BUILD_ARCH))
+                $(call set_provides_arch,$(1),$(2))
+            endif
+        else
+            ifeq ($(3),cross_yes)
+                $(call set_provides_arch,$(1),$(2))
+            endif
         endif
-    else
-        ifeq ($(3),cross_yes)
-            $(call set_provides_arch,$(1),$(2))
-        endif
-    endif
-endef
+    endef
 
-# This macro prepares the requirements for the given target_name
-#
-# Parameters:
-# 1. <target_name>: This is the target name to base your requirements.
-# 2. <kind_of_requires>: This is the kind of requires to define (multi =
-#                        32/64 deps, single = no 32/64 deps).
-#
-# Description:
-# This macro defines the variables $(<target_name>-archdeps) that should be
-# used to set the dependencies of the master target <target-name>. It also
-# includes the target as a dependency to "all" through the variable
-# $(build_targets)
-#
-# Example:
-# $(call set_provides_arch,<target_name>,<kind_of_requires>,<cross_build>)
-define set_provides_arch
-    ifeq ($(2),multi)
-        ifdef BUILD_TARGET_ARCH32
-            $(1)-archdeps += $(RCPTS)/$(1)-32.b.rcpt
+    # This macro prepares the requirements for the given target_name
+    #
+    # Parameters:
+    # 1. <target_name>: This is the target name to base your requirements.
+    # 2. <kind_of_requires>: This is the kind of requires to define (multi =
+    #                        32/64 deps, single = no 32/64 deps).
+    #
+    # Description:
+    # This macro defines the variables $(<target_name>-archdeps) that should be
+    # used to set the dependencies of the master target <target-name>. It also
+    # includes the target as a dependency to "all" through the variable
+    # $(build_targets)
+    #
+    # Example:
+    # $(call set_provides_arch,<target_name>,<kind_of_requires>,<cross_build>)
+    define set_provides_arch
+        ifeq ($(2),multi)
+            ifdef BUILD_TARGET_ARCH32
+                $(1)-archdeps += $(RCPTS)/$(1)-32.b.rcpt
+            endif
+            ifdef BUILD_TARGET_ARCH64
+                $(1)-archdeps += $(RCPTS)/$(1)-64.b.rcpt
+            endif
+        else
+            $(1)-archdeps := $(RCPTS)/$(1).b.rcpt
         endif
-        ifdef BUILD_TARGET_ARCH64
-            $(1)-archdeps += $(RCPTS)/$(1)-64.b.rcpt
-        endif
-    else
-        $(1)-archdeps := $(RCPTS)/$(1).b.rcpt
-    endif
-    build_targets += $(RCPTS)/$(1).rcpt
-endef
+        build_targets += $(RCPTS)/$(1).rcpt
+    endef
 
-define collect_logs
-    @fname=collected_logs-$(AT_VER_REV_INTERNAL).$(BUILD_ID)_$$($(TIME)).tar.gz; \
-    echo -e "$$($(TIME)) Collecting log information to $${fname}... "; \
-    { unset commit_info; \
-        if [[ -f commit.info ]]; then \
-            cp -p commit.info $(AT_WD); \
-            commit_info="./commit.info"; \
-        fi; \
-        cd $(AT_WD) && \
-        tar czf collected_logs.tar.gz \
-            ./logs/* ./dynamic $${commit_info} \
-            $$(find ./builds -name 'config.[hlms]*' -print); \
-        mv -f $(AT_WD)/collected_logs.tar.gz $(AT_BASE)/$${fname}; \
-        unset commit_info; \
-    } > /dev/null 2>&1; \
-    echo "$$($(TIME)) Log information collected!"
-endef
-
-# This is a simple heuristics to find out if we need to build the atXX-compat
-# RPM package. It's loose and wide in tending to choose a build instead of a
-# build denial (it considers "compat" and "supported" previous AT distros), so
-# if you are sure that you must skip this package build, state it clearly on
-# the config files (preferably on the distro.mk related file), or the check
-# could be further restrained.
-# Having said that, there is a quick description of its logic:
-# We first collect all the supported and compat distros related to this build,
-# and for each of them, (from earliest to oldest) we try to locate base support
-# for it on the previous AT version. If base support is found, we try to
-# identify if the particular build being done was supported (BE or LE). If it's
-# found, we send back a "no" as a GO for the build of atXX-compat, otherwise,
-# we send back a "yes" as a NO GO (ignore) for the build of atXX-compat.
-# Note that we could restrain it further, looking only for AT previous
-# "supported" distros, but I'm not sure that it's the correct path to follow.
-define build_at_compat_rpm
-    compat_distros=$$(echo $(AT_COMPAT_DISTROS) \
-                           $(AT_SUPPORTED_DISTROS) | \
-                      sed 's|RHEL|redhat-|g' | \
-                      sed 's|SLES_|suse-|g' | \
-                      tr ' ' '\n' | sort -ru | tr '\n' ' '); \
-    if [[ -n "$${compat_distros}" ]]; then \
-        for distro in $${compat_distros}; do \
-            distro_file="$(CONFIG_ROOT)/$(AT_PREVIOUS_VERSION)/distros/$${distro}.mk"; \
-            if [[ -f $${distro_file} ]]; then \
-                supp_archs="$$(cat $${distro_file} | \
-                               grep -o '^AT_SUPPORTED_ARCHS.*$$' | \
-                               sed 's|AT_SUPPORTED_ARCHS := ||g') "; \
-                if [[ "$${supp_archs}" != "$${supp_archs/$(BUILD_ARCH) /}" ]]; then \
-                    at_comp_found="true"; \
-                    break; \
-                fi; \
+    define collect_logs
+        @fname=collected_logs-$(AT_VER_REV_INTERNAL).$(BUILD_ID)_$$($(TIME)).tar.gz; \
+        echo -e "$$($(TIME)) Collecting log information to $${fname}... "; \
+        { unset commit_info; \
+            if [[ -f commit.info ]]; then \
+                cp -p commit.info $(AT_WD); \
+                commit_info="./commit.info"; \
             fi; \
-        done; \
-        if [[ "$${at_comp_found}" == "true" ]]; then \
-            echo "no"; \
+            cd $(AT_WD) && \
+            tar czf collected_logs.tar.gz \
+                ./logs/* ./dynamic $${commit_info} \
+                $$(find ./builds -name 'config.[hlms]*' -print); \
+            mv -f $(AT_WD)/collected_logs.tar.gz $(AT_BASE)/$${fname}; \
+            unset commit_info; \
+        } > /dev/null 2>&1; \
+        echo "$$($(TIME)) Log information collected!"
+    endef
+
+    # This is a simple heuristics to find out if we need to build the atXX-compat
+    # RPM package. It's loose and wide in tending to choose a build instead of a
+    # build denial (it considers "compat" and "supported" previous AT distros), so
+    # if you are sure that you must skip this package build, state it clearly on
+    # the config files (preferably on the distro.mk related file), or the check
+    # could be further restrained.
+    # Having said that, there is a quick description of its logic:
+    # We first collect all the supported and compat distros related to this build,
+    # and for each of them, (from earliest to oldest) we try to locate base support
+    # for it on the previous AT version. If base support is found, we try to
+    # identify if the particular build being done was supported (BE or LE). If it's
+    # found, we send back a "no" as a GO for the build of atXX-compat, otherwise,
+    # we send back a "yes" as a NO GO (ignore) for the build of atXX-compat.
+    # Note that we could restrain it further, looking only for AT previous
+    # "supported" distros, but I'm not sure that it's the correct path to follow.
+    define build_at_compat_rpm
+        compat_distros=$$(echo $(AT_COMPAT_DISTROS) \
+                               $(AT_SUPPORTED_DISTROS) | \
+                          sed 's|RHEL|redhat-|g' | \
+                          sed 's|SLES_|suse-|g' | \
+                          tr ' ' '\n' | sort -ru | tr '\n' ' '); \
+        if [[ -n "$${compat_distros}" ]]; then \
+            for distro in $${compat_distros}; do \
+                distro_file="$(CONFIG_ROOT)/$(AT_PREVIOUS_VERSION)/distros/$${distro}.mk"; \
+                if [[ -f $${distro_file} ]]; then \
+                    supp_archs="$$(cat $${distro_file} | \
+                                   grep -o '^AT_SUPPORTED_ARCHS.*$$' | \
+                                   sed 's|AT_SUPPORTED_ARCHS := ||g') "; \
+                    if [[ "$${supp_archs}" != "$${supp_archs/$(BUILD_ARCH) /}" ]]; then \
+                        at_comp_found="true"; \
+                        break; \
+                    fi; \
+                fi; \
+            done; \
+            if [[ "$${at_comp_found}" == "true" ]]; then \
+                echo "no"; \
+            else \
+                echo "yes"; \
+            fi; \
         else \
             echo "yes"; \
-        fi; \
-    else \
-        echo "yes"; \
-    fi
-endef
+        fi
+    endef
 
-# Copy files from $(1) to $(2) if it exists.
-#
-# Parameters:
-# 1. <source file>: Name of the file to be copied.
-# 2. <destination>: Destination where the source file will be saved.
-define copy_if_exists
-  if [[ -n "$(1)" && -e "$(1)" ]]; then \
-    echo "- $$(basename $(1))"; \
-    cp $(1) $(2); \
-  fi
-endef
+    # Copy files from $(1) to $(2) if it exists.
+    #
+    # Parameters:
+    # 1. <source file>: Name of the file to be copied.
+    # 2. <destination>: Destination where the source file will be saved.
+    define copy_if_exists
+        if [[ -n "$(1)" && -e "$(1)" ]]; then \
+            echo "- $$(basename $(1))"; \
+            cp $(1) $(2); \
+        fi
+    endef
 
-# Create a path, if it fails try to use super-user permission.
-# $(call sudo_mkdir, <pathname>)
-define sudo_mkdir
-    if [[ ! (-r $1) ]]; then \
-        mkdir -p $1; \
+    # Create a path, if it fails try to use super-user permission.
+    # $(call sudo_mkdir, <pathname>)
+    define sudo_mkdir
         if [[ ! (-r $1) ]]; then \
-            echo "Cannot create $1, trying as super-user..."; \
-            sudo mkdir -p $(1) && sudo chown "$${USER}." $(1); \
-        fi; \
-    fi
-endef
+            mkdir -p $1; \
+            if [[ ! (-r $1) ]]; then \
+                echo "Cannot create $1, trying as super-user..."; \
+                sudo mkdir -p $(1) && sudo chown "$${USER}." $(1); \
+            fi; \
+        fi
+    endef
 
-# Define the installation path
-# DESTDIR, is optional and should be externally defined.
-DESTDIR ?= /opt
-# Canonicalize DESTDIR path
-DESTDIR := $(shell readlink -m "${DESTDIR}")
+    # Define the installation path
+    # DESTDIR, is optional and should be externally defined.
+    DESTDIR ?= /opt
+    # Canonicalize DESTDIR path
+    DESTDIR := $(shell readlink -m "${DESTDIR}")
 
-ifneq ($(AT_INTERNAL),none)
-    AT_MAJOR_INTERNAL := $(AT_MAJOR)-$(AT_INTERNAL)
-    AT_DIR_NAME ?= $(AT_VER_REV_INTERNAL)
-else
-    AT_MAJOR_INTERNAL := $(AT_MAJOR)
-    AT_DIR_NAME ?= $(AT_MAJOR)
-endif
-
-AT_DEST := $(shell echo $(DESTDIR)/$(AT_DIR_NAME) | sed 's|//*|/|g')
-MESSAGE := $(shell $(call sudo_mkdir,$(AT_DEST)))
-ifneq ($(MESSAGE),)
-    $(warning $(MESSAGE))
-endif
-ifeq ($(strip $(shell $(call file_exists,$(AT_DEST)))),none)
-    $(error Couldn't create directory $(AT_DEST)... Bailing out!)
-endif
-
-# If the user wants to use a prespecified AT_BUILD we don't care. Otherwise we
-# use the current working directory.
-ifndef AT_WD
-    AT_WD := $(AT_BASE)/$(AT_VER_REV_INTERNAL).$(BUILD_ID)
-endif
-
-# Define the actual TEMP_INSTALL path to use on build
-TEMP_INSTALL := $(AT_BASE)/tmp.$(AT_VER_REV_INTERNAL).$(BUILD_ID)
-
-# Prepare the list of all packages
-PACKAGES_LIST := $(strip $(shell $(call get_package_list)))
-
-# Prepare the tuned processors and libs list
-TUNED_PROCESSORS := $(sort $(BUILD_ACTIVE_MULTILIBS))
-
-# Define and create the build structure folders
-LOGS := $(strip $(shell $(call mkpath,$(AT_WD)/logs,no)))
-RPMS := $(strip $(shell $(call mkpath,$(AT_WD)/rpms,no)))
-DEBS := $(strip $(shell $(call mkpath,$(AT_WD)/debs,no)))
-PACKS := $(strip $(shell $(call mkpath,$(AT_WD)/tarball,no)))
-RCPTS := $(strip $(shell $(call mkpath,$(AT_WD)/receipts,no)))
-BUILD := $(strip $(shell $(call mkpath,$(AT_WD)/builds,no)))
-SOURCE := $(strip $(shell $(call mkpath,$(AT_WD)/sources,no)))
-DYNAMIC_ROOT := $(strip $(shell $(call mkpath,$(AT_WD)/dynamic,no)))
-DYNAMIC_SPEC := $(strip $(shell $(call mkpath,$(DYNAMIC_ROOT)/spec,no)))
-DYNAMIC_LOAD := $(strip $(shell $(call mkpath,$(DYNAMIC_ROOT)/load,no)))
-TEMP_INSTALL := $(strip $(shell $(call mkpath,$(TEMP_INSTALL),no)))
-ifeq ($(AT_USE_FEDORA_RELNAM),yes)
-    RELNOT_FILE  := $(RPMS)/release_notes.$(AT_NAME)-$(AT_FULL_VER).tmp
-    SRC_TAR_FILE := $(PACKS)/$(AT_NAME)-src-$(AT_FULL_VER).tgz
-else
-    RELNOT_FILE  := $(RPMS)/release_notes.$(AT_MAJOR_INTERNAL)-$(AT_VER_REV).tmp
-    SRC_TAR_FILE := $(PACKS)/advance-toolchain-$(AT_MAJOR_INTERNAL)-src-$(AT_VER_REV).tgz
-endif
-# Name of the exported config file.
-CONFIG_EXPT := $(DYNAMIC_ROOT)/config_$(AT_VER_REV_INTERNAL).$(BUILD_ID)
-# Define some fetch folder structure
-FETCH_SOURCES := $(strip $(shell $(call mkpath,$(FETCH_SOURCES),no)))
-FETCH_PATCHES := $(strip $(shell $(call mkpath,$(FETCH_PATCHES),no)))
-
-# If everything is fine until here, load some more defines with macros
-# to help the build process
-
-ifeq ($(strip $(shell $(call file_exists,$(HELPERS_ROOT)/rsync_and_patch.mk))),found)
-    include $(HELPERS_ROOT)/rsync_and_patch.mk
-else
-    $(error Couldn't find the rsync_and_patch helper macro... Bailing out!)
-endif
-
-ifeq ($(strip $(shell $(call file_exists,$(HELPERS_ROOT)/build_stage.mk))),found)
-    include $(HELPERS_ROOT)/build_stage.mk
-else
-    $(error Couldn't find the build_stage helper macro... Bailing out!)
-endif
-
-ifeq ($(strip $(shell $(call file_exists,$(HELPERS_ROOT)/standard_buildf.mk))),found)
-    include $(HELPERS_ROOT)/standard_buildf.mk
-else
-    $(error Couldn't find the standard_buildf helper macro... Bailing out!)
-endif
-
-# Check the number of cores on the build machine
-NUM_CORES := $(strip $(shell $(call get_smt_cores)))
-ifeq ($(NUM_CORES),0)
-    $(error Couldn't find the number of cores available... Bailing out!)
-endif
-
-# Load architecture dependent settings.
-ifeq ($(strip $(shell \
-                  $(call file_exists, \
-                         $(CONFIG)/arch/$(HOST_ARCH).$(BUILD_ARCH).mk))), \
-              found)
-  include $(CONFIG)/arch/$(HOST_ARCH).$(BUILD_ARCH).mk
-else
-  $(error Build on host $(HOST_ARCH) targeting $(BUILD_ARCH) is not supported.)
-endif
-
-
-ifneq ($(strip $(shell $(call create_remake))),created)
-  $(error Failed to create remake.sh. Bailing out!)
-endif
-
-# Run distro sanity check to validate the build system
-ifdef distro_sanity
-    ifeq ($(CROSS_BUILD),yes)
-        AT_PKGS_CHECK := $(sort $(AT_CROSS_PKGS_REQ) $(AT_COMMON_PKGS_REQ))
-        AT_PGMS_CHECK := $(sort $(AT_CROSS_PGMS_REQ) $(AT_COMMON_PGMS_REQ))
+    ifneq ($(AT_INTERNAL),none)
+        AT_MAJOR_INTERNAL := $(AT_MAJOR)-$(AT_INTERNAL)
+        AT_DIR_NAME ?= $(AT_VER_REV_INTERNAL)
     else
-        AT_PKGS_CHECK := $(sort $(AT_NATIVE_PKGS_REQ) $(AT_COMMON_PKGS_REQ))
-        AT_PGMS_CHECK := $(sort $(AT_NATIVE_PGMS_REQ) $(AT_COMMON_PGMS_REQ))
+        AT_MAJOR_INTERNAL := $(AT_MAJOR)
+        AT_DIR_NAME ?= $(AT_MAJOR)
     endif
-    PKG_DISTRO_SANITY := $(strip $(shell $(call check_packages,$(AT_PKGS_CHECK))))
-    PGM_DISTRO_SANITY := $(strip $(shell $(call check_programs,$(AT_PGMS_CHECK))))
-    ifeq ($(PKG_DISTRO_SANITY),abort)
-        $(error Missing critical requirements for the build process to proceed. Check ./sanity.log for a detailed missing requirements description.)
-    endif
-    ifeq ($(PGM_DISTRO_SANITY),abort)
-        $(error Missing critical requirements for the build process to proceed. Check ./sanity.log for a detailed missing requirements description.)
-    endif
-endif
 
-# Determine the BUILD_IGNORE_COMPAT if still undefined and set it based on
-# distro.mk AT_OLD_KERNEL. If AT_OLD_KERNEL isn't defined there, there is no
-# compatibility version to build to.
-ifeq ($(AT_OLD_KERNEL),)
-    BUILD_IGNORE_COMPAT ?= yes
-else
-    BUILD_IGNORE_COMPAT ?= no
-endif
+    AT_DEST := $(shell echo $(DESTDIR)/$(AT_DIR_NAME) | sed 's|//*|/|g')
+    MESSAGE := $(shell $(call sudo_mkdir,$(AT_DEST)))
+    ifneq ($(MESSAGE),)
+        $(warning $(MESSAGE))
+    endif
+    ifeq ($(strip $(shell $(call file_exists,$(AT_DEST)))),none)
+        $(error Couldn't create directory $(AT_DEST)... Bailing out!)
+    endif
 
-# If BUILD_IGNORE_AT_COMPAT if still undefined, we try to set it based on
-# a heuristics to check the requirement of its build. We must keep in mind
-# that there is no clear rule to dismiss the creation of this package, so in
-# this heuristics, we try to be as wide and loose as possible to include the
-# build of this package. If it's required *not* to build it, please be
-# explicit, setting this override on the build process itself, or on the global
-# build.mk or on the specific distro.mk file of the build.
-ifeq ($(BUILD_IGNORE_AT_COMPAT),)
-    ifneq ($(AT_PREVIOUS_VERSION),)
-        BUILD_IGNORE_AT_COMPAT := $(shell $(call build_at_compat_rpm))
+    # If the user wants to use a prespecified AT_BUILD we don't care. Otherwise we
+    # use the current working directory.
+    AT_WD ?= $(AT_BASE)/$(AT_VER_REV_INTERNAL).$(BUILD_ID)
+
+    # Define the actual TEMP_INSTALL path to use on build
+    TEMP_INSTALL := $(AT_BASE)/tmp.$(AT_VER_REV_INTERNAL).$(BUILD_ID)
+
+    # Prepare the list of all packages
+    PACKAGES_LIST := $(strip $(shell $(call get_package_list)))
+
+    # Prepare the tuned processors and libs list
+    TUNED_PROCESSORS := $(sort $(BUILD_ACTIVE_MULTILIBS))
+
+    # Define and create the build structure folders
+    LOGS := $(strip $(shell $(call mkpath,$(AT_WD)/logs,no)))
+    RPMS := $(strip $(shell $(call mkpath,$(AT_WD)/rpms,no)))
+    DEBS := $(strip $(shell $(call mkpath,$(AT_WD)/debs,no)))
+    PACKS := $(strip $(shell $(call mkpath,$(AT_WD)/tarball,no)))
+    RCPTS := $(strip $(shell $(call mkpath,$(AT_WD)/receipts,no)))
+    BUILD := $(strip $(shell $(call mkpath,$(AT_WD)/builds,no)))
+    SOURCE := $(strip $(shell $(call mkpath,$(AT_WD)/sources,no)))
+    DYNAMIC_ROOT := $(strip $(shell $(call mkpath,$(AT_WD)/dynamic,no)))
+    DYNAMIC_SPEC := $(strip $(shell $(call mkpath,$(DYNAMIC_ROOT)/spec,no)))
+    DYNAMIC_LOAD := $(strip $(shell $(call mkpath,$(DYNAMIC_ROOT)/load,no)))
+    TEMP_INSTALL := $(strip $(shell $(call mkpath,$(TEMP_INSTALL),no)))
+    ifeq ($(AT_USE_FEDORA_RELNAM),yes)
+        RELNOT_FILE  := $(RPMS)/release_notes.$(AT_NAME)-$(AT_FULL_VER).tmp
+        SRC_TAR_FILE := $(PACKS)/$(AT_NAME)-src-$(AT_FULL_VER).tgz
     else
-        BUILD_IGNORE_AT_COMPAT := yes
+        RELNOT_FILE  := $(RPMS)/release_notes.$(AT_MAJOR_INTERNAL)-$(AT_VER_REV).tmp
+        SRC_TAR_FILE := $(PACKS)/advance-toolchain-$(AT_MAJOR_INTERNAL)-src-$(AT_VER_REV).tgz
     endif
-endif
+    # Name of the exported config file.
+    CONFIG_EXPT := $(DYNAMIC_ROOT)/config_$(AT_VER_REV_INTERNAL).$(BUILD_ID)
+    # Define some fetch folder structure
+    FETCH_SOURCES := $(strip $(shell $(call mkpath,$(FETCH_SOURCES),no)))
+    FETCH_PATCHES := $(strip $(shell $(call mkpath,$(FETCH_PATCHES),no)))
 
+    # If everything is fine until here, load some more defines with macros
+    # to help the build process
 
-# If it was defined that the atXX-compat rpm package should be build, we must
-# guarantee that there is a previous AT version defined to base this build. If
-# it is defined, we should set the variables used for the atXX-compat spec
-# file, otherwise, we must print a warning message and abort the build due to
-# missing critical information on the config files.
-ifneq ($(BUILD_IGNORE_AT_COMPAT),yes)
-    ifeq ($(AT_PREVIOUS_VERSION),)
-        $(warning No AT_PREVIOUS_VERSION defined, so we can't build the atXX-compat package.)
-        $(warning If you need to do so, please configure the AT_PREVIOUS_VERSION properly and)
-        $(warning run the build again.)
-        $(error Aborting build due to missing required config information...)
+    ifeq ($(strip $(shell $(call file_exists,$(HELPERS_ROOT)/rsync_and_patch.mk))),found)
+        include $(HELPERS_ROOT)/rsync_and_patch.mk
     else
-        BUILD_OLD_AT_VERSION := $(AT_PREVIOUS_VERSION)
-        BUILD_OLD_AT_INSTALL := $(strip $(shell echo $(AT_DEST) | sed "s/$(AT_DIR_NAME)/at$(AT_PREVIOUS_VERSION)/"))
+        $(error Couldn't find the rsync_and_patch helper macro... Bailing out!)
     endif
+
+    ifeq ($(strip $(shell $(call file_exists,$(HELPERS_ROOT)/build_stage.mk))),found)
+        include $(HELPERS_ROOT)/build_stage.mk
+    else
+        $(error Couldn't find the build_stage helper macro... Bailing out!)
+    endif
+
+    ifeq ($(strip $(shell $(call file_exists,$(HELPERS_ROOT)/standard_buildf.mk))),found)
+        include $(HELPERS_ROOT)/standard_buildf.mk
+    else
+        $(error Couldn't find the standard_buildf helper macro... Bailing out!)
+    endif
+
+    # Check the number of cores on the build machine
+    NUM_CORES := $(strip $(shell $(call get_smt_cores)))
+    ifeq ($(NUM_CORES),0)
+        $(error Couldn't find the number of cores available... Bailing out!)
+    endif
+
+    # Load architecture dependent settings.
+    ifeq ($(strip $(shell \
+                      $(call file_exists, \
+                             $(CONFIG)/arch/$(HOST_ARCH).$(BUILD_ARCH).mk))), \
+                  found)
+        include $(CONFIG)/arch/$(HOST_ARCH).$(BUILD_ARCH).mk
+    else
+        $(error Build on host $(HOST_ARCH) targeting $(BUILD_ARCH) is not supported.)
+    endif
+
+
+    ifneq ($(strip $(shell $(call create_remake))),created)
+        $(error Failed to create remake.sh. Bailing out!)
+    endif
+
+    # Run distro sanity check to validate the build system
+    ifdef distro_sanity
+        ifeq ($(CROSS_BUILD),yes)
+            AT_PKGS_CHECK := $(sort $(AT_CROSS_PKGS_REQ) $(AT_COMMON_PKGS_REQ))
+            AT_PGMS_CHECK := $(sort $(AT_CROSS_PGMS_REQ) $(AT_COMMON_PGMS_REQ))
+        else
+            AT_PKGS_CHECK := $(sort $(AT_NATIVE_PKGS_REQ) $(AT_COMMON_PKGS_REQ))
+            AT_PGMS_CHECK := $(sort $(AT_NATIVE_PGMS_REQ) $(AT_COMMON_PGMS_REQ))
+        endif
+        PKG_DISTRO_SANITY := $(strip $(shell $(call check_packages,$(AT_PKGS_CHECK))))
+        PGM_DISTRO_SANITY := $(strip $(shell $(call check_programs,$(AT_PGMS_CHECK))))
+        ifeq ($(PKG_DISTRO_SANITY),abort)
+            $(error Missing critical requirements for the build process to proceed. Check ./sanity.log for a detailed missing requirements description.)
+        endif
+        ifeq ($(PGM_DISTRO_SANITY),abort)
+            $(error Missing critical requirements for the build process to proceed. Check ./sanity.log for a detailed missing requirements description.)
+        endif
+    endif
+
+    # Determine the BUILD_IGNORE_COMPAT if still undefined and set it based on
+    # distro.mk AT_OLD_KERNEL. If AT_OLD_KERNEL isn't defined there, there is no
+    # compatibility version to build to.
+    ifeq ($(AT_OLD_KERNEL),)
+        BUILD_IGNORE_COMPAT ?= yes
+    else
+        BUILD_IGNORE_COMPAT ?= no
+    endif
+
+    # If BUILD_IGNORE_AT_COMPAT if still undefined, we try to set it based on
+    # a heuristics to check the requirement of its build. We must keep in mind
+    # that there is no clear rule to dismiss the creation of this package, so in
+    # this heuristics, we try to be as wide and loose as possible to include the
+    # build of this package. If it's required *not* to build it, please be
+    # explicit, setting this override on the build process itself, or on the global
+    # build.mk or on the specific distro.mk file of the build.
+    ifeq ($(BUILD_IGNORE_AT_COMPAT),)
+        ifneq ($(AT_PREVIOUS_VERSION),)
+            BUILD_IGNORE_AT_COMPAT := $(shell $(call build_at_compat_rpm))
+        else
+            BUILD_IGNORE_AT_COMPAT := yes
+        endif
+    endif
+
+    # If it was defined that the atXX-compat rpm package should be build, we must
+    # guarantee that there is a previous AT version defined to base this build. If
+    # it is defined, we should set the variables used for the atXX-compat spec
+    # file, otherwise, we must print a warning message and abort the build due to
+    # missing critical information on the config files.
+    ifneq ($(BUILD_IGNORE_AT_COMPAT),yes)
+        ifeq ($(AT_PREVIOUS_VERSION),)
+            $(warning No AT_PREVIOUS_VERSION defined, so we can't build the atXX-compat package.)
+            $(warning If you need to do so, please configure the AT_PREVIOUS_VERSION properly and)
+            $(warning run the build again.)
+            $(error Aborting build due to missing required config information...)
+        else
+            BUILD_OLD_AT_VERSION := $(AT_PREVIOUS_VERSION)
+            BUILD_OLD_AT_INSTALL := $(strip $(shell echo $(AT_DEST) | sed "s/$(AT_DIR_NAME)/at$(AT_PREVIOUS_VERSION)/"))
+        endif
+    endif
+
+    # Determine the default system Toolchain to use
+    ifeq ($(CROSS_BUILD),no)
+        # Run a test compilation to verify the system toolchain
+        DEFAULT_COMPILER := $(shell \
+            echo "int main() { return 0; }" > ./sample.c; \
+            $(SYSTEM_CC) ./sample.c; \
+            echo $$(file a.out | sed 's|^.*ELF ||' | sed 's|-bit.*$$||'); \
+            rm -f ./sample.c ./a.out \
+        )
+        # Find out which CPU we are doing the build
+        AT_BUILD_CPU := $(shell cat /proc/cpuinfo | grep '^cpu' | cut -d ':' -f 2 | sort -u | sed 's@^ @@g' | cut -d ' ' -f 1 | tr [:upper:] [:lower:])
+    else
+        SYSTEM_CC := $(SYSTEM_CC) -m$(ENV_BUILD_ARCH)
+        SYSTEM_CXX := $(SYSTEM_CXX) -m$(ENV_BUILD_ARCH)
+        DEST_CROSS ?= $(strip $(shell $(call mkpath,$(AT_DEST)/ppc,no)))
+    endif
+
+    # Make sure the environment won't affect the build.
+    # Under some circumstances if PYTHONPATH is defined, it may break the builds
+    # or the tests of python and gdb.
+    unexport PYTHONPATH
+
 endif
-
-
-# Determine the default system Toolchain to use
-ifeq ($(CROSS_BUILD),no)
-    # Run a test compilation to verify the system toolchain
-    DEFAULT_COMPILER := $(shell \
-        echo "int main() { return 0; }" > ./sample.c; \
-        $(SYSTEM_CC) ./sample.c; \
-        echo $$(file a.out | sed 's|^.*ELF ||' | sed 's|-bit.*$$||'); \
-        rm -f ./sample.c ./a.out \
-    )
-    # Find out which CPU we are doing the build
-    AT_BUILD_CPU := $(shell cat /proc/cpuinfo | grep '^cpu' | cut -d ':' -f 2 | sort -u | sed 's@^ @@g' | cut -d ' ' -f 1 | tr [:upper:] [:lower:])
-else
-    SYSTEM_CC := $(SYSTEM_CC) -m$(ENV_BUILD_ARCH)
-    SYSTEM_CXX := $(SYSTEM_CXX) -m$(ENV_BUILD_ARCH)
-    DEST_CROSS ?= $(strip $(shell $(call mkpath,$(AT_DEST)/ppc,no)))
-endif
-
-# Make sure the environment won't affect the build.
-# Under some circumstances if PYTHONPATH is defined, it may break the builds
-# or the tests of python and gdb.
-unexport PYTHONPATH
 
 # *********************************************************
 # Finish setting build environment                    *****
 
 # Continue processing for targets 'clone', 'edit' and 'pack'
-endif
-endif
-endif
 
 # Directories where artifacts created by this system will be saved after
 # running collect-artifacts.
@@ -1088,23 +1071,19 @@ debug: $(RCPTS)/debug.rcpt
 tuned: $(RCPTS)/tuned.rcpt
 
 # Only append specific rules for targets other the 'clone', 'edit' and 'pack'
-ifneq "$(MAKECMDGOALS)" "clone"
-ifneq "$(MAKECMDGOALS)" "edit"
-ifneq "$(MAKECMDGOALS)" "pack"
+ifeq (,$(findstring $(MAKECMDGOALS),clone edit pack))
 
-# Include the rules for specific packages
-include $(CONFIG)/packages/*/*.mk
+    # Include the rules for specific packages
+    include $(CONFIG)/packages/*/*.mk
 
-# Rules to fetch the sources and patches of every package
-include $(SKELETONS_ROOT)/prefetch_target.mk
+    # Rules to fetch the sources and patches of every package
+    include $(SKELETONS_ROOT)/prefetch_target.mk
 
-# Create configuration file for the FVTR
-ifeq ($(strip $(shell $(call build_fvtr_conf,$(call get_built_packages)))),)
-    $(error Failed to create the config file for the FVTR... Bailing out!)
-endif
+    # Create configuration file for the FVTR
+    ifeq ($(strip $(shell $(call build_fvtr_conf,$(call get_built_packages)))),)
+        $(error Failed to create the config file for the FVTR... Bailing out!)
+    endif
 
-endif
-endif
 endif
 
 # Targets that need receipt generation
