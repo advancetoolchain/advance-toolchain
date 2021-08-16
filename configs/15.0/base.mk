@@ -51,3 +51,8 @@ AT_MAJOR_VERSION := 15.0
 AT_REVISION_NUMBER := 0
 AT_INTERNAL := rc1
 AT_PREVIOUS_VERSION := 14.0
+
+# Minimum kernel version distributed on supported distros by this AT version,
+# i.e. minimum kernel version required in order to run software linked to this
+# AT version.
+AT_KERNEL := 4.12.14
