@@ -24,10 +24,6 @@ AT_SUPPORTED_ARCHS := ppc64le
 # You may force the BUILD_IGNORE_AT_COMPAT general condition by distro
 #BUILD_IGNORE_AT_COMPAT := yes
 
-# Kernel version to build toolchain against
-# - As this distro only supports one arch variation (ppc64le), there is no
-#   need to conditionally define these versions based on arch.
-AT_KERNEL := 4.12.14     # Current distro kernel version for runtime.
 AT_OLD_KERNEL :=         # Previous distro kernel version for runtime-compat.
 
 # Inform the mainly supported distros
