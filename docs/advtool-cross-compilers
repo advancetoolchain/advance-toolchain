@@ -128,7 +128,7 @@
 <div class="ibm-col-12-12 ibm-padding-top-1 ibm-padding-bottom-1 ibm-alternate-background">
 <p class="ibm-h1">Advance Toolchain for Linux on Power cross-compiler</p>
 
-<p>The Advance Toolchain provides cross-compilers that run on Intel x86 and generate code for Power that helps teams to start developing for Power without having immediate access to a POWER server. The cross-compiler provides a way to compile programs for POWER by using a x86 (i386) or x86-64 (amd64) machine, helping teams to start developing for POWER without having access to a server in the early development phase.</p>
+<p>The Advance Toolchain provides cross-compilers that run on Intel x86 and generate code for Power that helps teams to start developing for Power without having immediate access to a POWER server. The cross-compiler provides a way to compile programs for POWER by using a x86 (i386) or x86-64 (amd64) computer, helping teams to start developing for POWER without having access to a server in the early development phase.</p>
 </div>
 
 <div class="ibm-col-12-4 ibm-padding-top-1 ibm-padding-bottom-1 ibm-alternate-background"><a class="ibm-inlinelink ibm-anchor-down-link ibm-h4" href="#install" style="">Install the cross-compiler</a></div>
@@ -139,7 +139,7 @@
 </div>
 
 <div class="ibm-band-fluid ibm-flex ibm-padding-top-2  ibm-padding-bottom-1">
-<p class="custom-padding-left-12px ibm-h4">IBM Advance Toolchain for Linux on Power 14.0-3 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at14.0-3">Learn more</a></p>
+<p class="custom-padding-left-12px ibm-h4">IBM Advance Toolchain for Linux on Power 15.0-0 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-0">Learn more</a></p>
 </div>
 
 <div class="ibm-band-fluid ibm-flex ibm-nospacing ibm-flex--wrap">
@@ -163,10 +163,10 @@
 <p class="ibm-light">Use these steps to download the public key, create a repository configuration file, and install the cross-compiler package.</p>
 
 <ol>
-	<li>The gpg public key <code>gpg-pubkey-6976a827-5164221b</code> is provided in the IBM repositories. This public key is used to verify the authenticity of both the Advance Toolchain packages and the repository contents. Download the gpg public key for your Linux distribution and import it by using the following commands:
+	<li>The <code>gpg</code> public key <code>gpg-pubkey-6976a827-5164221b</code> is provided in the IBM repositories. This public key is used to verify the authenticity of both the Advance Toolchain packages and the repository contents. Download the <code>gpg</code> public key for your Linux distribution and import it by using the following commands:
 
 	<pre>
-wget https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL7/gpg-pubkey-6976a827-5164221b
+wget https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL8/gpg-pubkey-6976a827-5164221b
 rpm --import gpg-pubkey-6976a827-5164221b
 </pre>
 	</li>
@@ -183,9 +183,9 @@ gpgkey=ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/
 # End of configuration file
 </pre>
 
-	<p>Replace <em>RHELX </em>with the Red Hat release that you are using.</p>
+	<p>Replace <em>RHELX</em> with the Red Hat release that you are using.</p>
 	</li>
-	<li>Install the cross-compiler by running yum install: <code>yum install advance-toolchain-atX.X-cross-ppc64le</code></li>
+	<li>Install the cross-compiler by running <code>yum install</code>: <code>yum install advance-toolchain-atX.X-cross-ppc64le</code></li>
 </ol>
 </div>
 </div>
@@ -196,10 +196,10 @@ gpgkey=ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/
 <p class="ibm-light">Use these steps to download the public key, create a repository configuration file, and install the Advance Toolchain packages.</p>
 
 <ol>
-	<li>The gpg public key <code>gpg-pubkey-6976a827-5164221b</code> is provided in the IBM repositories. This public key is used to verify the authenticity of both the Advance Toolchain packages and the repository contents. Download the gpg public key for your Linux distribution and import it by using the following commands:
+	<li>The <code>gpg</code> public key <code>gpg-pubkey-6976a827-5164221b</code> is provided in the IBM repositories. This public key is used to verify the authenticity of both the Advance Toolchain packages and the repository contents. Download the <code>gpg</code> public key for your Linux distribution and import it by using the following commands:
 
 	<pre>
-wget https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL7/gpg-pubkey-6976a827-5164221b
+wget https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL8/gpg-pubkey-6976a827-5164221b
 rpm --import gpg-pubkey-6976a827-5164221b
 </pre>
 	</li>
@@ -208,31 +208,31 @@ rpm --import gpg-pubkey-6976a827-5164221b
 # Begin of configuration file
 [advance-toolchain]
 name=Advance Toolchain IBM FTP
-baseurl=ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_12
+baseurl=ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_15
 failovermethod=priority
 enabled=1
 gpgcheck=1
-gpgkey=ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_12/gpg-pubkey-6976a827-5164221b
+gpgkey=ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_15/gpg-pubkey-6976a827-5164221b
 # End of configuration file
 </pre>
 	</li>
-	<li>To install the cross-compiler by using YAST, follow these steps:
+	<li>To install the cross-compiler by using <code>YAST</code>, follow these steps:
 	<ol>
-		<li>Run yast2 as root.</li>
+		<li>Run <code>yast2</code> as root.</li>
 		<li>Select Add-on Product.</li>
 		<li>From Media Type, select the FTP Protocol: <code>(x) FTP...</code></li>
 		<li>Under Server name, enter <code>public.dhe.ibm.com</code>.</li>
-		<li>Under Directory on Server, enter <code>/software/server/POWER/Linux/toolchain/at/suse/SLES_12</code>
-		<p>You will get a warning about there being no product information available at the given location. The warning shows up because the repomd-based repository does not contain the YaST product information. It's not a bug. Select [Continue].</p>
+		<li>Under Directory on Server, enter <code>/software/server/POWER/Linux/toolchain/at/suse/SLES_15</code>
+		<p>You get a warning about there being no product information available. The warning shows up because the <code>repomd-based</code> repository does not contain the <code>YaST</code> product information. It's not a bug. Select [Continue].</p>
 		</li>
 		<li>Under the Software Management interface, search for "advance toolchain", and select <code>advance-toolchain-atX.X-cross-ppc64le</code> or <code>advance-toolchain-atX.X-cross-ppc64le</code>.</li>
 	</ol>
 	</li>
-	<li>To install the cross-compiler with Zypper:
+	<li>To install the cross-compiler with <code>Zypper</code>:
 	<ol>
 		<li>As root, add the IBM FTP to the repository list:
 		<pre>
-zypper addrepo ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_12 "Advance Toolchain"
+zypper addrepo ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_15 "Advance Toolchain"
 </pre>
 
 		<p>This command creates a new repository entry called "Advance Toolchain" pointing to the IBM FTP site</p>
@@ -249,7 +249,7 @@ zypper addrepo ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at
 <p class="ibm-light">Use these steps to download the public key, create a repository configuration file, and install the cross-compiler package</p>
 
 <ol>
-	<li>The gpg public key <code>gpg-pubkey-6976a827-5164221b</code> is provided in the repositories. This public key is used to verify the authenticity of both the Advance Toolchain packages and the repository contents. Download the gpg public key for your Linux distribution and import it by using the following commands:
+	<li>The <code>gpg</code> public key <code>gpg-pubkey-6976a827-5164221b</code> is provided in the repositories. This public key is used to verify the authenticity of both the Advance Toolchain packages and the repository contents. Download the <code>gpg</code> public key for your Linux distribution and import it by using the following commands:
 
 	<pre>
 wget https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists/focal/6976a827.gpg.key
@@ -266,16 +266,15 @@ deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu f
 	<p>Notes:</p>
 
 	<ul>
-		<li>When installing on Ubuntu 18.04 (bionic) or Ubuntu 16.04 (xenial), point to its respective repository:
+		<li>When you install on Ubuntu 20.04 (focal) or Ubuntu 18.04 (bionic), point to its respective repository:
 		<pre>
+deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu focal atX.X
 deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu bionic atX.X
-deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu xenial atX.X
 </pre>
 		</li>
-		<li>When installing on Debian 10 (buster) or Debian 9 (stretch), point to its respective repository:
+		<li>When you install on Debian 10 (buster), point to its repository:
 		<pre>
 deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian buster atX.X
-deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian stretch atX.X
 </pre>
 		</li>
 	</ul>
@@ -284,7 +283,7 @@ deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian s
 	<li>Install the cross-compiler by running <code>sudo aptitude install advance-toolchain-atX.X-cross-ppc64le</code> or <code>sudo apt-get install advance-toolchain-atX.X-cross-ppc64</code>le.</li>
 </ol>
 
-<p>APT supports package upgrades for new revision releases (i.e. 7.1-0 to 7.1-1). For new major releases (i.e. 7.1-1 to 8.0-0), proceed as in a normal installation.</p>
+<p>APT supports package upgrades for new revision releases (that is 7.1-0 to 7.1-1). For new major releases (that is 7.1-1 to 8.0-0), proceed as in a normal installation.</p>
 </div>
 </div>
 </div>
@@ -301,7 +300,7 @@ deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian s
 <div class="ibm-col-12-9 ibm-padding-top-1">
 <p><a href="https://www.gnu.org/software/wget/" target="_blank">GNU wget</a> is a small program that highlights the important problems when cross compiling a certain software: it depends on libraries provided by the Advance Toolchain cross-compiler and external libraries.</p>
 
-<p>In this example, we build GNU wget for POWER little endian by using a x86 computer with the Advance Toolchain cross-compiler.</p>
+<p>In this example, we build <code>GNU wget</code> for POWER little endian by using a x86 computer with the Advance Toolchain cross-compiler.</p>
 
 <p class="ibm-h3">Copy headers and libraries</p>
 
@@ -314,7 +313,7 @@ deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian s
 
 <p>In this case, ${HOME} is a shell variable holding the path of my home directory.</p>
 
-<p>For GNU wget, we need to provide some OpenSSL libraries and Zlib. Both of them are available in the Advance Toolchain native compiler. However, the list of necessary libraries might vary according to the project. If you don't know well the project, you can use the following tools in order to identify the list of libraries they use:</p>
+<p>For <code>GNU wget</code>, we need to provide some <code>OpenSSL</code> libraries and <code>Zlib</code>. Both of them are available in the Advance Toolchain native compiler. However, the list of necessary libraries might vary according to the project. If you don't know well the project, you can use the following tools in order to identify the list of libraries they use:</p>
 
 <pre>
 ldd &lt;executable&gt;
@@ -324,7 +323,7 @@ dpkg-deb -f &lt;package.deb&gt; | grep "Depends:"
 
 <p>Usually the list of libraries necessary to build a project is the same across all processor architectures. So, you might use the previous commands against an executable or package compiled for another processor.</p>
 
-<p>Here is the list of files required in order to build wget:</p>
+<p>Here is the list of files required in order to build <code>wget</code>:</p>
 
 <pre>
 $ ls -1 ${HOME}/wget/include/
@@ -341,7 +340,7 @@ libz.so.1
 libz.so.1.2.6
 </pre>
 
-<p>Make sure the libraries are compiled for the target processor. If they don't match, you don't be able to use them. You might use 'readelf -h' to verify this information:</p>
+<p>Make sure the libraries are compiled for the target processor. If they don't match, you don't be able to use them. You might use <code>readelf -h</code> to verify this information:</p>
 
 <pre>
 $ /opt/at7.1/bin/powerpc64le-linux-gnu-readelf -h ${HOME}/wget/lib/libz.so.1.2.6
@@ -360,7 +359,7 @@ $ /opt/at7.1/bin/powerpc64le-linux-gnu-readelf -h ${HOME}/wget/lib/libz.so.1.2.6
 mkdir ${HOME}/wget/build &amp;&amp; cd ${HOME}/wget/build
 </pre>
 
-<p>After entering the separate build directory, it's possible to configure the build by running:</p>
+<p>After you enter the separate build directory, it's possible to configure the build by running:</p>
 
 <pre>
 CC=/opt/at7.1/bin/powerpc64le-linux-gnu-gcc \
@@ -374,12 +373,12 @@ LDFLAGS="-L${HOME}/wget/lib" \
 <p>Where:</p>
 
 <ul>
-	<li><code>CC</code> specifies which compiler to use. In this case, Advance Toolchain 7.1 cross-compiler for POWER little endian. Cross-compilers usually have a prefix in their program name to clearly indicate they don't generate executable code for the current processor. In this case, the prefix is "<code>powerpc64le-linux-gnu-</code>". This rule applies to all programs, for example: g++, gdb, ld, as, and so on.</li>
-	<li><code>CFLAGS="-I"</code> indicates where the compiler finds the header files.</li>
-	<li><code>LDFLAGS="-L"</code> indicates where the linker finds the libraries.</li>
-	<li><code>../wget-1.15</code> is the directory where wget source code is available. In this case, it is the same of ${HOME}/wget/wget-1.15.</li>
-	<li><code>--host=powerpc64le-linux</code> indicates this code runs on POWER little endian.</li>
-	<li><code>--with-ssl=openssl</code> forces wget to use OpenSSL.</li>
+	<li>The variable <code>CC</code> specifies which compiler to use. In this case, Advance Toolchain 7.1 cross-compiler for POWER little endian. Cross-compilers usually have a prefix in their program name to clearly indicate they don't generate executable code for the current processor. In this case, the prefix is "<code>powerpc64le-linux-gnu-</code>". This rule applies to all programs, for example: <code>g++</code>, <code>gdb</code>, <code>ld</code>, <code>as</code>, etc</li>
+	<li>The variable <code>CFLAGS="-I"</code> indicates where the compiler finds the header files.</li>
+	<li>The variable <code>LDFLAGS="-L"</code> indicates where the linker finds the libraries.</li>
+	<li>This <code>../wget-1.15</code> is the directory where wget source code is available. In this case, it is the same of <code>${HOME}/wget/wget-1.15</code>.</li>
+	<li>The option <code>--host=powerpc64le-linux</code> indicates this code runs on POWER little endian.</li>
+	<li>The option <code>--with-ssl=openssl</code> forces wget to use <code>OpenSSL</code>.</li>
 </ul>
 
 <p>Finally, build wget by using the make command:</p>
@@ -408,13 +407,13 @@ LDFLAGS="-L${HOME}/wget/lib" \
 <p>Not necessarily. It depends on the code being built and the level of optimization in use.</p>
 </div>
 
-<h2>If I build a program by using a cross-compiler will it be slower than by using a native toolchain?</h2>
+<h2>If I build a program by using a cross-compiler, will it be slower than by using a native toolchain?</h2>
 
 <div class="ibm-container-body">
-<p>No. There are some differences in the metadata of the binaries, but it will run at the same speed.</p>
+<p>No. There are some differences in the metadata of the binaries, but it runs at the same speed.</p>
 </div>
 
-<h2>My project doesn’t allow flags to be passed to the linker or to the compiler. How can I use extra libraries?</h2>
+<h2>My project doesn’t allow passing flags to the linker or to the compiler. How can I use extra libraries?</h2>
 
 <div class="ibm-container-body">
 <p>In this case, it isn’t possible to pass <code>-I</code> to the compiler or <code>-L</code> to linker and the only possible solution is to save the headers and libraries in one of the Advance Toolchain directories:</p>
@@ -434,7 +433,7 @@ LDFLAGS="-L${HOME}/wget/lib" \
 /opt/atX.X/ppc64le/usr/lib64
 </pre>
 
-<p>Be careful to not override any Advance Toolchain files while copying the files.</p>
+<p>Be careful to not override any Advance Toolchain files while you are copying the files.</p>
 </div>
 </div>
 </div>

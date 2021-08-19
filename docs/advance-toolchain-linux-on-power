@@ -120,7 +120,7 @@ display: block;
 }
 }
 </style>
-<script>   
+<script>
 function myFunction() {
   var x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
@@ -137,7 +137,7 @@ function myFunction() {
 <div class="ibm-col-12-9 ibm-padding-top-1 ibm-padding-bottom-1 ibm-alternate-background">
 <p class="ibm-h1">Advance Toolchain for Linux on IBM Power Systems</p>
 
-<p class="ibm-h3 ibm-padding-bottom-1">Open source compilers, runtime libraries, and development tools that allow users to take advantage of the latest IBM POWER hardware features on Linux.</p>
+<p class="ibm-h3 ibm-padding-bottom-1">Open-source compilers, runtime libraries, and development tools that allow users to take advantage of the latest IBM POWER hardware features on Linux.</p>
 
 <p class="ibm-ind-link"><a class="ibm-btn-pri ibm-forward-link ibm-btn-blue-50" href="https://github.com/advancetoolchain/advance-toolchain" target="_blank">Get the source code from GitHub</a></p>
 </div>
@@ -146,7 +146,7 @@ function myFunction() {
 </div>
 
 <div class="ibm-band-fluid ibm-flex ibm-padding-top-2  ibm-padding-bottom-1">
-<p class="custom-padding-left-12px ibm-h4">IBM Advance Toolchain for Linux on Power 14.0-3 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at14.0-3">Learn more</a></p>
+<p class="custom-padding-left-12px ibm-h4">IBM Advance Toolchain for Linux on Power 15.0-0 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-0">Learn more</a></p>
 </div>
 <!-- start main content -->
 
@@ -156,27 +156,27 @@ function myFunction() {
 </div>
 
 <div class="ibm-col-12-9 ibm-padding-top-1 ibm-padding-bottom-1">
-<p>This self-contained toolchain does not rely on the system toolchain and requires minimal dependencies. Nor does it override the default Linux distribution toolchain (it is installed in /opt). The latest release includes current stable versions of the following packages:</p>
+<p>This self-contained toolchain does not rely on the system toolchain and requires minimal dependencies. Nor does it override the default Linux distribution toolchain (it is installed in <code>/opt</code>). The latest release includes current stable versions of the following packages:</p>
 
 <div class="ibm-band-fluid">
 <div class="ibm-col-12-6">
 <ul>
-	<li>GNU Compiler Collection (gcc, g++ and gfortran), plus individually optimized gcc runtime libraries for supported POWER processors</li>
-	<li>GNU C library (glibc), individually optimized for supported POWER processors</li>
-	<li>GNU Binary Utilities (binutils)</li>
-	<li>Decimal Floating Point Library (libdfp), optimized with hardware DFP support for POWER</li>
-	<li>IBM Power Architecture Facilities Library (PAFLib)</li>
+	<li>GNU Compiler Collection (<code>gcc</code>, <code>g++</code>, and <code>gfortran</code>), plus individually optimized <code>gcc</code> runtime libraries for supported POWER processors</li>
+	<li>GNU C library (<code>glibc</code>), individually optimized for supported POWER processors</li>
+	<li>GNU Binary Utilities (<code>binutils</code>)</li>
+	<li>Decimal Floating Point Library (<code>libdfp</code>), optimized with hardware <code>DFP</code> support for POWER</li>
+	<li>IBM Power Architecture Facilities Library (<code>PAFLib</code>)</li>
 </ul>
 </div>
 
 <div class="ibm-col-12-6">
 <ul>
-	<li>GNU Debugger (gdb)</li>
-	<li>Python</li>
-	<li>Golang</li>
-	<li>Performance analysis tools (oprofile (for Advance Toolchain 12.0 and older), valgrind, itrace)</li>
-	<li>Multi-core exploitation libraries (TBB, Userspace RCU, SPHDE)</li>
-	<li>Plus several support libraries (libhugetlbfs, Boost, zlib, etc)</li>
+	<li>GNU Debugger (<code>gdb</code>)</li>
+	<li><code>Python</code></li>
+	<li><code>Golang</code></li>
+	<li>Performance analysis tools (<code>oprofile</code> (for Advance Toolchain 12.0 and older), <code>valgrind</code>, <code>itrace</code>)</li>
+	<li>Multi-core exploitation libraries (<code>TBB</code>, <code>Userspace RCU</code>, <code>SPHDE</code>)</li>
+	<li>Plus several support libraries (<code>libhugetlbfs</code>, <code>Boost</code>, <code>zlib</code>, etc)</li>
 </ul>
 </div>
 </div>

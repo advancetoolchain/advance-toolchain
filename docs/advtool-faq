@@ -128,13 +128,13 @@
 <div class="ibm-col-12-12 ibm-padding-top-1 ibm-padding-bottom-1 ibm-alternate-background">
 <p class="ibm-h1">Advance Toolchain for Linux on Power FAQ</p>
 
-<p class="ibm-h4">List of frequently asked questions (FAQ) that describes some common problems you might run into while using the Advance Toolchain for Linux on Power and how to fix them.</p>
+<p class="ibm-h4">List of frequently asked questions (FAQ) that describes some common problems you might run into while you are using the Advance Toolchain for Linux on Power and how to fix them.</p>
 </div>
 </div>
 <!--Start of vertical tabs -->
 
 <div class="ibm-band-fluid ibm-flex ibm-padding-top-2  ibm-padding-bottom-1">
-<p class="custom-padding-left-12px ibm-h4">IBM Advance Toolchain for Linux on Power 14.0-3 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at14.0-3">Learn more</a></p>
+<p class="custom-padding-left-12px ibm-h4">IBM Advance Toolchain for Linux on Power 15.0-0 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-0">Learn more</a></p>
 </div>
 
 <div class="ibm-graphic-tabs ibm-graphic-tabs--colored ibm-vertical-tabs ibm-padding-bottom-3" data-remembertab="false" data-widget="dyntabs"><!-- Tabs here: -->
@@ -143,14 +143,14 @@
 <div class="ibm-tab-section">
 <ul class="ibm-tabs ibm-background-white-core ibm-border-gray-80" data-widget="adjustanchorlinks" role="tablist">
 	<li style="margin-top:4px"><a aria-selected="true" href="#faq1" role="tab">How do I find which package provides a specific feature?</a></li>
-	<li style="margin-top:4px"><a href="#faq2" role="tab">What does "undefined reference to sem_*" mean?</a></li>
+	<li style="margin-top:4px"><a href="#faq2" role="tab">What does <code>"undefined reference to sem_*"</code> mean?</a></li>
 	<li style="margin-top:4px"><a href="#faq3" role="tab">Why doesn't the Advance Toolchain find my library?</a></li>
-	<li style="margin-top:4px"><a href="#faq4" role="tab">Why does my program fail with "No such file or directory"?</a></li>
-	<li style="margin-top:4px"><a href="#faq5" role="tab">Can I set RPATH/RUNPATH with the Advance Toolchain?</a></li>
-	<li style="margin-top:4px"><a href="#faq6" role="tab">Can I mix parts of different glibc versions?</a></li>
-	<li style="margin-top:4px"><a href="#faq7" role="tab">How to verify if the Advance Toolchain is corrupted?</a></li>
-	<li style="margin-top:4px"><a href="#faq8" role="tab">When should I use Advance Toolchain?</a></li>
-	<li style="margin-top:4px"><a href="#faq9" role="tab">Are there any issues I should be aware of?</a></li>
+	<li style="margin-top:4px"><a href="#faq4" role="tab">Why does my program fail with <code>"No such file or directory"</code>?</a></li>
+	<li style="margin-top:4px"><a href="#faq5" role="tab">Can I set <code>RPATH/RUNPATH</code> with the Advance Toolchain?</a></li>
+	<li style="margin-top:4px"><a href="#faq6" role="tab">Can I mix parts of different <code>glibc</code> versions?</a></li>
+	<li style="margin-top:4px"><a href="#faq7" role="tab">How to verify whether the Advance Toolchain is corrupted?</a></li>
+	<li style="margin-top:4px"><a href="#faq8" role="tab">When to use Advance Toolchain?</a></li>
+	<li style="margin-top:4px"><a href="#faq9" role="tab">Are there any issues to be aware of?</a></li>
 	<li style="margin-top:4px"><a href="#faq10" role="tab">Where can I get help?</a></li>
 </ul>
 </div>
@@ -161,7 +161,7 @@
 <div class="ibm-tabs-content" id="faq1">
 <h3>How do I find which package provides a specific feature?</h3>
 
-<p>On RHEL based systems you can run:</p>
+<p>On RHEL-based systems you can run:</p>
 
 <pre>
 yum provides &lt;feature&gt;
@@ -176,9 +176,9 @@ zypper what-provides &lt;feature&gt;
 <!-- Begin content for description tab -->
 
 <div class="ibm-tabs-content" id="faq2">
-<h3>What does "undefined reference to sem_*" mean?</h3>
+<h3>What does <code>"undefined reference to sem_*"</code> mean?</h3>
 
-<p>These kinds of errors usually appear when trying to link a multithreaded program without enabling multithreading support (that is, specify <code>-pthread</code> when calling the linker), for example:</p>
+<p>These kinds of errors usually appear when you are trying to link a multithreaded program without enabling multithreading support (that is, specify <code>-pthread</code> when you are calling the linker), for example:</p>
 
 <pre>
 /opt/at10.0/bin/gcc main.c -pthread
@@ -194,7 +194,7 @@ zypper what-provides &lt;feature&gt;
 <!-- Begin faq4 content -->
 
 <div class="ibm-tabs-content" id="faq4">
-<h3>Why does my program fail with "No such file or directory"?</h3>
+<h3>Why does my program fail with <code>"No such file or directory"</code>?</h3>
 
 <p>The symptom of this issue is: a program built with the Advance Toolchain fails to execute with the error message:</p>
 
@@ -202,7 +202,7 @@ zypper what-provides &lt;feature&gt;
 bash: ./program: No such file or directory
 </pre>
 
-<p>This message is indicating the system was not able to run this program. Usually this happens because the system wasn't able to find the correct major version of the Advance Toolchain. In other words, Bash didn't find the loader specified in the <code>.interp</code> section of the executable.</p>
+<p>This message is indicating the system was not able to run this program. Usually this error happens because the system wasn't able to find the correct major version of the Advance Toolchain. In other words, Bash didn't find the loader specified in the <code>.interp</code> section of the executable.</p>
 
 <p>You can identify which Advance Toolchain version built this program by running:</p>
 
@@ -215,25 +215,25 @@ ldd &lt;program&gt;
 <!-- Begin faq5 content -->
 
 <div class="ibm-tabs-content" id="faq5">
-<h3>Can I set RPATH/RUNPATH with the Advance Toolchain?</h3>
+<h3>Can I set <code>RPATH/RUNPATH</code> with the Advance Toolchain?</h3>
 
-<p>Yes. The Advance Toolchain uses the <code>RPATH</code> and <code>RUNPATH</code> tags to identify where its libraries are located, but it is possible to add new directories using the linker parameter <code>-rpath=dir</code>.</p>
+<p>Yes. The Advance Toolchain uses the <code>RPATH</code> and <code>RUNPATH</code> tags to identify where its libraries are located, but it is possible to add new directories by using the linker parameter <code>-rpath=dir</code>.</p>
 
-<p>By default, the Advance Toolchain will prepend its own lib directory to the <code>RPATH</code>/<code>RUNPATH</code>. However, in case the user changes this behavior, he or she must ensure the Advance Toolchain lib directory will always appear before a directory with another <code>libc</code>, for example, <code>/usr/lib</code>, <code>/usr/lib64</code>, <code>/lib</code>, or <code>/lib64</code>. This will guarantee you won't mix parts of different glibc versions.</p>
+<p>By default, the Advance Toolchain prepends its own <code>lib</code> directory to the <code>RPATH</code>/<code>RUNPATH</code>. However, in case the user changes this behavior, the user must ensure the Advance Toolchain <code>lib</code> directory appears before a directory with another <code>libc</code>, for example, <code>/usr/lib</code>, <code>/usr/lib64</code>, <code>/lib</code>, or <code>/lib64</code>. This measure guarantees you don't mix parts of different <code>glibc</code> versions.</p>
 </div>
 
 <div class="ibm-tabs-content" id="faq6">
-<h3>Can I mix parts of different glibc versions?</h3>
+<h3>Can I mix parts of different <code>glibc</code> versions?</h3>
 
-<p>No. The GNU C Library has not been designed to support mixing parts of different glibc versions, e.g.: use the loader provided by the Linux distribution and glibc libraries provided by the Advance Toolchain.</p>
+<p>No. The GNU C Library is not designed to support mixing parts of different <code>glibc</code> versions, for example: use the loader provided by the Linux distribution and <code>glibc</code> libraries provided by the Advance Toolchain.</p>
 
-<p>When these libraries are mixed up, the program usually aborts complaining about missing symbols in one of the libraries provided by glibc.</p>
+<p>When these libraries are mixed up, the program usually aborts complaining about missing symbols in one of the libraries provided by <code>glibc</code>.</p>
 
 <p>To avoid these issues, the user has to:</p>
 
 <ul>
-	<li>Ensure the Advance Toolchain lib directories appear before a directory with another libc in the library search path, i.e. <code>/usr/lib</code>, <code>/usr/lib64</code>, <code>/lib</code> or <code>/lib64</code>. Which includes <code>LD_LIBRARY_PATH</code>, <code>RPATH/RUNPATH</code> and <code>/opt/atX.X/etc/ld.so.conf</code>.</li>
-	<li>Force to use the Advance Toolchain loader when forcing the preload of an Advance Toolchain library with a program compiled using the system's toolchain, e.g.:
+	<li>Ensure the Advance Toolchain lib directories appear before a directory with another <code>libc</code> in the library search path that is <code>/usr/lib</code>, <code>/usr/lib64</code>, <code>/lib</code>, or <code>/lib64</code>. Which includes <code>LD_LIBRARY_PATH</code>, <code>RPATH/RUNPATH</code>, and <code>/opt/atX.X/etc/ld.so.conf</code>.</li>
+	<li>Force to use the Advance Toolchain loader when forcing the preload of an Advance Toolchain library with a program compiled by using the system's toolchain, for example:
 	<pre>
 LD_PRELOAD=/opt/atX.X/lib64/libtcmalloc.so /opt/atX.X/lib64/ld-X.XX.so /usr/bin/printenv PATH
 </pre>
@@ -242,7 +242,7 @@ LD_PRELOAD=/opt/atX.X/lib64/libtcmalloc.so /opt/atX.X/lib64/ld-X.XX.so /usr/bin/
 </div>
 
 <div class="ibm-tabs-content" id="faq7">
-<h3>How to verify if the Advance Toolchain is corrupted?</h3>
+<h3>How to verify whether the Advance Toolchain is corrupted?</h3>
 
 <p>The package manager provides:</p>
 
@@ -273,30 +273,30 @@ debsums advance-toolchain-atX.X-runtime advance-toolchain-atX.X-devel advance-to
 
 	<p>This command is going to print the status for each file. If it returns 2, there is at least one corrupted file. If it returns 0, the installation is fine.</p>
 
-	<p>In case the previous commands report any issue, uninstall and install the corrupted package again.</p>
+	<p>In case the previous commands report any issue, uninstall, and install the corrupted package again.</p>
 	</li>
 </ul>
 </div>
 
 <div class="ibm-tabs-content" id="faq8">
-<h3>When should I use Advance Toolchain?</h3>
+<h3>When to use Advance Toolchain?</h3>
 
 <p>The Advance Toolchain provides toolchain functionality earlier and a group of optimized libraries. AT is highly recommended when you want to build an optimized CPU-bound application on POWER or want some of the new toolchain functionalities on POWER before they make into a distribution. Also, you must use AT when you link with a library built with AT.</p>
 
-<p>In some scenarios you will not get many advantages using the Advance Toolchain, and it will be easier to use the distro's toolchain that usually performs quite well. Such cases include building applications that are not CPU-bound and on I/O constrained environments.</p>
+<p>In some scenarios, you don't get many advantages by using the Advance Toolchain, and it is easier to use the distro's toolchain that usually performs well. Such cases include building applications that are not CPU-bound and on I/O constrained environments.</p>
 </div>
 
 <div class="ibm-tabs-content" id="faq9">
-<h3>Are there any issues I should be aware of?</h3>
+<h3>Are there any issues to be aware of?</h3>
 
 <p>Yes! The following is a list of Advance Toolchain limitations and known issues:</p>
 
 <ul>
 	<li>The cross package upgrade from 9.0-4, 10.0-5, 11.0-1 or older versions to a newer release need to be forced.</li>
 	<li>The upgrade from 9.0-0 to a newer release need to be forced. The problem was fixed in 9.0-1 and does not affect that, nor newer releases.</li>
-	<li>oprofile's operf tool running on SLES 11: if running operf as the root user, only --system-wide or --pid modes are supported. This is a permanent restriction.</li>
-	<li>gcc no longer has support for Graphite loop optimizations starting on Advance Toolchain 6.0-0.</li>
-	<li>libdfp has some known limitations as indicated in the libdfp README.user documentation.</li>
+	<li><code>oprofile</code>'s <code>operf</code> tool running on SLES 11: if you are running <code>operf</code> as the root user, only <code>--system-wide</code> or <code>--pid</code> modes are supported. This restriction is permanent.</li>
+	<li><code>gcc</code> no longer has support for Graphite loop optimizations starting on Advance Toolchain 6.0-0.</li>
+	<li><code>libdfp</code> has some known limitations as indicated in the <code>libdfp README.user</code> documentation.</li>
 </ul>
 </div>
 
@@ -306,21 +306,21 @@ debsums advance-toolchain-atX.X-runtime advance-toolchain-atX.X-devel advance-to
 <p>Customer support for the Advance Toolchain is provided in one of the following ways:</p>
 
 <ul>
-	<li>If you are using the Advance Toolchain as directed by an IBM product team (i.e. IBM XL Compiler or PowerVM Lx86), please report the suspected issues to the IBM Support using that product name and entitlement.</li>
-	<li>IBM's Support Line for Linux Offerings now provides support for the Advance Toolchain as well. If you have a contract with a Support Line for Linux, place a call to IBM Support, e.g. for United States:
+	<li>If you are using the Advance Toolchain as directed by an IBM product team (that is IBM <code>XL</code> Compiler or PowerVM Lx86), report the suspected issues to the IBM Support giving that product name and entitlement.</li>
+	<li>IBM's Support Line for Linux Offerings now provides support for the Advance Toolchain as well. If you have a contract with a Support Line for Linux, place a call to IBM Support, for example for United States:
 	<ol>
 		<li>Dial 1-800-426-IBM-SERV.</li>
 		<li>Option #2 (Other business products or solutions).</li>
 		<li>Option #2 (Software).</li>
 		<li>Option #7 (Other OS/Linux).</li>
 	</ol>
-	For other countries <a href="https://www.ibm.com/planetwide/">click here</a>.</li>
+	For other countries, <a href="https://www.ibm.com/planetwide/">click here</a>.</li>
 	<li>All other users can use the Support forum. To ask questions about using the Advance Toolchain or to report a suspected defect, <a href="https://www.ibm.com/mysupport/s/forumsproduct?language=en_US&amp;name=Advanced+Toolchain+for+Linux&amp;id=0TO50000000QkyUGAS">click here</a>.
 	<ol>
 		<li>Click in "Ask a question".</li>
 		<li>Enter your question or problem.</li>
-		<li>Add the "advancetoolchain" tag and click in "Post your question".</li>
-		<li>An initial response will be attempted within 2 business days.</li>
+		<li>Add the <code>"advancetoolchain"</code> tag and click in <code>"Post your question"</code>.</li>
+		<li>An initial response is attempted within 2 business days.</li>
 	</ol>
 	</li>
 	<li>Also, if you have a GitHub account you can open an issue in the <a href="https://github.com/advancetoolchain/advance-toolchain/issues">Advance Toolchain repository</a>.</li>
