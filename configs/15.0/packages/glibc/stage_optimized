@@ -84,9 +84,8 @@ atcfg_configure() {
 	CXX="${at_dest}/bin/g++ -m${AT_BIT_SIZE}" \
 	CFLAGS="-g -O3 \
 		${with_longdouble:+-mlong-double-128} \
-		-fcommon \
 		-Wno-error=maybe-uninitialized \
-		-Wno-error=stringop-overread" \
+		-Wno-error=array-bounds" \
 	CXXFLAGS="-g -O3" \
 	${ATSRC_PACKAGE_WORK}/configure --build=${target} \
 					--host=${base_target} \
