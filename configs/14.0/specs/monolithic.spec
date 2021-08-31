@@ -259,9 +259,11 @@ fi
 # Automatically set the timezone
 rm -f %{_prefix}/etc/localtime
 ln -s /etc/localtime %{_prefix}/etc/localtime
-systemctl preset %{at_ver_alternative}-cachemanager.service \
-    > /dev/null 2>&1 || :
-systemctl restart %{at_ver_alternative}-cachemanager.service
+if [[ -n "$(command -v systemctl)" ]]; then
+	systemctl preset %{at_ver_alternative}-cachemanager.service \
+	    > /dev/null 2>&1 || :
+	systemctl restart %{at_ver_alternative}-cachemanager.service
+fi
 
 #---------------------------------------------------
 %post devel
@@ -426,7 +428,7 @@ fi
 
 #---------------------------------------------------
 %preun runtime
-systemctl --no-reload disable --now \
+command -v systemctl >/dev/null && systemctl --no-reload disable --now \
     %{at_ver_alternative}-cachemanager.service > /dev/null 2>&1 || :
 
 ####################################################
@@ -445,7 +447,7 @@ if file /usr/sbin/ldconfig | grep "bash script" > /dev/null; then
         rm -f /usr/sbin/ldconfig
     fi
 fi
-systemctl try-restart %{at_ver_alternative}-cachemanager.service >/dev/null \
+command -v systemctl >/dev/null &&  systemctl try-restart %{at_ver_alternative}-cachemanager.service >/dev/null \
     2>&1 || :
 
 #---------------------------------------------------

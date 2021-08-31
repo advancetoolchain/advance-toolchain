@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2018 IBM Corporation
+# Copyright 2021 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 
 if [[ "${1}" == remove ]]; then
 	# Stop and disable the cache manager service to remove symlinks.
-	if [[ "__USE_SYSTEMD__" == "yes" ]]; then
+	if [[ "__USE_SYSTEMD__" == "yes" && -n "$(command -v systemctl)" ]]; then
 		systemctl stop __AT_VER_ALTERNATIVE__-cachemanager.service
 		systemctl disable __AT_VER_ALTERNATIVE__-cachemanager.service
 	fi
