@@ -80,6 +80,7 @@ see it miserably fail, asking for these packages, we provide the list below for 
 	imake or xorg-x11-utils (for OpenSSL)
 	papi-devel - for oprofile
 	papi-devel-64bit - for oprofile
+	xz-devel/liblzma-dev - for GDB to decompress some debuginfo sections
 
   Special cases:
     RHEL 5 and SLES 10 only provide older versions of some
