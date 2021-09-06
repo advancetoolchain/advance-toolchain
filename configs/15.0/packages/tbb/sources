@@ -20,8 +20,8 @@
 #
 
 ATSRC_PACKAGE_NAME="Thread Building Blocks"
-ATSRC_PACKAGE_VER=2021.3.0
-ATSRC_PACKAGE_REV=261fe22630bd
+ATSRC_PACKAGE_VER=2021.4.0
+ATSRC_PACKAGE_REV=df3096075a00
 ATSRC_PACKAGE_BRANCH=onetbb_2021
 ATSRC_PACKAGE_LICENSE="GPL 2.0"
 ATSRC_PACKAGE_DOCLINK="https://www.threadingbuildingblocks.org/"
@@ -61,24 +61,10 @@ atsrc_package_verify_make_check_log ()
 
 atsrc_get_patches ()
 {
-	# Remove arch macros, commit from the master branch
-	at_get_patch \
-		'https://github.com/oneapi-src/oneTBB/commit/fa944e19600500863507ed8e9b1f5a30037d9df6.patch' \
-		b4c510226c8d79d524166041c6750747 || return ${?}
 	# Remove some gcc 11 warnings, commits from the master branch
-	at_get_patch \
-		'https://github.com/oneapi-src/oneTBB/commit/81dd27c4f699d4c1a8f368b1f46bffc37a864da0.patch' \
-		1f3eea49cfbdcde34efca34234232bd4 || return ${?}
-	at_get_patch \
-		'https://github.com/oneapi-src/oneTBB/commit/ec505c7d5af7b3776b6732a8351107926b7b6461.patch' \
-		1fc2a4a34e8f38f53d19d5897a81a284 || return ${?}
 	at_get_patch \
 		'https://github.com/oneapi-src/oneTBB/commit/5a643c2360fb7684b6a88eccf4421f8c635668f5.patch' \
 		d9317888c2b46ce9000658ffd7cc7db2 || return ${?}
-	# Fix size of array, part of commit from the master branch
-        at_get_patch \
-		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/2da51fd320781ee9f5dd353b681258f13b04d66b/TBB%20PowerPC%20Patches/2021.3/tbb_fix_array_size.patch' \
-		baed2e1078e200d0314947ef8911c78a || return ${?}
 
 	return 0
 }
@@ -86,18 +72,6 @@ atsrc_get_patches ()
 atsrc_apply_patches ()
 {
 	patch -p1 \
-	     < fa944e19600500863507ed8e9b1f5a30037d9df6.patch \
-		|| return ${?}
-	patch -p1 \
-	     < 81dd27c4f699d4c1a8f368b1f46bffc37a864da0.patch \
-		|| return ${?}
-	patch -p1 \
-	     < ec505c7d5af7b3776b6732a8351107926b7b6461.patch \
-		|| return ${?}
-	patch -p1 \
 	     < 5a643c2360fb7684b6a88eccf4421f8c635668f5.patch \
-		|| return ${?}
-	patch -p1 \
-	     < tbb_fix_array_size.patch \
 		|| return ${?}
 }
