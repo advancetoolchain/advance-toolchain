@@ -213,6 +213,7 @@ ifeq (,$(findstring $(MAKECMDGOALS),clone edit pack))
     DISTRO_AB := $(shell echo $(DISTRO_INFO) | cut -d ' ' -f 2)
     DISTRO_FM := $(shell echo $(DISTRO_ID) | cut -d '-' -f 1)
     DISTRO_FILE := $(CONFIG)/distros/$(DISTRO_ID).mk
+    export DISTRO_ID
 
     # Check if the running distro is supported for builds
     ifeq ($(strip $(shell $(call file_exists,$(DISTRO_FILE)))),found)

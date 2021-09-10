@@ -26,6 +26,10 @@ ATCFG_BUILD_STAGE_T='dir'
 
 # Conditional configure command
 atcfg_configure() {
+	DEBUGINFOD=
+	if [[ "$DISTRO_ID" == "redhat-8" ]]; then
+		DEBUGINFOD="--with-debuginfod=no"
+	fi
 	if [[ "${cross_build}" == "no" ]]; then
 		sysroot=/
 	else
@@ -46,7 +50,8 @@ atcfg_configure() {
 					--disable-readline \
 					--disable-libdecnumber \
 					--disable-sim \
-					--disable-nls
+					--disable-nls \
+					${DEBUGINFOD}
 
 }
 
