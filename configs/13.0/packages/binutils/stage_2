@@ -24,6 +24,10 @@ ATCFG_BUILD_STAGE_T='dir'
 
 # Conditional configure command
 atcfg_configure() {
+	DEBUGINFOD=
+	if [[ "$DISTRO_ID" == "redhat-8" ]]; then
+		DEBUGINFOD="--with-debuginfod=no"
+	fi
 	if [[ "${cross_build}" == "no" ]]; then
 		# Configure command for native builds
 		CC=${at_dest}/bin/gcc \
@@ -45,7 +49,8 @@ atcfg_configure() {
 						--enable-shared \
 						--enable-plugins \
 						--enable-install-libiberty=./ \
-						--enable-gold
+						--enable-gold \
+						${DEBUGINFOD}
 	else
 		# Configure command for cross builds
 		# TODO: Since Binutils 2.31, gold requires to build with
@@ -67,7 +72,8 @@ atcfg_configure() {
 						--disable-sim \
 						--disable-nls \
 						--enable-plugins \
-						--enable-gold
+						--enable-gold \
+						${DEBUGINFOD}
 	fi
 }
 
