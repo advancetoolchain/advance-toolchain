@@ -43,6 +43,7 @@ if { ![file exists $at_dir/bin/go] } {
 }
 
 set test_files {hello.go hello_cgo.go}
+set env(GOPATH) $FULLPATH
 
 foreach test $test_files {
 	spawn $GOTOOL run $FULLPATH/$test
