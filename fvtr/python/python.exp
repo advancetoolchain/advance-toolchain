@@ -139,7 +139,9 @@ if { "$pyver" == "2.6" } {
 		-j$CORES -x $common_exclude_tests \
 		test_asyncgen \
 		test_compileall \
+		test_eintr \
 		test_faulthandler \
+		test_ftplib \
 		test_gdb \
 		test_httpservers \
 		test_imaplib \
@@ -151,6 +153,8 @@ if { "$pyver" == "2.6" } {
 		test_site \
 		test_smtplib \
 		test_socket \
+		test_ssl \
+		test_subprocess \
 		test_threading \
 		test_time"
 } else {
