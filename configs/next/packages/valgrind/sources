@@ -21,7 +21,7 @@
 
 ATSRC_PACKAGE_NAME="Valgrind"
 ATSRC_PACKAGE_VER=master
-ATSRC_PACKAGE_REV=96eba8c7a5dd
+ATSRC_PACKAGE_REV=345edda43951
 ATSRC_PACKAGE_LICENSE="GPL 2.0"
 ATSRC_PACKAGE_DOCLINK="http://valgrind.org/docs/"
 ATSRC_PACKAGE_RELFIXES=
@@ -59,11 +59,6 @@ atsrc_get_patches ()
 		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/0496d9de5cf3d441787d413367c5ec514a64b2ae/Valgrind%20iTrace%20Patches/3.15/Fix-itrace-initialization-of-guest_chase-variable.patch' \
 		0410d828116d20ffdae3182c514c04bb || return ${?}
 
-	# Fix the usage of copy-paste instructions.
-	at_get_patch \
-		'https://bugsfiles.kde.org/attachment.cgi?id=141020' \
-		dd09ce6f899412c718786397c1960cd2 bz441506.patch || return ${?}
-
 	return 0
 }
 
@@ -82,8 +77,6 @@ atsrc_apply_patches ()
 
 	# Update itrace to Valgrind 3.15.
 	patch -p1 < Fix-itrace-initialization-of-guest_chase-variable.patch || return ${?}
-
-	patch -p1 < bz441506.patch || return ${?}
 
 	return 0
 }
