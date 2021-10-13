@@ -6,15 +6,97 @@
 <li>Power8 Crypto Operations enablement.</li>
 <li>Power8, Power9, and Power10 optimized system libraries.</li>
 <li>_Float128 enablement as specified by ISO/IEC TS 18661-3, for Power9 and Power10.</li>
-<li>GCC creates binaries using --mcpu=power8 --mtune=power9 by default.</li>
+<li>GCC creates binaries using --mcpu=power8 --mtune=power10 by default.</li>
 </ul>
 
 <h3>Advance Toolchain new location</h3>
 <p>Since the end of August 2019, Advance Toolchain has been available from a new FTP server: <a href="http://public.dhe.ibm.com/">public.dhe.ibm.com</a></p>
 <p>Please be advised the FTP server at Unicamp won't be updated any longer.</p>
 
-<h3>New features in 15.0-0</h3>
+<h3>New features in 15.0-1</h3>
+<ul>
+  <li>GCC provides:
+  <ul>
+    <li>rs6000: generate an lxvp instead of two adjacent lxv instructions.</li>
+    <li>rs6000: harden mma_init_builtins.</li>
+    <li>rs6000: add MMA __builtin_vsx_lxvp and __builtin_vsx_stxvp built-ins.</li>
+    <li>rs6000: fix ELFv2 r12 use in epilogue.</li>
+    <li>rs6000: disable mode promotion for pseudos.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97142">__builtin_fmod not optimized on POWER</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101849">MMA built-in dies with a verify_gimple failed error</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102107">protocol register (r12) corrupted before a tail call</a>.</li>
+    <li>Enable store fusion on Power10.</li>
+    <li>Fix __morestack calls from pcrel code.</li>
+  </ul></li>
+  <li>GNU C Library provides:
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=12889">race condition in pthread_kill</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=19193">pthread_kill, pthread_cancel return ESRCH for a thread ID whose lifetime has not ended</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=27476">getcwd(NULL, PATH_MAX) generates warnings on -Wnonnull</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=27645">sysconf(_SC_NPROCESSOR...) breaks down on containers</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28036">incorrect types for pthread_mutexattr_set/getrobust_np in __REDIRECT_NTH macro</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28199">iconvconfig prefix flag behaves differently in glibc 2.34</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28213">NULL pointer dereference in mq_notify (CVE-2021-38604)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28253">missing colon in LD_SHOW_AUXV output after AT_MINSIGSTKSZ</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28260">io/tst-closefrom, misc/tst-close_range, posix/tst-spawn5 fail if stray fds are open</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28310">do not use affinity mask for sysconf (_SC_NPROCESSORS_CONF)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28361">bug 12889 causes setxid deadlock</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28400">string/test-strncasecmp: cannot set locale &quot;en_US.UTF-8&quot;</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28407">pthread_kill assumes that kill (getpid ()) is equivalent to tgkill (getpid (), gettid())</a>.</li>
+  </ul></li>
+  <li>Binutils provides:
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28192">powerpc64le: gold generates wrong address with a relocation of symbol+offset&#64;got&#64;pcrel</a>.</li>
+  </ul></li>
+  <li>Userspace RCU provides:
+  <ul>
+    <li>Fix: add missing pkgconfig file for memb flavour lib.</li>
+    <li>Make temporary variable in _rcu_dereference non-const.</li>
+  </ul></li>
+  <li>OpenSSL provides:
+  <ul>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/12443">d2i_ECPKParameters_fp throws lots of warnings</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/15998">undocumented critical parameter</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/16428">Runchecker failure in fuzzing build related to nul string terminations</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/16449">OpenSSL 1.1.1l: Build error in crypto/bio/bss_dgram.c on linux/gcc10</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/16529">openssl-passwd(1) doesn&#39;t give all algorithms in Description</a>.</li>
+  </ul></li>
+  <li>Python provides:
+  <ul>
+    <li>Fix for <a href="https://bugs.python.org/issue25130">make tests more PyPy compatible</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue27334">context manager leaves db locked if commit fails in __exit__</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue34990">year 2038 problem in compileall.py</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue39039">zlib.error with tarfile.open</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue40173">test.support.import_fresh_module fails to correctly block submodules when fresh is specified</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue41082">error handling and documentation of Path.home()</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue43853">improve sqlite3_value_text() error handling</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue43913">unittest module cleanup functions not run unless tearDownModule() is defined</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue44050">_PyImport_FixupExtensionObject() regression in Python 3.9</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue4442">document immutable type subclassing via __new__</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue44594">AsyncExitStack.enter_async_context() is mishandling exception __context__</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue44984">Rewrite test_null_strings in _testcapi</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45011">tests fail when using pure-python instead of _asyncio</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45021">concurrent.futures race condition</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45042">many multiprocessing tests are silently skipped since 3.9</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45057">simplify RegressionTestResult</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45060">do not use the equality operators with None</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45083">need to use the exception class qualname when rendering exception (in C code)</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45097">"The loop argument is deprecated" reported when user code does not use it</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45121">calling super().__init__ in subclasses of typing.Protocol raises RecursionError</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45166">get_type_hints + Final + future annotations = TypeError</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45187">Some tests in test_socket are not run</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45212">dangling threads in skipped tests in test_socket</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45229">always use unittest for collecting tests in regrtests</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45238">debug() in IsolatedAsyncioTestCase</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45310">test_multiprocessing_forkserver: test_shared_memory_basics() failed with FileExistsError: [Errno 17] File exists: '/test01_tsmb'</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45385">reference leak from descr_check</a>.</li>
+  </ul></li>
+</ul>
 
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
+<h3>New features in 15.0-0</h3>
 <ul>
   <li>GCC provides:
   <ul>
@@ -143,9 +225,6 @@ An <a href="https://github.com/libhugetlbfs/libhugetlbfs/issues/52">issue</a> ha
     <li>Version 2021.3.0, see the <a href="https://software.intel.com/content/www/us/en/develop/articles/intel-oneapi-threading-building-blocks-release-notes.html">release notes</a> for details.</li>
   </ul></li>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 14.0-3</h3>
 <ul>
