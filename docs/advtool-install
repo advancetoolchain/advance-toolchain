@@ -303,11 +303,11 @@ rpm --import gpg-pubkey-6976a827-5164221b
 # Begin of configuration file
 [advance-toolchain]
 name=Advance Toolchain IBM FTP
-baseurl=ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/<em>RHELX</em>
+baseurl=http://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/<em>RHELX</em>
 failovermethod=priority
 enabled=1
 gpgcheck=1
-gpgkey=ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/<em>RHELX</em>/gpg-pubkey-6976a827-5164221b
+gpgkey=http://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/<em>RHELX</em>/gpg-pubkey-6976a827-5164221b
 # End of configuration file
 </pre>
 
@@ -457,7 +457,7 @@ rpm --import gpg-pubkey-6976a827-5164221b
 	</li>
 	<li>Add IBM FTP to the repository list:
 	<pre>
-zypper addrepo ftp://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/<em>SLES_X</em> "Advance Toolchain"
+zypper addrepo http://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/<em>SLES_X</em> "Advance Toolchain"
 </pre>
 
 	<p>Replace <em>SLES_X</em> with the SLES release that you are using.</p>
