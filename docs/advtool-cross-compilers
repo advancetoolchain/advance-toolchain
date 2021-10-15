@@ -139,7 +139,7 @@
 </div>
 
 <div class="ibm-band-fluid ibm-flex ibm-padding-top-2  ibm-padding-bottom-1">
-<p class="custom-padding-left-12px ibm-h4">IBM Advance Toolchain for Linux on Power 15.0-0 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-0">Learn more</a></p>
+<p class="custom-padding-left-12px ibm-h4">IBM Advance Toolchain for Linux on Power 15.0-1 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-1">Learn more</a></p>
 </div>
 
 <div class="ibm-band-fluid ibm-flex ibm-nospacing ibm-flex--wrap">
@@ -175,11 +175,11 @@ rpm --import gpg-pubkey-6976a827-5164221b
 # Begin of configuration file
 [advance-toolchain]
 name=Advance Toolchain IBM FTP
-baseurl=http://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/<em>RHELX</em>
+baseurl=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/<em>RHELX</em>
 failovermethod=priority
 enabled=1
 gpgcheck=1
-gpgkey=http://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/<em>RHELX</em>/gpg-pubkey-6976a827-5164221b
+gpgkey=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/<em>RHELX</em>/gpg-pubkey-6976a827-5164221b
 # End of configuration file
 </pre>
 
@@ -208,11 +208,11 @@ rpm --import gpg-pubkey-6976a827-5164221b
 # Begin of configuration file
 [advance-toolchain]
 name=Advance Toolchain IBM FTP
-baseurl=http://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_15
+baseurl=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_15
 failovermethod=priority
 enabled=1
 gpgcheck=1
-gpgkey=http://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_15/gpg-pubkey-6976a827-5164221b
+gpgkey=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_15/gpg-pubkey-6976a827-5164221b
 # End of configuration file
 </pre>
 	</li>
@@ -232,7 +232,7 @@ gpgkey=http://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/S
 	<ol>
 		<li>As root, add the IBM FTP to the repository list:
 		<pre>
-zypper addrepo http://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_15 "Advance Toolchain"
+zypper addrepo https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_15 "Advance Toolchain"
 </pre>
 
 		<p>This command creates a new repository entry called "Advance Toolchain" pointing to the IBM FTP site</p>
