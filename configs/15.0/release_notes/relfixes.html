@@ -43,6 +43,7 @@
     <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28361">bug 12889 causes setxid deadlock</a>.</li>
     <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28400">string/test-strncasecmp: cannot set locale &quot;en_US.UTF-8&quot;</a>.</li>
     <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28407">pthread_kill assumes that kill (getpid ()) is equivalent to tgkill (getpid (), gettid())</a>.</li>
+    <li><a href="https://sourceware.org/bugzilla/show_bug.cgi?id=27609">Replace nsid with args.nsid</a>.</li>
   </ul></li>
   <li>Binutils provides:
   <ul>
@@ -60,6 +61,7 @@
     <li>Fix for <a href="https://github.com/openssl/openssl/issues/16428">Runchecker failure in fuzzing build related to nul string terminations</a>.</li>
     <li>Fix for <a href="https://github.com/openssl/openssl/issues/16449">OpenSSL 1.1.1l: Build error in crypto/bio/bss_dgram.c on linux/gcc10</a>.</li>
     <li>Fix for <a href="https://github.com/openssl/openssl/issues/16529">openssl-passwd(1) doesn&#39;t give all algorithms in Description</a>.</li>
+    <li>Fix for bindhost/bindport should be freed.</li>
   </ul></li>
   <li>Python provides:
   <ul>
@@ -74,7 +76,7 @@
     <li>Fix for <a href="https://bugs.python.org/issue44050">_PyImport_FixupExtensionObject() regression in Python 3.9</a>.</li>
     <li>Fix for <a href="https://bugs.python.org/issue4442">document immutable type subclassing via __new__</a>.</li>
     <li>Fix for <a href="https://bugs.python.org/issue44594">AsyncExitStack.enter_async_context() is mishandling exception __context__</a>.</li>
-    <li>Fix for <a href="https://bugs.python.org/issue44984">Rewrite test_null_strings in _testcapi</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue44984">rewrite test_null_strings in _testcapi</a>.</li>
     <li>Fix for <a href="https://bugs.python.org/issue45011">tests fail when using pure-python instead of _asyncio</a>.</li>
     <li>Fix for <a href="https://bugs.python.org/issue45021">concurrent.futures race condition</a>.</li>
     <li>Fix for <a href="https://bugs.python.org/issue45042">many multiprocessing tests are silently skipped since 3.9</a>.</li>
@@ -84,12 +86,17 @@
     <li>Fix for <a href="https://bugs.python.org/issue45097">"The loop argument is deprecated" reported when user code does not use it</a>.</li>
     <li>Fix for <a href="https://bugs.python.org/issue45121">calling super().__init__ in subclasses of typing.Protocol raises RecursionError</a>.</li>
     <li>Fix for <a href="https://bugs.python.org/issue45166">get_type_hints + Final + future annotations = TypeError</a>.</li>
-    <li>Fix for <a href="https://bugs.python.org/issue45187">Some tests in test_socket are not run</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45187">some tests in test_socket are not run</a>.</li>
     <li>Fix for <a href="https://bugs.python.org/issue45212">dangling threads in skipped tests in test_socket</a>.</li>
     <li>Fix for <a href="https://bugs.python.org/issue45229">always use unittest for collecting tests in regrtests</a>.</li>
     <li>Fix for <a href="https://bugs.python.org/issue45238">debug() in IsolatedAsyncioTestCase</a>.</li>
     <li>Fix for <a href="https://bugs.python.org/issue45310">test_multiprocessing_forkserver: test_shared_memory_basics() failed with FileExistsError: [Errno 17] File exists: '/test01_tsmb'</a>.</li>
     <li>Fix for <a href="https://bugs.python.org/issue45385">reference leak from descr_check</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45126">cleanup and harden Connection and Cursor __init__</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45401">logging TimedRotatingFileHandler must not rename devices like /dev/null</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45461">UnicodeDecodeError: 'unicodeescape' codec can't decode byte 0x5c in position 8191: at end of string</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue20028">confusing error message when giving invalid quotechar in initializing dialect</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue24444">argparse empty choices cannot be printed in the help</a>.</li>
   </ul></li>
 </ul>
 
