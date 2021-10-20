@@ -172,7 +172,7 @@ ifeq (,$(findstring $(MAKECMDGOALS),clone edit pack))
     # lsb_release
     LSBTOOL := $(strip $(shell $(call find_prg,lsb_release)))
     ifeq ($(LSBTOOL),)
-        $(error Program lsb_release not installed... Bailing out!)
+        LSBTOOL := $(UTILITIES_ROOT)/lsb_release
     endif
     # ld
     GCC_LD := $(strip $(shell $(call find_prg,ld)))
