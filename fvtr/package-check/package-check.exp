@@ -308,6 +308,44 @@ proc test_debuginfo_pkgs { file_list } {
 	return 1
 }
 
+# This function performs a simple check of the release package
+# to validate its contents were generated as expected.
+#
+# Parameters:
+# file_list             List of files
+#                       if empty, checking installed package
+#
+# Return:
+# 0 if success or 1 if the content is invalid.
+proc test_release_pkg {{file_list {}}} {
+	global ERROR
+
+	set product_name [append_at_internal "advance-toolchain-$::env(AT_NAME)$::env(AT_MAJOR_VERSION)"]
+	if { [llength $file_list] > 0 } {
+		if { [regexp -all -line ".*/${product_name}.prod\$" $file_list] == 1 } {
+			printit "SUCCESS."
+			return 0
+		}
+	} else {
+		set package_name "${product_name}-release"
+		set error [catch {exec zypper product-info ${product_name}} product_info]
+		if { ${error} != 0 } {
+			printit "Problem found when looking for ${package_name} content..."
+			exit $ERROR
+		}
+		if { [regexp -all -line ".* not found.\$" $product_info] == 1 } {
+			printit "Problem found when looking for ${package_name} content..."
+			exit $ERROR
+		}
+		if { [regexp -all -line "Information for product ${product_name}:\$" $product_info] == 1 } {
+			printit "SUCCESS."
+			return 0
+		}
+	}
+	printit "FAILED (Bad contents)."
+	return 1
+}
+
 # This function validates the content of all packages.
 #
 # Return:
@@ -346,6 +384,10 @@ proc test_all_packages {} {
 			if { [test_at_compat_pkg ${file_list}] } {
 				set rc 1
 			}
+		} elseif { [string match *release* "${package}"] } {
+			if { [test_release_pkg ${file_list}] } {
+				set rc 1
+			}
 		} elseif { [string match *-dbg_* "${package}"] \
 			|| [string match *-debuginfo-* "${package}"] } {
 			if { [test_debuginfo_pkgs ${file_list}] } {
@@ -373,10 +415,19 @@ if {[info exists env(AT_WD)]} {
 	}
 } else {
 	# By now, if the test is being run on an installed package system,
-	# just bypass it.
-	printit "Skipping: this test should be run on a compatible mode at the\
-			build system.\t\[SUCCESS\]"
-	exit $ENOSYS
+	# just bypass it. Except for the release package on SUSE.
+	set distro [get_distro]
+	if { $env(AT_MAJOR_VERSION) >= 13.0 && ${distro} == "suse" } {
+		set at_full_ver [append_at_internal "$::env(AT_NAME)$::env(AT_MAJOR_VERSION)"]
+		printitcont "Testing advance-toolchain-${at_full_ver}-release contents..."
+		if { [test_release_pkg] == 0 } {
+			exit 0
+		}
+	} else {
+		printit "Skipping: this test should be run on a compatible mode at the\
+				build system.\t\[SUCCESS\]"
+		exit $ENOSYS
+	}
 }
 
 exit 1
