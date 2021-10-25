@@ -218,6 +218,17 @@ function build_monolithic_spec()
 				mv "${rpmspecs}/advance-toolchain_compat.spec.tmp" \
 				   "${rpmspecs}/advance-toolchain_compat.spec" || exit 1
 		fi
+
+		if [[ "$(echo "${distro_id}" | cut -d '-' -f 1)" == "suse" && -e "${config_spec}/release.spec" ]]; then
+		        echo "Prepare the release spec (SUSE only)."
+		        sed -e "$([[ -n ${build_rpm_vendor} ]] && \
+				echo "s|__RPM_VENDOR__|${build_rpm_vendor}|g" || \
+				echo "/__RPM_VENDOR__/d")" \
+			    -e "s|__TARGET_ARCH__|${build_arch}|g" \
+			    -e "s|__DISTRO_VERSION__|$(echo "${distro_id}" | cut -d '-' -f 2)|g" \
+			    "${config_spec}/release.spec" > \
+				"${rpmspecs}/advance-toolchain-release.spec"
+		fi
 	else
 		echo "For cross package builds:"
 		sed -e "s|__CROSS__|${cross}|g" "${config_spec}/monolithic_cross.spec" \

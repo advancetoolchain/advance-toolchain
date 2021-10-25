@@ -55,6 +55,9 @@ install_native ()
 		if [ -e advance-toolchain-*libnxz-${version}* ]; then
 			sudo rpm -${2}v advance-toolchain-*libnxz* || return ${?}
 		fi
+		if [ -e advance-toolchain-*-release* ]; then
+			sudo rpm -${2}v advance-toolchain-*-release* || return ${?}
+		fi
 	fi
 }
 
