@@ -1,4 +1,4 @@
-# Copyright 2017 IBM Corporation
+# Copyright 2021 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,9 @@ Prefix: %{_prefix}
 Requires: advance-toolchain-%{at_major}__CROSS__-common = %{at_major_version}-%{at_revision_number}
 
 %description
-The Advance Toolchain is a self contained toolchain which provides preview
-toolchain functionality in GCC, Binutils, GLIBC, and GDB.
+The IBM Advance Toolchain is a self-contained toolchain that provides
+open-source compilers, runtime libraries, and development tools to take
+advantage of the latest IBM Power hardware features on Linux.
 
 ####################################################
 %package -n advance-toolchain-%{at_major}__CROSS__-common
@@ -32,9 +33,9 @@ Requires(preun): info
 Prefix: %{_prefix}
 
 %description -n advance-toolchain-%{at_major}__CROSS__-common
-The Advance Toolchain is a self contained toolchain which provides preview
-toolchain functionality in GCC, Binutils, GLIBC, and GDB.
-
+The IBM Advance Toolchain is a self-contained toolchain that provides
+open-source compilers, runtime libraries, and development tools to take
+advantage of the latest IBM Power hardware features on Linux.
 This package provides common files for the Advance Toolchain.
 
 ####################################################
@@ -47,11 +48,11 @@ Requires: %{name} = %{at_major_version}-%{at_revision_number}
 Prefix: %{_prefix}
 
 %description runtime-extras
-The Advance Toolchain is a self contained toolchain which provides preview
-toolchain functionality in GCC, Binutils, GLIBC, and GDB.
-
+The IBM Advance Toolchain is a self-contained toolchain that provides
+open-source compilers, runtime libraries, and development tools to take
+advantage of the latest IBM Power hardware features on Linux.
 This package contains the runtime libraries to run programs built with the
-advance toolchain that are not present in the main cross compiler package.
+Advance Toolchain that are not present in the main cross compiler package.
 
 ####################################################
 %package mcore-libs
@@ -62,8 +63,9 @@ AutoReqProv: no
 Provides: advance-toolchain-mcore-libs = %{at_major_version}-%{at_revision_number}
 
 %description mcore-libs
-The advance toolchain is a self contained toolchain which provides preview
-toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+The IBM Advance Toolchain is a self-contained toolchain that provides
+open-source compilers, runtime libraries, and development tools to take
+advantage of the latest IBM Power hardware features on Linux.
 This package provides the necessary libraries to build multi-threaded applications
 using the specialized multi-threaded libraries Boost, SPHDE, URCU and Threading
 Building Blocks.
