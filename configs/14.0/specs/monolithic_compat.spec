@@ -13,10 +13,9 @@
 # limitations under the License.
 #
 %description
-The advance toolchain is a self contained toolchain which provides preview
-toolchain functionality in GCC, binutils and GLIBC, as well as the debug and
-profile tools GDB and Valgrind.
-It also provides a group of optimized threading libraries as well.
+The IBM Advance Toolchain is a self-contained toolchain that provides
+open-source compilers, runtime libraries, and development tools to take
+advantage of the latest IBM Power hardware features on Linux.
 
 ####################################################
 %package runtime-compat
@@ -27,8 +26,9 @@ Group: Development/Libraries
 AutoReqProv: no
 
 %description runtime-compat
-The advance toolchain is a self contained toolchain which provides preview
-toolchain functionality in GCC, binutils, GLIBC, GDB, and Valgrind.
+The IBM Advance Toolchain is a self-contained toolchain that provides
+open-source compilers, runtime libraries, and development tools to take
+advantage of the latest IBM Power hardware features on Linux.
 
 
 ####################################################

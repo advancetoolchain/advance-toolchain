@@ -13,10 +13,9 @@
 # limitations under the License.
 #
 %description
-The advance toolchain is a self contained toolchain which provides preview
-toolchain functionality in GCC, binutils and GLIBC, as well as the debug and
-profile tools GDB, Valgrind and OProfile.
-It also provides a group of optimized threading libraries as well.
+The IBM Advance Toolchain is a self-contained toolchain that provides
+open-source compilers, runtime libraries, and development tools to take
+advantage of the latest IBM Power hardware features on Linux.
 
 ####################################################
 %package runtime
@@ -37,8 +36,9 @@ Provides: advance-toolchain-runtime = %{at_major_version}-%{at_revision_number}
 BuildRequires: systemd
 
 %description runtime
-The advance toolchain is a self contained toolchain which provides preview
-toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+The IBM Advance Toolchain is a self-contained toolchain that provides
+open-source compilers, runtime libraries, and development tools to take
+advantage of the latest IBM Power hardware features on Linux.
 
 
 ####################################################
@@ -50,8 +50,9 @@ AutoReqProv: no
 Provides: advance-toolchain-devel = %{at_major_version}-%{at_revision_number}
 
 %description devel
-The advance toolchain is a self contained toolchain which provides preview
-toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+The IBM Advance Toolchain is a self-contained toolchain that provides
+open-source compilers, runtime libraries, and development tools to take
+advantage of the latest IBM Power hardware features on Linux.
 This package provides the packages necessary to build applications that use the
 features provided by the Advance Toolchain.
 
@@ -65,8 +66,9 @@ AutoReqProv: no
 Provides: advance-toolchain-mcore-libs = %{at_major_version}-%{at_revision_number}
 
 %description mcore-libs
-The advance toolchain is a self contained toolchain which provides preview
-toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+The IBM Advance Toolchain is a self-contained toolchain that provides
+open-source compilers, runtime libraries, and development tools to take
+advantage of the latest IBM Power hardware features on Linux.
 This package provides the necessary libraries to build multi-threaded applications
 using the specialized multi-threaded libraries Amino-CBB, URCU and Threading
 Building Blocks.
@@ -81,9 +83,10 @@ AutoReqProv: no
 Provides: advance-toolchain-perf = %{at_major_version}-%{at_revision_number}
 
 %description perf
-The advance toolchain is a self contained toolchain which provides preview
-toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
-This package 'perf' package contains the performance library install targets
+The IBM Advance Toolchain is a self-contained toolchain that provides
+open-source compilers, runtime libraries, and development tools to take
+advantage of the latest IBM Power hardware features on Linux.
+This 'perf' package contains the performance library install targets
 for Valgrind and OProfile.
 
 
@@ -96,10 +99,10 @@ Requires(postun): /usr/sbin/semanage, /sbin/restorecon
 Group: Development/Libraries
 
 %description selinux
-The advance toolchain is a self contained toolchain which provides preview
-toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
-The 'selinux' package contains the required labels for a system
-running SElinux.
+The IBM Advance Toolchain is a self-contained toolchain that provides
+open-source compilers, runtime libraries, and development tools to take
+advantage of the latest IBM Power hardware features on Linux.
+The 'selinux' package contains the required labels for a system running SElinux.
 
 
 ####################################################
@@ -223,8 +226,8 @@ fi
 GLIBC_VER=$(rpm -q --queryformat='%{VERSION}\n' glibc | sort -u)
 GLIBC_ABS=$(echo "${GLIBC_VER}" | awk 'BEGIN { FS="." }; { print $1$2 }' -)
 if [[ ${GLIBC_ABS} -gt %{at_glibc_ver} ]]; then
-    echo "Your current glibc version ${GLIBC_VER} is higher than the one provided by the advance toolchain glibc."
-    echo "Please, consider the possibility of installing a newer version of advance toolchain."
+    echo "Your current glibc version ${GLIBC_VER} is higher than the one provided by the Advance Toolchain glibc."
+    echo "Please, consider the possibility of installing a newer version of Advance Toolchain."
 fi
 
 #---------------------------------------------------

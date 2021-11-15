@@ -1,4 +1,4 @@
-# Copyright 2017 IBM Corporation
+# Copyright 2021 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,10 +13,9 @@
 # limitations under the License.
 #
 %description
-The advance toolchain is a self contained toolchain which provides preview
-toolchain functionality in GCC, binutils and GLIBC, as well as the debug and
-profile tools GDB, Valgrind and OProfile.
-It also provides a group of optimized threading libraries as well.
+The IBM Advance Toolchain is a self-contained toolchain that provides
+open-source compilers, runtime libraries, and development tools to take
+advantage of the latest IBM Power hardware features on Linux.
 
 ####################################################
 %package runtime-at__AT_OLD_VER__-compat
@@ -30,8 +29,9 @@ Requires(postun): /sbin/service
 Group: Development/Libraries
 
 %description runtime-at__AT_OLD_VER__-compat
-The advance toolchain is a self contained toolchain which provides preview
-toolchain functionality in GCC, binutils, GLIBC, GDB, Valgrind, and OProfile.
+The IBM Advance Toolchain is a self-contained toolchain that provides
+open-source compilers, runtime libraries, and development tools to take
+advantage of the latest IBM Power hardware features on Linux.
 This package provides a runtime compatibility mode for programs compiled with
 version __AT_OLD_VER__ of the Advance Toolchain.
 

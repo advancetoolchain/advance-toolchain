@@ -57,8 +57,8 @@ Requires:       product(SUSE_SLE) >= __DISTRO_VERSION__
 AutoReqProv:    no
 
 %description
-The Advance Toolchain for Linux on IBM Power is a self-contained toolchain that
-provides open-source compilers, runtime libraries, and development tools to take
+The IBM Advance Toolchain is a self-contained toolchain that provides
+open-source compilers, runtime libraries, and development tools to take
 advantage of the latest IBM Power hardware features on Linux.
 
 %prep
@@ -82,8 +82,8 @@ cat >$RPM_BUILD_ROOT/etc/products.d/%{product}.prod << EOF
   <arch>__TARGET_ARCH__</arch>
   <summary>Advance Toolchain</summary>
   <description>
-&lt;p&gt;The Advance Toolchain for Linux on IBM Power is a self-contained toolchain that 
-provides open-source compilers, runtime libraries, and development tools to take 
+&lt;p&gt;The IBM Advance Toolchain is a self-contained toolchain that provides 
+open-source compilers, runtime libraries, and development tools to take 
 advantage of the latest IBM Power hardware features on Linux.&lt;/p&gt;
   </description>
   <urls>
