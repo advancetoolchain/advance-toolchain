@@ -142,7 +142,7 @@ function myFunction() {
 
 <div class="ibm-band-fluid ibm-flex  ibm-flex--wrap ibm-padding-top-2 ibm-padding-bottom-1">
 <div class="ibm-col-12-12">
-<p class="ibm-h4">IBM Advance Toolchain for Linux on Power 15.0-1 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-1">Learn more</a></p>
+<p class="ibm-h4">IBM Advance Toolchain for Linux on Power 13.0-5 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at13.0-5">Learn more</a></p>
 &nbsp;
 
 <p class="ibm-h4">We frequently release updates to each of the Advance Toolchain versions. Find links to the release notes (from year 2020) for the updates, newest to oldest, in the following table.</p>
@@ -167,6 +167,10 @@ function myFunction() {
 	<thead>
 	</thead>
 	<tbody>
+		<tr>
+			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at13.0-5" target="_blank">Advance Toolchain 13.0-5</a></td>
+			<td>12/03/2021</td>
+		</tr>
 		<tr>
 			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-1" target="_blank">Advance Toolchain 15.0-1</a></td>
 			<td>10/22/2021</td>
