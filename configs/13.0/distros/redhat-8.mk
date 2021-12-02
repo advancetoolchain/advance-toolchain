@@ -74,7 +74,7 @@ ifndef AT_DISTRO_REQ_PKGS
     AT_NATIVE_PKGS_REQ := libxslt docbook-style-xsl qt5-devel \
                           autogen-libopts sqlite-devel xz-devel
     AT_COMMON_PKGS_REQ := zlib-devel ncurses-devel flex bison texinfo \
-                          createrepo glibc-devel subversion gawk \
+                          createrepo glibc-devel gawk \
                           rsync curl bc automake libstdc\\+\\+-static \
                           redhat-lsb-core autoconf bzip2-[0-9] libtool-[0-9] \
                           gzip rpm-build-[0-9] rpm-sign gcc-c++ imake wget \
