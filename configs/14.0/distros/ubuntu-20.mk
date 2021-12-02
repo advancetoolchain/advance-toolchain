@@ -69,7 +69,7 @@ ifndef AT_DISTRO_REQ_PKGS
                           libc6-dev libbz2-dev xsltproc docbook-xsl \
                           libsqlite3-dev liblzma-dev
     AT_COMMON_PKGS_REQ := zlib1g-dev libncurses5-dev ncurses-term flex bison \
-                          texinfo subversion gawk fakeroot debhelper \
+                          texinfo gawk fakeroot debhelper \
                           autoconf rsync curl bc libxml2-utils automake \
                           dpkg-sig xutils-dev libtool wget dh-systemd \
                           docbook2x pkg-config autoconf-archive make \
