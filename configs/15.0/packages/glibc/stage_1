@@ -154,8 +154,7 @@ atcfg_configure()
 		AUTOCONF="${autoconf}" \
 		CC="${at_dest}/bin/gcc -m${AT_BIT_SIZE}" \
 		CFLAGS="-g -O2 ${secure_plt:+-msecure-plt} \
-			-Wno-error=maybe-uninitialized \
-			-Wno-error=array-bounds" \
+			-Wno-error=maybe-uninitialized" \
 		CXX="/bin/false" \
 		libc_cv_forced_unwind="yes" \
 		libc_cv_c_cleanup="yes" \
@@ -185,8 +184,7 @@ atcfg_configure()
 		AUTOCONF="${autoconf}" \
 		CC="${at_dest}/bin/${target64:-${target}}-gcc -m${AT_BIT_SIZE}" \
 		CFLAGS="-g -O2 \
-			-Wno-error=maybe-uninitialized \
-			-Wno-error=array-bounds" \
+			-Wno-error=maybe-uninitialized" \
 		CPPFLAGS="-isystem $(pwd)/systemtap" \
 		CXX="/bin/false" \
 		AR="${at_dest}/bin/${target}-ar" \

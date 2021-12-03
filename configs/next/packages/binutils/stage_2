@@ -32,7 +32,7 @@ atcfg_configure() {
 		# Configure command for native builds
 		CC=${at_dest}/bin/gcc \
 		CXX=${at_dest}/bin/g++ \
-		CFLAGS="-g -O2 -Wno-error=array-bounds -Wno-error=address" \
+		CFLAGS="-g -O2 -Wno-error=address" \
 		CXXFLAGS="-g -O2" \
 		${ATSRC_PACKAGE_WORK}/configure --build=${host} \
 						--host=${target} \
