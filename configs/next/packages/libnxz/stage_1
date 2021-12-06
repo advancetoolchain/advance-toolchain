@@ -29,29 +29,45 @@ ATCFG_HOLD_TEMP_BUILD='no'
 ATCFG_BUILD_STAGE_T='link'
 
 atcfg_pre_configure() {
+	configure_host=$(find_build_target ${AT_BIT_SIZE})
+	if [[ "${cross_build}" == 'no' ]]; then
+		configure_build=${configure_host}
+	else
+		configure_build=${host}
+	fi
+
+	if [[ "${cross_build}" == "yes" ]]; then
+	    install_dir="${install_transfer_cross}/usr"
+	else
+	    install_dir="${install_transfer}"
+	fi
+
 	# The bin and lib directories depend on the word size, e.g.
 	# configure_bindir may be set to bin, bin32, or bin64.
-	configure_libdir=${configure_prefix}/$(find_build_libdir ${AT_BIT_SIZE})
+	configure_libdir=${install_dir}/$(find_build_libdir ${AT_BIT_SIZE})
 }
 
 atcfg_configure() {
-	# libnxz do not use autoconf
-	${SUB_MAKE} clean
-	# Hack to get the version outside the git repository.
-	cat lib/Makefile | \
-		sed "s/git describe --tags | cut -d - -f 1,2 | tr - ./echo ${ATSRC_PACKAGE_VER}/" \
-		> lib/Makefile.temp
-        [[ ${?} -eq 0 ]] && mv lib/Makefile.temp lib/Makefile || exit 1
+	if [[ "${cross_build}" == "yes" ]]; then
+		at_ar="${at_dest}/bin/${target}-ar"
+	else
+		at_ar="${at_dest}/bin/ar"
+	fi
+
+	# In gcc10 the default is now -fno-common. In order to not have multiple
+	# definitions -fcommon is needed.
+	AR="${at_ar}" \
+	CC="${at_dest}/bin/${target64:-${target}}-gcc" \
+	CFLAGS="-O3 -g -std=gnu11 -fcommon -m${AT_BIT_SIZE}" \
+	${ATSRC_PACKAGE_WORK}/configure --build="${configure_build}" \
+					--host="${configure_host}" \
+					--prefix="${install_dir}" \
+					--libdir="${configure_libdir}"
 }
 
 atcfg_make() {
-	# In gcc10 the default is now -fno-common. In order to not have multiple
-	# definitions -fcommon is needed.
-	configure_cc="${at_dest}/bin/${target64:-${target}}-gcc"
 	PATH="${at_dest}/bin:${PATH}" \
-	${SUB_MAKE} \
-	CC="${configure_cc} -m${AT_BIT_SIZE}" \
-	FLG="-std=gnu11 -fcommon -g"
+	${SUB_MAKE}
 }
 
 atcfg_make_check() {
@@ -61,19 +77,7 @@ atcfg_make_check() {
 	fi
 }
 
-atcfg_pre_install() {
-	if [[ "${cross_build}" == "yes" ]]; then
-		install_dir="${install_transfer_cross}/usr"
-	else
-		install_dir="${install_transfer}"
-	fi
-}
-
-
 atcfg_install() {
 	PATH="${at_dest}/bin:${PATH}" \
-	PREFIX="${install_dir}" \
-	LIBDIR="${install_dir}/${configure_libdir}/" \
 	${SUB_MAKE} install
 }
-
