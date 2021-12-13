@@ -27,7 +27,8 @@ if { $env(AT_MAJOR_VERSION) < 11.0 } {
 proc check_systemtap {readelf lib} {
 	global WARNING
 	global ERROR
-	if {[catch {exec $readelf --notes $lib | grep stapsdt}]} {
+	if {[catch {exec -ignorestderr -- \
+			$readelf --notes $lib 2>/dev/null | grep stapsdt}]} {
 		printit "Could not find systemtap probes in $lib" $ERROR
 		return 1
 	} else {
