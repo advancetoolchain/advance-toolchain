@@ -62,7 +62,9 @@ set executables [ exec find $at_dir -type f -perm /111 | \
 			grep -Ev "\.debug$" ]
 foreach exe $executables {
 	if { [is_dynlink ${exe}] } {
-		set interp_info [exec ${at_dir}/bin/readelf -l ${exe}]
+		set interp_info [exec -ignorestderr \
+				     ${at_dir}/bin/readelf -l ${exe} \
+				     2>/dev/null]
 		if { [regexp -line "interpreter: (.*)\]$" ${interp_info} match \
 			  interpreter]} {
 			set interpreter2 [file normalize ${interpreter}]
