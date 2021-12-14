@@ -153,7 +153,7 @@ atcfg_configure()
 	if [[ "${cross_build}" == "no" ]]; then
 		AUTOCONF="${autoconf}" \
 		CC="${at_dest}/bin/gcc -m${AT_BIT_SIZE}" \
-		CFLAGS="-g -O2 ${secure_plt:+-msecure-plt}" \
+		CFLAGS="-g -O2 ${secure_plt:+-msecure-plt} -Wno-error=attribute-alias" \
 		CXX="/bin/false" \
 		libc_cv_forced_unwind="yes" \
 		libc_cv_c_cleanup="yes" \
