@@ -66,6 +66,9 @@ proc process_deb {package expected} {
 	global ENOSYS
 
 	set at_full_ver [append_at_internal ${at_ver_rev}]
+	if { $::env(AT_MAJOR_VERSION) >= 13.0 } {
+		set at_full_ver [string map {- .} ${at_full_ver}]
+	}
 	set version "(= ${at_full_ver})"
 
 	# On AT 15.0, all Pre-Depends have been replaced with Depends.

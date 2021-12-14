@@ -15,7 +15,7 @@
 Source: advance-toolchain-__AT_MAJOR_INTERNAL__
 Section: devel
 Priority: optional
-Maintainer: Advance Toolchain
+Maintainer: Advance Toolchain <at@build>
 
 Package: advance-toolchain-runtime
 Architecture: ppc64el

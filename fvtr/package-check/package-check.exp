@@ -103,11 +103,12 @@ proc get_deb_files { package_name } {
 # This procedure gets the package flavor (runtime, devel, and etc).
 #
 # Parameters:
+# ext                   rpm or deb
 # package_name		name of the package.
 #
 # Return:
 # the package flavor.
-proc get_pkg_flavor { package_name } {
+proc get_pkg_flavor { ext package_name } {
 	# Using the global scope ERROR variable
 	global ERROR
 
@@ -117,6 +118,9 @@ proc get_pkg_flavor { package_name } {
 	}
 
 	set ver_rev "$::env(AT_MAJOR_VERSION)-$::env(AT_REVISION_NUMBER)"
+	if { $::env(AT_MAJOR_VERSION) >= 13.0 && ${ext} == "deb" } {
+		set ver_rev [string map {- .} ${ver_rev}]
+	}
 
 	# Cross compiled packages have different name patterns so that flavor
 	# should be parsed a bit different than native packages.
@@ -134,7 +138,7 @@ proc get_pkg_flavor { package_name } {
 			${package_name} pkg_flavor] } {
 			return "cross_${pkg_flavor}"
 		} else {
-			printit "Unabled to get the package flavor of: \
+			printit "Unable to get the package flavor of: \
 				${package_name}"
 			exit $ERROR
 		}
@@ -144,10 +148,9 @@ proc get_pkg_flavor { package_name } {
 		"${prefix}?(\\w\+(-\\w\+)?)\[-_\]${ver_rev}" \
 		${package_name} -> pkg_flavor] } {
                 return ${pkg_flavor}
-        } else {
-		printit "Unabled to get the package flavor of: ${package_name}"
-		exit $ERROR
-	}
+        }
+	printit "Unable to get the package flavor of: ${package_name}"
+	exit $ERROR
 }
 
 # This function tests following conditions for the package:
@@ -156,12 +159,13 @@ proc get_pkg_flavor { package_name } {
 # - It distributes only allowed files.
 #
 # Parameters:
+# ext                   rpm or deb
 # file_list		List of files
 # package_name		Package name
 #
 # Return:
 # 0 if success or 1 if the content is invalid.
-proc test_at_pkgs { file_list package_name } {
+proc test_at_pkgs { ext file_list package_name } {
 	set all_files [get_number_of_files ${file_list}]
 	set debug_files [get_number_of_debug_files ${file_list}]
 
@@ -193,7 +197,7 @@ proc test_at_pkgs { file_list package_name } {
 		"^.*/share/info/.*$" \
 		"^.*/pkgconfig/.*$"}
 
-	set pkg_flavor [get_pkg_flavor ${package_name}]
+	set pkg_flavor [get_pkg_flavor ${ext} ${package_name}]
 	# If there are exclusion patterns for the given package
 	# then apply checks.
 	if { [info exists ${pkg_flavor}_exclude] } {
@@ -389,7 +393,7 @@ proc test_all_packages {} {
 				set rc 1
 			}
 		} else {
-			if { [test_at_pkgs ${file_list} ${package}] } {
+			if { [test_at_pkgs ${ext} ${file_list} ${package}] } {
 				set rc 1
 			}
 		}

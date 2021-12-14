@@ -15,7 +15,7 @@
 Source: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__
 Section: devel
 Priority: optional
-Maintainer: Advance Toolchain
+Maintainer: Advance Toolchain <at@build>
 
 Package: advance-toolchain-cross__BUILD_ARCH__
 Architecture: any
