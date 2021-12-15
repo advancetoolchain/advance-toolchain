@@ -1,1 +1,0 @@
-../../7.1/specs/monolithic_at-compat.spec
