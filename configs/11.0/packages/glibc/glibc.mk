@@ -1,1 +1,0 @@
-../../../10.0/packages/glibc/glibc.mk
