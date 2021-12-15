@@ -1,1 +1,0 @@
-redhat-6.mk
