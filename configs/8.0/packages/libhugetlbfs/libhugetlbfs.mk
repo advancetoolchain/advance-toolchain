@@ -1,1 +1,0 @@
-../../../7.1/packages/libhugetlbfs/libhugetlbfs.mk
