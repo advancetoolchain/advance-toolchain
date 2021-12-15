@@ -1,1 +1,90 @@
-../../../11.0/packages/golang/stage_1
+#!/usr/bin/env bash
+#
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# Golang build parameters for stage 1
+# =====================================
+#
+
+source ${utilities}/bitsize_selection.sh
+
+# Tell the build system to hold the temp install folder
+ATCFG_HOLD_TEMP_INSTALL='no'
+# Tell the build system to hold the temp build folder
+ATCFG_HOLD_TEMP_BUILD='no'
+# Build in the source code directory
+ATCFG_BUILD_STAGE_T='link'
+# Don't fail if stage final install place doesn't exist
+ATCFG_INSTALL_PEDANTIC="no"
+
+atcfg_pre_configure ()
+{
+	stepid="golang_1"
+	go_dest="/usr/local/go/"
+	go_build="${builds}/${stepid}"
+	bootstrap="${go_build}/boot/"
+	install_transfer_go="${tmp_dir}/golang_1/${go_dest}"
+}
+
+atcfg_configure ()
+{
+
+	mkdir -p ${bootstrap} && pushd $_
+	tar -zxf ${ATSRC_PACKAGE_WORK}/go1.8.1.linux-ppc64le.tar.gz --strip-components 1
+	popd
+}
+
+atcfg_make ()
+{
+	cd ${go_build}/src/
+	GOROOT_BOOTSTRAP=${bootstrap} \
+	GOROOT_FINAL=${go_dest} \
+		./make.bash
+}
+
+atcfg_make_check() {
+	cd ${go_build}/src/
+	PATH=${go_build}/bin/:${PATH} \
+	GOROOT=${go_build} \
+		./run.bash --no-rebuild
+}
+
+atcfg_pre_install ()
+{
+	# Remove bootstrap files.
+	rm -rf ${bootstrap}
+	mkdir -p ${install_transfer_go}
+}
+
+atcfg_install ()
+{
+	cp -r ${go_build}/* ${install_transfer_go}
+}
+
+# Collect the file list.
+atcfg_posti_hacks ()
+{
+	filelist="${dynamic_spec}/golang/${stepid}.filelist"
+
+	dirname ${filelist} | xargs mkdir -p
+	find ${install_transfer_go} -type f -print > ${filelist}
+	find ${install_transfer_go} -type l -print >> ${filelist}
+
+	# Fix the paths on the final file list.
+	cat ${filelist} | sort -u | sed "s|${install_transfer_go}|${go_dest}|g" \
+	    > ${filelist}.seg
+	mv ${filelist}.seg ${filelist}
+}
