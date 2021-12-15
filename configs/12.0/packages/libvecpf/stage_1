@@ -1,1 +1,145 @@
-../../../11.0/packages/libvecpf/stage_1
+#!/usr/bin/env bash
+#
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+source ${AT_BASE}/scripts/utilities/bitsize_selection.sh
+
+# Libvecpf build parameters for stage 1 32 or 64 bits
+# ============================================
+#
+
+# Tell the build system to hold the temp install folder
+ATCFG_HOLD_TEMP_INSTALL='no'
+# Tell the build system to hold the temp build folder
+ATCFG_HOLD_TEMP_BUILD='no'
+# Build in a new directory
+ATCFG_BUILD_STAGE_T='dir'
+
+atcfg_pre_configure() {
+	# Prepare configure_build and configure_host variables, which are
+	# passed as parameters to configure as --build and --host,
+	# respectively.
+	#
+	# The variable configure_target and the parameter --target are not
+	# required because this is not a Canadian Cross Compiler.
+	#
+	# The variable host is passed down to this file and holds the system
+	# where advance toolchain is being built on.
+	#
+	# Native builds may have two targets, i.e.: 32 and 64 bits, regardless
+	# of the word size of the building system. This could trick the
+	# configure script into thinking that this is a cross build, when it is
+	# not, e.g.:
+	#   configure --build=powerpc64-linux-gnu --host=powerpc-linux-gnu
+	#
+	# Therefore, on native builds, we force configure_build to have the
+	# same value as configure_host.
+	configure_host=$(find_build_target ${AT_BIT_SIZE})
+	if [[ "${cross_build}" == 'no' ]]; then
+		configure_build=${configure_host}
+	else
+		configure_build=${host}
+	fi
+
+	# Prepare the directory variables: configure_prefix, configure_bindir,
+	# configure_libdir, and configure_includedir, which are passed as
+	# arguments to configure as --prefix, --bindir, --libdir, and
+	# --includedir, respectively.
+	#
+	# On native builds, files are installed directly under the main prefix,
+	# whereas on cross builds, a '/usr' suffix is added to it.
+	if [[ "${cross_build}" == 'yes' ]]; then
+		configure_prefix="${dest_cross}/usr"
+	else
+		configure_prefix="${at_dest}"
+	fi
+	# The bin and lib directories depend on the word size, e.g.
+	# configure_bindir may be set to bin, bin32, or bin64.
+	configure_bindir=${configure_prefix}/$(find_build_bindir ${AT_BIT_SIZE})
+	configure_libdir=${configure_prefix}/$(find_build_libdir ${AT_BIT_SIZE})
+	# The variable configure_includedir is not actually required, because
+	# the default value provided by configure, i.e. ${prefix}/include, is
+	# exactly what we want. However, we prepare this variable for
+	# completeness purposes.
+	configure_includedir="${configure_prefix}/include"
+	# On the other hand, the variables configure_docdir, configure_infodir,
+	# and configure_mandir are indeed required, because the documentation
+	# files of all packages should be installed at the same place, i.e.:
+	#
+	#   ${at_dest}/share/doc/pkgname
+	#   ${at_dest}/share/info
+	#   ${at_dest}/share/man
+	#
+	# Notice that we cannot use the variable configure_prefix here, because
+	# it may contain the suffixes ppc/usr/ or ppc64le/usr/.
+	configure_docdir="${at_dest}/share/doc/vecpf"
+	configure_infodir="${at_dest}/share/info"
+	configure_mandir="${at_dest}/share/man"
+}
+
+atcfg_configure() {
+	# Select the prefixed compilation tools: gcc, g++, as, ld, ar, and
+	# ranlib, so that they work on both native and cross build.
+	configure_cc="${at_dest}/bin/${target64:-${target}}-gcc"
+
+	PATH=${at_dest}/bin:${PATH} \
+	CC="${configure_cc} -m${AT_BIT_SIZE}" \
+	CFLAGS="-g -O2 -fpic" \
+	${ATSRC_PACKAGE_WORK}/configure \
+		--build=${configure_build} \
+		--host=${configure_host} \
+		--prefix=${configure_prefix} \
+		--exec-prefix=${configure_prefix} \
+		--libdir=${configure_libdir} \
+		--bindir=${configure_bindir} \
+		--includedir=${configure_includedir} \
+		--docdir=${configure_docdir} \
+		--infodir=${configure_infodir} \
+		--mandir=${configure_mandir} \
+		--enable-shared \
+		--enable-static \
+		--enable-vsx
+}
+
+
+atcfg_make() {
+	PATH=${at_dest}/bin:${PATH} ${SUB_MAKE}
+}
+
+atcfg_make_check() {
+	# Package testing is not done on a cross build.
+	if [[ "${cross_build}" == 'no' ]]; then
+		PATH=${at_dest}/bin:${PATH} ${SUB_MAKE} check
+	fi
+}
+
+atcfg_install() {
+	PATH=${at_dest}/bin:${PATH} \
+		${SUB_MAKE} install DESTDIR=${install_place}
+}
+
+
+atcfg_post_install() {
+	# Remove duplicated files prior to 64 bits final install when building
+	# for the alternate target because the main target already provides
+	# them.
+	#
+	# The main target value is stored in the variable configure_host.
+	if [[ "${configure_host}" == "${alternate_target}" ]]; then
+		rm -rf ${install_place}/${configure_prefix}/{include,share}
+		rm -rf ${install_place}/${at_dest}/share
+	fi
+}

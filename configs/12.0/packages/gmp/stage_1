@@ -1,1 +1,85 @@
-../../../11.0/packages/gmp/stage_1
+#!/usr/bin/env bash
+#
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+ATCFG_HOLD_TEMP_INSTALL='no'
+ATCFG_HOLD_TEMP_BUILD='no'
+# Build in a new directory
+ATCFG_BUILD_STAGE_T='dir'
+# Don't fail if stage final install place doesn't exist
+if [[ "${cross_build}" == "yes" ]]; then
+	ATCFG_INSTALL_PEDANTIC="no"
+fi
+
+# Pre configure settings or commands to run
+atcfg_pre_configure () {
+	cc_64=${system_cc}
+	cxx_64=${system_cxx}
+	if [[ "${cross_build}" != "yes" ]]; then
+		libdir=${at_dest}/lib
+		prefix=${at_dest}
+		if [[ "${build_arch}" == ppc64* ]]; then
+			libdir=${at_dest}/lib64
+			if [[ ! -d ${libdir} ]]; then
+				mkdir -p ${libdir}
+			fi
+			if [[ "${default_compiler}" == "32" ]]; then
+				cc_64="${gcc64}"
+				cxx_64="${gpp64}"
+				lib_stdcxx=$(find /usr/lib/gcc/ -name libstdc++.a | grep "\/64\/")
+				lib_supcxx=$(find /usr/lib/gcc/ -name libsupc++.a | grep "\/64\/")
+				cp ${lib_stdcxx} ${lib_supcxx} ${libdir}
+			fi
+		fi
+	else
+		libdir=${tmp_dir}/lib
+		prefix=${tmp_dir}
+	fi
+}
+
+# Configure native build command
+atcfg_configure () {
+	CC=${cc_64} \
+	CXX=${cxx_64} \
+	CFLAGS="-g -O" \
+	CXXFLAGS="-g -O" \
+	${ATSRC_PACKAGE_WORK}/configure --build=${host} \
+					--host=${host} \
+					--target=${host} \
+					--prefix=${prefix} \
+					--exec-prefix=${prefix} \
+					--libdir=${libdir} \
+					--enable-cxx \
+					--disable-shared
+
+}
+
+# Make build command
+atcfg_make () {
+	${SUB_MAKE} all
+}
+
+# Install build command
+atcfg_install () {
+	if [[ "${cross_build}" != "yes" ]]; then
+		make install DESTDIR=${install_place}
+	else
+		# In order to install the package at $prefix, we need to force
+		# DESTDIR value. Because if AT was built using DESTDIR, the
+		# value will be stored in MFLAGS.
+		make install DESTDIR=""
+	fi
+}
