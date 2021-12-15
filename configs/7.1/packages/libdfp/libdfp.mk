@@ -1,1 +1,0 @@
-../../../7.0/packages/libdfp/libdfp.mk
