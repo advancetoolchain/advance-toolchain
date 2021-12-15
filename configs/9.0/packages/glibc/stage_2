@@ -132,7 +132,5 @@ atcfg_post_install() {
 	else
 		# Remove unused Makefile from install
 		rm -rf "${install_place}/${dest_cross}/var/db/Makefile"
-		# Removing the created ld.so.cache to avoid further problems
-		rm -rf "${install_place}/${dest_cross}/etc/ld.so.cache"
 	fi
 }
