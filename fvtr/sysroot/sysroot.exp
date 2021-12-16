@@ -20,14 +20,6 @@ source shared.exp
 set rc 0
 set tmp_file [exec mktemp]
 
-if { $env(AT_MAJOR_VERSION) < 8.0 } {
-	if { $env(AT_CROSS_BUILD) != "yes" } {
-		printit "Skipping sysroot test: this only started to be \
-supported for native builds on AT 8.0.\t\[SUCCESS\]"
-		exit $ENOSYS
-	}
-}
-
 set CC [compiler_path]
 # Cross builds only support --sysroot=dest_cross.
 if { $env(AT_CROSS_BUILD) == "yes" } {

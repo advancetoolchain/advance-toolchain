@@ -78,7 +78,7 @@ EOF
 	    debian/changelog > debian/changelog.2
 	mv debian/changelog.2 debian/changelog
 
-	# Avoid the forced removal of /opt/at7.0.  Doing so may cause a bug
+	# Avoid the forced removal of /opt/atXX.0. Doing so may cause a bug
 	# while updating the package.
 	rm -f debian/postrm
 

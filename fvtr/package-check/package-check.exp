@@ -27,11 +27,6 @@ source ./shared.exp
 set at_dir $env(AT_DEST)
 set rc 0
 
-if { $env(AT_MAJOR_VERSION) < 8.0 } {
-	printit "Skipping: prior to AT 8.0 the runtime package had some development files.\t\[SUCCESS\]"
-	exit $ENOSYS
-}
-
 # This function calculates the total of debug files inside a list. All debug
 # files should be located in lib/debug directory (for AT packages only).
 #

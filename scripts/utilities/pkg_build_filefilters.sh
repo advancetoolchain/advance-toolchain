@@ -13,16 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
+
 
 # Function: isolate_files_by_pack_type()
 #
@@ -196,12 +187,9 @@ function process_filelist()
 #
 # Description
 #   Group filelists to be used on the cross compiler package process.
-#   - cross_files.* will end with the list of all files to be packaged.  They
-#     are used by AT < 8.0.
 #   - cross.* has the list of all files except those listed in cross-common.*,
-#     which are common files.  They started to be used in AT 8.0.
-#   - cross-runtime-extras files has a list with runtime packages used
-#     by AT > 8.0.
+#     which are common files.
+#   - cross-runtime-extras files has a list with runtime packages.
 #
 # Parameters
 #   - none

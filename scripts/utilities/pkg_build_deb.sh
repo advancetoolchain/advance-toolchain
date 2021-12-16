@@ -97,22 +97,18 @@ popd > /dev/null
 # Unfortunately, the debhelper project does not provide an easy way to change
 # the installation path of the debug information. Thus, we patch dh_strip in
 # order to be able to do so.
-#
-# We don't strip debug information for AT < 9.0 or cross.
 if [[ "${cross_build}" != "yes" ]]; then
-	if (( ${at_version} >= 9 )) || [[ "${at_version}" == next ]]; then
-		pushd ${deb_d} > /dev/null
-		cp /usr/bin/dh_strip .
+	pushd ${deb_d} > /dev/null
+	cp /usr/bin/dh_strip .
 
-		# For some distros, make sure we also use 'strip' and 'objcopy' from
-		# the binutils we just built instead of the ones from the system. This
-		# specific change will only be applied to distros with a reference to
-		# __AT_BIN__ in their *dh_change_dest.patch file.
-		patch -p1 < <(sed -e "s/__AT_BIN__/${at_dest//\//\\/}\/bin\//g" \
-				${at_supported_distros}_dh_change_dest.patch)
+	# For some distros, make sure we also use 'strip' and 'objcopy' from
+	# the binutils we just built instead of the ones from the system. This
+	# specific change will only be applied to distros with a reference to
+	# __AT_BIN__ in their *dh_change_dest.patch file.
+	patch -p1 < <(sed -e "s/__AT_BIN__/${at_dest//\//\\/}\/bin\//g" \
+			${at_supported_distros}_dh_change_dest.patch)
 
-		popd > /dev/null
-	fi
+	popd > /dev/null
 fi
 
 if [[ "${cross_build}" != "yes" \
@@ -219,30 +215,15 @@ for pkg in $(awk '/^Package:/ { print $2 }' ${deb_d}/control | grep -v dbg); do
 		# We don't need this file because the copyright file already
 		# includes the same text.
 		rm -f ${at_dest}/scripts/LICENSE
-		if (( ${at_version} >= 9 )) || [[ "${at_version}" == next ]]; then
-			# We do not distribute createldhuge-1.0.sh and restoreld.sh on
-			# AT > 8.0.
-			createldhuge="no"
-			rm -f ${at_dest}/scripts/createldhuge-1.0.sh
-			rm -f ${at_dest}/scripts/restoreld.sh
+		rm -f ${at_dest}/scripts/createldhuge-1.0.sh
+		rm -f ${at_dest}/scripts/restoreld.sh
 
-			# TLE helper is enabled for AT9 and beyond.
-			addtlehelper="yes"
-		else
-			createldhuge="yes"
-
-			# TLE is not enabled prior to AT9.
-			rm -f ${at_dest}/scripts/tle_on.sh
-			addtleherlp="no"
-		fi
+		# TLE helper is enabled for AT9 and beyond.
+		addtlehelper="yes"
 	{
 		case "${apkg}" in
 			"devel")
 				echo "${at_dest}/scripts/at-create-ibmcmp-cfg.sh"
-				if [[ "${createldhuge}" == "yes" ]]; then
-					echo "${at_dest}/scripts/createldhuge-1.0.sh"
-					echo "${at_dest}/scripts/restoreld.sh"
-				fi
 				;;
 			"runtime")
 				if [[ "${use_systemd}" != "yes" ]]; then

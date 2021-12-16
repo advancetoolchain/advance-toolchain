@@ -43,10 +43,6 @@ if { [array names env -exact "AT_PYTHON_VER"] == "" } {
 	exit $ENOSYS
 }
 
-# AT 5.0 and 6.0 doesn't have all the Python fixes implemented on AT >= 7.0,
-# which may cause Python expected failures on Python testcases.
-check_minimum_version 7.0 "This test doesn't work prior to AT 7.0."
-
 printit "Running Python tests..."
 
 # Print environment information, if necessary.

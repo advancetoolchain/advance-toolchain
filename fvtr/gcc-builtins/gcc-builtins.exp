@@ -11,26 +11,24 @@ set CC [compiler_path]
 set tmp_file [exec mktemp]
 
 # Test for __builtin_cpu_supports() and __builtin_cpu_is() (implicitly).
-if { $env(AT_MAJOR_VERSION) >= 10.0 } {
-	printit "Testing for __builtin_cpu_supports..."
-	if { $env(AT_CROSS_BUILD) == "yes" } {
-		# Run a minimal test.  The test pass if compilation fails.
-		set ret [catch {exec ${CC} -S ${FULLPATH}/cpu-supports-cross.c
-				     -o ${tmp_file}}]
-		if { ${ret} == 0 } {
-			set rc 1
-			printit "__builtin_cpu_supports is not available." \
-				${ERROR}
-		}
-	} else {
-		if { [compile "${CC} ${FULLPATH}/cpu-supports.c -o \
+printit "Testing for __builtin_cpu_supports..."
+if { $env(AT_CROSS_BUILD) == "yes" } {
+	# Run a minimal test.  The test pass if compilation fails.
+	set ret [catch {exec ${CC} -S ${FULLPATH}/cpu-supports-cross.c
+			     -o ${tmp_file}}]
+	if { ${ret} == 0 } {
+		set rc 1
+		printit "__builtin_cpu_supports is not available." \
+			${ERROR}
+	}
+} else {
+	if { [compile "${CC} ${FULLPATH}/cpu-supports.c -o \
 ${tmp_file}"] } {
-			set rc 1
-			printit "Failed to build __builtin_cpu_supports" \
-				${ERROR}
-		} else {
-			exec "${tmp_file}"
-		}
+		set rc 1
+		printit "Failed to build __builtin_cpu_supports" \
+			${ERROR}
+	} else {
+		exec "${tmp_file}"
 	}
 }
 

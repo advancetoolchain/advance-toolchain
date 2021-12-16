@@ -18,12 +18,6 @@
 
 source shared.exp
 
-if { $env(AT_MAJOR_VERSION) < 11.0 } {
-    printit "Skipping: systemtap isn't enabled on version older than AT 11.0"
-    exit $ENOSYS
-}
-
-
 proc check_systemtap {readelf lib} {
 	global WARNING
 	global ERROR

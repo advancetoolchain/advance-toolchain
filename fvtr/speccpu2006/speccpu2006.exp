@@ -61,20 +61,7 @@ if { $TARGET64 } {
 	set LIB64_ATAN2 ${tmp}
 }
 
-# Select config set
-# Different versions of the compiler, requires different flags for specific
-# benchmarks.  A good example is what happened with 416.gamess on GCC 4.8.
-switch -regexp $env(AT_MAJOR_VERSION) {
-	"^5.0|^6.0" {
-		set cfg_set ""
-	}
-	"^7.0|^7.1|^8.0|^9.0" {
-		set cfg_set "7.0"
-	}
-	default {
-		set cfg_set "10.0"
-	}
-}
+set cfg_set "12.0"
 
 # Define the config files to use for building
 set build_configs ""

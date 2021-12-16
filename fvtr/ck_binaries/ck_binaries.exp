@@ -52,15 +52,8 @@ set tgt_exec $n_exec
 lappend tgt_exec gcc-$gcc_ver
 
 set plt_exec $as_exec
-if { $env(AT_CROSS_BUILD) == "yes" && $env(AT_MAJOR_VERSION) < 8.0 } {
-	lappend plt_exec ld.bfd c++ g++ gcc gfortran
-} else {
-	lappend plt_exec ld.bfd
-}
-
-if { $env(AT_MAJOR_VERSION) >= 9.0 } {
-	lappend plt_exec ld.gold
-}
+lappend plt_exec ld.bfd
+lappend plt_exec ld.gold
 
 # Binaries distributed with a different name on cross and non-cross
 set dif_exec {cpp elfedit embedspu gprof readelf}
@@ -103,16 +96,7 @@ foreach exe ${plt_exec} {
 
 # We only have files with alternative prefix when building for 32 & 64 bit
 if { $TARGET32 && $TARGET64 } {
-	switch -regexp $env(AT_MAJOR_VERSION) {
-		"\[4567\]\.0" {
-			# AT version < 7.1
-			set exeprefix "powerpc-linux-"
-		}
-		default {
-			# Since AT 7.1
-			set exeprefix "powerpc-linux-gnu-"
-		}
-	}
+	set exeprefix "powerpc-linux-gnu-"
 
 	foreach exe $alt_exec {
 		printitcont "Checking alt file: $at_dir/bin/${exeprefix}${exe}"

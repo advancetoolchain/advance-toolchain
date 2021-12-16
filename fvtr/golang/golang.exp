@@ -29,10 +29,6 @@ build system.\t\[SUCCESS\]"
 	exit $ENOSYS
 }
 
-if { $env(AT_MAJOR_VERSION) < 9.0 } {
-	printit "Golang is not supported prior to AT 9.0.\t\[SUCCESS\]"
-	exit $ENOSYS
-}
 if { $env(AT_MAJOR_VERSION) >= 13.0 } {
 	printit "Golang is not supported from AT 13.0.\t\[SUCCESS\]"
 	exit $ENOSYS

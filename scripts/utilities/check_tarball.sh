@@ -23,15 +23,10 @@ src_file=$2
 echo "Checking the source code tarball..."
 # Only packages that require a public source code are provided.
 src_list="binutils gcc gdb glibc gmp tbb libdfp libhugetlbfs kernel mpc \
-	  mpfr userspace-rcu valgrind"
+	  mpfr userspace-rcu valgrind libvecpf"
 # Block all the others.
 blocked_list="amino boost expat gotools libauxv libsphde openssl paflib \
 	      python tcmalloc zlib"
-
-# Started distributing libvecpf on AT 7.0-4.
-if [[ ${at_major_version} != 6.0 ]]; then
-	src_list=${src_list}" libvecpf"
-fi
 
 # Stopped distributing oprofile after AT 12.0.
 if [[ ${at_major_version%%.*} -le 12 ]]; then

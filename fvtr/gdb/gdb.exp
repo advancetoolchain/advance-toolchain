@@ -24,11 +24,6 @@ if { [array names env -exact "AT_GDB_VER"] == "" } {
 	exit $ENOSYS
 }
 
-# AT 5.0 and 6.0 used to use development versions of GDB, instead of stable
-# versions like AT >= 7.0.  Which causes issues when trying to run this
-# testcase, like when testing for GDB version.
-check_minimum_version 7.0 "This test doesn't work prior to AT 7.0."
-
 # Get GDB version in the format: X.Y.Z
 set GDB [compiler_path gdb]
 set gdb_ver [exec $GDB --version | head -n 1]

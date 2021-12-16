@@ -24,28 +24,15 @@ set rc 0
 set tmp_file [exec mktemp]
 
 if { $env(AT_CROSS_BUILD) == "yes" } {
-	if { $env(AT_MAJOR_VERSION) >= 8.0 } {
-		printit "Skipping libexpat tests: this is a cross \
+	printit "Skipping libexpat tests: this is a cross \
 compiler\t\[SUCCESS\]"
-		exit $ENOSYS
-	}
-
-	set CC [exec which gcc]
-	if { $HOST32 } {
-		set CFLAGS "-m32 -O2 -Wall"
-	}
-	if { $HOST64 } {
-		set CFLAGS "-m64 -O2 -Wall"
-	}
-	set LIB_PATH "-L $env(AT_DEST)/lib/"
-	set INCLUDE_PATH "-I $env(AT_DEST)/include/"
-} else {
-	set CC [compiler_path]
-	set CFLAGS "-m64 -O2 -Wall"
-	set LIB_PATH " "
-	set INCLUDE_PATH " "
+	exit $ENOSYS
 }
 
+set CC [compiler_path]
+set CFLAGS "-m64 -O2 -Wall"
+set LIB_PATH " "
+set INCLUDE_PATH " "
 
 printit "Testing static linking..."
 if [ compile "${CC} ${CFLAGS} -static $LIB_PATH $INCLUDE_PATH $FULLPATH/test.c \
