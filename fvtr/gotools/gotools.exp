@@ -22,11 +22,6 @@ set rc 0
 
 source ./shared.exp
 
-if { $env(AT_MAJOR_VERSION) < 8.0 } {
-	printit "Go Tools is not supported prior AT 8.0. Ignoring..."
-	exit $ENOSYS
-}
-
 # gotools is not available in cross compilers
 if { $env(AT_CROSS_BUILD) == "yes" } {
 	printit "Skipping gotools tests: this is a cross compiler\t\[SUCCESS\]"

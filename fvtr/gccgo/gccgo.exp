@@ -25,8 +25,6 @@ source ./shared.exp
 set GCCGO [compiler_path gccgo]
 set CFLAGS "-O2 -Wall"
 
-check_minimum_version 7.1 "gccgo is not supported prior to AT 7.1\t\[SUCCESS\]"
-
 printit "Running gccgo tests..."
 
 if { ![file exists $at_dir/bin/$env(AT_TARGET)-gccgo] } {
@@ -35,26 +33,23 @@ $at_dir/bin/$env(AT_TARGET)-gccgo is missing."
 	set rc 1
 }
 
-# GCC Go <= 5 do not support split-stack.
-if { ! [regexp "^7\.1|^8\.0|^9\.0" $env(AT_MAJOR_VERSION)] } {
-	printit "Test if libgo.so supports split-stack..."
-	set libs [ exec find ${at_dir} -type f -name libgo.so* ]
-	foreach f ${libs} {
-		if {[catch {exec nm -s ${f} | grep morestack} err]} {
-			printit "Library ${f} does not support split-stack" \
-				${ERROR}
-			set rc 1
-		}
-	}
-
-	printit "Test if all 32-bit go libraries were removed..."
-	set libs32dir [split [ exec find ${at_dir} -name lib ] "\n"]
-	set libs [ eval exec find ${libs32dir} -name libgo.* \
-					       -o -name libgo*begin.* ]
-	foreach f ${libs} {
-		printit "Library ${f} should have been removed." ${ERROR}
+printit "Test if libgo.so supports split-stack..."
+set libs [ exec find ${at_dir} -type f -name libgo.so* ]
+foreach f ${libs} {
+	if {[catch {exec nm -s ${f} | grep morestack} err]} {
+		printit "Library ${f} does not support split-stack" \
+			${ERROR}
 		set rc 1
 	}
+}
+
+printit "Test if all 32-bit go libraries were removed..."
+set libs32dir [split [ exec find ${at_dir} -name lib ] "\n"]
+set libs [ eval exec find ${libs32dir} -name libgo.* \
+				       -o -name libgo*begin.* ]
+foreach f ${libs} {
+	printit "Library ${f} should have been removed." ${ERROR}
+	set rc 1
 }
 
 printit "Compiling with: ${GCCGO}..."

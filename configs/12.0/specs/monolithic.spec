@@ -180,7 +180,7 @@ package or when debugging this package.
 %define _bindir %{_prefix}/bin
 
 %prep
-# Do not include createldhuge-1.0.sh and restoreld.sh on AT > 8.0.
+# Do not include createldhuge-1.0.sh and restoreld.sh.
 rm -rf %{_scriptdir}/createldhuge-1.0.sh %{_scriptdir}/restoreld.sh
 
 %build

@@ -66,21 +66,7 @@ if { [array names env -exact "AT_OPROFILE_VER"] == "" } {
 
 # Check if libjvmti_oprofile.so and libjvmpi_oprofile.so are available for 32
 # and 64 bits.
-switch -regexp $env(AT_MAJOR_VERSION) {
-	"^5\..*" {
-		# AT 5.0 supports jvmpi only (kernel limits?).
-		set java_libs {"libjvmpi_oprofile"}
-	}
-	"^6\..*|^7\.0" {
-		# AT 6.0 and 7.0 support both jvmti and jvmpi.
-		set java_libs {"libjvmti_oprofile" "libjvmpi_oprofile"}
-	}
-	default {
-		# AT 7.1 had to migrate to Java 7.1, which was the only one to
-		# support ppc64le and supports jvmti.h only.
-		set java_libs {"libjvmti_oprofile"}
-	}
-}
+set java_libs {"libjvmti_oprofile"}
 set rc [find_libs ${java_libs}]
 
 set binaries {opannotate oparchive opgprof ophelp opimport \

@@ -149,12 +149,8 @@ proc check_rpms {packages} {
 		set rpm_path "-p $::env(AT_WD)/rpms/$::env(AT_HOST_ARCH)/"
 	}
 
-	# AT 5.0 and 6.0 used to support devel and perf only.
 	set supported_pkgs {devel perf}
-	# AT 7.0 added the provides for runtime and mcore-libs.
-	if { ![regexp "^5\..*|^6\..*" $::env(AT_MAJOR_VERSION)] } {
-		lappend supported_pkgs runtime mcore-libs
-	}
+	lappend supported_pkgs runtime mcore-libs
 	foreach pkg ${supported_pkgs} {
 		set pkg_path [lindex ${packages} \
 				     [lsearch ${packages} \

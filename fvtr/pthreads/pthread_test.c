@@ -15,8 +15,8 @@
 
 /*
    Built with:
-   export PATH=/opt/at6.0/bin:$PATH
-   gcc -mcpu=power7 -mtune=power7 -m64 -g -lpthread -o pthread_test pthread_test.c
+   export PATH=/opt/at12.0/bin:$PATH
+   gcc -mcpu=power8 -mtune=power8 -m64 -g -lpthread -o pthread_test pthread_test.c
 */
 
 #include <errno.h>

@@ -468,7 +468,7 @@ proc get_packaging_system {} {
 proc get_packages_list { system } {
 	set at_ver_rev $::env(AT_MAJOR_VERSION)-$::env(AT_REVISION_NUMBER)
 	printit "Using AT version: ${at_ver_rev}"
-	# Example of $pkg_name: at7.0-rc2
+	# Example of $pkg_name: at13.0-5-rc2
 	set pkg_name [append_at_internal \
 			    "$::env(AT_NAME)$::env(AT_MAJOR_VERSION)"]
 
