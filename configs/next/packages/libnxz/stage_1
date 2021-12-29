@@ -36,15 +36,17 @@ atcfg_pre_configure() {
 		configure_build=${host}
 	fi
 
-	if [[ "${cross_build}" == "yes" ]]; then
-	    install_dir="${install_transfer_cross}/usr"
+	# On native builds, files are installed directly under the main prefix,
+	# whereas on cross builds, a '/usr' suffix is added to it.
+	if [[ "${cross_build}" == 'yes' ]]; then
+		configure_prefix="${dest_cross}/usr"
 	else
-	    install_dir="${install_transfer}"
+		configure_prefix="${at_dest}"
 	fi
 
 	# The bin and lib directories depend on the word size, e.g.
 	# configure_bindir may be set to bin, bin32, or bin64.
-	configure_libdir=${install_dir}/$(find_build_libdir ${AT_BIT_SIZE})
+	configure_libdir=${configure_prefix}/$(find_build_libdir ${AT_BIT_SIZE})
 }
 
 atcfg_configure() {
@@ -58,16 +60,14 @@ atcfg_configure() {
 	# definitions -fcommon is needed.
 	AR="${at_ar}" \
 	CC="${at_dest}/bin/${target64:-${target}}-gcc" \
-	CFLAGS="-O3 -g -std=gnu11 -fcommon -m${AT_BIT_SIZE}" \
 	${ATSRC_PACKAGE_WORK}/configure --build="${configure_build}" \
 					--host="${configure_host}" \
-					--prefix="${install_dir}" \
+					--prefix="${configure_prefix}" \
 					--libdir="${configure_libdir}"
 }
 
 atcfg_make() {
-	PATH="${at_dest}/bin:${PATH}" \
-	${SUB_MAKE}
+	PATH="${at_dest}/bin:${PATH}" ${SUB_MAKE}
 }
 
 atcfg_make_check() {
@@ -78,6 +78,6 @@ atcfg_make_check() {
 }
 
 atcfg_install() {
-	PATH="${at_dest}/bin:${PATH}" \
-	${SUB_MAKE} install
+	PATH="${at_dest}/bin:${PATH}" ${SUB_MAKE} install \
+						  DESTDIR=${install_place}
 }
