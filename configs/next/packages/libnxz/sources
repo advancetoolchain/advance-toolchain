@@ -41,4 +41,4 @@ ATSRC_PACKAGE_TARS=
 ATSRC_PACKAGE_MAKE_CHECK=
 ATSRC_PACKAGE_DISTRIB=yes
 ATSRC_PACKAGE_BUNDLE=libnxz
-ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://raw.githubusercontent.com/libnxz/power-gzip/__REVISION__/lib/Versions" | grep LIBNXZ | sed "s/^LIBNXZ_\([0-9]*\.[0-9]*\)\..*$/v\1/"'
+ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://raw.githubusercontent.com/libnxz/power-gzip/__REVISION__/configure.ac" | grep -m 1 "^AC_INIT" | sed "s/^.*\[\([0-9\.][0-9\.]*\)].*$/\1/"'
