@@ -152,14 +152,14 @@ atcfg_post_install() {
 	# Remove all installed built files
 	rm -rf "${install_place}/${at_dest}"
 	# Create processor lib/lib64 targets
-	mkdir -p "${install_place}/${at_dest}/lib/${AT_OPTIMIZE_CPU}"
-	mkdir -p "${install_place}/${at_dest}/lib64/${AT_OPTIMIZE_CPU}"
+	mkdir -p "${install_place}/${at_dest}/lib/glibc-hwcaps/${AT_OPTIMIZE_CPU}"
+	mkdir -p "${install_place}/${at_dest}/lib64/glibc-hwcaps/${AT_OPTIMIZE_CPU}"
 	# Place saved libs on created final target
-	pushd "${install_place}/${at_dest}/lib/${AT_OPTIMIZE_CPU}"
+	pushd "${install_place}/${at_dest}/lib/glibc-hwcaps/${AT_OPTIMIZE_CPU}"
 	[[ -e "${install_place}/${AT_OPTIMIZE_CPU}.tar.gz" ]] && \
 		tar xzf "${install_place}/${AT_OPTIMIZE_CPU}.tar.gz"
 	popd
-	pushd "${install_place}/${at_dest}/lib64/${AT_OPTIMIZE_CPU}"
+	pushd "${install_place}/${at_dest}/lib64/glibc-hwcaps/${AT_OPTIMIZE_CPU}"
 	[[ -e "${install_place}/${AT_OPTIMIZE_CPU}_64.tar.gz" ]] && \
 		tar xzf "${install_place}/${AT_OPTIMIZE_CPU}_64.tar.gz"
 	popd
