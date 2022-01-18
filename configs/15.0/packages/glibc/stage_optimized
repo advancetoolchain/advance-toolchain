@@ -35,22 +35,22 @@ atcfg_posti_hacks() {
 	# Set the base library path
 	libdir=${at_dest}/${base_libdir}
 	# Find the proper glibc final libc filename
-	libname=$(basename $(ls ${libdir}/${AT_OPTIMIZE_CPU}/libc{-[0-9]*,}.so))
+	libname=$(basename $(ls ${libdir}/glibc-hwcaps/${AT_OPTIMIZE_CPU}/libc{-[0-9]*,}.so))
 	local ld_so=$(basename $(ls ${libdir}/ld${AT_BIT_SIZE%32}.so.[0-9]))
-	# Replace ${libdir}/${AT_OPTIMIZE_CPU}/libc.so with a version compatible with binutils
+	# Replace ${libdir}/glibc-hwcaps/${AT_OPTIMIZE_CPU}/libc.so with a version compatible with binutils
 	# built with the --with_sysroot option set to ${at_dest}
-	[[ -e ${libdir}/${AT_OPTIMIZE_CPU}/libc.so ]] && \
-		mv -f ${libdir}/${AT_OPTIMIZE_CPU}/libc.so ${libdir}/${AT_OPTIMIZE_CPU}/libc.so.orig
-	echo "/* GNU ld script"                                                > ${libdir}/${AT_OPTIMIZE_CPU}/libc.so
-	echo "   Use the shared library, but some functions are only in"      >> ${libdir}/${AT_OPTIMIZE_CPU}/libc.so
-	echo "   the static library, so try that secondarily."                >> ${libdir}/${AT_OPTIMIZE_CPU}/libc.so
-	echo "   You will notice that the paths do not contain ${at_dest}."   >> ${libdir}/${AT_OPTIMIZE_CPU}/libc.so
-	echo "   This is because the Advance Toolchain binutils uses"         >> ${libdir}/${AT_OPTIMIZE_CPU}/libc.so
-	echo "   --with-sysroot which causes the linker to append ${at_dest}" >> ${libdir}/${AT_OPTIMIZE_CPU}/libc.so
-	echo "   onto the paths found in this ld script.  */"                 >> ${libdir}/${AT_OPTIMIZE_CPU}/libc.so
-	echo "GROUP ( libc.so.6 libc_nonshared.a AS_NEEDED ( ${ld_so} ) )"     >> ${libdir}/${AT_OPTIMIZE_CPU}/libc.so
-	[[ -e ${libdir}/${AT_OPTIMIZE_CPU}/libc.so.orig ]] && \
-		rm ${libdir}/${AT_OPTIMIZE_CPU}/libc.so.orig
+	[[ -e ${libdir}/glibc-hwcaps/${AT_OPTIMIZE_CPU}/libc.so ]] && \
+		mv -f ${libdir}/glibc-hwcaps/${AT_OPTIMIZE_CPU}/libc.so ${libdir}/glibc-hwcaps/${AT_OPTIMIZE_CPU}/libc.so.orig
+	echo "/* GNU ld script"                                                > ${libdir}/glibc-hwcaps/${AT_OPTIMIZE_CPU}/libc.so
+	echo "   Use the shared library, but some functions are only in"      >> ${libdir}/glibc-hwcaps/${AT_OPTIMIZE_CPU}/libc.so
+	echo "   the static library, so try that secondarily."                >> ${libdir}/glibc-hwcaps/${AT_OPTIMIZE_CPU}/libc.so
+	echo "   You will notice that the paths do not contain ${at_dest}."   >> ${libdir}/glibc-hwcaps/${AT_OPTIMIZE_CPU}/libc.so
+	echo "   This is because the Advance Toolchain binutils uses"         >> ${libdir}/glibc-hwcaps/${AT_OPTIMIZE_CPU}/libc.so
+	echo "   --with-sysroot which causes the linker to append ${at_dest}" >> ${libdir}/glibc-hwcaps/${AT_OPTIMIZE_CPU}/libc.so
+	echo "   onto the paths found in this ld script.  */"                 >> ${libdir}/glibc-hwcaps/${AT_OPTIMIZE_CPU}/libc.so
+	echo "GROUP ( libc.so.6 libc_nonshared.a AS_NEEDED ( ${ld_so} ) )"     >> ${libdir}/glibc-hwcaps/${AT_OPTIMIZE_CPU}/libc.so
+	[[ -e ${libdir}/glibc-hwcaps/${AT_OPTIMIZE_CPU}/libc.so.orig ]] && \
+		rm ${libdir}/glibc-hwcaps/${AT_OPTIMIZE_CPU}/libc.so.orig
 }
 
 
@@ -139,9 +139,9 @@ atcfg_post_install() {
 	# Remove all installed built files
 	rm -rf "${install_place}/${at_dest}"
 	# Create processor lib target
-	mkdir -p "${install_place}/${at_dest}/${base_libdir}/${AT_OPTIMIZE_CPU}"
+	mkdir -p "${install_place}/${at_dest}/${base_libdir}/glibc-hwcaps/${AT_OPTIMIZE_CPU}"
 	# Place saved libs on created final target
-	pushd "${install_place}/${at_dest}/${base_libdir}/${AT_OPTIMIZE_CPU}"
+	pushd "${install_place}/${at_dest}/${base_libdir}/glibc-hwcaps/${AT_OPTIMIZE_CPU}"
 	tar xzf "${install_place}/${AT_OPTIMIZE_CPU}.tar.gz"
 	popd
 }
