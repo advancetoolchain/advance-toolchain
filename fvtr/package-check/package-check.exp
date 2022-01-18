@@ -412,7 +412,7 @@ if {[info exists env(AT_WD)]} {
 	# By now, if the test is being run on an installed package system,
 	# just bypass it. Except for the release package on SUSE.
 	set distro [get_distro]
-	if { $env(AT_MAJOR_VERSION) >= 13.0 && ${distro} == "suse" } {
+	if { $env(AT_MAJOR_VERSION) >= 13.0 && ${distro} == "suse" && $env(AT_CROSS_BUILD) != "yes" } {
 		set at_full_ver [append_at_internal "$::env(AT_NAME)$::env(AT_MAJOR_VERSION)"]
 		printitcont "Testing advance-toolchain-${at_full_ver}-release contents..."
 		if { [test_release_pkg] == 0 } {
