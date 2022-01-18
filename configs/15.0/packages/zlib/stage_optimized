@@ -35,7 +35,7 @@ atcfg_configure() {
 	CXXFLAGS="-g -O3 -mcpu=${AT_OPTIMIZE_CPU/ppc/}" \
 	${ATSRC_PACKAGE_WORK}/configure \
 		--prefix="${at_dest}" \
-		--libdir="${at_dest}/${base_libdir}/${AT_OPTIMIZE_CPU}"
+		--libdir="${at_dest}/${base_libdir}/glibc-hwcaps/${AT_OPTIMIZE_CPU}"
 }
 
 

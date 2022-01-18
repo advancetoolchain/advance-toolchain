@@ -76,9 +76,9 @@ atcfg_post_install() {
 	# Remove all installed built files
 	rm -rf "${install_place}/${at_dest}"
 	# Create processor lib target
-	mkdir -p "${install_place}/${at_dest}/${base_libdir}/${AT_OPTIMIZE_CPU}"
+	mkdir -p "${install_place}/${at_dest}/${base_libdir}/glibc-hwcaps/${AT_OPTIMIZE_CPU}"
 	# Place saved libs on created final target
-	pushd "${install_place}/${at_dest}/${base_libdir}/${AT_OPTIMIZE_CPU}"
+	pushd "${install_place}/${at_dest}/${base_libdir}/glibc-hwcaps/${AT_OPTIMIZE_CPU}"
 	tar xzf "${install_place}/${AT_OPTIMIZE_CPU}.tar.gz"
 	popd
 	set +e
