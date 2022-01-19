@@ -34,7 +34,7 @@ if { $TARGET64 } {
 }
 
 # Now, list the real tuned libraries.
-foreach processor [split $env(AT_OPTMD_LIBS) " \t\{\}\n"] {
+foreach processor $env(AT_OPTMD_LIBS) {
 	if { $TARGET32 } {
 		set dir $env(AT_DEST)/lib/${processor}
 		lappend libs2 ${dir}
