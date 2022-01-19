@@ -44,8 +44,7 @@ if { ${TARGET64} } {
 }
 
 # Processor-optimized directories
-set proc_list [eval concat $env(AT_OPTMD_LIBS)]
-foreach processor ${proc_list} {
+foreach processor $env(AT_OPTMD_LIBS) {
 	if { ${TARGET32} } {
 		lappend dirs lib/${processor}
 	}
