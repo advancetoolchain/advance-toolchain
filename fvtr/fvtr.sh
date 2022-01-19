@@ -154,7 +154,7 @@ fi
 
 source $CONFIGFILE
 eval $(
-    set | grep "^AT_" | sed -e "s/^> //" -e "s/'/{/" -e "s/'/}/" -e "s/=/ /" | \
+    set | grep "^AT_" | sed -e "s/^> //" -e "s/'//g" -e "s/=/ /" | \
 	while read varname varval
 	do
 	    test -z "$varval" && varval="NOT_SET"
