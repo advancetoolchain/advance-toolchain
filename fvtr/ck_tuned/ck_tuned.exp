@@ -4,20 +4,16 @@
 
 source shared.exp
 
-set rc 0
-
-# List of libraries to check for availability.
-set libs {libc.so libcrypto.so libdfp.so libgcc_s.so libz.so}
-
-set rc 0
-set libs2 {}
-
 check_minimum_version 7.0 "Tuned libraries had different settings prior to AT 7.0."
 
 if { $env(AT_CROSS_BUILD) == "yes" } {
 	printit "AT doesn't distribute tuned libraries in the cross compiler."
 	exit ${ENOSYS}
 }
+
+# List of libraries to check for availability.
+set libs {libc.so libcrypto.so libdfp.so libgcc_s.so libz.so}
+set libs2 {}
 
 # Firstly, list the files affecting BZ #96899.
 # In this scenario, we have to provide a directory for the processor required
@@ -55,6 +51,7 @@ foreach processor [split $env(AT_OPTMD_LIBS) " \t\{\}\n"] {
 	}
 }
 
+set rc 0
 foreach lib ${libs2} {
 	if {![file exists ${lib}]} {
 		set rc 1
@@ -64,7 +61,7 @@ foreach lib ${libs2} {
 	}
 }
 
-if { ${rc} == 0 } {
+if { $rc == 0 } {
 	printit "Tuned libraries are available:\t\t\t\[SUCCESS\]"
 }
-exit ${rc}
+exit $rc
