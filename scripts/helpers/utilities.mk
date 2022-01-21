@@ -367,18 +367,21 @@ endef
 # directory.  So, it's necessary to carry a hack until they complete to port
 # all packages to multiarch.
 #
-# Another hack below is the "syslib-override" directory.
+# Another hack below is the "glibc-hwcaps" directory.
 # During the build, there is an awkward period where some packages are
 # built depending on AT libraries, but optimized libraries are not yet
 # built. The loader will always prefer optimized libraries *even if they
 # are under directories lower in the search order*.  For example,
 # /lib64/power9/libc.so is preferred over /opt/atX.0/lib64/libc.so.
 # This causes all sorts of problems during this awkward period.
-# So, the syslib-override directory is put at the top of the search order
+# So, the glibc-hwcaps directory is put at the top of the search order
 # and populated with AT-built (not-optimized) libraries in optimized
 # subdirectories, so they will be used in preference, and the build
-# can proceed through the awkward period. After that period, the entire
-# syslib-override directory tree is removed.
+# can proceed through the awkward period.
+# The glibc-hwcaps directory persists, with new optimized libraries
+# gradually populating it as they are built/installed. Upon the second
+# "ldconfig" pass, any files which have not been replaced by newly
+# built, optimzed versions are removed.
 define prepare_loader_cache
     set -e; \
     if [[ ! -d "$(AT_DEST)/etc/ld.so.conf.d" ]]; then \
@@ -394,7 +397,7 @@ define prepare_loader_cache
     if [[ -n "$(TARGET64)" ]]; then \
         > "$(DYNAMIC_LOAD)/at64.ld.conf"; \
         if [[ $1 -eq 1 ]]; then \
-            echo "$(AT_DEST)/syslib-override"   >  "$(DYNAMIC_LOAD)/at64.ld.conf"; \
+            echo "$(AT_DEST)/lib64/glibc-hwcaps"   >  "$(DYNAMIC_LOAD)/at64.ld.conf"; \
         fi; \
         echo "$(AT_DEST)/$(TARGET)/lib64" >> "$(DYNAMIC_LOAD)/at64.ld.conf"; \
         echo "$(AT_DEST)/lib64"           >> "$(DYNAMIC_LOAD)/at64.ld.conf"; \
@@ -440,18 +443,25 @@ define prepare_loader_cache
         cat "$(DYNAMIC_LOAD)/sys32.ld.conf" >> "$(DYNAMIC_LOAD)/ld.so.conf"; \
     fi; \
     grep -E -v "^$$" "$(DYNAMIC_LOAD)/ld.so.conf" > "$(AT_DEST)/etc/ld.so.conf"; \
-    if [[ $1 -eq 2 ]]; then \
-        rm -rf $(AT_DEST)/syslib-override; \
-    else \
+    if [[ $1 -eq 1 ]]; then \
         for cpu in $(BUILD_ACTIVE_MULTILIBS); do \
-            mkdir -p $(AT_DEST)/syslib-override/"$${cpu}"; \
+            mkdir -p $(AT_DEST)/lib64/glibc-hwcaps/"$${cpu}"; \
             (\cd $(AT_DEST)/lib64 && \
              find . -maxdepth 1 -type f \
-                  -exec cp -p '{}' $(AT_DEST)/syslib-override/"$${cpu}"/'{}' \; \
+                 -exec cp --preserve=mode,ownership '{}' \
+                          $(AT_DEST)/lib64/glibc-hwcaps/"$${cpu}"/'{}' \; \
             ); \
         done; \
     fi; \
     "$(AT_DEST)/sbin/ldconfig"; \
+    if [[ $1 -eq 1 ]]; then \
+        touch "$(AT_DEST)/lib64/syslib-override"; \
+    else \
+        find "$(AT_DEST)/lib64/glibc-hwcaps" ! -type d \
+             ! -newer "$(AT_DEST)/lib64/syslib-override" \
+             -exec rm -f '{}' \;; \
+        rm -f $(AT_DEST)/lib64/syslib-override; \
+    fi; \
     group=$$( ls $(DYNAMIC_SPEC)/ | grep "toolchain\$$" ); \
     echo "$(AT_DEST)/etc/ld.so.conf" \
          >  $(DYNAMIC_SPEC)/$${group}/ldconfig.filelist; \
