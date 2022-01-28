@@ -12,6 +12,144 @@
 <p>Since the end of August 2019, Advance Toolchain has been available from a new FTP server: <a href="https://public.dhe.ibm.com/">public.dhe.ibm.com</a></p>
 <p>Please be advised the FTP server at Unicamp won't be updated any longer.</p>
 
+<h3>New features in 14.0-4</h3>
+<ul>
+  <li>GCC provides:
+  <ul>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100108">powerpc: recognize 32-bit CPU as POWER9 with -misel option</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100110">parameterized Derived Types, problems with global variable</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100114">libasan built against latest glibc doesn't work</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100154">ICE in gfc_conv_procedure_call, at fortran/trans-expr.c:6131</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100176">gcc.dg/compat/struct-layout-1_generate.c contains errors</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100227">write with implicit loop</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100274">ICE in gfc_conv_procedure_call, at fortran/trans-expr.c:6131</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100379">cyclades.h is removed from linux kernel header files</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100450">missing ' ' space for '-E' preprocessing output, works with direct compilation</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100513">ICE: Segmentation fault (in lookup_page_table_entry) for bootstrap-O3 since r11-6411-gae99b315ba5b9e1c</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100551">passing return value of intrinsic to class(*) dummy argument can cause segfaults</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100777">MMA builtin usage ICEs when used in a #pragma omp parallel and using -fopenmp</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100791">ICE: verify_gimple failed</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100882">ICE in gimplify_var_or_parm_decl, at gimplify.c:2755</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100949">ICE in gfc_conv_expr_present, at fortran/trans-expr.c:1975</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101084">ICE in gfc_typenode_for_spec, at fortran/trans-types.c:1124</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101129">wrong code at -O1 since r11-5839</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101327">ICE in find_array_element, at fortran/expr.c:1355</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101329">ICE: Invalid expression in gfc_element_size</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101441">__FUNCTION__ doesn't work in core.stdc.stdio functions without cast</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101490">ICE at convert_expr(tree_node*, Type*, Type*)</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101514">ICE: out of memory allocating 18446744073709551600 bytes</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101531">gcc.target/powerpc/pr101129.c has excess errors after r11-8780</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101536">ICE in gfc_conv_expr_descriptor, at fortran/trans-array.c:7324</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101749">gcc -static-libasan broken because libasan.a needs __cxa_guard_release in libstdc++</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101849">MMA built-in dies with a verify_gimple failed error</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101969">reactivated test case gcc.dg/pr78213.c in r10-10042 fails</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101985">vec_cpsgn parameter order</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102107">protocol register (r12) corrupted before a tail call</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102287">optional allocatable array arguments (intent out) of derived types with allocatable components are not properly passed to subroutines.</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102332">ICE in select_type_set_tmp, at fortran/match.c:6366</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102347">&quot;fatal error: target specific builtin not available&quot; with MMA and LTO</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102458">ICE tree check: expected array_type, have pointer_type in gfc_conv_array_initializer, at fortran/trans-array.c:6136</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102520">ICE in expand_constructor, at fortran/array.c:1802</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102521">ICE in gfc_conv_array_initializer, at fortran/trans-array.c:6240</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102685">ICE in output_constructor_regular_field, at varasm.c:5514 since r12-4278-g74ccca380cde5e79</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102714">a volatile-related problem cased by ipa inline pass</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102715">ICE in gfc_simplify_transpose, at fortran/simplify.c:8184 since r12-4278-g74ccca380cde5e79</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102716">ICE in gfc_validate_kind(): Got bad kind</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102717">ICE in gfc_simplify_reshape, at fortran/simplify.c:6843</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102787">ICE in new test case gfortran.dg/reshape_shape_2.f90</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102816">ICE in resolve_structure_cons, at fortran/resolve.c:1467 since r12-4452-g1e819bd95ebeefc1</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102817">ICE in gfc_clear_shape, at fortran/expr.c:422 since r12-4278-g74ccca380cde5e79</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102976">MMA test case emits wrong code when building a vector pair</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103052">function is found to be pure looping but has a call to a noreturn function in it</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103137">ICE in gfc_simplify_transpose, at fortran/simplify.c:8181 since r12-4967-gbcf3728abe848888</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103138">ICE in gfc_simplify_cshift, at fortran/simplify.c:2139 since r12-4967-gbcf3728abe848888</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103267">wrong code with ipa-sra</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103392">ICE in simplify_bound, at fortran/simplify.c:4273</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103411">ICE in gfc_conv_array_initializer, at fortran/trans-array.c:6377</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103412">ICE: Invalid expression in gfc_element_size since r10-2083-g8dc63166e0b85954</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103418">random_number() does not accept pointer, intent(in) array argument</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103505">ICE in compare_bound_mpz_t, at fortran/resolve.c:4587 since r8-7594-g078c5aff5ed83e9c</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103588">ICE: Simplification error in gfc_ref_dimen_size, at fortran/array.c:2407</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103606">ICE in resolve_fl_procedure, at fortran/resolve.c:13297 since r9-3324-g2b03b800d866d345</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103607">ICE in do_subscript, at fortran/frontend-passes.c:2927</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103610">ICE in gfc_convert_mpz_to_signed, at fortran/simplify.c:193</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103634">runtime crash with PACK on zero-sized arrays</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103717">ICE in doloop_code, at fortran/frontend-passes.c:2656</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103778">ICE: Invalid expression in gfc_element_size</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=46691">Null pointer in template deduction</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=63797">bogus ambiguous reference to 'sqrt'</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82314">internal compiler error: in gfc_conv_expr_descriptor, at fortran/trans-array.c:6972</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82376">duplicate function call using -fcheck=pointer</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85130">substrings out of range are not rejected</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93701">ICE on associate of wrongly accessed array</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93794">ICE in gfc_conv_component_ref, at fortran/trans-expr.c:2497</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93924">ICE with procedure pointer</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93925">invalid memory reference upon call of a routine taking a procedure pointer as argument</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95501">ICE in gfc_match_pointer_assignment, at fortran/match.c:1422</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95502">ICE in gfc_check_do_variable, at fortran/parse.c:4446</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96488">failures of gnat.dg/unchecked_convert[56].adb on PowerPC64 LE</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97142">__builtin_fmod not optimized on POWER</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97565">-flto -ipa-pta ICE: at cgraph_node::get_untransformed_body()</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97612">structure constructor of type with nested allocatable array components fails to compile</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97653">incorrect long double calculation with -mabi=ibmlongdouble</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97694">ICE with optional assumed rank class(*) argument</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97723">type bound ASSIGNMENT(=) within select rank block wrongly rejected</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97880">ICE in emit_library_call_value_1, at calls.c:5298</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=98411">pointless: Array larger than ‘-fmax-stack-var-size=’, moved from stack to static storage for main program variables</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=98472">internal compiler error: in gfc_conv_expr_descriptor, at fortran/trans-array.c:7352</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=98490">unexpected out of bounds in array constructor with implied do loop</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=98565">internal compiler error: in conv_function_val, at fortran/trans-expr.c:3950</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=98952">powerpc*: __trampoline_setup inverted test for trampoline size</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99061">ICE in gfc_conv_intrinsic_atan2d, at fortran/trans-intrinsic.c:4728</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99125">ICE: gimplification failed (gimplify.c:15068)</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99348">ICE in resolve_structure_cons, at fortran/resolve.c:1286</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99818">ICE in gfc_get_tree_for_caf_expr, at fortran/trans-expr.c:2186</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99819">ICE in gfc_defer_symbol_init, at fortran/trans-decl.c:841</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99839">ICE in inline_matmul_assign, at fortran/frontend-passes.c:4234</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99842">MMA test case ICEs using -O3</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99849">ICE in expand_expr_real_1, at expr.c:11556 since r5-5407-g30d5d8c5189064c8</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99990">ICE in gimplifier on invalid va_arg</a>.</li>
+  </ul></li>
+  <li>GNU C Library provides:
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=27024">wrong access (read_only, 3, 4) attribute for readlinkat</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=27476">getcwd(NULL, PATH_MAX) generates warnings on -Wnonnull</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=27609">in elf/dl-open.c (_dl_open) we might use __LM_ID_CALLER to index GL(dl_ns)[]</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=27896">mq_notify does not handle separately allocated thread attributes (CVE-2021-33574)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28011">wild read in wordexp (parse_param) (CVE-2021-35942)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28213">NULL pointer dereference in mq_notify (CVE-2021-38604)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28524">conversion from ISO-2022-JP-3 with iconv may emit spurious NUL character on state reset</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28607">masked signals are delivered on thread exit</a>.</li>
+  </ul></li>
+  <li>Binutils provides:
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=27755">fails to link binary which does not fit within R_PPC_REL24</a>.</li>
+  </ul></li>
+  <li>Userspace RCU provides:
+  <ul>
+    <li>Version 0.12.3, see the <a href="https://github.com/urcu/userspace-rcu/blob/v0.12.3/ChangeLog">release notes</a> for details.</li>
+  </ul></li>
+  <li>OpenSSL provides:
+  <ul>
+    <li>Version 1.1.1m, see the <a href="https://www.openssl.org/news/openssl-1.1.1-notes.html">release notes</a> for details.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17149">Memory leak in EVP_DigestInit_ex</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17232">s_client connect doesn&#39;t send SNI server_name header through proxy by default</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17364">potential locking problem between methods open_console and lose_console</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17426">linux environment pfx file creation and issue of password can not be used automatically by any engine causing error that engine can not extract certification</a>.</li>
+  </ul></li>
+  <li>Python provides:
+  <ul>
+    <li>Version 3.8.12, see the <a href="https://www.python.org/downloads/release/python-3812/">release notes</a> for details.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45310">test_multiprocessing_forkserver: test_shared_memory_basics() failed with FileExistsError</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45436">test_tk.test_configure_type() fails with Tcl/Tk 8.6.11</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45792">contextvars.Token has wrong module name in Sphinx's objects.inv</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45859">test_collections has a wrong test in case _itemgetter is not available</a>.</li>
+  </ul></li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 14.0-3</h3>
 <ul>
   <li>GCC provides:</li>
@@ -88,9 +226,6 @@
     <li>Fix for shadowed local variable (-Wshadow).</li>
   </ul>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 14.0-2</h3>
 <ul>
