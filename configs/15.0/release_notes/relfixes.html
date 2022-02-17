@@ -13,6 +13,170 @@
 <p>Since the end of August 2019, Advance Toolchain has been available from a new FTP server: <a href="http://public.dhe.ibm.com/">public.dhe.ibm.com</a></p>
 <p>Please be advised the FTP server at Unicamp won't be updated any longer.</p>
 
+<h3>New features in 15.0-2</h3>
+<ul>
+  <li>Advance Toolchain provides:
+  <ul>
+    <li>Fix for <a href="https://github.com/advancetoolchain/advance-toolchain/issues/2619">/lib64/glibc-hwcaps/power9/libc-2.28.so: version `GLIBC_2.34' not found</a>.</li>
+  </ul></li>
+  <li>GCC provides:
+  <ul>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102059">Incorrect always_inline diagnostic in LTO mode with #pragma GCC target(&quot;cpu=power10&quot;)</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101289">bogus -Wvla-paramater warning when using const for vla param</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101324">powerpc64le: hashst appears before mflr at -O1 or higher</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101329">ICE: Invalid expression in gfc_element_size</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101378">negative DW_AT_data_member_location</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101537">-Wconversion false positive in ternary and |=</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101962">analyzer NULL false positive with pointer manipulation</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101985">vec_cpsgn parameter order</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102332">ICE in select_type_set_tmp, at fortran/match.c:6366</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102347">&quot;fatal error: target specific builtin not available&quot; with MMA and LTO</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102458">ICE tree check: expected array_type, have pointer_type in gfc_conv_array_initializer, at fortran/trans-array.c:6136</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102515">UBSAN misses signed division instrumentation</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102520">ICE in expand_constructor, at fortran/array.c:1802</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102521">ICE in gfc_conv_array_initializer, at fortran/trans-array.c:6240</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102685">ICE in output_constructor_regular_field, at varasm.c:5514 since r12-4278-g74ccca380cde5e79</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102690">g++.dg/warn/Warray-bounds-16.C fails</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102714">a volatile-related problem cased by ipa inline pass</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102715">ICE in gfc_simplify_transpose, at fortran/simplify.c:8184 since r12-4278-g74ccca380cde5e79</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102716">ICE in gfc_validate_kind(): Got bad kind</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102717">ICE in gfc_simplify_reshape, at fortran/simplify.c:6843</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102787">ICE in new test case gfortran.dg/reshape_shape_2.f90</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102816">ICE in resolve_structure_cons, at fortran/resolve.c:1467 since r12-4452-g1e819bd95ebeefc1</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102817">ICE in gfc_clear_shape, at fortran/expr.c:422 since r12-4278-g74ccca380cde5e79</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102911">AddressSanitizer: CHECK failed: asan_malloc_linux.cpp:46</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102917">[PDT] KIND and LEN type parameters shall not be restricted to default integer</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102976">MMA test case emits wrong code when building a vector pair</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102991">gcc.dg/vect/vect-simd-17.c fails after r12-4757</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103046">incorrect debug info for uint128 bit shift in gcc 11.2</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103052">function is found to be pure looping but has a call to a noreturn function in it</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103130">\*/ is not detected as the end of a comment with -fdirectives-only since r11-206-gb224c3763e018e8b</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103137">ICE in gfc_simplify_transpose, at fortran/simplify.c:8181 since r12-4967-gbcf3728abe848888</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103138">ICE in gfc_simplify_cshift, at fortran/simplify.c:2139 since r12-4967-gbcf3728abe848888</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103267">wrong code with ipa-sra</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103315">Gfortran DW_AT_Rank expression not emitting correct rank value.</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103392">ICE in simplify_bound, at fortran/simplify.c:4273</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103411">ICE in gfc_conv_array_initializer, at fortran/trans-array.c:6377</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103412">ICE: Invalid expression in gfc_element_size since r10-2083-g8dc63166e0b85954</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103418">random_number() does not accept pointer, intent(in) array argument</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103473">ICE in simplify_minmaxloc_nodim, at fortran/simplify.c:5287</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103505">ICE in compare_bound_mpz_t, at fortran/resolve.c:4587 since r8-7594-g078c5aff5ed83e9c</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103587">ICE in c_parser_consume_token, at c/c-parser.c:850 since r10-4633-g4e03c3a7c1149a8e</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103588">ICE: Simplification error in gfc_ref_dimen_size, at fortran/array.c:2407</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103591">ICE in gfc_compare_string, at fortran/arith.c:1119</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103607">ICE in do_subscript, at fortran/frontend-passes.c:2927</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103609">ICE in gfc_sym_get_dummy_args, at fortran/symbol.c:5243 since r11-2578-g27eac9ee6137a6b5</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103610">ICE in gfc_convert_mpz_to_signed, at fortran/simplify.c:193</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103639">switch case with break in fast enumeration loop generates wrong code</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103692">ICE in add_init_expr_to_sym, at fortran/decl.c:2062</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103717">ICE in doloop_code, at fortran/frontend-passes.c:2656</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103718">ICE in doloop_contained_procedure_code, at fortran/frontend-passes.c:2393</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103719">ICE in doloop_contained_procedure_code, at fortran/frontend-passes.c:2465</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103776">ICE in gfc_compare_string, at fortran/arith.c:1118</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103777">ICE in gfc_simplify_maskl, at fortran/simplify.c:4918</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103778">ICE: Invalid expression in gfc_element_size</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103782">internal error occurs when overloading intrinsic since r9-1566-g87c789f1c0b2df41</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103789">ICE when providing kind argument to mask{l,r}</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103881">Wconversion false positive when using |= and &amp;= with two rvalues in binary op</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=104090">powerpc: asm machine directive wrong for FSL processors</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=104127">ICE in get_array_charlen, at fortran/trans-array.c:7244</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=104172">ppc64le mangling ICE with -flto -ffat-lto-objects</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=104212">ICE in transformational_result, at fortran/simplify.cc:466</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=104331">ICE in gfc_simplify_eoshift, at fortran/simplify.cc:2590</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=104333">ICE with -flto -Wl,-plugin-opt=debug</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67804">ICE on data initialization of type(character) with wrong data</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83079">ICE in gfc_widechar_to_char, at fortran/scanner.c:198</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87711">ICE in gfc_trans_transfer, at fortran/trans-io.c:2676</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87851">wrong return type for len_trim</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97548">bogus -Wvla-parameter on a bound expression involving a parameter</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97896">ICE in gfc_trans_assignment_1, at fortran/trans-expr.c:11156</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99061">ICE in gfc_conv_intrinsic_atan2d, at fortran/trans-intrinsic.c:4728</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99348">ICE in resolve_structure_cons, at fortran/resolve.c:1286</a>.</li>
+  </ul></li>
+  <li>GNU C Library provides:
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=15572">on rawhide, the ipmib.InNoRoutes and ipmib.InAddrErrors probes don't work</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=19329">dl-tls.c assert failure at concurrent pthread_create and dlopen</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22542">buffer overflow in sunrpc clnt_create (CVE-2022-23219)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28338">undefined behavior in __tzfile_compute with oddball TZif file</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28340">ld.so crashes while loading a DSO with a read-only dynamic section</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28353">race condition on __opensock</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28357">deadlock between pthread_create and ctors</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28506">malloc-check + malloc_usable_size(NULL) causes segfault</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28524">conversion from ISO-2022-JP-3 with iconv may emit spurious NUL character on state reset</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28532">powerpc64[le]: CFI for assembly templated syscalls is incorrect</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28607">masked signals are delivered on thread exit</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28624">openjdk 8/9 assume uni processor and gets stuck due to lack of cpu counting /proc fallback with glibc 2.34</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28707">assert in tzfile.c __tzfile_read striking with truncated timezones generated by tzcode-2021d and later</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28757">GDB printer tests failed with new GDB</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28768">buffer overflow in svcunix_create with long pathnames (CVE-2022-23218)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28769">off-by-one buffer overflow/underflow in getcwd() (CVE-2021-3999)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28770">unexpected return value from realpath() for too long results (CVE-2021-3998)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28850">linux: __get_nprocs_sched reads uninitialized memory from the stack</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28860">--enable-kernel=5.1.0 build fails because of missing __convert_scm_timestamps</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28865">linux: _SC_NPROCESSORS_CONF and _SC_NPROCESSORS_ONLN are inaccurate without /sys and /proc</a>.</li>
+  </ul></li>
+  <li>Binutils provides:
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=27625">powerpc64: gold erroneously rejects linking code that calls __tls_get_addr</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28459">Readelf issues bogus warning</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28494">gold combines different aligned/padded SHT_NOTE sections in the same PT_NOTE segment</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28523">ld.bfd created undefined symbols on ppc64</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28540">segmentation fault on NULL byte_get</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28734">error with build-many-glibcs.py</a>.</li>
+  </ul></li>
+  <li>Userspace RCU provides:
+  <ul>
+    <li>Version 0.13.1, see the <a href="https://github.com/urcu/userspace-rcu/blob/v0.13.1/ChangeLog">release notes</a> for details.</li>
+  </ul></li>
+  <li>OpenSSL provides:
+  <ul>
+    <li>Version 1.1.1m, see the <a href="https://www.openssl.org/news/openssl-1.1.1-notes.html">release notes</a> for details.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/15898">segfault on engine (pkcs11) clean-up when openssl is statically linked</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17549">wrong Return Type for BIO_ptr_ctrl</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17612">evp_test: Expected KDF_MISMATCH got KDF_DERIVE_ERROR / openssl 1.1.1 2022-01-30</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17149">memory leak in EVP_DigestInit_ex</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17232">s_client connect doesn&#39;t send SNI server_name header through proxy by default</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17364">potential locking problem between methods open_console and lose_console</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17367">bypassing Purpose/Trust Mechanism in X.509 Validation</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17426">linux environment pfx file creation and issue of password can not be used automatically by any engine causing error that engine can not extract certification</a>.</li>
+  </ul></li>
+  <li>Expat provides:
+  <ul>
+    <li>Version 2.4.3, see the <a href="https://github.com/libexpat/libexpat/blob/R_2_4_3/expat/Changes">release notes</a> for details.</li>
+  </ul></li>
+  <li>Python provides:
+  <ul>
+    <li>Version 3.9.10, see the <a href="https://www.python.org/downloads/release/python-3910/">release notes</a> for details.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue13886">test_builtin.PtyTests fail on non-ASCII characters if the readline module is loaded</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue21987">TarFile.getmember on directory requires trailing slash iff over 100 chars</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue38472">setup.py: GCC detection is broken when cross-compiling with a German locale</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue41403">uncaught AttributeError in unittest.mock._get_target</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue43118">inspect.signature() raises RuntimeError on failed to resolve the default argument value</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45703">importlib.invalidate_caches() does not invalidate _NamespacePath's _last_parent_path-based cache</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45863">tarfile zeroes ustar header fields unnecessarily</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue46080">argparse.BooleanOptionalAction with default=argparse.SUPPRESS and help specified raises exception</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue46231">grammar rule definition is missing: invalid_double_starred_kvpairs</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue46383">_zoneinfo module_free has invalid function signature</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue46463">escape4chm.py script causing AttributeError in docs build</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue46469">asyncio Generic classes should return GenericAlias in __class_getitem__</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue46474">inefficient regular expression complexity in EntryPoint.pattern</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue46483">`pathlib.PurePath.__class_getitem__` does not return `GenericAlias`</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue46487">`_SSLProtocolTransport` doesn't have the `get_write_buffer_limits` implementation.</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue46491">typing: allow Annotated in outermost scope</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue46503">assertion failure in Parser/string_parser.c</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue46513">AC_C_CHAR_UNSIGNED from configure.ac confuses GCC 12+ by defining __CHAR_UNSIGNED__</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue46539">typing: forward references don't understand special type forms</a>.</li>
+  </ul></li>
+  <li>TBB provides:
+  <ul>
+    <li>Version 2021.6.0, see the <a href="https://software.intel.com/content/www/us/en/develop/articles/intel-oneapi-threading-building-blocks-release-notes.html">release notes</a> for details.</li>
+  </ul></li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 15.0-1</h3>
 <ul>
   <li>GCC provides:
@@ -99,9 +263,6 @@
     <li>Fix for <a href="https://bugs.python.org/issue24444">argparse empty choices cannot be printed in the help</a>.</li>
   </ul></li>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 15.0-0</h3>
 <ul>
