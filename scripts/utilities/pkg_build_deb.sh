@@ -30,9 +30,7 @@ remove_compat ()
 	echo "Disabling runtime-compat package."
 	# Package information in a control file starts with "Package:" and
 	# stop at the end of the paragraph (in the next blank line).
-	sed -e "/Package: advance-toolchain[^\n]\+runtime-compat/,/^$/d" \
-	    ${deb_d}/control > ${deb_d}/control.tmp
-	mv ${deb_d}/control.tmp ${deb_d}/control
+	sed -ie "/Package: advance-toolchain[^\n]\+runtime-compat/,/^$/d" ${deb_d}/control
 }
 
 # Clean the debhelper tree
@@ -86,6 +84,8 @@ for f in *; do
 	    -e "s/__USE_SYSTEMD__/${use_systemd}/g" \
 	    ${f} > ${deb_d}/${f}
 done
+# Remove "comments" from changelog to fit with Debian policy
+[[ -s ${deb_d}/changelog ]] && sed -i '/^#/d' ${deb_d}/changelog
 popd > /dev/null
 
 # Copy dh_strip from the system and patch it to support debuginfo under /opt
@@ -111,10 +111,7 @@ if [[ "${cross_build}" != "yes" ]]; then
 	popd > /dev/null
 fi
 
-if [[ "${cross_build}" != "yes" \
-      && "${build_ignore_compat}" == "yes" ]]; then
-	remove_compat
-fi
+[[ "${cross_build}" != "yes" && "${build_ignore_compat}" == "yes" ]] && remove_compat
 
 # Test if this is a cross compiler with support for cross-common package.
 if egrep "^Package:.*cross-common" ${deb_d}/control; then
@@ -135,9 +132,7 @@ for pkg in $(awk '/^Package:/ { print $2 }' ${deb_d}/control | grep -v dbg); do
 	# Rename script files (postrm, postinst, etc.)
 	for file in ${deb_d}/${apkg}.*; do
 		# Ignore this package when it doesn't have script files.
-		if [[ ! -e ${file} ]]; then
-			continue
-		fi
+		[[ ! -e ${file} ]] && continue
 		suffix=$(basename ${file} | sed "s/${apkg}\.//")
 		mv ${file} ${deb_d}/${pkg}.${suffix}
 	done
@@ -160,8 +155,7 @@ for pkg in $(awk '/^Package:/ { print $2 }' ${deb_d}/control | grep -v dbg); do
 			# to remove the arch in the name to match the list of
 			# files.
 			if [[ "${has_cross_common}" == "yes" ]]; then
-				apkg=$(echo ${apkg} \
-				       | sed 's/-'${build_arch}'//g')
+				apkg=$(echo ${apkg} | sed 's/-'${build_arch}'//g')
 			else
 				apkg="cross_files"
 			fi
@@ -172,9 +166,7 @@ for pkg in $(awk '/^Package:/ { print $2 }' ${deb_d}/control | grep -v dbg); do
 		*)
 			# The version-agnostic packages are dummy and don't
 			# provide any contents, just dependency entries.
-			if [[ -n "${pkg##*${at_major_internal}*}" ]]; then
-				continue 2
-			fi
+			[[ -n "${pkg##*${at_major_internal}*}" ]] && continue 2
 			;;
 	esac
 
@@ -226,9 +218,8 @@ for pkg in $(awk '/^Package:/ { print $2 }' ${deb_d}/control | grep -v dbg); do
 				echo "${at_dest}/scripts/at-create-ibmcmp-cfg.sh"
 				;;
 			"runtime")
-				if [[ "${use_systemd}" != "yes" ]]; then
+				[[ "${use_systemd}" != "yes" ]] && \
 					echo "/etc/cron.d/${at_ver_rev_internal//./}_ldconfig"
-				fi
 				[[ ${addtlehelper} == "yes" ]] && \
 					echo "${at_dest}/scripts/tle_on.sh"
 				;;
@@ -247,9 +238,7 @@ for pkg in $(awk '/^Package:/ { print $2 }' ${deb_d}/control | grep dbg); do
 	# Rename script files (postrm, postinst, etc.)
 	for file in ${deb_d}/${apkg}.*; do
 		# Ignore this package when it doesn't have script files.
-		if [[ ! -e ${file} ]]; then
-			continue
-		fi
+		[[ ! -e ${file} ]] && continue
 		suffix=$(basename ${file} | sed "s/${apkg}\.//")
 		mv ${file} ${deb_d}/${pkg}.${suffix}
 	done
