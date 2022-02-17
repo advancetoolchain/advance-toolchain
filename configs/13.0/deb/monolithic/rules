@@ -33,15 +33,12 @@ binary-arch: build binary-cp
 	dh_installdirs
 	dh_installdocs
 	dh_installchangelogs
-ifeq (__USE_SYSTEMD__, yes)
-	dh_systemd_enable
-endif
 
 # Copy the packages' files.
 	dh_install
 	dh_missing --fail-missing
 ifeq (__USE_SYSTEMD__, yes)
-	dh_systemd_start
+	dh_installsystemd
 endif
 
 # Strip binaries
