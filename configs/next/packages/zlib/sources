@@ -47,8 +47,8 @@ atsrc_get_patches ()
 {
 	# Patch to add optimized functions using vector instructions.
 	at_get_patch \
-		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/a5ca30f50ec9d97762aa87bcc6517e30fa273aae/Zlib%20Patches/zlib-power-optimizations.patch' \
-	        e4e94637f2df3fdc95b6b9a2ac21b4c5 || return ${?}
+		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/4450368b03523e86204bc83a3291493f1698c5b4/Zlib%20Patches/zlib-power-optimizations.patch' \
+	        e2ef4fa0f220b710fc6df40839bd1939 || return ${?}
 
 	return 0
 }
