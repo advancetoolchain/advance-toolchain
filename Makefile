@@ -790,7 +790,7 @@ ifeq (,$(findstring $(MAKECMDGOALS),clone edit pack))
         DEFAULT_COMPILER := $(shell \
             echo "int main() { return 0; }" > ./sample.c; \
             $(SYSTEM_CC) ./sample.c; \
-            echo $$(file a.out | sed 's|^.*ELF ||' | sed 's|-bit.*$$||'); \
+            echo $$(readelf -h a.out | grep "Class:" | sed 's|^.*ELF||'); \
             rm -f ./sample.c ./a.out \
         )
         # Find out which CPU we are doing the build
