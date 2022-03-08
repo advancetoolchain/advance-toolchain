@@ -47,12 +47,6 @@ atcfg_pre_configure()
 		prefix=${tmp_dir}
 		libdir=${tmp_dir}/lib
 	fi
-
-	if [[ ! -e "${ATSRC_PACKAGE_WORK}/configure" ]]; then
-		pushd ${ATSRC_PACKAGE_WORK} > /dev/null
-		./autogen.sh || return 1
-		popd > /dev/null
-	fi
 }
 
 # Configure build command
