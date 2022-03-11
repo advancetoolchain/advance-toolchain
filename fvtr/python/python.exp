@@ -93,6 +93,12 @@ if { [lindex $pyverl 0] > 3
 }
 
 if { [lindex $pyverl 0] < 3
+     || ([lindex $pyverl 0] == 3 && [lindex $pyverl 1] <= 7) } {
+	# Fails if run on tmpfs.
+	append common_exclude_tests " test_tarfile"
+}
+
+if { [lindex $pyverl 0] < 3
      || ([lindex $pyverl 0] == 3 && [lindex $pyverl 1] <= 6) } {
 	# Fails if run from the install dir.
 	append common_exclude_tests " test_distutils"
