@@ -11,6 +11,61 @@
 <p>Since the end of August 2019, Advance Toolchain has been available from a new FTP server: <a href="ftp://public.dhe.ibm.com/">public.dhe.ibm.com</a></p>
 <p>Please be advised the FTP server at Unicamp won't be updated any longer.</p>
 
+<h3>New features in 13.0-6</h3>
+<ul>
+  <li>GCC provides:
+  <ul>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101985">vec_cpsgn parameter order</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102347">&quot;fatal error: target specific builtin not available&quot; with MMA and LTO</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102911">AddressSanitizer: CHECK failed: asan_malloc_linux.cpp:46</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103052">Function is found to be pure looping but has a call to a noreturn function in it</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103267">Wrong code with ipa-sra</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103392">ICE in simplify_bound, at fortran/simplify.c:4273</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103588">ICE: Simplification error in gfc_ref_dimen_size, at fortran/array.c:2407</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103606">ICE in resolve_fl_procedure, at fortran/resolve.c:13297 since r9-3324-g2b03b800d866d345</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103607">ICE in do_subscript, at fortran/frontend-passes.c:2927</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103610">ICE in gfc_convert_mpz_to_signed, at fortran/simplify.c:193</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103634">Runtime crash with PACK on zero-sized arrays</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103717">ICE in doloop_code, at fortran/frontend-passes.c:2656</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103782">internal error occurs when overloading intrinsic since r9-1566-g87c789f1c0b2df41</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=104127">ICE in get_array_charlen, at fortran/trans-array.c:7244</a>.</li>
+  </ul></li>
+  <li>GNU C Library provides:
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=27471">GLIBC_TUNABLES aren't parsed properly in AT_SECURE binaries</a>.</li>
+  </ul></li>
+  <li>OpenSSL provides:
+  <ul>
+    <li>Version 1.1.1m, see the <a href="https://www.openssl.org/news/openssl-1.1.1-notes.html">release notes</a> for details.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/12491">openSSL base64 library </a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/13008">OBJ_nid2obj doesn&#39;t reliably push error</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/15898">segfault on engine (pkcs11) clean-up when openssl is statically linked</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17149">Memory leak in EVP_DigestInit_ex</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17232">s_client connect doesn&#39;t send SNI server_name header through proxy by default</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17364">Potential locking problem between methods open_console and lose_console</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17367">Bypassing Purpose/Trust Mechanism in X.509 Validation</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17426">linux environment pfx file creation and issue of password can not be used automatically by any engine causing error that engine can not extract certification</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17549">Wrong Return Type for BIO_ptr_ctrl</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17612">evp_test: Expected KDF_MISMATCH got KDF_DERIVE_ERROR / openssl 1.1.1 2022-01-30</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17648">BN_mod_exp2_mont NULL pointer dereference if modulus is 0</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17743">PSK ciphersuites at SECLEVEL=3</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17797">CMS: Files signed with -binary and having unix line endings cannot be verified before version 3.0</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17827">Potential memory leak in append_ia5</a>.</li>
+  </ul></li>
+  <li>Python provides:
+  <ul>
+    <li>Fix for <a href="https://bugs.python.org/issue46756">Incorrect authorization check in urllib.request</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue46784">Duplicated symbols when linking embedded Python with libexpat</a>.</li>
+  </ul></li>
+  <li>Userspace RCU provides:
+  <ul>
+    <li>Version 0.11.4, see the <a href="https://github.com/urcu/userspace-rcu/blob/v0.11.4/ChangeLog">release notes</a> for details.</li>
+  </ul></li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 13.0-5</h3>
 <ul>
   <li>GCC provides:
@@ -103,9 +158,6 @@
     <li>Version 3.7.12, see the <a href="https://www.python.org/downloads/release/python-3712/">release notes</a> for details.</li>
   </ul></li>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 13.0-4</h3>
 <ul>
