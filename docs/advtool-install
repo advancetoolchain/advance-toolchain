@@ -304,7 +304,6 @@ rpm --import gpg-pubkey-6976a827-5164221b
 [advance-toolchain]
 name=Advance Toolchain IBM FTP
 baseurl=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/<em>RHELX</em>
-failovermethod=priority
 enabled=1
 gpgcheck=1
 gpgkey=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/<em>RHELX</em>/gpg-pubkey-6976a827-5164221b
