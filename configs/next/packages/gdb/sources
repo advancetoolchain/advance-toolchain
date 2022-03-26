@@ -19,8 +19,8 @@
 # =================================
 #
 ATSRC_PACKAGE_NAME="GDB (GNU Debugger)"
-ATSRC_PACKAGE_VER=12.0.50
-ATSRC_PACKAGE_REV=6f3dfea03aec
+ATSRC_PACKAGE_VER=13.0.50
+ATSRC_PACKAGE_REV=520a6a7e3a4f
 ATSRC_PACKAGE_LICENSE="GPL 2.0"
 ATSRC_PACKAGE_DOCLINK="http://sourceware.org/gdb/current/onlinedocs/gdb/"
 ATSRC_PACKAGE_RELFIXES=
