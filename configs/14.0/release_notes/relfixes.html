@@ -12,6 +12,47 @@
 <p>Since the end of August 2019, Advance Toolchain has been available from a new FTP server: <a href="https://public.dhe.ibm.com/">public.dhe.ibm.com</a></p>
 <p>Please be advised the FTP server at Unicamp won't be updated any longer.</p>
 
+<h3>New features in 14.0-5</h3>
+<ul>
+  <li>GCC provides:
+  <ul>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67804">ICE on data initialization of type(character) with wrong data</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83079">ICE in gfc_widechar_to_char, at fortran/scanner.c:198</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87496">ICE in aggregate_value_p at gcc/function.c:2046</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99708">__SIZEOF_FLOAT128__ not defined on powerpc64le-linux</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102762">ICE with -O2: Segmentation fault, memcpy, copy_bb</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102911">AddressSanitizer: CHECK failed: asan_malloc_linux.cpp:46</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103627">ICE: in extract_insn, at recog.c:2769 (error: unrecognizable insn)</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103692">ICE in add_init_expr_to_sym, at fortran/decl.c:2062</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103782">internal error occurs when overloading intrinsic since r9-1566-g87c789f1c0b2df41</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=104090">powerpc: asm machine directive wrong for FSL processors</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=104127">ICE in get_array_charlen, at fortran/trans-array.c:7244</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=104208">-mlong-double-64 should override a previous -mabi=ibmlongdouble</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=104253">libgcc missing __floatdiif</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=104331">ICE in gfc_simplify_eoshift, at fortran/simplify.cc:2590</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=104619">ICE on list comprehension with default derived type constructor</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=104767">GNAT.Serial_Communications does not properly close the port</a>.</li>
+  </ul></li>
+  <li>OpenSSL provides:
+  <ul>
+    <li>Version 1.1.1n, see the <a href="https://www.openssl.org/news/openssl-1.1.1-notes.html">release notes</a> for details.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/16231">unable to import PKCS#8 objects with short password</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17871">integer overflow in evp_EncryptDecryptUpdate</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17934">client allows more than one HelloRetryRequest</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17948">new_session_ticket message may contain invalid ticket_lifetime when using TLSv1.3</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17971">version 1.1.1L crashes with null pointer access in ERR_load_strings()</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17999">issue on the commit fb67978a9* on OpenSSL_1_1_1-stable branch: OpenSSL Build Error</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/18010">division incorrect result on allocation failure</a>.</li>
+  </ul></li>
+  <li>Python provides:
+  <ul>
+    <li>Version 3.8.13, see the <a href="https://www.python.org/downloads/release/python-3813/">release notes</a> for details.</li>
+  </ul></li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 14.0-4</h3>
 <ul>
   <li>GCC provides:
@@ -146,9 +187,6 @@
     <li>Fix for <a href="https://bugs.python.org/issue45859">test_collections has a wrong test in case _itemgetter is not available</a>.</li>
   </ul></li>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 14.0-3</h3>
 <ul>
