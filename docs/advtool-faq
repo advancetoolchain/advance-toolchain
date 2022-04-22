@@ -158,8 +158,7 @@
 <!-- Tabs content body with tab contents divs inside a 6-4: -->
 
 <div class="ibm-col-12-8 ibm-padding-top-1"><!-- Begin content for overview tab -->
-<div class="ibm-tabs-content" id="faq1">
-<h3>How do I find which package provides a specific feature?</h3>
+<div class="ibm-tabs-content" id="faq1"><b>How do I find which package provides a specific feature</b>
 
 <p>On RHEL-based systems you can run:</p>
 
@@ -175,8 +174,7 @@ zypper what-provides &lt;feature&gt;
 </div>
 <!-- Begin content for description tab -->
 
-<div class="ibm-tabs-content" id="faq2">
-<h3>What does <code>"undefined reference to sem_*"</code> mean?</h3>
+<div class="ibm-tabs-content" id="faq2"><b>What does <code>"undefined reference to sem_*"</code> mean?</b>
 
 <p>These kinds of errors usually appear when you are trying to link a multithreaded program without enabling multithreading support (that is, specify <code>-pthread</code> when you are calling the linker), for example:</p>
 
@@ -186,17 +184,15 @@ zypper what-provides &lt;feature&gt;
 </div>
 <!-- Begin resources content -->
 
-<div class="ibm-tabs-content" id="faq3">
-<h3>Why doesn't the Advance Toolchain find my library?</h3>
+<div class="ibm-tabs-content" id="faq3"><b>Why doesn't the Advance Toolchain find my library?</b>
 
 <p>The loader keeps a cache of all libraries available in the library path (<code>/opt/atX.X/etc/ld.so.conf)</code>. Every time a new library is installed in one of the directories of the library path or when the library path is changed, it is necessary to update this cache by running <code>/opt/atX.X/sbin/ldconfig</code> as root.</p>
 </div>
 <!-- Begin faq4 content -->
 
-<div class="ibm-tabs-content" id="faq4">
-<h3>Why does my program fail with <code>"No such file or directory"</code>?</h3>
+<div class="ibm-tabs-content" id="faq4"><b>Why does my program fail with <code>"No such file or directory"</code>?</b>
 
-<p>The symptom of this issue is: a program built with the Advance Toolchain fails to execute with the error message:</p>
+<p>The symptom of this issue is: a program built with the Advance Toolchain fails to run with the error message:</p>
 
 <pre>
 bash: ./program: No such file or directory
@@ -214,16 +210,14 @@ ldd &lt;program&gt;
 </div>
 <!-- Begin faq5 content -->
 
-<div class="ibm-tabs-content" id="faq5">
-<h3>Can I set <code>RPATH/RUNPATH</code> with the Advance Toolchain?</h3>
+<div class="ibm-tabs-content" id="faq5"><b>Can I set <code>RPATH/RUNPATH</code> with the Advance Toolchain?</b>
 
 <p>Yes. The Advance Toolchain uses the <code>RPATH</code> and <code>RUNPATH</code> tags to identify where its libraries are located, but it is possible to add new directories by using the linker parameter <code>-rpath=dir</code>.</p>
 
 <p>By default, the Advance Toolchain prepends its own <code>lib</code> directory to the <code>RPATH</code>/<code>RUNPATH</code>. However, in case the user changes this behavior, the user must ensure the Advance Toolchain <code>lib</code> directory appears before a directory with another <code>libc</code>, for example, <code>/usr/lib</code>, <code>/usr/lib64</code>, <code>/lib</code>, or <code>/lib64</code>. This measure guarantees you don't mix parts of different <code>glibc</code> versions.</p>
 </div>
 
-<div class="ibm-tabs-content" id="faq6">
-<h3>Can I mix parts of different <code>glibc</code> versions?</h3>
+<div class="ibm-tabs-content" id="faq6"><b>Can I mix parts of different <code>glibc</code> versions?</b>
 
 <p>No. The GNU C Library is not designed to support mixing parts of different <code>glibc</code> versions, for example: use the loader provided by the Linux distribution and <code>glibc</code> libraries provided by the Advance Toolchain.</p>
 
@@ -241,8 +235,7 @@ LD_PRELOAD=/opt/atX.X/lib64/libtcmalloc.so /opt/atX.X/lib64/ld-X.XX.so /usr/bin/
 </ul>
 </div>
 
-<div class="ibm-tabs-content" id="faq7">
-<h3>How to verify whether the Advance Toolchain is corrupted?</h3>
+<div class="ibm-tabs-content" id="faq7"><b>How to verify whether the Advance Toolchain is corrupted?</b>
 
 <p>The package manager provides:</p>
 
@@ -278,21 +271,19 @@ debsums advance-toolchain-atX.X-runtime advance-toolchain-atX.X-devel advance-to
 </ul>
 </div>
 
-<div class="ibm-tabs-content" id="faq8">
-<h3>When to use Advance Toolchain?</h3>
+<div class="ibm-tabs-content" id="faq8"><b>When to use Advance Toolchain?</b>
 
 <p>The Advance Toolchain provides toolchain functionality earlier and a group of optimized libraries. AT is highly recommended when you want to build an optimized CPU-bound application on POWER or want some of the new toolchain functionalities on POWER before they make into a distribution. Also, you must use AT when you link with a library built with AT.</p>
 
 <p>In some scenarios, you don't get many advantages by using the Advance Toolchain, and it is easier to use the distro's toolchain that usually performs well. Such cases include building applications that are not CPU-bound and on I/O constrained environments.</p>
 </div>
 
-<div class="ibm-tabs-content" id="faq9">
-<h3>Are there any issues to be aware of?</h3>
+<div class="ibm-tabs-content" id="faq9"><b>Are there any issues to be aware of?</b>
 
 <p>Yes! The following is a list of Advance Toolchain limitations and known issues:</p>
 
 <ul>
-	<li>The cross package upgrade from 9.0-4, 10.0-5, 11.0-1 or older versions to a newer release need to be forced.</li>
+	<li>The cross-package upgrade from 9.0-4, 10.0-5, 11.0-1 or older versions to a newer release need to be forced.</li>
 	<li>The upgrade from 9.0-0 to a newer release need to be forced. The problem was fixed in 9.0-1 and does not affect that, nor newer releases.</li>
 	<li><code>oprofile</code>'s <code>operf</code> tool running on SLES 11: if you are running <code>operf</code> as the root user, only <code>--system-wide</code> or <code>--pid</code> modes are supported. This restriction is permanent.</li>
 	<li><code>gcc</code> no longer has support for Graphite loop optimizations starting on Advance Toolchain 6.0-0.</li>
@@ -300,8 +291,7 @@ debsums advance-toolchain-atX.X-runtime advance-toolchain-atX.X-devel advance-to
 </ul>
 </div>
 
-<div class="ibm-tabs-content" id="faq10">
-<h3>Where can I get help?</h3>
+<div class="ibm-tabs-content" id="faq10"><b>Where can I get help?</b>
 
 <p>Customer support for the Advance Toolchain is provided in one of the following ways:</p>
 
@@ -338,4 +328,3 @@ debsums advance-toolchain-atX.X-runtime advance-toolchain-atX.X-devel advance-to
    x.className = "topnav";
  }
 }</script></div>
-
