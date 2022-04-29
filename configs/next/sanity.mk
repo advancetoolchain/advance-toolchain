@@ -1,1 +1,1 @@
-../15.0/sanity.mk
+../16.0/sanity.mk
