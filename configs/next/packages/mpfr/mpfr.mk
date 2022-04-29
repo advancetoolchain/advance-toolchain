@@ -1,1 +1,1 @@
-../../../15.0/packages/mpfr/mpfr.mk
+../../../16.0/packages/mpfr/mpfr.mk

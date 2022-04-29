@@ -1,1 +1,1 @@
-../../15.0/specs/release.spec
+../../16.0/specs/release.spec
