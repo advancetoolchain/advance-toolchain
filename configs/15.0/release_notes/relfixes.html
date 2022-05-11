@@ -13,6 +13,72 @@
 <p>Since the end of August 2019, Advance Toolchain has been available from a new FTP server: <a href="http://public.dhe.ibm.com/">public.dhe.ibm.com</a></p>
 <p>Please be advised the FTP server at Unicamp won't be updated any longer.</p>
 
+<h3>New features in 15.0-3</h3>
+<ul>
+  <li>GCC provides:
+  <ul>
+    <li>Version 11.3, see the <a href="https://gcc.gnu.org/gcc-11/changes.html">release notes</a> for details.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105310">ICE when UNION is after the 8th field in a DEC STRUCTURE with -finit-derived -finit-local-zero</a>.</li>
+  </ul></li>
+  <li>GNU C Library provides:
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=15533">LD_AUDIT introduces an avoidable performance degradation</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=20204">_dl_open_hook and _dlfcn_hook hardening</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=23734">la_symbind*() doesn't get called when LD_BIND_NOW is set</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25659">glob(&quot;/foo/*/&quot;) may also match regular &amp; other kind of files, not just directories</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25812">Libio vtable protection is sometimes only partially enforced</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=27220">Migrate away from nested functions</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28061">A failing dlmopen called by an auditor crashed</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28062">Suppress audit calls when a (new) namespace is empty</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28096">elf: audit calls that uses static tls might fail</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28746">_FORTIFY_SOURCE does not work for stpcpy</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28953">NSS lookup result can be incorrect if function lookup clobbers errno</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29029">poll() spuriously returns EINTR during thread cancellation and with cancellation disabled</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29030">GLIBC 2.35 regression - Fortify crash on certain valid uses of mbsrtowcs (*** buffer overflow detected ***: terminated)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29078">&lt;dlfcn.h&gt; functions unusable during early auditing</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29097">fchmodat does not handle 64 bit time_t for AT_SYMLINK_NOFOLLOW</a>.</li>
+  </ul></li>
+  <li>Binutils provides:
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28959">obdump doesn't decode anymore mftb instruction (elf32-powerpc)</a>.</li>
+  </ul></li>
+  <li>OpenSSL provides:
+  <ul>
+    <li>Version 1.1.1o, see the <a href="https://www.openssl.org/news/openssl-1.1.1-notes.html">release notes</a> for details.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/13583">If no supported_groups are available then we send an empty list</a>.</li>
+  </ul></li>
+  <li>Python provides:
+  <ul>
+    <li>Version 3.9.12, see the <a href="https://www.python.org/downloads/release/python-3912/">release notes</a> for details.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue26792">docstrings of runpy.run_{module,path} are rather sparse</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue27929">asyncio.AbstractEventLoop.sock_connect broken for AF_BLUETOOTH</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue28516">contextlib.ExitStack.__enter__ has trivial but undocumented behavior</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue29890">Constructor of ipaddress.IPv*Interface does not follow documentation</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue36819">Crash during encoding using UTF-16/32 and custom error handler</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue41233">Missing links to errnos on Built-in Exceptions page</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue42340">KeyboardInterrupt should come with a warning</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue43323">UnicodeEncodeError: surrogates not allowed when parsing invalid charset</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue44493">Missing terminated NUL in the length of sockaddr_un</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45584">Clarifying truncating in documentation</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue45790">Inaccurate phrasing in extending/newtypes_tutorial</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue46415">ipaddress.ip_{address,network,interface} raises TypeError instead of ValueError if given a tuple as address</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue46484">Add test for Calendar().iterweekdays()</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue46769">Improve documentation for `typing.TypeVar`</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue46787">ProcessPoolExecutor exception memory leak</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue47029">Fix a BrokenPipeError when a multiprocessing.Queue is garbage collected</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue47031">math.nan should note that NANs do not compare equal to anything</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue47089">Avoid sporadic failure of test_compileall on Windows</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue47103">Copy pgort140.dll when building for PGO</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue47194">Upgrade to zlib v1.2.12 in CPython binary releases</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue47205">posix.sched_{get|set}affinity(-1) no longer returns ProcessLookup causing test failures on FreeBSD</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue47230">New compiler warnings with latest zlib</a>.</li>
+    <li>Fix for <a href="https://bugs.python.org/issue6686">xml.sax.xmlreader.XMLReader.getProperty (xml.sax.handler.property_xml_string) returns bytes</a>.</li>
+  </ul></li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 15.0-2</h3>
 <ul>
   <li>Advance Toolchain provides:
@@ -173,9 +239,6 @@
     <li>Version 2021.6.0, see the <a href="https://software.intel.com/content/www/us/en/develop/articles/intel-oneapi-threading-building-blocks-release-notes.html">release notes</a> for details.</li>
   </ul></li>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 15.0-1</h3>
 <ul>
