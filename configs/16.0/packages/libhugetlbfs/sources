@@ -45,8 +45,8 @@ atsrc_get_patches ()
 {
     # Disable usage of morecore
     at_get_patch \
-	'https://raw.githubusercontent.com/powertechpreview/powertechpreview/6d9a43ebbfa3a788922612b95ad358f4f0cb4495/Libhugetlbfs%20Patches/disable-morecore.patch' \
-	d3860602e4a81b252c94b519d7935624 || return ${?}
+	'https://github.com/libhugetlbfs/libhugetlbfs/commit/959d74fd0fbbff310943096e15024a84e8f5cba4.patch' \
+	abdba133bea898e4c2b4ff723c26743f disable-morecore.patch || return ${?}
 
     # Always use bash as the shell for make
     at_get_patch \
