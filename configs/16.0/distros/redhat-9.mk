@@ -75,7 +75,7 @@ ifndef AT_DISTRO_REQ_PKGS
                           autoconf bzip2-[0-9] libtool-[0-9] \
                           gzip rpm-build-[0-9] rpm-sign gcc-c++ wget \
                           docbook2X autoconf-archive libffi-devel python3 \
-                          systemtap-sdt-devel git make
+                          systemtap-sdt-devel git make perl-FindBin
     AT_CROSS_PGMS_REQ :=
     AT_NATIVE_PGMS_REQ :=
     AT_COMMON_PGMS_REQ :=
