@@ -428,7 +428,15 @@ proc append_at_internal {name} {
 # Collect the distro version in which it's being run.
 proc get_distro {} {
 	set distro ""
-	if {[catch {exec lsb_release -i | cut -d: -f 2 | sed "s/^\[ \t\]*//" \
+
+	# If lsb_release is not available, use our internal copy
+	if { [catch {exec which lsb_release}] } {
+		set lsbtool $::env(AT_BASE)/scripts/utilities/lsb_release
+	} else {
+		set lsbtool lsb_release
+	}
+
+	if {[catch {exec $lsbtool -i | cut -d: -f 2 | sed "s/^\[ \t\]*//" \
 		         | tr \[:upper:\] \[:lower:\]} distro]} {
 		printit "lsb_release command failed."
 		fvtr_error "Unable to find the distribution."
