@@ -118,7 +118,14 @@ atcfg_configure() {
 
 # Make build command
 atcfg_make() {
-	PATH=${at_dest}/bin:${PATH} ${SUB_MAKE}
+	
+	if [[ ("${distro_fm}" == "ubuntu") || ("${distro_fm}" == "debian") ]]; then
+			user_defined_dir='user-defined-trusted-dirs=/lib/powerpc64le-linux-gnu:/usr/lib/powerpc64le-linux-gnu'			
+	else
+			user_defined_dir='user-defined-trusted-dirs=/lib64:/usr/lib64'          
+	fi
+
+	PATH=${at_dest}/bin:${PATH} ${SUB_MAKE} ${user_defined_dir}			
 }
 
 # Conditional install build command
