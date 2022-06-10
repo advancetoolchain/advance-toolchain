@@ -275,9 +275,6 @@ testsuite ()
 		export DHRY_TEST_DIR="$HOME/dhrystone/"
 	fi
 
-	# Set AT_BASE if not defined.
-	# AT_BASE is needed by some FVTR scripts.
-	printenv AT_BASE >/dev/null || export AT_BASE=$(pwd)
 	cd fvtr
 	bash fvtr.sh -f ${config}
 }
