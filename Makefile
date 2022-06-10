@@ -299,7 +299,6 @@ ifeq (,$(findstring $(MAKECMDGOALS),clone edit pack))
         echo "AT_HOST_ARCH=\"${HOST_ARCH}\"" >> $(CONFIG_EXPT); \
         echo "AT_BUILD_LOAD_ARCH=\"${BUILD_LOAD_ARCH}\"" >> $(CONFIG_EXPT); \
         echo "AT_OPTMD_LIBS=\"${BUILD_ACTIVE_MULTILIBS}\"" >> $(CONFIG_EXPT); \
-        echo "AT_BASE=\"${AT_BASE}\"" >> $(CONFIG_EXPT); \
         for PKG in $1; do \
             source $(CONFIG)/packages/$${PKG}/sources; \
             PKG_NAME=$$(echo "$${PKG}" | awk '{print toupper($$0)}'); \
