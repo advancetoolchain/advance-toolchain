@@ -167,6 +167,7 @@ then
 	export AT_WD=$AT_WD
 fi
 
+export AT_BASE=$(realpath "$(dirname $0)/..")
 export PATH=${AT_DEST}/bin:${PATH}
 
 if [ $LOUD = "OFF" ]
