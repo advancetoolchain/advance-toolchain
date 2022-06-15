@@ -63,7 +63,7 @@ ifndef AT_DISTRO_REQ_PKGS
     # TODO: add libqt4-dev or libqt5-dev when it will be available in Ubuntu 20.04.
     AT_NATIVE_PKGS_REQ := libpopt-dev \
                           libc6-dev libbz2-dev xsltproc docbook-xsl \
-                          libsqlite3-dev
+                          libsqlite3-dev libcrypt-dev
     AT_COMMON_PKGS_REQ := zlib1g-dev libncurses5-dev ncurses-term flex bison \
                           texinfo gawk fakeroot debhelper \
                           autoconf rsync curl bc libxml2-utils automake \

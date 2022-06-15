@@ -140,6 +140,9 @@ atcfg_pre_configure()
 atcfg_configure()
 {
 	local base_target=$(find_build_target ${AT_BIT_SIZE})
+
+	disable_crypt=$(${utilities}/check_glibc_disable_crypt.sh)
+
 	# CXX - In a bootstrap build, the first glibc build should not be
 	#       built with a functional C++ compiler because it will be used to
 	#       enable glibc features that should be disabled at this stage.
@@ -166,7 +169,8 @@ atcfg_configure()
 			--enable-obsolete-rpc \
 			--without-gd \
 			--without-selinux \
-			--enable-kernel="${kernel}"
+			--enable-kernel="${kernel}" \
+			${disable_crypt:+--disable-crypt}
 	else
 		# glibc can't detect correctly if the stack protector works on
 		# ppc64le.

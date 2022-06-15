@@ -68,7 +68,7 @@ endef
 ifndef AT_DISTRO_REQ_PKGS
     AT_CROSS_PKGS_REQ :=
     AT_NATIVE_PKGS_REQ := libxslt docbook-style-xsl qt5-devel \
-                          sqlite-devel
+                          sqlite-devel libxcrypt-devel
     AT_COMMON_PKGS_REQ := zlib-devel ncurses-devel flex bison texinfo \
                           createrepo glibc-devel gawk \
                           rsync curl bc automake libstdc\\+\\+-static \
