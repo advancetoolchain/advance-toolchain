@@ -71,7 +71,7 @@ endef
 ifndef AT_DISTRO_REQ_PKGS
     AT_CROSS_PKGS_REQ :=
     AT_NATIVE_PKGS_REQ := libxslt popt-devel docbook-xsl-stylesheets \
-                          libbz2-devel sqlite3-devel xz-devel
+                          libbz2-devel sqlite3-devel xz-devel libxcrypt-devel
     AT_COMMON_PKGS_REQ := zlib-devel ncurses-devel flex bison texinfo \
                           createrepo_c gawk autoconf rsync curl \
                           bc automake rpm-build gcc-c++ xorg-x11-util-devel \

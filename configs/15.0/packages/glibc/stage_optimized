@@ -78,6 +78,8 @@ atcfg_pre_configure() {
 atcfg_configure() {
 	local base_target=$(find_build_target ${AT_BIT_SIZE})
 
+	disable_crypt=$(${utilities}/check_glibc_disable_crypt.sh)
+
 	PATH=${at_dest}/bin:${PATH} \
 	AUTOCONF="${autoconf}" \
 	CC="${at_dest}/bin/gcc -m${AT_BIT_SIZE}" \
@@ -101,7 +103,8 @@ atcfg_configure() {
 					--with-cpu=${AT_OPTIMIZE_CPU/ppc/} \
 					--enable-kernel="${kernel}" \
 					--enable-obsolete-rpc \
-					--enable-lock-elision=yes
+					--enable-lock-elision=yes \
+					${disable_crypt:+--disable-crypt}
 }
 
 
