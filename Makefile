@@ -825,7 +825,6 @@ build_targets :=
 .PHONY: all test destclean cleanall clean collect clone edit pack
 
 all: package release
-	$(call collect_logs)
 
 test: fvtr tarball_test
 
