@@ -51,3 +51,6 @@ AT_MAJOR_VERSION := 13.0
 AT_REVISION_NUMBER := 6
 AT_INTERNAL := none
 AT_PREVIOUS_VERSION := 12.0
+
+# Set the last day of support for this AT version.
+AT_END_OF_LIFE := 2022-08-31

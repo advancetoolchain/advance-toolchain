@@ -140,6 +140,8 @@ define std_setenv
     export at_ver_rev_internal=$(AT_VER_REV_INTERNAL); \
     echo "  - Setting at_dir_name to $(AT_DIR_NAME)"; \
     export at_dir_name=$(AT_DIR_NAME); \
+    echo "  - Setting at_end_of_life to $(AT_END_OF_LIFE)"; \
+    export at_end_of_life=$(AT_END_OF_LIFE); \
     echo "  - Setting at_use_fedora_relnam to $(AT_USE_FEDORA_RELNAM)"; \
     export at_use_fedora_relnam=$(AT_USE_FEDORA_RELNAM); \
     echo "  - Setting kernel to $(AT_KERNEL)"; \

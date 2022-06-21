@@ -13,9 +13,12 @@
 # limitations under the License.
 #
 
-# Per convention the %%product name will be used a stem for the -release
-# package and the -prod file
-%define         product advance-toolchain-%{at_major}
+# The product is called 'ibm-power-advance-toolchain' in SCC.
+%define         product ibm-power-advance-toolchain
+
+# Per convention the %%package name will be used a stem for the -release
+# package.
+%define         package advance-toolchain-%{at_major}
 
 # Decide: The products version and release often follows the release package.
 # In this case use the -release packages %%{version} and %%{release}. But
@@ -27,15 +30,15 @@
 # The date when this Product goes out of support. A missing value indicates
 # that there will be no EOL, while an empty/invalid value indicates that
 # there will be an EOL date, but it's not yet known.
-%define         productendoflife ""
-%define         productendoflifel_pcescaped %{productendoflife}
+%define         productendoflife __AT_END_OF_LIFE__
+%define         productendoflife_pcescaped __AT_END_OF_LIFE_ESCAPED__
 
 %define         producturlbugtracker https://github.com/advancetoolchain/advance-toolchain/issues/
 %define         producturlbugtracker_pcescaped https%3A%2F%2Fgithub.com%2Fadvancetoolchain%2Fadvance%2Dtoolchain%2Fissues%2F
 
 # ----------------------------------------------------------------------
 
-Name:           %{product}-release
+Name:           %{package}-release
 Summary:        Advance Toolchain
 Version:        %{productversion}
 Release:        %{productrelease}
@@ -54,6 +57,7 @@ Provides:       product-url(bugtracker) = %{producturlbugtracker_pcescaped}
 # ----------------------------------------------------------------------
 
 Requires:       product(SUSE_SLE) >= __DISTRO_VERSION__
+Suggests:       %{package}-runtime
 AutoReqProv:    no
 
 %description
@@ -78,7 +82,7 @@ cat >$RPM_BUILD_ROOT/etc/products.d/%{product}.prod << EOF
   <patchlevel>0</patchlevel>
   <predecessor>sle-sdk</predecessor>
   <release>%{productrelease}</release>
-  <endoflife>%{productendoflife_pcescaped}</endoflife>
+  <endoflife>%{productendoflife}</endoflife>
   <arch>__TARGET_ARCH__</arch>
   <summary>Advance Toolchain</summary>
   <description>
