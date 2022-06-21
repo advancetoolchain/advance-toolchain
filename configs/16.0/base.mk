@@ -56,3 +56,6 @@ AT_PREVIOUS_VERSION := 15.0
 # i.e. minimum kernel version required in order to run software linked to this
 # AT version.
 AT_KERNEL := 4.12.14
+
+# Set the last day of support for this AT version.
+AT_END_OF_LIFE := 2025-08-31

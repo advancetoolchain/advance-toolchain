@@ -224,6 +224,8 @@ function build_monolithic_spec()
 		        sed -e "$([[ -n ${build_rpm_vendor} ]] && \
 				echo "s|__RPM_VENDOR__|${build_rpm_vendor}|g" || \
 				echo "/__RPM_VENDOR__/d")" \
+			    -e "s|__AT_END_OF_LIFE__|${at_end_of_life}|g" \
+			    -e "s|__AT_END_OF_LIFE_ESCAPED__|$(echo "${at_end_of_life}" | sed "s/-/%2D/g")|g" \
 			    -e "s|__TARGET_ARCH__|${build_arch}|g" \
 			    -e "s|__DISTRO_VERSION__|$(echo "${distro_id}" | cut -d '-' -f 2)|g" \
 			    "${config_spec}/release.spec" > \
