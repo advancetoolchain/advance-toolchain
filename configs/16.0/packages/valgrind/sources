@@ -20,8 +20,8 @@
 #
 
 ATSRC_PACKAGE_NAME="Valgrind"
-ATSRC_PACKAGE_VER=master
-ATSRC_PACKAGE_REV=184e3ba052a6
+ATSRC_PACKAGE_VER=3.19.0
+ATSRC_PACKAGE_REV=8d3c8034b87d
 ATSRC_PACKAGE_LICENSE="GPL 2.0"
 ATSRC_PACKAGE_DOCLINK="http://valgrind.org/docs/"
 ATSRC_PACKAGE_RELFIXES=
@@ -40,8 +40,7 @@ ATSRC_PACKAGE_TARS=''
 ATSRC_PACKAGE_MAKE_CHECK=
 ATSRC_PACKAGE_DISTRIB=yes
 ATSRC_PACKAGE_BUNDLE=profile
-# Not needed because file follows master branch
-# ATSRC_PACKAGE_UPSTREAM=
+ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://sourceware.org/git/?p=valgrind.git;a=blob_plain;f=configure.ac;hb=__REVISION__" | grep -m 1 "^AC_INIT" | sed "s/^.*\[\([0-9\.][0-9\.]*\)].*$/\1/"'
 
 atsrc_get_patches ()
 {
