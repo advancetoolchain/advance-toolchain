@@ -1,1 +1,65 @@
-../../../16.0/packages/zlib/sources
+#!/usr/bin/env bash
+#
+# Copyright 2022 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# ZLIB source package and build info
+# ==================================
+#
+
+ATSRC_PACKAGE_NAME="ZLIB Compression Library"
+ATSRC_PACKAGE_VER=master
+ATSRC_PACKAGE_REV=21767c654d31
+ATSRC_PACKAGE_LICENSE="Zlib License"
+ATSRC_PACKAGE_DOCLINK="http://www.zlib.net/manual.html"
+ATSRC_PACKAGE_RELFIXES=
+ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
+ATSRC_PACKAGE_VERID="${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
+ATSRC_PACKAGE_PRE="test -d zlib-${ATSRC_PACKAGE_VERID}"
+ATSRC_PACKAGE_CO=([0]="git clone https://github.com/madler/zlib.git zlib")
+ATSRC_PACKAGE_GIT="git checkout -b zlib-${ATSRC_PACKAGE_VERID} ${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_POST="mv zlib zlib-${ATSRC_PACKAGE_VERID}"
+ATSRC_PACKAGE_SRC=${AT_BASE}/sources/zlib-${ATSRC_PACKAGE_VERID}
+ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/zlib
+ATSRC_PACKAGE_MLS=""
+ATSRC_PACKAGE_ALOC=""
+ATSRC_PACKAGE_PATCHES=""
+ATSRC_PACKAGE_TARS=""
+ATSRC_PACKAGE_MAKE_CHECK=""
+ATSRC_PACKAGE_DISTRIB=no
+ATSRC_PACKAGE_BUNDLE=toolchain_extra
+# Not needed because file follows master branch
+# ATSRC_PACKAGE_UPSTREAM=
+
+atsrc_get_patches ()
+{
+	# Patch to add optimized functions using vector instructions.
+	at_get_patch \
+		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/4450368b03523e86204bc83a3291493f1698c5b4/Zlib%20Patches/zlib-power-optimizations.patch' \
+	        e2ef4fa0f220b710fc6df40839bd1939 || return ${?}
+
+	at_get_patch \
+		'https://github.com/madler/zlib/commit/05796d3d8d5546cf1b4dfe2cd72ab746afae505d.patch' \
+		c60d18e80205fc2725a86a1562324681 fix-cc.patch || return ${?}
+
+	return 0
+}
+
+atsrc_apply_patches ()
+{
+	patch -p1 < zlib-power-optimizations.patch || return ${?}
+
+	patch -p1 < fix-cc.patch || return ${?}
+}
