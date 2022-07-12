@@ -28,6 +28,7 @@
 #* devel: Development tools
 #* profile: Additional performance and debugging tools
 #* mcore-libs: Additional multi core support libraries
+#* libnxz: POWER NX zlib compliant library
 
 # This filters below are used to isolate toolchain devel and runtime files where
 # propriate. They are arrays of *Extended* Regular Expressions (ERE).
