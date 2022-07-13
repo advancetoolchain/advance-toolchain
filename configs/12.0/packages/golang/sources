@@ -45,6 +45,6 @@ atsrc_get_patches ()
 	# Reuse the build from the community in order to bootstrap our own
 	# build.
 	at_get_patch \
-		https://storage.googleapis.com/golang/go1.8.1.linux-ppc64le.tar.gz \
-		8c74ee3647048c3e18802a901821e270 || return ${?}
+		https://go.dev/dl/go1.10.8.linux-ppc64le.tar.gz \
+		03c56f26066607d0bdaec59565761c17 || return ${?}
 }

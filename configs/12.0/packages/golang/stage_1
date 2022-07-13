@@ -43,7 +43,7 @@ atcfg_configure ()
 {
 
 	mkdir -p ${bootstrap} && pushd $_
-	tar -zxf ${ATSRC_PACKAGE_WORK}/go1.8.1.linux-ppc64le.tar.gz --strip-components 1
+	tar -zxf ${ATSRC_PACKAGE_WORK}/go1.10.8.linux-ppc64le.tar.gz --strip-components 1
 	popd
 }
 
