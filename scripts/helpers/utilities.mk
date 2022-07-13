@@ -414,7 +414,7 @@ define prepare_loader_cache
             echo "/usr/local/lib64"           >> "$(DYNAMIC_LOAD)/sys64.ld.conf"; \
         fi; \
     fi; \
-    if [[ $1 -eq 2 ]]; then \
+    if [[ $1 -ge 2 ]]; then \
         for CPU in $(TUNED_PROCESSORS); do \
             if [[ -n "$(TARGET32)" ]]; then \
                 echo "$(AT_DEST)/lib/$${CPU}"       >> "$(DYNAMIC_LOAD)/at32.ld.conf"; \
@@ -458,7 +458,7 @@ define prepare_loader_cache
     "$(AT_DEST)/sbin/ldconfig"; \
     if [[ $1 -eq 1 ]]; then \
         touch "$(AT_DEST)/lib64/syslib-override"; \
-    else \
+    elif [[ $1 -eq 2 ]]; then \
         find "$(AT_DEST)/lib64/glibc-hwcaps" ! -type d \
              ! -newer "$(AT_DEST)/lib64/syslib-override" \
              -exec rm -f '{}' \;; \

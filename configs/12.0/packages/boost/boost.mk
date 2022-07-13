@@ -23,7 +23,7 @@ boost: $(RCPTS)/boost_1.rcpt
 3rdparty_libs-reqs += $(RCPTS)/boost_1.rcpt
 
 ifeq ($(CROSS_BUILD),no)
-        boost-deps-64 := python_1.b
+        boost-deps-64 := python_1.b ldconfig_3
 endif
 
 $(RCPTS)/boost_1.rcpt: $(boost_1-archdeps)
