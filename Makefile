@@ -1093,7 +1093,10 @@ $(RCPTS)/package.rcpt: $(RCPTS)/$(pack-sys).rcpt $(RCPTS)/source_tarball.rcpt
 
 # Build and include the monitor (watch_ldconfig) utility
 # RPM distros use a systemd service and DEB distros use a cronjob.
-$(RCPTS)/monitor.rcpt: $(RCPTS)/toolchain.rcpt
+# Run it after the last ldconfig pass because it ldconfig stages regenerate
+# ldconfig.filelist and potentially deleting the information generated in this
+# stage.
+$(RCPTS)/monitor.rcpt: $(RCPTS)/toolchain.rcpt $(RCPTS)/ldconfig_3.rcpt
 	@echo "$$($(TIME)) Preparing the system's ld.so.cache monitor"
 	@+{ $(AT_DEST)/bin/gcc -O2 -DAT_LDCONFIG_PATH=$(AT_DEST)/sbin/ldconfig \
 	         $(SCRIPTS_ROOT)/utilities/watch_ldconfig.c -o $(AT_DEST)/bin/watch_ldconfig; \
@@ -1276,6 +1279,21 @@ $(RCPTS)/distributed_scripts.rcpt: $(ENVIRONMENT_MODULES)
 	@echo "$$($(TIME)) Completed install of package scripts!"
 	@touch $@
 
+
+$(RCPTS)/ldconfig_3.rcpt: $(RCPTS)/python_1.rcpt $(RCPTS)/toolchain.rcpt
+	@echo "$$($(TIME)) Third dynamic loader cache update..."
+	@+{ echo "Run needed dependency"; \
+	    if [[ "$(CROSS_BUILD)" == "no" ]]; then \
+	        export AT_STEPID=ldconfig_3; \
+	        $(call runandlog,$(LOGS)/_$${AT_STEPID}-1_ld.so.config.log,$(call prepare_loader_cache,3)); \
+	        if [[ $${ret} -ne 0 ]]; then \
+	            echo "Problem running the third ldconfig."; \
+	            exit 1; \
+	        fi; \
+	    fi; \
+	} &> $(LOGS)/_ldconfig_3.log
+	@echo "$$($(TIME)) Completed third dynamic loader cache update!"
+	@touch $@
 
 # Base toolchain build
 ifeq ($(BUILD_IGNORE_COMPAT),no)

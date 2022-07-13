@@ -18,7 +18,7 @@ $(eval $(call set_provides,gdb_1,single,cross_yes))
 
 gdb-deps :=
 ifeq ($(CROSS_BUILD),no)
-    gdb-deps := python_1
+    gdb-deps := python_1 ldconfig_3
 endif
 
 gdb_1: $(RCPTS)/gdb_1.rcpt
