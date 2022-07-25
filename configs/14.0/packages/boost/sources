@@ -26,7 +26,10 @@ ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
 ATSRC_PACKAGE_LICENSE="Boost Software License 1.0"
 ATSRC_PACKAGE_PRE="test -d boost_${ATSRC_PACKAGE_VER//./_}"
-ATSRC_PACKAGE_CO=([0]="wget -N http://sourceforge.net/projects/boost/files/boost/${ATSRC_PACKAGE_VER}/boost_${ATSRC_PACKAGE_VER//./_}.tar.bz2")
+ATSRC_PACKAGE_CO=(
+	[0]="wget -N https://boostorg.jfrog.io/artifactory/main/release/${ATSRC_PACKAGE_VER}/source/boost_${ATSRC_PACKAGE_VER//./_}.tar.bz2"
+	[1]="wget -N http://sourceforge.net/projects/boost/files/boost/${ATSRC_PACKAGE_VER}/boost_${ATSRC_PACKAGE_VER//./_}.tar.bz2"
+)
 ATSRC_PACKAGE_POST="tar jxf boost_${ATSRC_PACKAGE_VER//./_}.tar.bz2"
 ATSRC_PACKAGE_SRC="${AT_BASE}/sources/boost_${ATSRC_PACKAGE_VER//./_}"
 ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/boost
