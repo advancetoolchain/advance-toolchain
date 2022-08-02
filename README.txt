@@ -174,8 +174,6 @@ Each and every configset must have this structure/files to assure that the build
 - sanity.mk file
   This file contains a macro definition to perform general sanity checks at the beginning of the build process. It should check for general requirements on the build system in order to run the build. Any package or program check required by the build should be set on the distro specific sanity check, not here.
 
-This covers our overview of configsets. If your are interested in more information about the configset structure, purpose and content, take a look here: https://ltc3.linux.ibm.com/wiki/LoP_Toolchain/Advance_Toolchain/Education/ConfigSets
-
 
 2.2. Temporary build skeleton
 =============================
