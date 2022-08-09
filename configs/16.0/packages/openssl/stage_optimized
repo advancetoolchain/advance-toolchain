@@ -68,7 +68,8 @@ atcfg_configure() {
 		-fpeel-loops -funroll-loops -ffast-math -ftree-vectorize" \
 	./Configure ${openssl_tgt} \
 		--prefix="${at_dest}" --libdir="${base_libdir}" \
-		no-idea no-rc5 shared threads zlib-dynamic \
+		no-idea no-rc5 no-mdc2 no-ec2m no-sm2 no-sm4 \
+		shared threads zlib-dynamic \
 		-Wa,--noexecstack -g
 }
 
