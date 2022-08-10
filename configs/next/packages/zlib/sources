@@ -50,9 +50,33 @@ atsrc_get_patches ()
 		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/4450368b03523e86204bc83a3291493f1698c5b4/Zlib%20Patches/zlib-power-optimizations.patch' \
 	        e2ef4fa0f220b710fc6df40839bd1939 || return ${?}
 
+	## The following 4 patches come from zlib's develop branch and address
+	## issues in the 1.2.12 release, they can be removed once the next version
+	## is released
+
+	# Fix CC detection
+	# https://github.com/madler/zlib/issues/608
 	at_get_patch \
 		'https://github.com/madler/zlib/commit/05796d3d8d5546cf1b4dfe2cd72ab746afae505d.patch' \
 		c60d18e80205fc2725a86a1562324681 fix-cc.patch || return ${?}
+
+	# Ignore high bits of crc32 on input
+	# https://github.com/madler/zlib/issues/613
+	at_get_patch \
+		'https://github.com/madler/zlib/commit/ec3df00224d4b396e2ac6586ab5d25f673caa4c2.patch' \
+		fa21ee3ab9eaeadf7221dfccc14577c4 fix-crc32-input.patch || return ${?}
+
+	# Fix CVE-2022-37434
+	# https://nvd.nist.gov/vuln/detail/CVE-2022-37434
+	at_get_patch \
+		'https://github.com/madler/zlib/commit/eff308af425b67093bab25f80f1ae950166bece1.patch' \
+		feec8c9885b84d5669ffc988977bad9e CVE-2022-37434.patch || return ${?}
+
+	# Fix segfault caused by the last patch
+	# https://github.com/curl/curl/issues/9271
+	at_get_patch \
+		'https://github.com/madler/zlib/commit/1eb7682f845ac9e9bf9ae35bbfb3bad5dacbd91d.patch' \
+		2d9085374e6978a8e95a1c48bfac68c0 fix-segfault.patch || return ${?}
 
 	return 0
 }
@@ -62,4 +86,10 @@ atsrc_apply_patches ()
 	patch -p1 < zlib-power-optimizations.patch || return ${?}
 
 	patch -p1 < fix-cc.patch || return ${?}
+
+	patch -p1 < fix-crc32-input.patch || return ${?}
+
+	patch -p1 < CVE-2022-37434.patch || return ${?}
+
+	patch -p1 < fix-segfault.patch || return ${?}
 }
