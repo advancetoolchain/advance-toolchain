@@ -24,7 +24,8 @@ if [[ "${1}" == configure ]]; then
 	[[ -f __AT_DEST__/sbin/ldconfig ]] && __AT_DEST__/sbin/ldconfig
 fi
 
-if [[ "__USE_SYSTEMD__" == "yes" && -n "$(command -v systemctl)" ]]; then
+if [[ "__USE_SYSTEMD__" == "yes" && -n "$(command -v systemctl)"\
+	&& "$(systemctl is-system-running)" != "offline" ]]; then
 	systemctl --no-reload preset __AT_VER_ALTERNATIVE__-cachemanager.service \
 	    > /dev/null 2>&1 || :
 	systemctl restart __AT_VER_ALTERNATIVE__-cachemanager.service || \

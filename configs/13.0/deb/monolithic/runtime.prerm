@@ -17,7 +17,8 @@
 
 if [[ "${1}" == remove ]]; then
 	# Stop and disable the cache manager service to remove symlinks.
-	if [[ "__USE_SYSTEMD__" == "yes" && -n "$(command -v systemctl)" ]]; then
+	if [[ "__USE_SYSTEMD__" == "yes" && -n "$(command -v systemctl)"\
+		&& "$(systemctl is-system-running)" != "offline" ]]; then
 		systemctl stop __AT_VER_ALTERNATIVE__-cachemanager.service
 		systemctl disable __AT_VER_ALTERNATIVE__-cachemanager.service
 	fi
