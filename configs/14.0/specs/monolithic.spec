@@ -263,7 +263,7 @@ fi
 # Automatically set the timezone
 rm -f %{_prefix}/etc/localtime
 ln -s /etc/localtime %{_prefix}/etc/localtime
-if [[ -n "$(command -v systemctl)" ]]; then
+if [[ -n "$(command -v systemctl)" && "$(systemctl is-system-running)" != "offline" ]]; then
 	systemctl preset %{at_ver_alternative}-cachemanager.service \
 	    > /dev/null 2>&1 || :
 	systemctl restart %{at_ver_alternative}-cachemanager.service
@@ -433,9 +433,10 @@ fi
 
 #---------------------------------------------------
 %preun runtime
-command -v systemctl >/dev/null && systemctl --no-reload disable --now \
+if [[ -n "$(command -v systemctl)" && "$(systemctl is-system-running)" != "offline" ]]; then
+    systemctl --no-reload disable --now \
     %{at_ver_alternative}-cachemanager.service > /dev/null 2>&1 || :
-
+fi
 ####################################################
 %postun runtime
 # Remove the directory only when uninstalling
@@ -452,9 +453,11 @@ if file /usr/sbin/ldconfig | grep "bash script" > /dev/null; then
         rm -f /usr/sbin/ldconfig
     fi
 fi
-command -v systemctl >/dev/null &&  systemctl try-restart %{at_ver_alternative}-cachemanager.service >/dev/null \
-    2>&1 || :
 
+if [[ -n "$(command -v systemctl)" && "$(systemctl is-system-running)" != "offline" ]]; then
+    systemctl try-restart %{at_ver_alternative}-cachemanager.service >/dev/null \
+    2>&1 || :
+fi
 #---------------------------------------------------
 %postun devel
 if [ "$1" = 0 ]; then
