@@ -27,7 +27,7 @@ set ERROR	1
 #    cmd - a string with the complete command line (compiler and parameters)
 #
 proc compile {cmd} {
-	set gcc_err [catch {eval exec ${cmd}} gcc_info]
+	set gcc_err [catch {eval exec -ignorestderr ${cmd}} gcc_info]
 
 	set matched_regexp [regexp " (\[^:\]+): No such file or directory" \
 				$gcc_info match \
