@@ -143,7 +143,7 @@ document.getElementById('toggle_btn').addEventListener('click',function(e){
 <!--Start of vertical tabs -->
 
 <div class="ibm-band-fluid ibm-flex ibm-padding-top-2  ibm-padding-bottom-1">
-<p class="custom-padding-left-12px ibm-h4">IBM Advance Toolchain for Linux on Power 15.0-3 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-3">Learn more</a></p>
+<p class="custom-padding-left-12px ibm-h4">IBM Advance Toolchain for Linux on Power 16.0-0 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at16.0-0">Learn more</a></p>
 </div>
 
 <div class="ibm-graphic-tabs ibm-graphic-tabs--colored ibm-vertical-tabs" data-remembertab="false" data-widget="dyntabs"><!-- Tabs here: -->
