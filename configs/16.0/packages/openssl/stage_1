@@ -139,7 +139,7 @@ atcfg_pre_make() {
 }
 # Make build command
 atcfg_make() {
-	PATH=${at_dest}/bin:${PATH} make -j1
+	PATH=${at_dest}/bin:${PATH} ${SUB_MAKE}
 }
 
 atcfg_make_check() {
@@ -157,8 +157,8 @@ atcfg_install() {
 	fi
 
 	PATH=${at_dest}/bin:${PATH} \
-	make MANDIR=${at_dest}/share/man \
-	DESTDIR=${install_place} -j1 ${install_arg}
+	${SUB_MAKE} MANDIR=${at_dest}/share/man \
+		DESTDIR=${install_place} ${install_arg}
 }
 
 atcfg_post_install() {
