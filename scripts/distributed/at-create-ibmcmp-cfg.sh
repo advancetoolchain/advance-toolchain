@@ -8,9 +8,9 @@
 
 # The script can be invoked manually by:
 # >cd /usr
-# >/opt/at12.0/scripts/at-create-ibmcmp-cfg.sh
+# >/opt/at13.0/scripts/at-create-ibmcmp-cfg.sh
 #  ---- OR to explicitly indicate the compiler path ----
-# >xl_base=/opt/ibm /opt/at12.0/scripts/at-create-ibmcmp-cfg.sh
+# >xl_base=/opt/ibm /opt/at13.0/scripts/at-create-ibmcmp-cfg.sh
 #
 # For vac 11.1/xlf 13.1 and earlier releases, the compilers and
 # runtime libraries are found under /opt/ibmcmp.  Starting in xlC 13.1/xlf 15.1,

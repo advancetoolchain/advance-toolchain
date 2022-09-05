@@ -38,7 +38,7 @@ version of the Advance Toolchain.
 
 The Advance Toolchain is a self contained toolchain which provides preview
 toolchain functionality in GCC, binutils and GLIBC, as well as the debug and
-profile tools GDB, Valgrind and OProfile (for AT 12.0 and older).
+profile tools GDB, and Valgrind.
 It also provides a group of optimized threading libraries as well.
 
 Options:

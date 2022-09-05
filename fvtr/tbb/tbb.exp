@@ -23,11 +23,9 @@ set rc 0
 
 set CXX [compiler_path g++]
 set CFLAGS "-O2 -Wall"
-if { $env(AT_MAJOR_VERSION) > 12.0 } {
-	# In TBB 2019_U9, a pragma in tbb/tbb.h warns about deprecated functions.
-	# The following line avoids the warning to break the test.
-	set CFLAGS "$CFLAGS -DTBB_SUPPRESS_DEPRECATED_MESSAGES"
-}
+# In TBB 2019_U9, a pragma in tbb/tbb.h warns about deprecated functions.
+# The following line avoids the warning to break the test.
+set CFLAGS "$CFLAGS -DTBB_SUPPRESS_DEPRECATED_MESSAGES"
 set TBBLIBS "-ltbb -ltbbmalloc_proxy -ltbbmalloc"
 
 if { [array names env -exact "AT_TBB_VER"] == "" } {
