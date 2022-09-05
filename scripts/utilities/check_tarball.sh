@@ -28,11 +28,6 @@ src_list="binutils gcc gdb glibc gmp tbb libdfp libhugetlbfs kernel mpc \
 blocked_list="amino boost expat gotools libauxv libsphde openssl paflib \
 	      python tcmalloc zlib"
 
-# Stopped distributing oprofile after AT 12.0.
-if [[ ${at_major_version%%.*} -le 12 ]]; then
-        src_list=${src_list}" oprofile"
-fi
-
 # Start distributing libnxz on AT 14.0
 if [[ ${at_major_version%%.*} -ge 14 ]]; then
 	src_list=${src_list}" libnxz"

@@ -20,8 +20,7 @@
 # chkconfig:   2345 70 30
 # description: The Advance Toolchain is a self contained toolchain which \
 #              provides preview toolchain functionality in GCC, binutils, \
-#              GLIBC, GDB, Valgrind, and OProfile (for Advance Toochain 12.0 \
-#              and older). \
+#              GLIBC, GDB, and Valgrind. \
 #              This service enables a compatibility mode to run programs
 #              compiled with old versions of the Advance Toolchain on top of \
 #              the current version.
@@ -37,8 +36,7 @@
 # Short-Description: Compatibility mode to run AT __AT_OVER__ apps on AT __AT_VER__
 # Description:      The Advance Toolchain is a self contained toolchain
 #                   which provides preview toolchain functionality in GCC,
-#                   binutils, GLIBC, GDB, Valgrind, and OProfile (for Advance
-#                   Toolchain 12.0 and older).
+#                   binutils, GLIBC, GDB, and Valgrind.
 #                   This service enables a compatibility mode to run programs
 #                   compiled with old versions of the Advance Toolchain
 #                   on top of the current version.

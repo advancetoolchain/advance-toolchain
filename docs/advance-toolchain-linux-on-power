@@ -174,7 +174,7 @@ function myFunction() {
 	<li>GNU Debugger (<code>gdb</code>)</li>
 	<li><code>Python</code></li>
 	<li><code>Golang</code></li>
-	<li>Performance analysis tools (<code>oprofile</code> (for Advance Toolchain 12.0 and older), <code>valgrind</code>, <code>itrace</code>)</li>
+	<li>Performance analysis tools (<code>valgrind</code>, <code>itrace</code>)</li>
 	<li>Multi-core exploitation libraries (<code>TBB</code>, <code>Userspace RCU</code>, <code>SPHDE</code>)</li>
 	<li>Plus several support libraries (<code>libhugetlbfs</code>, <code>Boost</code>, <code>zlib</code>, etc)</li>
 </ul>

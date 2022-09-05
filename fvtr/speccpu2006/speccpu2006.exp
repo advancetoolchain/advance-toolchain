@@ -61,7 +61,7 @@ if { $TARGET64 } {
 	set LIB64_ATAN2 ${tmp}
 }
 
-set cfg_set "12.0"
+set cfg_set "13.0"
 
 # Define the config files to use for building
 set build_configs ""
