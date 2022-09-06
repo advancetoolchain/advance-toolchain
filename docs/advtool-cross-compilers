@@ -253,7 +253,7 @@ zypper addrepo https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/
 	<li>The <code>gpg</code> public key is provided in the IBM repositories. This public key is used to verify the authenticity of both the Advance Toolchain packages and the repository contents. Download the <code>gpg</code> public key for your Linux distribution and import it by using the following commands:
 
 	<ul>
-		<li>For Debian 10, Ubuntu 20.04 or Ubuntu 18.04:
+		<li>For Ubuntu 20.04 or Ubuntu 18.04:
 	<pre>
 wget https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists/focal/6976a827.gpg.key
 sudo apt-key add 6976a827.gpg.key
@@ -278,10 +278,9 @@ deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu f
 deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu bionic atX.X
 </pre>
 		</li>
-		<li>When you install on Debian 11 (bullseye) or Debian 10 (buster), point to its respective repository:
+		<li>When you install on Debian 11 (bullseye), point to:
 		<pre>
 deb [signed-by=/etc/apt/trusted.gpg.d/615d762f.asc] https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian bullseye atX.X
-deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian buster atX.X
 </pre>
 		</li>
 	</ul>
