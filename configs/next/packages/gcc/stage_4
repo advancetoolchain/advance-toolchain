@@ -136,26 +136,6 @@ atcfg_configure() {
 }
 
 
-atcfg_pre_make() {
-	if [[ "${cross_build}" == "no" ]]; then
-		local lto_patch=gcc-9-lto.patch
-
-		pushd ${ATSRC_PACKAGE_WORK}
-		if [[ ! -r ${lto_patch} ]]; then
-			echo "No gcc libstdc++ patch found!"
-			exit 1
-		fi
-		# Ignore when the patch is already applied
-		patch -sfR --dry-run -p1 -i ${lto_patch} > /dev/null \
-			|| patch -p1 < ${lto_patch}
-		if [[ ${?} -ne 0 ]]; then
-			echo "Error applying gcc libstdc++ patch!"
-			exit 1
-		fi
-		popd
-	fi
-}
-
 # Make build command
 atcfg_make() {
 	if [[ "${cross_build}" == "no" ]]; then

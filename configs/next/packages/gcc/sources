@@ -22,8 +22,9 @@
 ATSRC_PACKAGE_NAME="GCC (GNU Compiler Collection)"
 ATSRC_PACKAGE_SUBPACKAGE_NAME_0="GNU Standard C++ Library v3 (Libstdc++-v3)"
 ATSRC_PACKAGE_SUBPACKAGE_NAME_1="GNU Libgomp"
-ATSRC_PACKAGE_VER=13.0.0
-ATSRC_PACKAGE_REV=58b67140de76
+ATSRC_PACKAGE_VER=13.0.1
+ATSRC_PACKAGE_REV=5ff54e49a666
+ATSRC_PACKAGE_BRANCH=releases/gcc-13
 ATSRC_PACKAGE_LICENSE="GPL 3.0"
 ATSRC_PACKAGE_DOCLINK="https://gcc.gnu.org/onlinedocs/gcc/"
 ATSRC_PACKAGE_SUBPACKAGE_DOCLINK_0="https://gcc.gnu.org/libstdc++/"
@@ -48,24 +49,15 @@ ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://gcc.gnu.org/git/?p=gcc.git;a=blob_pl
 
 atsrc_get_patches ()
 {
-	# Patch to add link-time optimization to some GCC libraries.
-	at_get_patch \
-		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/0be24b142a81e44ac4abadb3fde4eb0010b79f70/GCC%20PowerPC%20Backport/9/gcc-9-lto.patch' \
-		80639c0922d9942cb4fc7a6e88dab311 || return ${?}
-
 	# Avoid a misconfiguration of tuned libraries as seen in issue #204.
 	at_get_patch \
-		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/67840422b42f81699c6ef14caf9009a3b8c23ac7/GCC%20PowerPC%20Backport/11/0001-libssp-Ignore-vsnprintf-test-when-ssp_have_usable_vs.patch' \
-		2333bbd9a6a8deec786b78ca24f57fab || return ${?}
+		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/2298826553bcfe2cb62a3c6b846e52fb880d396b/GCC%20PowerPC%20Backport/13/0001-libssp-Ignore-vsnprintf-test-when-ssp_have_usable_vs.patch' \
+		1cfb62539fa0af5d185e537dc5c5d7c2 || return ${?}
 
 	# Avoid an error on libstdc++ when running msgfmt.
 	at_get_patch \
 		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/GCC%20libstdc%2B%2B%20PowerPC%20Patches/9/0001-libstdc-Prevent-LD_LIBRARY_PATH-from-leaking-to-msgf.patch' \
 		9cba9a9b94ca9c1b8958c0d722a9c06b || return ${?}
-
-	at_get_patch \
-		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/GCC%20PowerPC%20Backport/11/Revert-Default-to-DWARF5.patch' \
-		0cc724faa8c2db5e686d70900b323365 || return ${?}
 
 	return 0
 }
@@ -78,9 +70,5 @@ atsrc_apply_patches ()
 
 	patch -p1 \
 	      < 0001-libstdc-Prevent-LD_LIBRARY_PATH-from-leaking-to-msgf.patch \
-		|| return ${?}
-
-	patch -p1 \
-	      < Revert-Default-to-DWARF5.patch \
 		|| return ${?}
 }
