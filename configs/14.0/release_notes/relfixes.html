@@ -12,6 +12,50 @@
 <p>Since the end of August 2019, Advance Toolchain has been available from a new FTP server: <a href="https://public.dhe.ibm.com/">public.dhe.ibm.com</a></p>
 <p>Please be advised the FTP server at Unicamp won't be updated any longer.</p>
 
+<h3>New features in 14.0-6</h3>
+<ul>
+  <li>GCC provides:
+  <ul>
+    <li>Version 10.4, see the <a href="https://gcc.gnu.org/gcc-10/changes.html">release notes</a> for details.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102146">several test cases fails after r11-8940</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103137">ICE in gfc_simplify_transpose, at fortran/simplify.c:8181 since r12-4967-gbcf3728abe848888</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103138">ICE in gfc_simplify_cshift, at fortran/simplify.c:2139 since r12-4967-gbcf3728abe848888</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103197">ppc inline expansion of memcpy/memmove should not use lxsibzx/stxsibx for a single byte</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103504">ICE in get_sym_storage_size, at fortran/interface.c:2800</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103693">ICE in gfc_array_dimen_size(): Bad EXPR_ARRAY expr since r12-4967-gbcf3728abe848888</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=104313">ICE verify_gimple failed with -ff2c since r10-2279-ge0af8f52b10385d8</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105243">ICE in next_char, at fortran/io.cc:160</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105349">gcc.target/powerpc/bswap-brw.c fails after r12-8221</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105691">Incorrect calculation of INDEX(str1,str2) at compile time</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105813">ICE in gfc_simplify_unpack, at fortran/simplify.cc:8490</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105954">ICE in gfc_element_size, at fortran/target-memory.cc:132</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106091">during RTL pass: swaps ICE: verify_flow_info failed: missing REG_EH_REGION note at the end of bb 69 with -fnon-call-exceptions</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106121">ICE in gfc_simplify_extends_type_of, at fortran/simplify.cc:3109</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106345">Some ppc64le tests fail with -mcpu=power9 -mtune=power9</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=97498">#pragma GCC diagnostic ignored &quot;-Wunused-function&quot; inconsistent</a>.</li>
+  </ul></li>
+  <li>OpenSSL provides:
+  <ul>
+    <li>Version 1.1.1q, see the <a href="https://www.openssl.org/news/openssl-1.1.1-notes.html">release notes</a> for details.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/18445">Performance degradation in 1.1.1m</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/18677">Memory Leak in X509V3_add1_i2d when flag is X509V3_ADD_DELETE</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/18744">Regression: Unable to set EC_KEY private_key to NULL starting in 1.1.1h</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/18801">X509_STORE_CTX_purpose_inherit semantics details</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/18825">PEM_write() causes segfault with header=NULL</a>.</li>
+  </ul></li>
+  <li>Python provides:
+  <ul>
+    <li>Version 3.8.14, see the <a href="https://www.python.org/downloads/release/python-3814/">release notes</a> for details.</li>
+  </ul></li>
+  <li>Userspace RCU provides:
+  <ul>
+    <li>Version 0.12.4, see the <a href="https://github.com/urcu/userspace-rcu/blob/v0.12.4/ChangeLog">release notes</a> for details.</li>
+  </ul></li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 14.0-5</h3>
 <ul>
   <li>GCC provides:
@@ -49,9 +93,6 @@
     <li>Version 3.8.13, see the <a href="https://www.python.org/downloads/release/python-3813/">release notes</a> for details.</li>
   </ul></li>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 14.0-4</h3>
 <ul>
