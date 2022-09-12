@@ -603,14 +603,14 @@ wget -qO- https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ub
 	<ul>
 		<li>When you install on Ubuntu 22.04 (jammy), Ubuntu 20.04 (focal) or Ubuntu 18.04 (bionic), point to its respective repository:
 		<pre>
-deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu jammy atX.X
+deb [signed-by=/etc/apt/trusted.gpg.d/615d762f.asc] https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu jammy atX.X
 deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu focal atX.X
 deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu bionic atX.X
 </pre>
 		</li>
 		<li>When you install on Debian 11 (bullseye) or Debian 10 (buster), point to its respective repository:
 		<pre>
-deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian bullseye atX.X
+deb [signed-by=/etc/apt/trusted.gpg.d/615d762f.asc] https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian bullseye atX.X
 deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian buster atX.X
 </pre>
 		</li>
@@ -663,14 +663,14 @@ wget -qO- https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ub
 	<ul>
 		<li>When you install on Ubuntu 22.04 (jammy), Ubuntu 20.04 (focal) or Ubuntu 18.04 (bionic), point to its respective repository:
 		<pre>
-deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu jammy atX.X
+deb [signed-by=/etc/apt/trusted.gpg.d/615d762f.asc] https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu jammy atX.X
 deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu focal atX.X
 deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu bionic atX.X
 </pre>
 		</li>
 		<li>When you install on Debian 11 (bullseye) or Debian 10 (buster), point to its respective repository:
 		<pre>
-deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian bullseye atX.X
+deb [signed-by=/etc/apt/trusted.gpg.d/615d762f.asc] https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian bullseye atX.X
 deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian buster atX.X
 </pre>
 		</li>
