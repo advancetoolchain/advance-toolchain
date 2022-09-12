@@ -140,7 +140,7 @@ function myFunction() {
 </div>
 
 <div class="ibm-band-fluid ibm-flex ibm-padding-top-2  ibm-padding-bottom-1">
-<p class="custom-padding-left-12px ibm-h4">IBM Advance Toolchain for Linux on Power 16.0-0 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at16.0-0">Learn more</a></p>
+<p class="custom-padding-left-12px ibm-h4">IBM Advance Toolchain for Linux on Power 16.0-0 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at16.0-0" target="_blank">Learn more</a></p>
 </div>
 
 <div class="ibm-band-fluid ibm-flex ibm-nospacing ibm-flex--wrap ibm-padding-top-2 ibm-padding-bottom-1"><!--Get started-->
@@ -151,7 +151,9 @@ function myFunction() {
 </div>
 
 <div class="ibm-col-12-9 ibm-padding-top-1 ibm-padding-bottom-1">
-<table class="ibm-data-table ibm-grid" data-widget="datatable" id="distro-table">
+<div id="distro-table"></div>
+
+<table class="bx--data-table">
 	<thead>
 		<tr>
 			<th></th>
