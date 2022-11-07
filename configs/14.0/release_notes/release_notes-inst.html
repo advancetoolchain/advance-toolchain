@@ -1,45 +1,3 @@
-<!-- if_SLES11
-			<p>The gpg public key(s) <span class="code">gpg-pubkey-xxxxxxxx-xxxxxxxx</span> will be provided in the repository where these release notes were found.  The pubkey(s) can be used to verify the authenticity of both the Advance Toolchain install packages and the repository contents. After downloading the gpg-pubkey(s) they can be imported as follows:</p>
-			<p class="code">rpm --import gpg-pubkey2-xxxxxxxx-xxxxxxxx</p>
-
-			<h3>Using YaST</h3>
-			<p>To install, execute <span class="code">yast</span> as <i>root</i>. Then:</p>
-				<ul>
-					<li>Select <span class="code">Add-on Product</span>.</li>
-					<li>Select the <span class="code">FTP Protocol</span>:
-						<ul>
-							<li><span class="code">(x) FTP...</span></li>
-							<li>Under <span class="code">Server Name</span>:<br />
-								<span class="code">public.dhe.ibm.com</span></li>
-							<li>Under <span class="code">Directory on Server</span>:<br />
-								<span class="code">/software/server/POWER/Linux/toolchain/at/suse/SLES_11/</span></li>
-						</ul></li>
-					<li>You will get a warning about there being no product information available at the given location.  This is because the <span class="code">repomd</span> based repository doesn't contain the YaST product information.  This is <b>not</b> a bug. Select <span class="code">[Continue]</span>.</li>
-					<li>Under the <span class="code">Software Management</span> interface, search for <span class="code">advance toolchain</span> and mark the <span class="code">runtime</span>, <span class="code">devel</span> and <span class="code">perf</span> packages for installation as necessary and click <span class="code">[Accept]</span>.</li>
-				</ul>
-endif_SLES11 -->
-
-<!-- if_SLES12
-			<p>The gpg public key(s) <span class="code">gpg-pubkey-xxxxxxxx-xxxxxxxx</span> will be provided in the repository where these release notes were found.  The pubkey(s) can be used to verify the authenticity of both the Advance Toolchain install packages and the repository contents. After downloading the gpg-pubkey(s) they can be imported as follows:</p>
-			<p class="code">rpm --import gpg-pubkey2-xxxxxxxx-xxxxxxxx</p>
-
-			<h3>Using YaST</h3>
-			<p>To install, execute <span class="code">yast</span> as <i>root</i>. Then:</p>
-				<ul>
-					<li>Select <span class="code">Add-on Product</span>.</li>
-					<li>Select the <span class="code">FTP Protocol</span>:
-						<ul>
-							<li><span class="code">(x) FTP...</span></li>
-							<li>Under <span class="code">Server Name</span>:<br />
-								<span class="code">public.dhe.ibm.com</span></li>
-							<li>Under <span class="code">Directory on Server</span>:<br />
-								<span class="code">/software/server/POWER/Linux/toolchain/at/suse/SLES_12</span></li>
-						</ul></li>
-					<li>You will get a warning about there being no product information available at the given location.  This is because the <span class="code">repomd</span> based repository doesn't contain the YaST product information.  This is <b>not</b> a bug. Select <span class="code">[Continue]</span>.</li>
-					<li>Under the <span class="code">Software Management</span> interface, search for <span class="code">advance toolchain</span> and mark the <span class="code">runtime</span>, <span class="code">devel</span> and <span class="code">perf</span> packages for installation as necessary and click <span class="code">[Accept]</span>.</li>
-				</ul>
-endif_SLES12 -->
-
 <!-- if_SLES15
 			<p>The gpg public key(s) <span class="code">gpg-pubkey-xxxxxxxx-xxxxxxxx</span> will be provided in the repository where these release notes were found.  The pubkey(s) can be used to verify the authenticity of both the Advance Toolchain install packages and the repository contents. After downloading the gpg-pubkey(s) they can be imported as follows:</p>
 			<p class="code">rpm --import gpg-pubkey2-xxxxxxxx-xxxxxxxx</p>
@@ -61,67 +19,6 @@ endif_SLES12 -->
 				</ul>
 endif_SLES15 -->
 
-<!-- if_RHEL6
-			<p>The gpg public key(s) <span class="code">gpg-pubkey-xxxxxxxx-xxxxxxxx</span> will be provided in the repository where these release notes were found.  The pubkey(s) can be used to verify the authenticity of both the Advance Toolchain install packages and the repository contents. After downloading the gpg-pubkey(s) they can be imported as follows:</p>
-			<p class="code">rpm --import gpg-pubkey2-xxxxxxxx-xxxxxxxx</p>
-
-			<h3>Using YUM</h3>
-				<p>First, if you have <u>never</u> created an Advance Toolchain repository configuration file, you need to do so. Create the following file using the text editor of your choice as <i>root</i>:</p>
-				<p class="code">/etc/yum.repos.d/at12.0.repo</p>
-				<p>and add the following content:</p>
-				<pre class="codebox">
-# Begin of configuration file
-[__VERSION__]
-name=Advance Toolchain IBM FTP
-baseurl=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL6/
-failovermethod=priority
-enabled=1
-gpgcheck=1
-gpgkey=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL6/gpg-pubkey-6976a827-5164221b
-       https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL6/gpg-pubkey-3052930d-5175955a
-# End of configuration file
-				</pre>
-
-				<p>To install execute <span class="code">yum install</span> as <i>root</i>:
-				<pre class="codebox">
-yum install advance-toolchain-__VERSION__-runtime \
-            advance-toolchain-__VERSION__-devel \
-            advance-toolchain-__VERSION__-perf
-				</pre>
-
-				<p>Answer <span class="code">y</span> when YUM prompts for confirmation.</p>
-endif_RHEL6 -->
-
-<!-- if_RHEL7
-			<p>The gpg public key(s) <span class="code">gpg-pubkey-xxxxxxxx-xxxxxxxx</span> will be provided in the repository where these release notes were found.  The pubkey(s) can be used to verify the authenticity of both the Advance Toolchain install packages and the repository contents. After downloading the gpg-pubkey(s) they can be imported as follows:</p>
-			<p class="code">rpm --import gpg-pubkey2-xxxxxxxx-xxxxxxxx</p>
-
-                        <h3>Using YUM</h3>
-                                <p>First, if you have <u>never</u> created an Advance Toolchain repository configuration file, you need to do so. Create the following file using the text editor of your choice as <i>root</i>:</p>
-                                <p class="code">/etc/yum.repos.d/__VERSION__.repo</p>
-                                <p>and add the following content:</p>
-				<pre class="codebox">
-# Begin of configuration file
-[__VERSION__]
-name=Advance Toolchain IBM FTP
-baseurl=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL7
-failovermethod=priority
-enabled=1
-gpgcheck=1
-gpgkey=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL7/gpg-pubkey-6976a827-5164221b
-# End of configuration file
-				</pre>
-
-				<p>To install execute <span class="code">yum install</span> as <i>root</i>:
-				<pre class="codebox">
-yum install advance-toolchain-__VERSION__-runtime /
-            advance-toolchain-__VERSION__-devel /
-            advance-toolchain-__VERSION__-perf
-				</pre>
-
-				<p>Answer <span class="code">y</span> when YUM prompts for confirmation.</p>
-endif_RHEL7 -->
-
 <!-- if_RHEL8
 			<p>The gpg public key(s) <span class="code">gpg-pubkey-xxxxxxxx-xxxxxxxx</span> will be provided in the repository where these release notes were found.  The pubkey(s) can be used to verify the authenticity of both the Advance Toolchain install packages and the repository contents. After downloading the gpg-pubkey(s) they can be imported as follows:</p>
 			<p class="code">rpm --import gpg-pubkey2-xxxxxxxx-xxxxxxxx</p>
@@ -137,7 +34,7 @@ name=Advance Toolchain IBM FTP
 baseurl=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL8
 enabled=1
 gpgcheck=1
-gpgkey=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL8/gpg-pubkey-6976a827-5164221b
+gpgkey=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL8/gpg-pubkey-xxxxxxxx-xxxxxxxx
 # End of configuration file
 				</pre>
 
@@ -150,107 +47,6 @@ dnf install advance-toolchain-__VERSION__-runtime /
 
 				<p>Answer <span class="code">y</span> when DNF prompts for confirmation.</p>
 endif_RHEL8 -->
-
-<!-- if_ubuntu-14
-			<p>The gpg public key <span class="code">xxxxxxxx-gpg.key</span>will be provided in the repository where these release notes were found.  The public key can be used to verify the authenticity of both the Advance Toolchain install packages and the repository contents. After downloading the gpg public key, it can be imported as follows:</p>
-			<p class="code">sudo apt-key add xxxxxxxx.gpg.key</p>
-
-			<h3>Using aptitude or apt</h3>
-				<p>If the Advance Toolchain repository has not already been configured, that must be done first.  As <i>root</i>, edit the following file, adding one of the lines as needed for the installed system:
-				<p class="code">/etc/apt/sources.list</p>
-				<ul>
-					<li>For i386 or amd64 workstations add the line:</li>
-					<p class="code">deb [arch=i386] https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu trusty __VERSION__</p>
-					<li>For POWER servers (ppc64le) add the line:</li>
-					<p class="code">deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu trusty __VERSION__ </p>
-				</ul>
-				<p>To install using aptitude:</p>
-				<pre class="codebox">
-# If the repository has just been configured, refresh the aptitude cache
-sudo aptitude update
-# Install the Advance Toolchain packages
-sudo aptitude install advance-toolchain-__VERSION__-runtime \
-		      advance-toolchain-__VERSION__-devel \
-		      advance-toolchain-__VERSION__-perf \
-		      advance-toolchain-__VERSION__-mcore-libs
-				</pre>
-
-				<p>To install using apt:</p>
-				<pre class="codebox">
-#If the repository has just been configured, refresh the apt cache
-sudo apt-get update
-#Install the Advance Toolchain packages
-sudo apt-get install advance-toolchain-__VERSION__-runtime \
-		     advance-toolchain-__VERSION__-devel \
-		     advance-toolchain-__VERSION__-perf \
-		     advance-toolchain-__VERSION__-mcore-libs
-				</pre>
-				<p>Aptitude and apt support package upgrades for new revision releases (i.e. 7.1-0 to 7.1-1).  For new major releases, install as if a new installation.</p>
-endif_ubuntu-14 -->
-
-<!-- if_fedora-22
-			<p>The gpg public key(s) <span class="code">gpg-pubkey-xxxxxxxx-xxxxxxxx</span> will be provided in the repository where these release notes were found.  The pubkey(s) can be used to verify the authenticity of both the Advance Toolchain install packages and the repository contents. After downloading the gpg-pubkey(s) they can be imported as follows:</p>
-			<p class="code">rpm --import gpg-pubkey2-xxxxxxxx-xxxxxxxx</p>
-
-                        <h3>Using YUM or DNF</h3>
-                                <p>First, if you have <u>never</u> created an Advance Toolchain repository configuration file, you need to do so. Create the following file using the text editor of your choice as <i>root</i>:</p>
-                                <p class="code">/etc/yum.repos.d/__VERSION__.repo</p>
-                                <p>and add the following content:</p>
-				<pre class="codebox">
-# Begin of configuration file
-[__VERSION__]
-name=Advance Toolchain IBM FTP
-baseurl=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/Fedora22
-enabled=1
-gpgcheck=1
-gpgkey=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/Fedora22/gpg-pubkey-6976a827-5164221b
-# End of configuration file
-				</pre>
-
-				<p>To install execute <span class="code">yum install</span> as <i>root</i>:
-				<pre class="codebox">
-yum install advance-toolchain-__VERSION__-runtime /
-            advance-toolchain-__VERSION__-devel /
-            advance-toolchain-__VERSION__-perf
-				</pre>
-
-				<p>Answer <span class="code">y</span> when YUM prompts for confirmation.</p>
-endif_fedora-22 -->
-
-<!-- if_ubuntu-16
-			<p>The gpg public key <span class="code">xxxxxxxx-gpg.key</span>will be provided in the repository where these release notes were found.  The public key can be used to verify the authenticity of both the Advance Toolchain install packages and the repository contents. After downloading the gpg public key, it can be imported as follows:</p>
-			<p class="code">sudo apt-key add xxxxxxxx.gpg.key</p>
-
-			<h3>Using aptitude or apt</h3>
-				<p>If the Advance Toolchain repository has not already been configured, that must be done first.  As <i>root</i>, edit the following file, adding one of the lines as needed for the installed system:
-				<p class="code">/etc/apt/sources.list</p>
-				<ul>
-					<li>For amd64 workstations or POWER servers (ppc64le) add the line:</li>
-					<p class="code">deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu xenial __VERSION__ </p>
-				</ul>
-				<p>To install using aptitude:</p>
-				<pre class="codebox">
-# If the repository has just been configured, refresh the aptitude cache
-sudo aptitude update
-# Install the Advance Toolchain packages
-sudo aptitude install advance-toolchain-__VERSION__-runtime \
-		      advance-toolchain-__VERSION__-devel \
-		      advance-toolchain-__VERSION__-perf \
-		      advance-toolchain-__VERSION__-mcore-libs
-				</pre>
-
-				<p>To install using apt:</p>
-				<pre class="codebox">
-#If the repository has just been configured, refresh the apt cache
-sudo apt-get update
-#Install the Advance Toolchain packages
-sudo apt-get install advance-toolchain-__VERSION__-runtime \
-		     advance-toolchain-__VERSION__-devel \
-		     advance-toolchain-__VERSION__-perf \
-		     advance-toolchain-__VERSION__-mcore-libs
-				</pre>
-				<p>Aptitude and apt support package upgrades for new revision releases (i.e. 10.0-0 to 10.0-1).  For new major releases, install as if a new installation.</p>
-endif_ubuntu-16 -->
 
 <!-- if_ubuntu-18
 			<p>The gpg public key <span class="code">xxxxxxxx-gpg.key</span>will be provided in the repository where these release notes were found.  The public key can be used to verify the authenticity of both the Advance Toolchain install packages and the repository contents. After downloading the gpg public key, it can be imported as follows:</p>
@@ -320,37 +116,3 @@ sudo apt-get install advance-toolchain-__VERSION__-runtime \
                                 <p>Aptitude and apt support package upgrades for new revision releases (i.e. 10.0-0 to 10.0-1).  For new major releases, install as if a new installation.</p>
 endif_ubuntu-20 -->
 
-<!-- if_debian-10
-			<p>The gpg public key <span class="code">xxxxxxxx-gpg.key</span>will be provided in the repository where these release notes were found.  The public key can be used to verify the authenticity of both the Advance Toolchain install packages and the repository contents. After downloading the gpg public key, it can be imported as follows:</p>
-			<p class="code">sudo apt-key add xxxxxxxx.gpg.key</p>
-
-			<h3>Using aptitude or apt</h3>
-				<p>If the Advance Toolchain repository has not already been configured, that must be done first.  As <i>root</i>, edit the following file, adding one of the lines as needed for the installed system:
-				<p class="code">/etc/apt/sources.list</p>
-				<ul>
-					<li>For amd64 workstations or POWER servers (ppc64le) add the line:</li>
-					<p class="code">deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian buster __VERSION__ </p>
-				</ul>
-				<p>To install using aptitude:</p>
-				<pre class="codebox">
-# If the repository has just been configured, refresh the aptitude cache
-sudo aptitude update
-# Install the Advance Toolchain packages
-sudo aptitude install advance-toolchain-__VERSION__-runtime \
-		      advance-toolchain-__VERSION__-devel \
-		      advance-toolchain-__VERSION__-perf \
-		      advance-toolchain-__VERSION__-mcore-libs
-				</pre>
-
-				<p>To install using apt:</p>
-				<pre class="codebox">
-#If the repository has just been configured, refresh the apt cache
-sudo apt-get update
-#Install the Advance Toolchain packages
-sudo apt-get install advance-toolchain-__VERSION__-runtime \
-		     advance-toolchain-__VERSION__-devel \
-		     advance-toolchain-__VERSION__-perf \
-		     advance-toolchain-__VERSION__-mcore-libs
-				</pre>
-				<p>Aptitude and apt support package upgrades for new revision releases (i.e. 10.0-0 to 10.0-1).  For new major releases, install as if a new installation.</p>
-endif_debian-10 -->
