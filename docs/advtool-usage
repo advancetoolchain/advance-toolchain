@@ -298,7 +298,8 @@ MANPATH="/opt/atX.X/share/man:`manpath`" man lsauxv
 <p>Notes:</p>
 
 <ul>
-	<li>On Advance Toolchain 10.0, 11.0, 12.0, and 13.0 the compiler defaults to <code>-mcpu=power8 -mtune=power9</code></li>
+	<li>On Advance Toolchain 15.0 and 16.0 the compiler defaults to <code>-mcpu=power8 -mtune=power10</code></li>
+	<li>On Advance Toolchain 10.0, 11.0, 12.0, 13.0, and 14.0 the compiler defaults to <code>-mcpu=power8 -mtune=power9</code></li>
 	<li>On Advance Toolchain 7.x, 8.0, and 9.0, the compiler defaults to <code>-mcpu=power7 -mtune=power8</code></li>
 	<li>On Advance Toolchain 6.0, the compiler defaults to <code>-mcpu=power6 -mtune=power7</code></li>
 	<li>When you are using <code>-mcpu=power7</code>, DO NOT disable <code>Altivec</code> (for example, <code>-mno-altivec</code>) without also disabling VSX (for example, <code>-mno-vsx</code>). The following combination is invalid:
