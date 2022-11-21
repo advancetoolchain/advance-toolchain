@@ -20,7 +20,7 @@
 #
 
 ATSRC_PACKAGE_NAME="Open Secure Sockets Layer"
-ATSRC_PACKAGE_VER=3.0.5
+ATSRC_PACKAGE_VER=3.0.7
 ATSRC_PACKAGE_REV=c3e8128befa7
 ATSRC_PACKAGE_BRANCH=openssl-3.0
 ATSRC_PACKAGE_LICENSE="Apache 2.0"
@@ -38,7 +38,7 @@ ATSRC_PACKAGE_MAKE_CHECK=
 ATSRC_PACKAGE_TARS=
 ATSRC_PACKAGE_DISTRIB=no
 ATSRC_PACKAGE_BUNDLE=toolchain_extra
-ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://raw.githubusercontent.com/openssl/openssl/__REVISION__/CHANGES" | grep -m1 "^ Changes between .*and .*xx XXX xxxx" | sed "s/^.* \([0-9\.][0-9\.]*[a-z]\) and .*$/\1/"'
+ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://raw.githubusercontent.com/openssl/openssl/__REVISION__/CHANGES.md" | grep -m1 "Changes between .*and .*xx XXX xxxx" | sed "s/^.* \([0-9\.][0-9\.]*\) and .*$/\1/"'
 
 atsrc_apply_patches ()
 {
