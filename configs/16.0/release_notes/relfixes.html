@@ -9,6 +9,139 @@
 <li>GCC creates binaries using -mcpu=power8 -mtune=power10 by default.</li>
 </ul>
 
+<h3>New features in 16.0-1</h3>
+<ul>
+  <li>GCC provides:
+  <ul>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100029">ICE on subroutine call with allocatable polymorphic assumed-rank argument</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100040">Wrong code with intent out assumed-rank allocatable</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100097">Unlimited polymorphic pointers and allocatables have incorrect rank</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100098">Polymorphic pointers and allocatables have incorrect rank</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100103">Automatic reallocation fails inside select rank</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100132">Optimization breaks pointer association</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100136">ICE, regression, using flag -fcheck=pointer</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100245">ICE on automatic reallocation</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100645">ICE in related_vector_mode, at stor-layout.c:537</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101322">ICE in copy_to_mode_reg, at explow.c:651</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103353">Indefinite recursion when compiling -mmma requiring testcase w/ -maltivec</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103413">ICE: Invalid expression in gfc_element_size since r10-2083-g8dc63166e0b85954</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103694">ICE in gfc_conv_expr_op, at fortran/trans-expr.c:3882 since r12-3993-gb19bbfb148250536</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=104482">ICE: Segmentation fault (in rs6000_builtin_type_compatible), or ICE: tree check: expected class 'type', have 'reference' (attr_addr_expr) in cp_type_quals, at cp/typeck.cc:10955</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105485">ICE: Segmentation fault in pcrel-opt.md:get_insn_name()</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105633">ICE in find_array_section, at fortran/expr.cc:1582</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106017">[PowerPC] No array-to-pointer conversion for MMA accumulator</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106345">Some ppc64le tests fail with -mcpu=power9 -mtune=power9</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106566">[OpenMP] declare simd fails with with bogus &quot;already been host associated&quot; for module procedures</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106579">ieee_signaling_nan problem in fortran on powerpc64</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106782">dump_printf_loc has incorrect format attribute</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106817">clobber ordering problem when an actual intent(in) argument depends on the value of an intent(out) argument</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106857">ICE in gfc_simplify_pack, at fortran/simplify.cc:6438 since r12-4278-g74ccca380cde5e79</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106947">-Waddress + bool + pragma generates meaningless diagnostic</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106981">[10 Regression][OpenACC][OpenMP] ICE in decompose, at wide-int.h:984 with '#pragma omp/acc atomic capture'</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106985">ICE in gfc_simplify_expr, at fortran/expr.cc:2290</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106986">ICE in simplify_findloc_nodim, at fortran/simplify.cc:5675</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107054">ICE in gfc_simplify_unpack, at fortran/simplify.cc:8461</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107418">lto-dump -gimple-stats ICE Segmentation Fault</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82868">ICE in generate_coarray_sym_init, at fortran/trans-decl.c:5203</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96072">ICE: Segmentation fault (in add_reg_note)</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99685">gcc.target/powerpc/divkc3-1.c and mulkc3-1.c fail for 32 bits</a>.</li>
+  </ul></li>
+  <li>GNU C Library provides:
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=12154">Cannot resolve hosts which have wildcard aliases</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24816">nss/tst-nss-files-hosts-long fails when no interface has AF_INET6 address (ie docker)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=27087">PowerPC: Redefinition error with Clang from IEEE redirection headers</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28937">New DSO dependency sorter does not put new map first if in a cycle</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29035">Output of mktime with latest gcc and glibc differs with their older version when is_dst flag set</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29305">Inefficient buffer space usage in nss_dns for gethostbyname and other functions</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29415">getaddrinfo with AI_ADDRCONFIG returns addresses with wrong family</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29463">math/test-float128-y1 fails on x86_64</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29488">test-ibm128-llround fails on ppc64el when built with gcc-12 and -O2 or higher</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29528">__libc_early_init not called after dlmopen that reuses namespace</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29536">(CVE-2022-39046) syslog fail to create large messages (CVE-2022-39046)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29537">[2.34 regression]: Alignment issue on m68k when using futexes on qemu-user</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29539">LD_TRACE_LOADED_OBJECTS changed how vDSO library are printed</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29544">Regression in syslog(3) calls breaks RFC due to extra whitespace</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29564">Incorrect way to change MAKEFLAGS in Makerules</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29583">iconv failures on 32bit platform due to missing large file support</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29600">dlmopen hangs after loading certain libraries</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29605">Regression in NSCD backend of getaddrinfo</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29607">nscd repeatably crashes calling __strlen_avx2 when hosts cache is enabled</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29611">Optimized AVX2 string functions unconditionally use BMI2 instructions</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29638">stdlib: arc4random fallback is never used</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29657">Incorrect struct stat for 64-bit time on linux/generic platforms</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29771">Restore IPC_64 support in sysvipc *ctl functions</a>.</li>
+  </ul></li>
+  <li>Binutils provides:
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29435">Building openblas with binutils 2.38 leads to &quot;ELF load command address/offset not properly aligned&quot;</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29466">APP/NO_APP with linefile</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29542">PowerPC: internal error in get_output_view, at output.h:110</a>.</li>
+  </ul></li>
+  <li>Userspace RCU provides:
+  <ul>
+    <li>Fix: Always check pthread_create for failures.</li>
+  </ul></li>
+  <li>OpenSSL provides:
+  <ul>
+    <li>Version 3.0.7, see the <a href="https://www.openssl.org/news/cl30.txt">release notes</a> for details.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17995">OpenSSL 3.0 : segmentation fault with devcrypto engine</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/18578">SIGSEGV when registering an engine for default ciphers used by drbg (occurred inside sshd)</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/19524">ED25519_sign and ED448_sign missing check for private_key leading to segfault</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/19546">openssl 3.0.5 build error [BEGIN failed--compilation aborted at providers/common/der/oids_to_c.pm line 26.]</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/19589">&quot;openssl sha1 -verify&quot; fails with OpenSSL 3.0.7</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/19594">Cannot build with assembler acceleration on non-Unix IA64</a>.</li>
+  </ul></li>
+  <li>Python provides:
+  <ul>
+    <li>Version 3.10.8, see the <a href="https://www.python.org/downloads/release/python-3108/">release notes</a> for details.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/15656">argparse: Fix IndexError on store_true action</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/22937">Ignore_dangling_symlinks does not apply recursively</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/8551">Reorganize C API tests</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/92682">Clarify asyncio.loop.start_tls parameters</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/93457">Add note warning about entry point guard for asyncio example</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/93697">Locate frozen module source with __file__</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/93931">Prevent error when activating venv in nested fish instances</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/95732">Fix module docstring extraction in pygettext</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/95738">Add callable entry to the glossary</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/95972">Turn @writes_bytecode_files to skip when not running</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98242">Formatting changes for faq/programming</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98273">Make urllib.parse.urlparse reject non-numeric ports</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98302">Print exception class name instead of its representation</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98423">Fix UUID ifconfig MAC address detection</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98436">Fix handling options starting with &quot;-&quot; in tkinter.Text.count()</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98437">Use sphinx.locale._ as gettext() in pyspecific.py</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98486">Cover `PyMapping_HasKeyString` and `PyMapping_HasKey`</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98501">Don&#39;t use Linux abstract sockets for multiprocessing</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98516">Test abstract methods of some `collections` types</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98626">Fix base classes in `typing.rst`</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98635">Make note that null bytes are used to pad bytes</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98648">Improve coverage of `unicode_find` and `unicode_rfind`</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98671">Fix #ifdef in sha3module.c</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98688">Add mutex to unittest.mock.NonCallableMock</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98704">Fix asyncio proactor_events calling _call_connection_lost multiple times</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98738">Fix readline.c compiler warning.</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98742">Update libexpat from 2.4.9 to 2.5.0</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98764">Fix validation of conditional expressions in RE</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98835">Fix typecheck in `overlapped.c`</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98840">Clean up refleak in _io initialisation</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98841">Clean up refleak in _pickle initialisation</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98842">Clean up refleak in _zoneinfo initialisation</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98897">Memory leak if `math.dist` raises exception</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98920">Fix subscription of type aliases</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/98977">Clarify the contract of PyMem_SetAllocator()</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/99085">Fix implicit int warning in configure check for PTHREAD_SCOPE_SYSTEM</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/99125">Use concrete exception types in `test_builtin`</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/99155">`statistics.NormalDist` fails to be pickled with `0` and `1` protocols</title></a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/99253">Clarify the type of the env dict</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/99283">Fix `SystemError` in `ctypes` during `__initsubclass__`</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/99393">Fix SQLite converter recipes</a>.</li>
+  </ul></li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 16.0-0</h3>
 <ul>
   <li>GCC provides:
@@ -72,9 +205,6 @@
     <li>Version 0.13.2, see the <a href="https://github.com/urcu/userspace-rcu/blob/v0.13.2/ChangeLog">release notes</a> for details.</li>
   </ul></li>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 15.0-3</h3>
 <ul>
