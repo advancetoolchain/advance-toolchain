@@ -13,10 +13,11 @@
 # limitations under the License.
 #
 
-# The product is called 'ibm-power-advance-toolchain' in SCC.
-%define         product ibm-power-advance-toolchain
+%define         product advance-toolchain-%{at_major}
+# The former product name
+%define         oldproduct ibm-power-advance-toolchain
 
-# Per convention the %%package name will be used a stem for the -release
+# Per convention the %package name will be used a stem for the -release
 # package.
 %define         package advance-toolchain-%{at_major}
 
@@ -51,6 +52,8 @@ Provides:       %name-%version
 # Product indicator provides (mandatory and important):
 Provides:       product() = %{product}
 Provides:       product(%{product}) = %{productversion}-%{productrelease}
+# Keeping track of previous product name
+Obsoletes:      product:%{oldproduct} = %{productversion}
 # Additional product data exposed in the -release package:
 Provides:       product-endoflife() = %{productendoflife_pcescaped}
 Provides:       product-url(bugtracker) = %{producturlbugtracker_pcescaped}
@@ -111,7 +114,7 @@ EOF
 %files
 %defattr(644,root,root,755)
 %dir /etc/products.d
-/etc/products.d/*
+/etc/products.d/%{product}.prod
 
 %changelog
 
