@@ -315,7 +315,7 @@ proc test_debuginfo_pkgs { file_list } {
 proc test_release_pkg {{file_list {}}} {
 	global ERROR
 
-	set product_name "ibm-power-advance-toolchain"
+	set product_name [append_at_internal "advance-toolchain-$::env(AT_NAME)$::env(AT_MAJOR_VERSION)"]
 	if { [llength $file_list] > 0 } {
 		if { [regexp -all -line ".*/${product_name}.prod\$" $file_list] == 1 } {
 			printit "SUCCESS."
