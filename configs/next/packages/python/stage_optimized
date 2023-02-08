@@ -29,12 +29,23 @@ ATCFG_BUILD_STAGE_T='dir'
 ATCFG_INSTALL_PEDANTIC=no
 
 atcfg_configure() {
+	cross_build=
+	config_site=
+	if [[ "${at_build_cpu}" != "${AT_OPTIMIZE_CPU/ppc/}" ]]; then
+		cross_build="--with-build-python=${at_dest}/bin/python3.11 --disable-ipv6"
+		config_site="${ATSRC_PACKAGE_WORK}/CONFIG_SITE"
+		cat >${config_site} <<EOF
+ac_cv_file__dev_ptmx=no
+ac_cv_file__dev_ptc=no
+EOF
+	fi
 	PATH=${at_dest}/bin:${PATH} \
 	CC="${at_dest}/bin/gcc -m${compiler}" \
 	CXX="${at_dest}/bin/g++ -m${compiler}" \
 	CFLAGS="-g -Wformat" \
 	CXXFLAGS="-g" \
 	OPT="-O3 -mcpu=${AT_OPTIMIZE_CPU/ppc/}" \
+	CONFIG_SITE="${config_site}" \
 	${ATSRC_PACKAGE_WORK}/configure \
 		--build=${target} \
 		--host=${target} \
@@ -47,7 +58,10 @@ atcfg_configure() {
 		--enable-loadable-sqlite-extensions \
 		--with-openssl="${at_dest}" \
 		--with-ssl-default-suites=openssl \
-		--with-lto
+		--with-lto ${cross_build}
+	res=$?
+	test -n "${config_site}" && rm -f ${config_site}
+	return $res
 }
 
 atcfg_make() {
