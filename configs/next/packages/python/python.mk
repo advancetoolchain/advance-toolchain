@@ -16,7 +16,7 @@
 #
 $(eval $(call set_provides,python_1,single,cross_no))
 
-python_tuned-deps := $(patsubst %,$(RCPTS)/%.rcpt,gcc_3 expat_1 openssl_1-64.b ldconfig_2 rsync_python)
+python_tuned-deps := $(RCPTS)/python_1.rcpt
 
 # Enable tuned targets
 $(eval $(call provide_tuneds,python))
