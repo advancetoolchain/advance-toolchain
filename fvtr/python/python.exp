@@ -80,17 +80,14 @@ set common_exclude_tests "test_doctest test_doctest2 test_asyncio \
 			  test_buffer test_tarball test_venv test_pty \
 			  test_epoll test_signal"
 
-if { [lindex $pyverl 0] > 3
-     || ([lindex $pyverl 0] == 3 && [lindex $pyverl 1] >= 6) } {
-	# The following tests take almost 1 hour to execute:
-	# test_multiprocessing_fork test_multiprocessing_forkserver
-	# test_multiprocessing_spawn
-	append common_exclude_tests " test_multiprocessing_fork \
-				      test_multiprocessing_forkserver \
-				      test_multiprocessing_spawn"
-	# test_dtrace tries to pass invalid parameters to dtrace.
-	append common_exclude_tests " test_dtrace"
-}
+# The following tests take almost 1 hour to execute:
+# test_multiprocessing_fork test_multiprocessing_forkserver
+# test_multiprocessing_spawn
+append common_exclude_tests " test_multiprocessing_fork \
+			      test_multiprocessing_forkserver \
+			      test_multiprocessing_spawn"
+# test_dtrace tries to pass invalid parameters to dtrace.
+append common_exclude_tests " test_dtrace"
 
 if { [lindex $pyverl 0] < 3
      || ([lindex $pyverl 0] == 3 && [lindex $pyverl 1] <= 7) } {
@@ -98,32 +95,11 @@ if { [lindex $pyverl 0] < 3
 	append common_exclude_tests " test_tarfile"
 }
 
-if { [lindex $pyverl 0] < 3
-     || ([lindex $pyverl 0] == 3 && [lindex $pyverl 1] <= 6) } {
-	# Fails if run from the install dir.
-	append common_exclude_tests " test_distutils"
-}
-
-if { [lindex $pyverl 0] < 3
-     || ([lindex $pyverl 0] == 3 && [lindex $pyverl 1] <= 5) } {
-	# Fails on some systems depending on their timezone configuration.
-	append common_exclude_tests " test_strptime"
-}
-
 # The following sets up the python test command so that it excludes tests
 # which should not be run using FVTR.  The exclude test list is different
 # depending on the version of python being used, although some common tests
 # are defined above separately.
-if { "$pyver" == "2.6" } {
-	# Fails if run from the install dir: test_lib2to3.
-	# Unexpected skip: test_tcl.
-	set spawn_cmd "spawn $env(AT_DEST)/bin/python $test_script \
-		-x $common_exclude_tests test_lib2to3 test_tcl"
-} elseif { "$pyver" == "2.7" } {
-	# Might fail if run from the install dir:  test_idle test_tools.
-	set spawn_cmd "spawn $env(AT_DEST)/bin/python $test_script \
-		-x $common_exclude_tests test_idle test_tools"
-} elseif { [string match 3.* $pyver] } {
+if { [string match 3.* $pyver] } {
 	# Python unit tests are "embarrassingly parallel", at least up to 6 cores
 	# it seems
 	set CORES [expr min(6, [exec grep -c "processor" /proc/cpuinfo ])]
@@ -137,28 +113,29 @@ if { "$pyver" == "2.6" } {
 
 	# The following tests fail intermittently when running the FVTR,
 	# making them unreliable for this kind of tests.
+        append common_exclude_tests " test_asyncgen \
+                                      test_compileall \
+                                      test_eintr \
+                                      test_faulthandler \
+                                      test_ftplib \
+                                      test_gdb \
+                                      test_httpservers \
+                                      test_imaplib \
+                                      test_logging \
+                                      test_os \
+                                      test_poplib \
+                                      test_posix \
+                                      test_selectors \
+                                      test_site \
+                                      test_smtplib \
+                                      test_socket \
+                                      test_ssl \
+                                      test_subprocess \
+                                      test_threading \
+                                      test_time"
+
 	set spawn_cmd "spawn $env(AT_DEST)/bin/python3 $test_script \
-		-j$CORES -x $common_exclude_tests \
-		test_asyncgen \
-		test_compileall \
-		test_eintr \
-		test_faulthandler \
-		test_ftplib \
-		test_gdb \
-		test_httpservers \
-		test_imaplib \
-		test_logging \
-		test_os \
-		test_poplib \
-		test_posix \
-		test_selectors \
-		test_site \
-		test_smtplib \
-		test_socket \
-		test_ssl \
-		test_subprocess \
-		test_threading \
-		test_time"
+		-j$CORES -x $common_exclude_tests"
 } else {
 	set spawn_cmd "spawn $env(AT_DEST)/bin/python $test_script"
 }
