@@ -176,31 +176,15 @@ proc check_debs {packages} {
 	# This is needed to make sure not to get runtime-compat package.
 	# The files .deb has runtime_at_version in the name but the installed
 	# packages has only runtime.
-	if { ![info exists ::env(AT_WD)] } {
-		set package [lindex ${packages} [lsearch ${packages} \
-				"*runtime"]]
-	} else {
-		set package [lindex ${packages} [lsearch ${packages} \
-				"*runtime_$::env(AT_MAJOR_VERSION)*"]]
+	set criteria ""
+	if { [info exists ::env(AT_WD)] } {
+		set criteria "_$::env(AT_MAJOR_VERSION)*"
 	}
-	set newrc [process_deb ${package} \
-			    "advance-toolchain-runtime"]
-	set rc [set_new_rc ${rc} ${newrc}]
-
-	set package [lindex ${packages} [lsearch ${packages} "*devel*"]]
-	set newrc [process_deb ${package} \
-			    "advance-toolchain-devel"]
-	set rc [set_new_rc ${rc} ${newrc}]
-
-	set package [lindex ${packages} [lsearch ${packages} "*perf*"]]
-	set newrc [process_deb ${package} \
-			    "advance-toolchain-perf"]
-	set rc [set_new_rc ${rc} ${newrc}]
-
-	set package [lindex ${packages} [lsearch ${packages} "*mcore-libs*"]]
-	set newrc [process_deb ${package} \
-			    "advance-toolchain-mcore-libs"]
-	set rc [set_new_rc ${rc} ${newrc}]
+	foreach p [list runtime devel perf mcore-libs] {
+		set package [lsearch -inline ${packages} "*${p}${criteria}"]
+		set newrc [process_deb ${package} "advance-toolchain-${p}"]
+		set rc [set_new_rc ${rc} ${newrc}]
+	}
 
 	return ${rc}
 }
