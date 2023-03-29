@@ -11,6 +11,76 @@
 <h3>Debian 10 (buster) end of support</h3>
 <p>Debian 10 (buster) reached EOL in August 2022. Advance Toolchain packages won't be provided for Debian 10 (buster) with Advance Toolchain 14.0-7 and later. </p>
 
+<h3>New features in 14.0-7</h3>
+<ul>
+  <li>GCC provides:
+  <ul>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100029">ICE on subroutine call with allocatable polymorphic assumed-rank argument</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100040">Wrong code with intent out assumed-rank allocatable</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100132">Optimization breaks pointer association</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100245">ICE on automatic reallocation</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101322">ICE in copy_to_mode_reg, at explow.c:651</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103353">Indefinite recursion when compiling -mmma requiring testcase w/ -maltivec</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103413">ICE: Invalid expression in gfc_element_size since r10-2083-g8dc63166e0b85954</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103694">ICE in gfc_conv_expr_op, at fortran/trans-expr.c:3882 since r12-3993-gb19bbfb148250536</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103823">g++.dg/torture/pr31863.C fails on darwin with &quot;using serial compilation of 2 LTRANS jobs&quot;</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105633">ICE in find_array_section, at fortran/expr.cc:1582</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106017">No array-to-pointer conversion for MMA accumulator</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106209">ICE in add_init_expr_to_sym, at fortran/decl.cc:2132</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106334">lto -g ICE in dwarf2out_register_external_die at dwarf2out.cc:6072</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106540">lto -g ICE in dwarf2out_register_external_die at dwarf2out.cc:6076</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106624">LTO plugin fails to build in parallel builds</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106736">ICE in gen_movxo, at config/rs6000/mma.md:333</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106817">clobber ordering problem when an actual intent(in) argument depends on the value of an intent(out) argument</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106857">ICE in gfc_simplify_pack, at fortran/simplify.cc:6438 since r12-4278-g74ccca380cde5e79</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106985">ICE in gfc_simplify_expr, at fortran/expr.cc:2290</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106986">ICE in simplify_findloc_nodim, at fortran/simplify.cc:5675</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107054">ICE in gfc_simplify_unpack, at fortran/simplify.cc:8461</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107576">ICE in gfc_conv_procedure_call, at fortran/trans-expr.cc:6193</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107872">ICE on recursive DT with DTIO since r7-4096-gbf9f15ee55f5b291</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108131">Incorrect bound calculation when bound intrinsic used in size expression</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108272">ICE in gen_movxo, at config/rs6000/mma.md:339</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108348">ICE in gen_movoo, at config/rs6000/mma.md:292</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108420">ICE in check_charlen_present, at fortran/iresolve.cc:98 since r13-4394-g3832c6f7e672e76b</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108421">ICE in get_expr_storage_size, at fortran/interface.cc:2862</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108453">ICE in gfc_trans_use_stmts, at fortran/trans-decl.cc:5361 since r6-3704-g2b3f52a2d0fb22ba</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108501">ICE in get_expr_storage_size, at fortran/interface.cc:2941</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108502">ICE in gfc_check_dependency, at fortran/dependency.cc:1295</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108527">ICE in compare_bound_int(): Bad expression</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108529">ICE in transformational_result, at fortran/simplify.cc:478</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108937">Intrinsic IBITS(I,POS,LEN) fails when LEN equals to BIT_SIZE(I).</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82868">ICE in generate_coarray_sym_init, at fortran/trans-decl.c:5203</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95107">ICE in hash_operand, at fold-const.c:3768</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96024">ICE in mio_name_expr_t, at fortran/module.c:2159</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96025">ICE in expr_check_typed_help, at fortran/expr.c:5437</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96072">ICE: Segmentation fault (in add_reg_note)</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99685">gcc.target/powerpc/divkc3-1.c and mulkc3-1.c fail for 32 bits</a>.</li>
+  </ul></li>
+  <li>OpenSSL provides:
+  <ul>
+    <li>Version 1.1.1s, see the <a href="https://www.openssl.org/news/openssl-1.1.1-notes.html">release notes</a> for details.</li>
+    <li>Fix a memory leak in rsa_priv_encode.</li>
+    <li>Fix the ceiling on how much encryption growth we can have.</li>
+  </ul></li>
+  <li>Python provides:
+  <ul>
+    <li>Version 3.8.16, see the <a href="https://www.python.org/downloads/release/python-3816/">release notes</a> for details.</li>
+    <li><a href="https://github.com/python/cpython/issues/101752">Update the OpenSSL version to 1.1.1t (GH-101727)</a>.</li>
+  </ul></li>
+  <li>TBB provides:
+  <ul>
+    <li><a href="https://github.com/oneapi-src/oneTBB/issues/1038">Improve performance by doing test-and-test-and-set for spin_mutex</a>.</li>
+    <li><a href="https://github.com/oneapi-src/oneTBB/issues/926">Fix critical section handler leak on ittnotify library unload</a>.</li>
+  </ul></li>
+  <li>Userspace RCU provides:
+  <ul>
+    <li>Version 0.12.5, see the <a href="https://github.com/urcu/userspace-rcu/blob/v0.12.5/ChangeLog">release notes</a> for details.</li>
+  </ul></li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 14.0-6</h3>
 <ul>
   <li>GCC provides:
@@ -51,9 +121,6 @@
     <li>Version 0.12.4, see the <a href="https://github.com/urcu/userspace-rcu/blob/v0.12.4/ChangeLog">release notes</a> for details.</li>
   </ul></li>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 14.0-5</h3>
 <ul>
