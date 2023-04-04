@@ -93,7 +93,7 @@ proc check_lib_dependencies {bin {important {}}} {
 	}
 
 	set at_libs [ exec find $lib_dir -type f -name '*.so*' ]
-	if {[catch "exec ${at_dir}/bin/ldd $bin" link_info]} {
+	if {[catch {exec -ignorestderr ${at_dir}/bin/ldd $bin} link_info]} {
 		printit "Failed to ldd $bin: $link_info" $ERROR
 		return 1
 	}
