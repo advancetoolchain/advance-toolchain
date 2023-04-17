@@ -53,13 +53,17 @@ atcfg_configure() {
 						--enable-gold \
 						${DEBUGINFOD}
 	else
+		EXTRAFLAGS=
+		if [[ "$DISTRO_ID" == "debian-12" ]]; then
+			EXTRAFLAGS="-Wno-error=dangling-pointer"
+		fi
 		# Configure command for cross builds
 		# TODO: Since Binutils 2.31, gold requires to build with
 		# -std=c++11.  Please review if it's possible to remove this
 		# later.
 		CC=${system_cc} \
 		CXX=${system_cxx} \
-		CFLAGS="-g -O -Wno-error=address" \
+		CFLAGS="-g -O -Wno-error=address ${EXTRAFLAGS}" \
 		CXXFLAGS="-g -O -std=c++11" \
 		${ATSRC_PACKAGE_WORK}/configure --build=${host} \
 						--host=${host} \

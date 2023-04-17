@@ -30,6 +30,10 @@ atcfg_configure() {
 	if [[ "$DISTRO_ID" == "redhat-8" ]]; then
 		DEBUGINFOD="--with-debuginfod=no"
 	fi
+	EXTRAFLAGS=
+	if [[ "$DISTRO_ID" == "debian-12" ]]; then
+		EXTRAFLAGS="-Wno-error=dangling-pointer"
+	fi
 	if [[ "${cross_build}" == "no" ]]; then
 		sysroot=/
 	else
@@ -37,7 +41,7 @@ atcfg_configure() {
 	fi
 
 	CC=${system_cc} \
-	CFLAGS="-g -O" \
+	CFLAGS="-g -O ${EXTRAFLAGS}" \
 	CXXFLAGS="-g -O" \
 	${ATSRC_PACKAGE_WORK}/configure --build=${host} \
 					--host=${host} \
@@ -64,7 +68,7 @@ atcfg_make() {
 
 # Install command for build
 atcfg_install() {
-	make install DESTDIR=${install_place}
+	${SUB_MAKE} install DESTDIR=${install_place}
 }
 
 # Post install settings or commands to run
