@@ -12,6 +12,75 @@
 <h3>Debian 10 (buster) end of support</h3>
 <p>Debian 10 (buster) reached EOL in August 2022. Advance Toolchain packages won't be provided for Debian 10 (buster) with Advance Toolchain 15.0-4 and later. </p>
 
+<h3>New features in 15.0-5</h3>
+<ul>
+  <li>GCC provides:
+  <ul>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103259">ICE in resolve_common_vars, at fortran/resolve.c:956 since r11-3866-g4d2a56a0f7135469</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=104332">ICE in resolve_symbol, at fortran/resolve.cc:15815</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106209">ICE in add_init_expr_to_sym, at fortran/decl.cc:2132</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106624">LTO plugin fails to build in parallel builds: xgcc: fatal error: cannot execute '/build/build/./prev-gcc/collect2': execv: Bad address since r13-2011-g53e3b2bf16a486</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106945">ICE: 'verify_gimple' failed</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107872">ICE on recursive DT with DTIO since r7-4096-gbf9f15ee55f5b291</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107944">ICE in cgraph_node::get_untransformed_body since r13-48-g27ee75dbe81bb7</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108131">Incorrect bound calculation when bound intrinsic used in size expression</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108420">ICE in check_charlen_present, at fortran/iresolve.cc:98 since r13-4394-g3832c6f7e672e76b</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108421">ICE in get_expr_storage_size, at fortran/interface.cc:2862</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108453">ICE in gfc_trans_use_stmts, at fortran/trans-decl.cc:5361 since r6-3704-g2b3f52a2d0fb22ba</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108501">ICE in get_expr_storage_size, at fortran/interface.cc:2941</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108502">ICE in gfc_check_dependency, at fortran/dependency.cc:1295</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108527">ICE in compare_bound_int(): Bad expression</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108529">ICE in transformational_result, at fortran/simplify.cc:478</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108807">gcc.target/powerpc/vsx-builtin-10d.c fails after r11-6857-gb29225597584b6 on power 9 BE</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108812">gcc.target/powerpc/p9-sign_extend-runnable.c fails on power 9 BE</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108877">Explicit immutable struct import internal compiler error</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108937">Intrinsic IBITS(I,POS,LEN) fails when LEN equals to BIT_SIZE(I).</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109067">Powerpc GCC does not support __ibm128 complex multiply/divide if long double is IEEE 128-bit.</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109186">nearest(huge(x),-1.0_kind(x)) half of correct value</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109263">'-g0 -ggdb -flto' gives linker error</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109511">incorrectly rejects set_exponent with constant negative exponent</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85877">ICE in fold_convert_loc, at fold-const.c:2449</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95107">ICE in hash_operand, at fold-const.c:3768</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96024">ICE in mio_name_expr_t, at fortran/module.c:2159</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96025">ICE in expr_check_typed_help, at fortran/expr.c:5437</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99036">ICE in gfc_current_interface_head, at fortran/interface.c:4699</a>.</li>
+  </ul></li>
+  <li>GNU C Library provides:
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=27576">gmon.out not consistently created</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=27749">Data race __run_exit_handlers</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29438">enabling gmon for arbitrary DSO</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29444">gmon memory corruption due wrong calculation of required buffer size</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30053">strftime %s returns -1 after 2038 on 32 bits systems</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30101">Memory corruption when incorrectly calling _mcleanup/__monstartup/moncontrol repeatedly or in wrong order</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30151">sgetsgent_r does not implement ERANGE protocol compatible with sgetsgent</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30163">system() erroneously block SIGCHLD forever when called concurrently</a>.</li>
+  </ul></li>
+  <li>Userspace RCU provides:
+  <ul>
+    <li>Version 0.13.3, see the <a href="https://github.com/urcu/userspace-rcu/blob/v0.13.3/ChangeLog">release notes</a> for details.</li>
+    <li>Fix for warning 'noreturn' function does return on ppc.</li>
+    <li>Fix for use __noreturn__ for C11-compatibility.</li>
+  </ul></li>
+  <li>OpenSSL provides:
+  <ul>
+    <li>Version 1.1.1t, see the <a href="https://www.openssl.org/news/openssl-1.1.1-notes.html">release notes</a> for details.</li>
+    <li>Fix for CVE-2023-0215.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/20719">Two integer overflow in ASN1 bit string</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/20849">b_print.c not compiling in OpenSSL-1_1_1-stable if OPENSSL_SYS_UEFI is defined</a>.</li>
+  </ul></li>
+  <li>Python provides:
+  <ul>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/100922">Fix race in clearing `threading.local`</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/101751">Update the OpenSSL version to 1.1.1t (GH-101727)</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/102222">fix deadlock at shutdown when clearing thread states</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/102666">Replace address pointing toward malicious web page (GH-102630)</a>.</li>
+  </ul></li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 15.0-4</h3>
 <ul>
   <li>GCC provides:
@@ -119,9 +188,6 @@
     <li>Version 3.9.16, see the <a href="https://www.python.org/downloads/release/python-3916/">release notes</a> for details.</li>
   </ul></li>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 15.0-3</h3>
 <ul>
