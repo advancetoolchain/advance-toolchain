@@ -1,1 +1,1 @@
-../../../16.0/packages/expat/expat.mk
+../../../17.0/packages/expat/expat.mk

@@ -1,1 +1,1 @@
-../../16.0/distros/suse-15.mk
+../../17.0/distros/suse-15.mk

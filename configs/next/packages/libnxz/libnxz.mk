@@ -1,1 +1,1 @@
-../../../16.0/packages/libnxz/libnxz.mk
+../../../17.0/packages/libnxz/libnxz.mk
