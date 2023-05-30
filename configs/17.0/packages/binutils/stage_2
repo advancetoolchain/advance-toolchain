@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+#
+# Copyright 2022 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+#
+
+ATCFG_HOLD_TEMP_INSTALL='no'
+ATCFG_HOLD_TEMP_BUILD='no'
+# Build in a new directory
+ATCFG_BUILD_STAGE_T='dir'
+
+# Conditional configure command
+atcfg_configure() {
+	DEBUGINFOD=
+	if [[ "$DISTRO_ID" == "redhat-8" ]]; then
+		DEBUGINFOD="--with-debuginfod=no"
+	fi
+	if [[ "${cross_build}" == "no" ]]; then
+		# Configure command for native builds
+		CC=${at_dest}/bin/gcc \
+		CXX=${at_dest}/bin/g++ \
+		CFLAGS="-g -O2 -Wno-error=address -Wno-error=dangling-pointer" \
+		CXXFLAGS="-g -O2" \
+		${ATSRC_PACKAGE_WORK}/configure --build=${host} \
+						--host=${target} \
+						--target=${target} \
+						${alternate_target:+--enable-targets=${alternate_target}} \
+						--with-sysroot=/ \
+						--prefix=${at_dest} \
+						--libdir=${at_dest}/lib${compiler##32} \
+						--disable-gdb \
+						--disable-gdbserver \
+						--disable-readline \
+						--disable-libdecnumber \
+						--disable-sim \
+						--disable-nls \
+						--enable-shared \
+						--enable-plugins \
+						--enable-install-libiberty=./ \
+						--enable-gold \
+						${DEBUGINFOD}
+	else
+		EXTRAFLAGS=
+		if [[ "$DISTRO_ID" == "debian-12" ]]; then
+			EXTRAFLAGS="-Wno-error=dangling-pointer"
+		fi
+		# Configure command for cross builds
+		# TODO: Since Binutils 2.31, gold requires to build with
+		# -std=c++11.  Please review if it's possible to remove this
+		# later.
+		CC=${system_cc} \
+		CXX=${system_cxx} \
+		CFLAGS="-g -O -Wno-error=address ${EXTRAFLAGS}" \
+		CXXFLAGS="-g -O -std=c++11" \
+		${ATSRC_PACKAGE_WORK}/configure --build=${host} \
+						--host=${host} \
+						--target=${target} \
+						${target64:+--enable-targets=${target64}} \
+						--with-sysroot=${dest_cross} \
+						--prefix=${at_dest} \
+						--disable-gdb \
+						--disable-gdbserver \
+						--disable-readline \
+						--disable-libdecnumber \
+						--disable-sim \
+						--disable-nls \
+						--enable-plugins \
+						--enable-gold \
+						${DEBUGINFOD}
+	fi
+}
+
+
+# Make command for build
+atcfg_make() {
+	${SUB_MAKE} all
+}
+
+# Make command for build
+atcfg_make_check() {
+	PATH=${at_dest}/bin:${PATH} \
+	${SUB_MAKE} check
+}
+
+
+# Install command for build
+atcfg_install() {
+	${SUB_MAKE} install DESTDIR=${install_place}
+}

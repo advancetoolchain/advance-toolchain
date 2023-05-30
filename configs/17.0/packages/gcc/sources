@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+#
+# Copyright 2021 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# GCC source package and build info
+# =================================
+#
+
+ATSRC_PACKAGE_NAME="GCC (GNU Compiler Collection)"
+ATSRC_PACKAGE_SUBPACKAGE_NAME_0="GNU Standard C++ Library v3 (Libstdc++-v3)"
+ATSRC_PACKAGE_SUBPACKAGE_NAME_1="GNU Libgomp"
+ATSRC_PACKAGE_VER=13.1.1
+ATSRC_PACKAGE_REV=dd4854f5f00e
+ATSRC_PACKAGE_BRANCH=releases/gcc-13
+ATSRC_PACKAGE_LICENSE="GPL 3.0"
+ATSRC_PACKAGE_DOCLINK="https://gcc.gnu.org/onlinedocs/gcc/"
+ATSRC_PACKAGE_SUBPACKAGE_DOCLINK_0="https://gcc.gnu.org/libstdc++/"
+ATSRC_PACKAGE_SUBPACKAGE_DOCLINK_1="https://gcc.gnu.org/onlinedocs/libgomp/"
+ATSRC_PACKAGE_RELFIXES=
+ATSRC_PACKAGE_NAMESUFFIX="[C, C++ (g++), fortran, Go]"
+ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}-ibm-r${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_PRE="test -d gcc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_CO=([0]="git clone git://gcc.gnu.org/git/gcc.git")
+ATSRC_PACKAGE_GIT="git checkout -b gcc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV} ${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_POST="mv gcc gcc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_SRC=${AT_BASE}/sources/gcc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}
+ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/gcc
+ATSRC_PACKAGE_MLS=
+ATSRC_PACKAGE_ALOC=
+ATSRC_PACKAGE_PATCHES=
+ATSRC_PACKAGE_TARS=
+ATSRC_PACKAGE_MAKE_CHECK=
+ATSRC_PACKAGE_DISTRIB=yes
+ATSRC_PACKAGE_BUNDLE=main_toolchain
+ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://gcc.gnu.org/git/?p=gcc.git;a=blob_plain;f=gcc/BASE-VER;hb=__REVISION__"'
+
+atsrc_get_patches ()
+{
+	# Avoid a misconfiguration of tuned libraries as seen in issue #204.
+	at_get_patch \
+		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/2298826553bcfe2cb62a3c6b846e52fb880d396b/GCC%20PowerPC%20Backport/13/0001-libssp-Ignore-vsnprintf-test-when-ssp_have_usable_vs.patch' \
+		1cfb62539fa0af5d185e537dc5c5d7c2 || return ${?}
+
+	# Avoid an error on libstdc++ when running msgfmt.
+	at_get_patch \
+		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/GCC%20libstdc%2B%2B%20PowerPC%20Patches/9/0001-libstdc-Prevent-LD_LIBRARY_PATH-from-leaking-to-msgf.patch' \
+		9cba9a9b94ca9c1b8958c0d722a9c06b || return ${?}
+
+	return 0
+}
+
+atsrc_apply_patches ()
+{
+	patch -p1 \
+	      < 0001-libssp-Ignore-vsnprintf-test-when-ssp_have_usable_vs.patch \
+		|| return ${?}
+
+	patch -p1 \
+	      < 0001-libstdc-Prevent-LD_LIBRARY_PATH-from-leaking-to-msgf.patch \
+		|| return ${?}
+}

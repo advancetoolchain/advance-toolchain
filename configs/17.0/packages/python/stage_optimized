@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+#
+# Copyright 2022 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# Python build parameters for stage optimized
+# ===========================================
+#
+
+# Tell the build system to hold the temp install folder
+ATCFG_HOLD_TEMP_INSTALL='no'
+# Tell the build system to hold the temp build folder
+ATCFG_HOLD_TEMP_BUILD='no'
+# Build in a new directory
+ATCFG_BUILD_STAGE_T='dir'
+# Don't fail if stage final install place doesn't exist
+ATCFG_INSTALL_PEDANTIC=no
+
+atcfg_configure() {
+	cross_build=
+	config_site=
+	if [[ "${at_build_cpu}" != "${AT_OPTIMIZE_CPU/ppc/}" ]]; then
+		cross_build="--with-build-python=${at_dest}/bin/python3.11 --disable-ipv6"
+		config_site="${ATSRC_PACKAGE_WORK}/CONFIG_SITE"
+		cat >${config_site} <<EOF
+ac_cv_file__dev_ptmx=no
+ac_cv_file__dev_ptc=no
+EOF
+	fi
+	PATH=${at_dest}/bin:${PATH} \
+	CC="${at_dest}/bin/gcc -m${compiler}" \
+	CXX="${at_dest}/bin/g++ -m${compiler}" \
+	CFLAGS="-g -Wformat" \
+	CXXFLAGS="-g" \
+	OPT="-O3 -mcpu=${AT_OPTIMIZE_CPU/ppc/}" \
+	CONFIG_SITE="${config_site}" \
+	${ATSRC_PACKAGE_WORK}/configure \
+		--build=${target} \
+		--host=${target} \
+		--target=${target} \
+		--prefix=${at_dest} \
+		--exec-prefix=${at_dest} \
+		--libdir="${at_dest}/lib${compiler##32}" \
+		--with-platlibdir="lib${compiler##32}" \
+		--enable-shared \
+		--enable-loadable-sqlite-extensions \
+		--with-openssl="${at_dest}" \
+		--with-ssl-default-suites=openssl \
+		--with-lto ${cross_build}
+	res=$?
+	test -n "${config_site}" && rm -f ${config_site}
+	return $res
+}
+
+atcfg_make() {
+	PATH=${at_dest}/bin:${PATH} ${SUB_MAKE} libpython3.so
+}
+
+atcfg_install() {
+	mkdir -p "${install_transfer}/lib64/glibc-hwcaps/$AT_OPTIMIZE_CPU"
+	cp -a libpython*.so* "${install_transfer}/lib64/glibc-hwcaps/$AT_OPTIMIZE_CPU/."
+}

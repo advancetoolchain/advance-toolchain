@@ -1,1 +1,1 @@
-../../16.0/specs/metapkgs.spec
+../../17.0/specs/metapkgs.spec

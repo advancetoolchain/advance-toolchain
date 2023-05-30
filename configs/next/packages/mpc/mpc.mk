@@ -1,1 +1,1 @@
-../../../16.0/packages/mpc/mpc.mk
+../../../17.0/packages/mpc/mpc.mk
