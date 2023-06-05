@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2022 IBM Corporation
+# Copyright 2023 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,8 +19,9 @@
 # =================================
 #
 ATSRC_PACKAGE_NAME="GDB (GNU Debugger)"
-ATSRC_PACKAGE_VER=14.0.50
-ATSRC_PACKAGE_REV=26cc2053e2e8
+ATSRC_PACKAGE_VER=13.2.90
+ATSRC_PACKAGE_REV=05343fb1c4c5
+ATSRC_PACKAGE_BRANCH=gdb-13-branch
 ATSRC_PACKAGE_LICENSE="GPL 2.0"
 ATSRC_PACKAGE_DOCLINK="http://sourceware.org/gdb/current/onlinedocs/gdb/"
 ATSRC_PACKAGE_RELFIXES=
