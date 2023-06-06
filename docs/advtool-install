@@ -316,7 +316,6 @@ gpgcheck=1
 gpgkey=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/<em>RHELX</em>/<em>PUBKEY</em>
 # End of configuration file
 </pre>
-
 	</li>
 	<li>Install the Advance Toolchain by running <code>yum install</code>. Replace <code>atX.X</code> with the Advance Toolchain release that you are installing. For example, <code>at14.0</code>.
 	<pre>
@@ -349,10 +348,10 @@ advance-toolchain-atX.X-mcore-libs
 <p class="ibm-light">If you are updating a previous installation, you need to update as a batch, so <code>rpm</code> can solve the dependencies, that is:</p>
 
 <pre>
-rpm -Uvh advance-toolchain-atX.X-runtime-X.X.ppc64.rpm \
-advance-toolchain-atX.X-devel-X.X.ppc64.rpm \
-advance-toolchain-atX.X-perf-X.X.ppc64.rpm \
-advance-toolchain-atX.X-mcore-X.X.ppc64.rpm
+rpm -Uvh advance-toolchain-atX.X-runtime-X.X.ppc64le.rpm \
+advance-toolchain-atX.X-devel-X.X.ppc64le.rpm \
+advance-toolchain-atX.X-perf-X.X.ppc64le.rpm \
+advance-toolchain-atX.X-mcore-X.X.ppc64le.rpm
 </pre>
 
 <p class="ibm-light">The <code>rpm</code> command should always be run as root. Failure to do so will result in an error similar to the following message:</p>
@@ -503,11 +502,11 @@ advance-toolchain-atX.X-runtime-atX.X-compat-X.X
 <p class="ibm-light">If you are updating a previous installation, you need to update as a batch, so <code>rpm</code> can solve the dependencies, that is:</p>
 
 <pre>
-rpm -Uvh advance-toolchain-atX.X-runtime-X.X.ppc64.rpm \
-advance-toolchain-atX.X-devel-X.X.ppc64.rpm \
-advance-toolchain-atX.X-perf-X.X.ppc64.rpm \
-advance-toolchain-atX.X-mcore-X.X.ppc64.rpm \
-advance-toolchain-atX.X-runtime-atX.X-compat-X.X.ppc64.rpm
+rpm -Uvh advance-toolchain-atX.X-runtime-X.X.ppc64le.rpm \
+advance-toolchain-atX.X-devel-X.X.ppc64le.rpm \
+advance-toolchain-atX.X-perf-X.X.ppc64le.rpm \
+advance-toolchain-atX.X-mcore-X.X.ppc64le.rpm \
+advance-toolchain-atX.X-runtime-atX.X-compat-X.X.ppc64le.rpm
 </pre>
 
 <p class="ibm-light">The <code>rpm</code> command should always be run as root. Failure to do so will result in an error similar to the following message:</p>

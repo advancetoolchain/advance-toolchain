@@ -176,7 +176,7 @@ function myFunction() {
 	<li><code>Golang</code></li>
 	<li>Performance analysis tools (<code>valgrind</code>, <code>itrace</code>)</li>
 	<li>Multi-core exploitation libraries (<code>TBB</code>, <code>Userspace RCU</code>, <code>SPHDE</code>)</li>
-	<li>Plus several support libraries (<code>libhugetlbfs</code>, <code>Boost</code>, <code>zlib</code>, etc)</li>
+	<li>Plus several support libraries (<code>libhugetlbfs</code>, <code>Boost</code>, <code>zlib</code>...)</li>
 </ul>
 </div>
 </div>
@@ -203,7 +203,7 @@ function myFunction() {
 <p class="ibm-h4">Advance Toolchain features</p>
 
 <ul>
-	<li>Support for big endian (ppc64) and little endian (ppc64le)</li>
+	<li>Support for little endian (ppc64le)</li>
 	<li>POWER8 optimized runtime libraries</li>
 	<li>POWER9 optimized runtime libraries</li>
 	<li>POWER10 optimized runtime libraries</li>

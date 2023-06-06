@@ -185,7 +185,6 @@ gpgcheck=1
 gpgkey=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/<em>RHELX</em>/<em>PUBKEY</em>
 # End of configuration file
 </pre>
-
 	</li>
 	<li>Install the cross-compiler by running <code>yum install</code>: <code>yum install advance-toolchain-atX.X-cross-ppc64le</code></li>
 </ol>
@@ -226,7 +225,7 @@ gpgkey=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/
 		<li>Under Directory on Server, enter <code>/software/server/POWER/Linux/toolchain/at/suse/SLES_15</code>
 		<p>You get a warning about there being no product information available. The warning shows up because the <code>repomd-based</code> repository does not contain the <code>YaST</code> product information. It's not a bug. Select [Continue].</p>
 		</li>
-		<li>Under the Software Management interface, search for "advance toolchain", and select <code>advance-toolchain-atX.X-cross-ppc64le</code> or <code>advance-toolchain-atX.X-cross-ppc64le</code>.</li>
+		<li>Under the Software Management interface, search for "advance toolchain", and select <code>advance-toolchain-atX.X-cross-ppc64le</code>.</li>
 	</ol>
 	</li>
 	<li>To install the cross-compiler with <code>Zypper</code>:
@@ -265,7 +264,6 @@ wget -qO- https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ub
 </pre>
 		</li>
 	</ul>
-
 	</li>
 	<li>Configure the Advance Toolchain repositories by adding the following line to <code>/etc/apt/sources.list</code>:
 	<p>On ppc64el or amd64:</p>
@@ -286,7 +284,7 @@ deb [signed-by=/etc/apt/trusted.gpg.d/615d762f.asc] https://public.dhe.ibm.com/s
 	</ul>
 	</li>
 	<li>Refresh the cache by running: <code>sudo aptitude update</code> or <code>sudo apt update</code>.</li>
-	<li>Install the cross-compiler by running <code>sudo aptitude install advance-toolchain-atX.X-cross-ppc64le</code> or <code>sudo apt install advance-toolchain-atX.X-cross-ppc64</code>le.</li>
+	<li>Install the cross-compiler by running <code>sudo aptitude install advance-toolchain-atX.X-cross-ppc64le</code> or <code>sudo apt install advance-toolchain-atX.X-cross-ppc64le</code>.</li>
 </ol>
 
 <p>APT supports package upgrades for new revision releases (that is 7.1-0 to 7.1-1). For new major releases (that is 7.1-1 to 8.0-0), proceed as in a normal installation.</p>
@@ -423,14 +421,6 @@ LDFLAGS="-L${HOME}/wget/lib" \
 
 <div class="ibm-container-body">
 <p>In this case, it isn’t possible to pass <code>-I</code> to the compiler or <code>-L</code> to linker and the only possible solution is to save the headers and libraries in one of the Advance Toolchain directories:</p>
-
-<p>For POWER big endian (ppc or ppc64):</p>
-
-<pre>
-/opt/atX.X/ppc/usr/include
-/opt/atX.X/ppc/usr/lib (32-bit libraries)
-/opt/atX.X/ppc/usr/lib64 (64-bit libraries)
-</pre>
 
 <p>For POWER little endian (ppc64le):</p>
 

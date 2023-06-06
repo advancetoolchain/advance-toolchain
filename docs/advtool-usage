@@ -166,7 +166,6 @@ document.getElementById('toggle_btn').addEventListener('click',function(e){
 	<li style="margin-top:4px"><a href="#faq9" role="tab">IBM XLC and XLF</a></li>
 	<li style="margin-top:4px"><a href="#faq10" role="tab"><code>MASS</code> libraries</a></li>
 	<li style="margin-top:4px"><a href="#faq11" role="tab">Debug options</a></li>
-	<li style="margin-top:4px"><a href="#faq12" role="tab"><code>Go</code> compilers</a></li>
 	<li style="margin-top:4px"><a href="#faq13" role="tab">Environment modules</a></li>
 </ul>
 </div>
@@ -222,20 +221,17 @@ CMAKE_PREFIX_PATH=/opt/atX.X/
 	<li><code>advance-toolchain-atX.X-selinux</code>
 	<p>Provides <code>SELinux</code> settings. This package is required to develop or run Advance Toolchain applications on a <code>SELinux</code> enabled environment.</p>
 	</li>
-	<li><code>advance-toolchain-atX.X-golang</code>
-	<p>Provides <code>Golang</code> for ppc64le, it doesn't have any dependencies with the other packages. The files are installed into <code>/usr/local/go/</code>.</p>
-	</li>
-	<li><code>advance-toolchain-atX.X-cross-ppc64</code> or <code>advance-toolchain-atX.X-cross-ppc64le</code>
-	<p>Provide a cross compiler for big endian (ppc64) or little endian (ppc64le). These packages are available for x86 (i386) or x86-64 (amd64) in order to generate binaries for POWER.</p>
+	<li><code>advance-toolchain-atX.X-cross-ppc64le</code>
+	<p>Provide a cross compiler for little endian (ppc64le). These packages are available for x86 (i386) or x86-64 (amd64) in order to generate binaries for POWER.</p>
 	</li>
 	<li><code>advance-toolchain-atX.X-cross-common</code>
-	<p>Provides files common to both cross compiler packages (ppc64 and ppc64le). This package is mandatory for cross compiler installation starting from version 8.0.</p>
+	<p>Provides files common to cross compiler packages. This package is mandatory for cross compiler installation starting from version 8.0.</p>
 	</li>
-	<li><code>advance-toolchain-atX.X-cross-ppc64(le)-runtime-extras</code>
-	<p>Provides extra libraries to the cross compiler packages (ppc64 or ppc64le).</p>
+	<li><code>advance-toolchain-atX.X-cross-ppc64le-runtime-extras</code>
+	<p>Provides extra libraries to the cross compiler packages.</p>
 	</li>
-	<li><code>advance-toolchain-atX.X-cross-ppc64(le)-mcore-libs</code>
-	<p>Provides the libraries for multi-thread development to the cross compiler (ppc64 or ppc64le).</p>
+	<li><code>advance-toolchain-atX.X-cross-ppc64le-mcore-libs</code>
+	<p>Provides the libraries for multi-thread development to the cross compiler.</p>
 	</li>
 	<li><code>advance-toolchain-atX.X-&lt;package_name&gt;-debuginfo</code> or <code>advance-toolchain-atX.X-&lt;package_name&gt;-dbg</code>
 	<p>Provides the <code>.debug</code> files that contain the <code>DWARF debuginfo</code> for the files in &lt;package_name&gt;, those files are useful to debug and profile the applications built with AT.</p>
@@ -678,7 +674,7 @@ sudo sh createldhuge.sh
 <div class="ibm-tabs-content" id="faq10">
 <h3>MASS libraries and Advance Toolchain</h3>
 
-<p>IBM's Mathematical Acceleration Subsystem (MASS) libraries consist of a set of mathematical functions for C, C++, and Fortran-language applications that are tuned for specific POWER architectures. The libraries are available for ppc64 and ppc64le.</p>
+<p>IBM's Mathematical Acceleration Subsystem (MASS) libraries consist of a set of mathematical functions for C, C++, and Fortran-language applications that are tuned for specific POWER architectures. The libraries are available for ppc64le.</p>
 
 <p>To use MASS with Advance Toolchain, you need to pass the option <code>-mveclibabi=mass</code> to <code>GCC</code>.</p>
 </div>
@@ -696,33 +692,6 @@ sudo sh createldhuge.sh
 </pre>
 
 <p>The same applies to POWER7 code.</p>
-</div>
-<!-- Begin content for overview tab -->
-
-<div class="ibm-tabs-content" id="faq12">
-<h3>Go compilers and Advance Toolchain</h3>
-
-<p>There are two compilers provided by the Advance Toolchain that can be used to compile Go source code on ppc64le starting in AT 9.0: the Golang compiler and <code>gccgo</code>.</p>
-
-<p>The Advance Toolchain provides an IBM-optimized version of the <code>Go</code> compiler from the <code>Golang</code> community for ppc64le starting on AT 9.0.</p>
-
-<p>It is installed by the package <code>advance-toolchain-golang-at-X.Y-Z.ppc64le.rpm</code>. This package is standalone and does not depend on any of the other packages offered by the Advance Toolchain.</p>
-
-<p>This compiler and runtime is based on the final release versions provided by the Go community, plus the newest bug fixes and performance optimizations relevant to Power. The major version of the compiler (that is, 1.6, 1.7, etc) is upgraded with every Advance Toolchain major release. Refer to the Release Notes file for the compiler version and included bug/performance fixes included.</p>
-
-<p>The <code>Go</code> compiler for <code>Golang</code> is installed here:</p>
-
-<pre>
-/usr/local/go
-</pre>
-
-<p>When <code>/usr/local/go/bin</code> is added to <code>$PATH</code>, then this <code>go</code> tool is the default. Otherwise, the <code>go</code> tool can be invoked directly by doing:</p>
-
-<pre>
-/usr/local/go/bin/go
-</pre>
-
-<p>The Advance Toolchain also includes <code>gccgo</code>. When the full installation of <code>GCC</code> is done from Advance Toolchain, <code>gccgo</code> is included and the <code>go</code> tool that uses <code>gccgo</code> is in the default path. If both <code>GCC</code> (including <code>gccgo</code>) and the <code>Golang</code> compiler from Advance Toolchain are installed, and the <code>Go</code> compiler from <code>Golang</code> is to be used instead of <code>gccgo</code>, then the <code>PATH</code> must be set as described previously.</p>
 </div>
 <!-- Begin content for overview tab -->
 
