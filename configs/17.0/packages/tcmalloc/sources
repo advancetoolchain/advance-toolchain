@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2022 IBM Corporation
+# Copyright 2023 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@
 #
 
 ATSRC_PACKAGE_NAME="TCMalloc"
-ATSRC_PACKAGE_VER=master
-ATSRC_PACKAGE_REV=f06052d7362f
+ATSRC_PACKAGE_VER=2.10
+ATSRC_PACKAGE_REV=bf8b714bf507
 ATSRC_PACKAGE_LICENSE="BSD License"
 ATSRC_PACKAGE_DOCLINK="http://htmlpreview.github.io/?https://github.com/gperftools/gperftools/blob/master/docs/tcmalloc.html"
 ATSRC_PACKAGE_RELFIXES=
@@ -40,5 +40,3 @@ ATSRC_PACKAGE_TARS=""
 ATSRC_PACKAGE_MAKE_CHECK=""
 ATSRC_PACKAGE_DISTRIB=no
 ATSRC_PACKAGE_BUNDLE=toolchain_extra
-# Not needed because file follows master branch
-# ATSRC_PACKAGE_UPSTREAM=
