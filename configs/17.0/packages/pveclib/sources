@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2022 IBM Corporation
+# Copyright 2023 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,17 +20,18 @@
 #
 
 ATSRC_PACKAGE_NAME="Power Vector Library"
-ATSRC_PACKAGE_VER=master
-ATSRC_PACKAGE_REV=9900712c5450
+ATSRC_PACKAGE_VER=1.0.4.5
+ATSRC_PACKAGE_REV=e3ecd3b913b0
 ATSRC_PACKAGE_LICENSE="Apache License 2.0"
 ATSRC_PACKAGE_DOCLINK="https://github.com/open-power-sdk/pveclib/wiki"
 ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
 ATSRC_PACKAGE_VERID="${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
 ATSRC_PACKAGE_PRE="test -d pveclib-${ATSRC_PACKAGE_VERID}"
-ATSRC_PACKAGE_CO=([0]="git clone https://github.com/open-power-sdk/pveclib.git pveclib")
-ATSRC_PACKAGE_GIT="git checkout -b pveclib-${ATSRC_PACKAGE_VERID} ${ATSRC_PACKAGE_REV}"
-ATSRC_PACKAGE_POST="mv pveclib pveclib-${ATSRC_PACKAGE_VERID}"
+ATSRC_PACKAGE_CO=([0]="wget -O pveclib-${ATSRC_PACKAGE_VERID}.tar.gz https://github.com/open-power-sdk/pveclib/archive/${ATSRC_PACKAGE_REV}.tar.gz")
+ATSRC_PACKAGE_GIT=""
+# Use --transform to give a better name to PVECLib directory.
+ATSRC_PACKAGE_POST="tar xzf pveclib-${ATSRC_PACKAGE_VERID}.tar.gz --transform=s/pveclib-${ATSRC_PACKAGE_REV}[^\\/]*/pveclib-${ATSRC_PACKAGE_VERID}/"
 ATSRC_PACKAGE_SRC=${AT_BASE}/sources/pveclib-${ATSRC_PACKAGE_VERID}
 ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/pveclib
 ATSRC_PACKAGE_MLS=
@@ -40,5 +41,3 @@ ATSRC_PACKAGE_TARS=
 ATSRC_PACKAGE_MAKE_CHECK=
 ATSRC_PACKAGE_DISTRIB=no
 ATSRC_PACKAGE_BUNDLE=toolchain_extra
-# Not needed because file follows master branch
-# ATSRC_PACKAGE_UPSTREAM=
