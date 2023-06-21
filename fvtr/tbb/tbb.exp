@@ -41,10 +41,10 @@ if { [array names env -exact "AT_TBB_VER"] == "" } {
 }
 
 # Look for TBB's major and minor version.
-if { [catch {regexp "(\[0-9\]+)\.(\[0-9\]+).*" $env(AT_TBB_VER) match \
-		    major_ver minor_ver} err] } {
-	fvtr_error "Failed to identify TBB major and minor versions from \
-$env(AT_TBB_VER): ${err}"
+if { $env(AT_TBB_VER) != "master" } {
+	if { ! [regexp "(\[0-9\]+)\.(\[0-9\]+).*" $env(AT_TBB_VER) match major_ver minor_ver] } {
+		fvtr_error "Failed to identify TBB major and minor versions from $env(AT_TBB_VER)"
+	}
 }
 
 
@@ -110,7 +110,7 @@ memtest
 
 # Prior to 4.2u4 we would need different headers,
 # so parallel_test is supported by TBB >= 4.3 only.
-if { ${major_ver} >= 4 && ${minor_ver} >= 3 } {
+if { ($env(AT_TBB_VER) == "master") || (${major_ver} >= 4 && ${minor_ver} >= 3) } {
 	parallel_test
 }
 
