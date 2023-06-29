@@ -20,9 +20,9 @@
 #
 
 ATSRC_PACKAGE_NAME="Python"
-ATSRC_PACKAGE_VER=3.11.4
-ATSRC_PACKAGE_REV=05d06e583be4
-ATSRC_PACKAGE_BRANCH=3.11
+ATSRC_PACKAGE_VER=3.12.0
+ATSRC_PACKAGE_REV=fb8c0415a266
+ATSRC_PACKAGE_BRANCH=3.12
 ATSRC_PACKAGE_LICENSE="Python Software Foundation License 2"
 ATSRC_PACKAGE_DOCLINK="https://docs.python.org/${ATSRC_PACKAGE_VER%\.*}/"
 ATSRC_PACKAGE_RELFIXES=
@@ -57,8 +57,8 @@ atsrc_get_patches ()
 
 	# Allow cross compiling based on cpu flavor.
 	at_get_patch \
-		https://raw.githubusercontent.com/powertechpreview/powertechpreview/97ddb34a7499fc6b7de03ceeabe1cba3a937eb0c/Python%20Fixes/python-3.11-cpuflavor.patch \
-		2992b0231d694da66faf08b1ef9562c9 || return ${?}
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/c6bfa4978829d5db70ebfc7b0873fea23c56c3f3/Python%20Fixes/python-3.12-cpuflavor.patch \
+		53bf8966d3af8cc133b27dec302b5147 || return ${?}
 
 	return 0
 }
@@ -67,7 +67,7 @@ atsrc_apply_patches ()
 {
 	patch -p1 < python-3.9-timeout-test_subprocess.patch || return ${?}
 	patch -p1 < python-3.7-disable-zlib-version-check.patch || return ${?}
-	patch -p1 < python-3.11-cpuflavor.patch || return ${?}
+	patch -p1 < python-3.12-cpuflavor.patch || return ${?}
 }
 
 atsrc_package_verify_make_log ()
