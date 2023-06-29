@@ -1,1 +1,85 @@
-../../../17.0/packages/python/sources
+#!/usr/bin/env bash
+#
+# Copyright 2022 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# GLIBC source package and build info
+# ===================================
+#
+
+ATSRC_PACKAGE_NAME="Python"
+ATSRC_PACKAGE_VER=3.11.4
+ATSRC_PACKAGE_REV=05d06e583be4
+ATSRC_PACKAGE_BRANCH=3.11
+ATSRC_PACKAGE_LICENSE="Python Software Foundation License 2"
+ATSRC_PACKAGE_DOCLINK="https://docs.python.org/${ATSRC_PACKAGE_VER%\.*}/"
+ATSRC_PACKAGE_RELFIXES=
+ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
+ATSRC_PACKAGE_VERID="${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
+ATSRC_PACKAGE_PRE="test -d python-${ATSRC_PACKAGE_VERID}"
+ATSRC_PACKAGE_CO=([0]="git clone https://github.com/python/cpython.git python")
+ATSRC_PACKAGE_GIT="git checkout -b python-${ATSRC_PACKAGE_VERID} ${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_POST="mv python python-${ATSRC_PACKAGE_VERID}"
+ATSRC_PACKAGE_SRC=${AT_BASE}/sources/python-${ATSRC_PACKAGE_VERID}
+ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/python
+ATSRC_PACKAGE_MLS=
+ATSRC_PACKAGE_PATCHES=
+ATSRC_PACKAGE_ALOC=
+ATSRC_PACKAGE_TARS=
+ATSRC_PACKAGE_MAKE_CHECK=
+ATSRC_PACKAGE_DISTRIB=no
+ATSRC_PACKAGE_BUNDLE=toolchain_extra
+ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://raw.githubusercontent.com/python/cpython/__REVISION__/README.rst" | head -n1 | grep "This is Python version " | sed "s/^.* version \([0-9\.][0-9\.]*\).*$/\1/"'
+
+atsrc_get_patches ()
+{
+	# Increase a timeout in test_subprocess.
+	at_get_patch \
+	        https://raw.githubusercontent.com/powertechpreview/powertechpreview/b9f88b42e734110e69873ea810272facc85b97c0/Python%20Fixes/python-3.9-timeout-test_subprocess.patch \
+	        92cfc34136fafb9420655b4bd3ef39d1 || return ${?}
+
+	# Disable zlib version check (test_zlib).
+	at_get_patch \
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/1fa3a5896a6ce15e8b85fcf24109db5c1ea5548a/Python%20Fixes/python-3.7-disable-zlib-version-check.patch \
+		f52555a37aec6cb7f43eb052990e051b || return ${?}
+
+	# Allow cross compiling based on cpu flavor.
+	at_get_patch \
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/97ddb34a7499fc6b7de03ceeabe1cba3a937eb0c/Python%20Fixes/python-3.11-cpuflavor.patch \
+		2992b0231d694da66faf08b1ef9562c9 || return ${?}
+
+	return 0
+}
+
+atsrc_apply_patches ()
+{
+	patch -p1 < python-3.9-timeout-test_subprocess.patch || return ${?}
+	patch -p1 < python-3.7-disable-zlib-version-check.patch || return ${?}
+	patch -p1 < python-3.11-cpuflavor.patch || return ${?}
+}
+
+atsrc_package_verify_make_log ()
+{
+	if [[ -n "${1}" ]]; then
+		modline=$(cat "${1}" | awk '/Logging the following command/ { line = ""; getline ts; } \
+		/Failed to build these modules:/ { getline line; } \
+		END { print line; }')
+		if [[ "${modline}" != "" ]]; then
+			echo "Python modules not built: ${modline}"
+			return 1
+		fi
+	fi
+	return 0
+}
