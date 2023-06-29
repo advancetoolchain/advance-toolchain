@@ -32,7 +32,7 @@ atcfg_configure() {
 	cross_build=
 	config_site=
 	if [[ "${at_build_cpu}" != "${AT_OPTIMIZE_CPU/ppc/}" ]]; then
-		cross_build="--with-build-python=${at_dest}/bin/python3.11 --disable-ipv6"
+		cross_build="--with-build-python=${at_dest}/bin/python3 --disable-ipv6"
 		config_site="${ATSRC_PACKAGE_WORK}/CONFIG_SITE"
 		cat >${config_site} <<EOF
 ac_cv_file__dev_ptmx=no
