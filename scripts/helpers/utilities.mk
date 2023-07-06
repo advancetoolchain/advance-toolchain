@@ -614,8 +614,8 @@ define fetch_sources
                 retries=$${ATSRC_PACKAGE_RETRIES:-$(BUILD_DEFAULT_RETRIES)}; \
                 num_mirrors=$$(( $$(eval echo \$${#ATSRC_PACKAGE_CO[@]}) - 1 )); \
                 echo "Fetching $1 sources:"; \
-                while [[ $${retries} -ge 0 ]]; do \
-                    echo -en "- Retry cycle: $${retries}.\n"; \
+                for count in $$(seq 0 $${retries}); do \
+                    echo -en "- Retry cycle: $${count}.\n"; \
                     for index in $$(seq 0 $${num_mirrors}); do \
                         fetch=$$(eval echo \$${ATSRC_PACKAGE_CO[$${index}]}); \
                         echo -en "\t* Trying mirror: $${fetch}."; \
@@ -625,10 +625,12 @@ define fetch_sources
                         else \
                             echo " - [SUCCESS]"; \
                             fetch_success='true'; \
-                            retries=0 && break; \
+                            break 2; \
                         fi; \
                     done; \
-                    retries=$$(( retries - 1 )); \
+                    if [[ $${count} -lt $${retries} ]]; then \
+                        sleep $$(( 3 ** (count + 1) )); \
+                    fi; \
                 done; \
                 if [[ "$${fetch_success}" == "false" ]]; then \
                     echo "Couldn't get $1 from any of its mirrors!"; \
