@@ -83,7 +83,8 @@ atcfg_pre_configure() {
 atcfg_configure() {
 	local base_target=$(find_build_target ${AT_BIT_SIZE})
 
-	disable_crypt=$(${utilities}/check_glibc_disable_crypt.sh)
+	enable_crypt=
+	[[ -z "$(${utilities}/check_glibc_disable_crypt.sh)" ]] && enable_crypt="--enable_crypt"
 
 	# Systemtap headers - In order to build glibc with support for
 	# systemtap probes, the build has to use the systemtap headers
@@ -116,7 +117,7 @@ atcfg_configure() {
 					--enable-obsolete-rpc \
 					--enable-lock-elision=yes \
 					--enable-systemtap \
-					${disable_crypt:+--disable-crypt}
+					${enable_crypt}
 }
 
 # Make build command
