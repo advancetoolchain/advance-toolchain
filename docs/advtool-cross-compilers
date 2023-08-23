@@ -139,7 +139,7 @@
 </div>
 
 <div class="ibm-band-fluid ibm-flex ibm-padding-top-2  ibm-padding-bottom-1">
-<p class="custom-padding-left-12px ibm-h4">IBM Advance Toolchain for Linux on Power 15.0-5 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-5" target="_blank">Learn more</a></p>
+<p class="custom-padding-left-12px ibm-h4">IBM Advance Toolchain for Linux on Power 17.0-0 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at17.0-0" target="_blank">Learn more</a></p>
 </div>
 
 <div class="ibm-band-fluid ibm-flex ibm-nospacing ibm-flex--wrap">
@@ -252,14 +252,14 @@ zypper addrepo https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/
 	<li>The <code>gpg</code> public key is provided in the IBM repositories. This public key is used to verify the authenticity of both the Advance Toolchain packages and the repository contents. Download the <code>gpg</code> public key for your Linux distribution and import it by using the following commands:
 
 	<ul>
-		<li>For Ubuntu 20.04 or Ubuntu 18.04:
-	<pre>
+		<li>For Ubuntu 20.04:
+		<pre>
 wget https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists/focal/6976a827.gpg.key
 sudo apt-key add 6976a827.gpg.key
 </pre>
 		</li>
-		<li>For Debian 11 or Ubuntu 22.04:
-	<pre>
+		<li>For Debian 11, Debian 12 or Ubuntu 22.04:
+		<pre>
 wget -qO- https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists/jammy/615d762f.gpg.key | sudo tee -a /etc/apt/trusted.gpg.d/615d762f.asc
 </pre>
 		</li>
@@ -269,15 +269,15 @@ wget -qO- https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ub
 	<p>On ppc64el or amd64:</p>
 
 	<ul>
-		<li>When you install on Ubuntu 22.04 (jammy), Ubuntu 20.04 (focal) or Ubuntu 18.04 (bionic), point to its respective repository:
+		<li>When you install on Ubuntu 22.04 (jammy) or Ubuntu 20.04 (focal), point to its respective repository:
 		<pre>
 deb [signed-by=/etc/apt/trusted.gpg.d/615d762f.asc] https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu jammy atX.X
 deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu focal atX.X
-deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu bionic atX.X
 </pre>
 		</li>
-		<li>When you install on Debian 11 (bullseye), point to:
+		<li>When you install on Debian 12 (bookworm) or Debian 11 (bullseye), point to its respective repository:
 		<pre>
+deb [signed-by=/etc/apt/trusted.gpg.d/615d762f.asc] https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian bookworm atX.X
 deb [signed-by=/etc/apt/trusted.gpg.d/615d762f.asc] https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian bullseye atX.X
 </pre>
 		</li>

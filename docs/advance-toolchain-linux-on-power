@@ -146,7 +146,7 @@ function myFunction() {
 </div>
 
 <div class="ibm-band-fluid ibm-flex ibm-padding-top-2  ibm-padding-bottom-1">
-<p class="custom-padding-left-12px ibm-h4">IBM Advance Toolchain for Linux on Power 15.0-5 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-5" target="_blank">Learn more</a></p>
+<p class="custom-padding-left-12px ibm-h4">IBM Advance Toolchain for Linux on Power 17.0-0 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at17.0-0" target="_blank">Learn more</a></p>
 </div>
 <!-- start main content -->
 
@@ -173,7 +173,6 @@ function myFunction() {
 <ul>
 	<li>GNU Debugger (<code>gdb</code>)</li>
 	<li><code>Python</code></li>
-	<li><code>Golang</code></li>
 	<li>Performance analysis tools (<code>valgrind</code>, <code>itrace</code>)</li>
 	<li>Multi-core exploitation libraries (<code>TBB</code>, <code>Userspace RCU</code>, <code>SPHDE</code>)</li>
 	<li>Plus several support libraries (<code>libhugetlbfs</code>, <code>Boost</code>, <code>zlib</code>...)</li>
@@ -192,7 +191,7 @@ function myFunction() {
 </div>
 
 <div class="ibm-col-12-9 ibm-padding-top-1 ibm-padding-bottom-1">
-<p>The Advance Toolchain provides toolchain functionality earlier and a group of optimized libraries. AT is highly recommended when you want to build an optimized CPU-bound application on POWER or want some of the new toolchain functionalities on POWER before they make it into a distribution. Also, you must use AT when you link with a library built with AT.</p>
+<p>The Advance Toolchain provides toolchain functionality earlier and a group of optimized libraries. AT is highly recommended when you want to build an optimized CPU-bound application on POWER. It's also useful when you want some of the new toolchain functionalities on POWER before they make it into a distribution. Also, you must use AT when you link with a library built with AT.</p>
 
 <p>In some scenarios, you do not get many advantages by using the Advance Toolchain, and it is easier to use the distribution's toolchain that usually performs well. Such cases include building applications that are not CPU-bound and on I/O constrained environments.</p>
 
