@@ -34,7 +34,7 @@ if { $env(AT_CROSS_BUILD) == "yes" } {
 # expected - string expected in Provides.
 # rc - return code.
 proc process_rpm {package expected rc} {
-	if { [catch {eval exec rpm -q --provides ${package} \
+	if { [catch {eval exec rpm -q --provides ${package} 2>/dev/null \
 			 | grep -E "advance-toolchain" \
 			 | grep -v "$::env(AT_NAME)"} \
 		    res] } {
