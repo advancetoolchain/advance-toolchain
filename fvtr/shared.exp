@@ -512,7 +512,7 @@ ${pkg_name}."
 				# When there is an internal version then the package
 				# name string is sufficient to uniquely identify it
 				if { [catch {exec rpm -qa \
-					--qf "%{NAME}-%{VERSION}-%{RELEASE}.%{ARCH}\n" | \
+					--qf "%{NAME}-%{VERSION}-%{RELEASE}.%{ARCH}\n" 2>/dev/null | \
 					grep "${pkg_name}" | \
 					grep -- "-${at_ver_rev}\."} \
 				packages] } {
@@ -524,7 +524,7 @@ ${pkg_name}."
 				# package names that contain internal version strings like
 				# rc, alpha, beta when grepping.
 				if { [catch {exec rpm -qa \
-					--qf "%{NAME}-%{VERSION}-%{RELEASE}.%{ARCH}\n" | \
+					--qf "%{NAME}-%{VERSION}-%{RELEASE}.%{ARCH}\n" 2>/dev/null | \
 					grep "${pkg_name}" | \
 					grep -- "-${at_ver_rev}\." | \
 					grep -vE "(-rc|-alpha|-beta)"} \

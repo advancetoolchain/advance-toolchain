@@ -40,11 +40,11 @@ proc process_rpm_packages { packages cross_bld at_dest ldd_path objdump_path } {
 
 		if { ![info exists env(AT_WD)] } {
 			printit "Processing package:  ${package}"
-			set files [exec rpm -ql $package]
+			set files [exec rpm -ql $package 2>/dev/null]
 		} else {
 			printit "Processing package:  ${package}"
 			set rpm_path $env(AT_WD)/rpms/$env(AT_HOST_ARCH)/
-			set files [exec rpm -qlp $rpm_path/$package]
+			set files [exec rpm -qlp $rpm_path/$package 2>/dev/null]
 		}
 
 		set requi $FULLPATH/$package.req.out
@@ -108,10 +108,10 @@ proc process_rpm_packages { packages cross_bld at_dest ldd_path objdump_path } {
 
 		# Compare with the installed rpm packages
 		if { ![info exists ::env(AT_WD)] } {
-			catch {exec rpm -qR $package | grep -E "^lib" | \
+			catch {exec rpm -qR $package 2>/dev/null | grep -E "^lib" | \
 				sort -u > $TMP_FILE}
 		} else {
-			catch {exec rpm -qRp $rpm_path/$package | \
+			catch {exec rpm -qRp $rpm_path/$package 2>/dev/null | \
 				grep -E "^lib" | sort -u > $TMP_FILE}
 		}
 		if {[catch {exec diff -wB $TMP_FILE $requi > $diff}]} {
