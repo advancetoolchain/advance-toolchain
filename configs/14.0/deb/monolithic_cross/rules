@@ -1,1 +1,67 @@
-../../../13.0/deb/monolithic_cross/rules
+#!/usr/bin/make -f
+#
+# Copyright 2020 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# Set the proper shell to use
+SHELL := /bin/bash
+
+# Get the package names to build
+PACKAGE=$(shell dh_listpackages)
+
+build:
+	dh_testdir
+	dh_testroot
+	dh_prep
+
+clean:
+	dh_testdir
+	dh_testroot
+	dh_clean -d
+
+binary-indep: build
+
+binary-arch: build binary-cp
+	dh_installdirs
+	dh_installdocs
+	dh_installchangelogs
+
+# Copy the packages' files.
+	dh_install
+	dh_missing --fail-missing
+
+	dh_compress
+# Avoid including PPC libraries as they could break system's objdump.
+	dh_makeshlibs --exclude=__DEST_CROSS__ \
+		--exclude=__AT_DEST__/__TARGET__
+	dh_installdeb
+# Avoid including PPC libraries as they could break system's ldd.
+	dh_shlibdeps --exclude=__DEST_CROSS__ \
+		--exclude=__AT_DEST__/__TARGET__
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary-cp: build
+	mkdir -p debian/tmp/__AT_DEST__
+	rsync -a --delete --delete-excluded \
+	      --exclude=share/info/dir --exclude=usr/share/info/dir \
+	      __AT_DEST__ debian/tmp/__AT_DEST__/../
+# Compress all of the info files.
+	gzip -9nvf debian/tmp/__AT_DEST__/share/info/*.info*
+	gzip -9nvf debian/tmp/__DEST_CROSS__/usr/share/info/*.info*
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary

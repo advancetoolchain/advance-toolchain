@@ -1,1 +1,96 @@
-../../../13.0/packages/valgrind/stage_1
+#!/usr/bin/env bash
+#
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# Valgrind build parameters for stage 1
+# =====================================
+#
+# CONFIGURE SETTINGS
+# =========================================================
+# Pre configure settings or commands to run
+atcfg_pre_configure() {
+	# Completely clean the build prior to any build
+	if [[ -e "Makefile" ]]; then
+		make distclean
+	fi
+	# Reconfigure the build with an autogen.sh
+	if [[ -e ./autogen.sh ]]; then
+		sh ./autogen.sh || exit 1
+	else
+		# Tarballs dont provide autogen.sh
+		aclocal
+		autoheader
+		automake -a
+		autoconf
+	fi
+}
+# Configure command for native builds
+atcfg_configure() {
+	PATH=${at_dest}/bin:${PATH} \
+	CC="${at_dest}/bin/gcc" \
+	CXX="${at_dest}/bin/g++" \
+	CFLAGS="-g" \
+	GDB="${at_dest}/bin/gdb" \
+	"${at_active_build}/configure" \
+		--prefix="${at_dest}" \
+		${target64:---enable-only32bit} \
+		--with-mpicc=none
+}
+
+
+# MAKE SETTINGS
+# =========================================================
+# Make build command
+atcfg_make() {
+	PATH=${at_dest}/bin:${PATH} \
+	${SUB_MAKE}
+}
+
+atcfg_make_check() {
+	if [[ "${cross_build}" == 'no' ]]; then
+		PATH=${at_dest}/bin:${PATH} \
+		${SUB_MAKE} check
+	fi
+}
+
+
+# INSTALL SETTINGS
+# =========================================================
+# Pre install settings or commands to run
+atcfg_pre_install() {
+	${SUB_MAKE} -C docs html-docs man-pages
+}
+# Install build command
+atcfg_install() {
+	PATH=${at_dest}/bin:${PATH} \
+	${SUB_MAKE} DESTDIR=${install_place} install
+}
+# Post install settings or commands to run
+atcfg_post_install() {
+	# Copy vgi2qt files
+	cp ${at_active_build}/itrace/vgi2qt/vgi2qt ${install_transfer}/bin/
+	chmod +x ${at_active_build}/itrace/vgi2qt/vitrace
+	cp ${at_active_build}/itrace/vgi2qt/vitrace ${install_transfer}/bin/
+}
+
+# SPECIAL SETTINGS
+# =========================================================
+# Tell the build system to hold the temp install folder
+ATCFG_HOLD_TEMP_INSTALL='no'
+# Tell the build system to hold the temp build folder
+ATCFG_HOLD_TEMP_BUILD='no'
+# Build in a new directory
+ATCFG_BUILD_STAGE_T='link'

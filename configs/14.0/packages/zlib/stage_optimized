@@ -1,1 +1,64 @@
-../../../13.0/packages/zlib/stage_optimized
+#!/usr/bin/env bash
+#
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+source ${AT_BASE}/scripts/utilities/bitsize_selection.sh
+
+# ZLIB build parameters for optimized stage 32/64 bits
+# =================================================
+#
+
+ATCFG_HOLD_TEMP_INSTALL='no'
+# Tell the build system to hold the temp build folder
+ATCFG_HOLD_TEMP_BUILD='no'
+# Build in a new directory
+ATCFG_BUILD_STAGE_T='link'
+
+atcfg_configure() {
+	local base_libdir=$(find_build_libdir ${AT_BIT_SIZE})
+	PATH=${at_dest}/bin:${PATH} \
+	CC="${at_dest}/bin/gcc -m${AT_BIT_SIZE}" \
+	CFLAGS="-g -O3 -mcpu=${AT_OPTIMIZE_CPU/ppc/}" \
+	CXXFLAGS="-g -O3 -mcpu=${AT_OPTIMIZE_CPU/ppc/}" \
+	${ATSRC_PACKAGE_WORK}/configure \
+		--prefix="${at_dest}" \
+		--libdir="${at_dest}/${base_libdir}/${AT_OPTIMIZE_CPU}"
+}
+
+
+atcfg_make() {
+	PATH=${at_dest}/bin:${PATH} \
+	${SUB_MAKE}
+}
+
+atcfg_make_check() {
+	# Package testing not done for a cross build.
+	if [[ "${cross_build}" == 'no' ]]; then
+		PATH=${at_dest}/bin:${PATH} \
+		${SUB_MAKE} check
+	fi
+}
+
+atcfg_install() {
+	PATH=${at_dest}/bin:${PATH} \
+	${SUB_MAKE} install DESTDIR=${install_place}
+}
+# Post install settings or commands to run
+
+atcfg_post_install() {
+	# Remove unneeded installed files
+	rm -rf "${install_place}/${at_dest}/"{include,share}
+}
