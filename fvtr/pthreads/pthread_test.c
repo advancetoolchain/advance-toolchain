@@ -15,7 +15,7 @@
 
 /*
    Built with:
-   export PATH=/opt/at13.0/bin:$PATH
+   export PATH=/opt/at14.0/bin:$PATH
    gcc -mcpu=power8 -mtune=power8 -m64 -g -lpthread -o pthread_test pthread_test.c
 */
 
