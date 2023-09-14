@@ -1,1 +1,41 @@
-../../../13.0/packages/gmp/sources
+#!/usr/bin/env bash
+#
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# GMP source package and build info
+# =================================
+#
+
+ATSRC_PACKAGE_NAME="GNU Multiple Precision Library"
+ATSRC_PACKAGE_VER=6.1.2
+ATSRC_PACKAGE_REV=
+ATSRC_PACKAGE_LICENSE="GPL 3.0"
+ATSRC_PACKAGE_DOCLINK="http://gmplib.org/manual/"
+ATSRC_PACKAGE_RELFIXES=
+ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
+ATSRC_PACKAGE_PRE="test -d gmp-${ATSRC_PACKAGE_VER}"
+ATSRC_PACKAGE_CO=([0]="wget -N https://ftpmirror.gnu.org/gmp/gmp-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV}.tar.bz2" \
+		  [1]="wget -N ftp://ftp.unicamp.br/pub/gnu/gmp/gmp-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV}.tar.bz2")
+ATSRC_PACKAGE_POST="tar -xjf gmp-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV}.tar.bz2"
+ATSRC_PACKAGE_SRC=${AT_BASE}/sources/gmp-${ATSRC_PACKAGE_VER}
+ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/gmp
+ATSRC_PACKAGE_MLS=
+ATSRC_PACKAGE_ALOC=
+ATSRC_PACKAGE_PATCHES=
+ATSRC_PACKAGE_TARS=
+ATSRC_PACKAGE_MAKE_CHECK=
+ATSRC_PACKAGE_DISTRIB=yes
+ATSRC_PACKAGE_BUNDLE=main_toolchain

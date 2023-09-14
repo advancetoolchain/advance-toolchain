@@ -1,1 +1,77 @@
-../../../13.0/packages/mpc/stage_2
+#!/usr/bin/env bash
+#
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# Tell the build system to hold the temp install folder
+ATCFG_HOLD_TEMP_INSTALL='no'
+# Tell the build system to hold the temp build folder
+ATCFG_HOLD_TEMP_BUILD='no'
+# The kernel only supports build in the same directory of the source code'
+ATCFG_BUILD_STAGE_T='link'
+
+# Pre configure settings or commands to run
+atcfg_pre_configure() {
+	# Set libdir accordingly
+	libdir=${at_dest}/lib
+	if [[ "${build_arch}" == ppc64* ]]; then
+		libdir=${at_dest}/lib64
+	fi
+	if [[ ! -e ${ATSRC_PACKAGE_WORK}/configure ]]; then
+		pushd ${ATSRC_PACKAGE_WORK}
+		autoreconf -i
+		popd
+	fi
+}
+
+# Configure command for native builds
+atcfg_configure() {
+	PATH=${at_dest}/bin:${PATH} \
+	CC=${at_dest}/bin/gcc \
+	CXX=${at_dest}/bin/g++ \
+	CFLAGS="-g -O3 -m${compiler}" \
+	CXXFLAGS="-g -O3 -m${compiler}" \
+	${ATSRC_PACKAGE_WORK}/configure --build=${target} \
+									--host=${target} \
+									--target=${target} \
+									--prefix=${at_dest} \
+									--exec-prefix=${at_dest} \
+									--with-gmp-include=${at_dest}/include \
+									--with-gmp-lib=${libdir} \
+									--with-mpfr-include=${at_dest}/include \
+									--with-mpfr-lib=${libdir} \
+									--libdir=${libdir} \
+									--disable-shared
+}
+
+# Make build command
+atcfg_make() {
+	PATH=${at_dest}/bin:${PATH} \
+		${SUB_MAKE} all
+}
+
+atcfg_make_check() {
+	# Package testing not done for cross build.
+	if [[ "${cross_build}" == 'no' ]]; then
+		${SUB_MAKE} check
+	fi
+}
+
+
+# Install build command
+atcfg_install() {
+	PATH=${at_dest}/bin:${PATH} \
+		${SUB_MAKE} install DESTDIR=${install_place}
+}
