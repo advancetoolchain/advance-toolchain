@@ -25,7 +25,7 @@
 #		e.g "/home/$USER/at-build/sources/gcc-4.1-20060628"
 #
 #	@2 Destination where the source is to be copied
-#		e.g. "/home/$USER/at-build/at13.0/src/gcc"
+#		e.g. "/home/$USER/at-build/at14.0/src/gcc"
 #
 #	@3 Location of the patch files to be copied or "" (null)
 #		e.g "/home/$USER/at-build/patches"

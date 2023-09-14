@@ -79,15 +79,11 @@ switch -regexp $env(AT_BUILD_ARCH) {
 }
 
 # List of libraries that should be present.
-set experimental exp-
-if { $env(AT_MAJOR_VERSION) > 13.0 } {
-	set experimental ""
-}
 set lib_list {}
 if { ${TARGET32} } {
 	lappend lib_list vgpreload_core-${arch32}-linux \
 			 vgpreload_drd-${arch32}-linux \
-			 vgpreload_${experimental}dhat-${arch32}-linux \
+			 vgpreload_dhat-${arch32}-linux \
 			 vgpreload_helgrind-${arch32}-linux \
 			 vgpreload_massif-${arch32}-linux \
 			 vgpreload_memcheck-${arch32}-linux
@@ -95,7 +91,7 @@ if { ${TARGET32} } {
 if { ${TARGET64} } {
 	lappend lib_list vgpreload_core-${arch64}-linux \
 			 vgpreload_drd-${arch64}-linux \
-			 vgpreload_${experimental}dhat-${arch64}-linux \
+			 vgpreload_dhat-${arch64}-linux \
 			 vgpreload_helgrind-${arch64}-linux \
 			 vgpreload_massif-${arch64}-linux \
 			 vgpreload_memcheck-${arch64}-linux
