@@ -49,7 +49,7 @@ AT_GPG_REPO_KEYIDC := 6976A827
 AT_GPG_REPO_KEYIDL := 6976A827
 
 # Options required by the command to update the repository metadata
-AT_REPOCMD_OPTS := -p -s sha1 --simple-md-filenames --no-database
+AT_REPOCMD_OPTS := -p -s sha256 --simple-md-filenames --no-database
 
 # Moved here from build.mk since the value for this variable
 # depends on the distro.
