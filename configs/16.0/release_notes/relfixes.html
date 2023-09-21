@@ -1,13 +1,87 @@
 <li>Power10 enablement.</li>
 <li>Power9 enablement.</li>
+<li>Power10-optimized instruction scheduling in GCC.</li>
 <li>Power9-optimized instruction scheduling in GCC.</li>
-<li>Requires at least Power8 for ppc64le.</li>
+<li>Requires at least Power9 for ppc64le on RHEL 9 and Ubuntu 22.04.</li>
+<li>Requires at least Power8 for ppc64le on SLES 15 and Debian 11.</li>
 <li>Power8 Transactional Memory enablement.</li>
 <li>Power8 Crypto Operations enablement.</li>
 <li>Power8, Power9, and Power10 optimized system libraries.</li>
 <li>_Float128 enablement as specified by ISO/IEC TS 18661-3, for Power9 and Power10.</li>
 <li>GCC creates binaries using -mcpu=power8 -mtune=power10 by default.</li>
 </ul>
+
+<h3>New features in 16.0-3</h3>
+<ul>
+  <li>GCC provides:
+  <ul>
+    <li>Version 12.3, see the <a href="https://gcc.gnu.org/gcc-12/changes.html">release notes</a> for details.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=70150">Additonal test failures with --enable-default-pie</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=70243">PowerPC V4SFmode should not use Altivec instructions on VSX systems</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95947">PACK intrinsic returns blank strings when an allocatable character array with allocatable length is used</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96024">ICE in mio_name_expr_t, at fortran/module.c:2159</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96762">ICE in extract_insn, at recog.c:2294 (error: unrecognizable insn)</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105325">power10: Error: operand out of range</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105660">ICE in warn_parm_array_mismatch when merging two function decls and VLA arguments since r12-1218-gc6503fa93b5565c9</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107397">ICE in gfc_arith_plus, at fortran/arith.cc:654</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108758">gcc.target/powerpc/float128-cmp2-runnable.c fails with excess errors on power 9 BE since r12-5752</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108842">Cannot use enum array with -fno-druntime</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109069">Vector truncation test program produces incorrect result since r12-6537-g080a06fcb076b3</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109447">test case libffi.closures/cls_align_longdouble_split.c fails</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109846">Pointer-valued function reference rejected as actual argument</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109932">ICE in in extract_insn, at recog.cc:2791 on ppc64le with -mno-vsx</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110011">-mfull-toc (-mfp-in-toc) yields incorrect _Float128 constants on power9</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110516">core.volatile.volatileLoad discarded if result is unused</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110585">ICE in gfc_compare_expr for findloc with complex literal array</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110658">MINVAL/MAXVAL and deferred-length character arrays</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110741">vec_ternarylogic intrinsic generates incorrect code on POWER10 target when compiled with GCC</a>.</li>
+  </ul></li>
+  <li>GNU C Library provides:
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=20975">Deferred cancellation triggers in __check_pf and looses lock leading to deadlock.</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22787">_dl_check_caller returns false when libc is linked through an absolute DT_NEEDED path</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29444">gmon memory corruption due wrong calculation of required buffer size</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30101">Memory corruption when incorrectly calling _mcleanup/__monstartup/moncontrol repeatedly or in wrong order</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30151">sgetsgent_r does not implement ERANGE protocol compatible with sgetsgent</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30163">system() erroneously block SIGCHLD forever when called concurrently</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30515">_dl_find_object incorrectly returns 1 during early startup</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30785">Always call destructors in reverse constructor order</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30804">F_GETLK, F_SETLK, and F_SETLKW value change for powerpc64 with -D_FILE_OFFSET_BITS=64</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30842">(CVE-2023-4527) Stack read overflow in getaddrinfo in no-aaaa mode</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30843">(CVE-2023-4806) potential use-after-free in getcanonname</a>.</li>
+  </ul></li>
+  <li>Userspace RCU provides:
+  <ul>
+    <li>urcu-wait: Initialize node in URCU_WAIT_NODE_INIT.</li>
+    <li>Fix: urcu-wait: add missing futex.h include.</li>
+    <li>Revert "compiler.h: Introduce caa_unqual_scalar_typeof".</li>
+    <li>rculfhash: Use caa_container_of_check_null in cds_lfht_entry.</li>
+    <li>compiler.h: Introduce caa_container_of_check_null.</li>
+    <li>compiler.h: Introduce caa_unqual_scalar_typeof.</li>
+    <li>Avoid calling caa_container_of on NULL pointer in cds_lfht macros.</li>
+  </ul></li>
+  <li>OpenSSL provides:
+  <ul>
+    <li>Version 3.0.10, see the <a href="https://www.openssl.org/news/cl30.txt">release notes</a> for details.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/17923">OpenSSL 3.0.x regression around OCSP w/ proxy</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/20978">EVP_CIPHER_CTX_copy in OSSL 3.0 not functioning as expected?</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/21403">Modulus value written to wrong file handle in req command, resulting in invalid certificate file</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/21493">OpenSSL 3: x25519 a decode from and then encode to a pem file corrupts the key if fips+base provider is used</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/21522">Using the AVX-512 code path for Poly1305 clears non-volatile XMM registers and does not restore them.</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/21588">PEM_read_bio_Parameters(BIO *bp, EVP_PKEY **x) : something has changed since v3.0 ! </a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/21647">crypto/perlasm/arm-xlate.pl mangles output</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/21968">OSSL_STORE error reporting masked on EOF</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/21977">Replace CPUID_OBJ with OPENSSL_CPUID_OBJ in chacha test</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/21986">Return value confusion in cms_sd_asn1_ctrl()</a>.</li>
+  </ul></li>
+  <li>Python provides:
+  <ul>
+    <li>Version 3.10.13, see the <a href="https://www.python.org/downloads/release/python-31013/">release notes</a> for details.</li>
+  </ul></li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
 
 <h3>New features in 16.0-2</h3>
 <ul>
@@ -129,9 +203,6 @@
     <li>Fix for <a href="https://github.com/python/cpython/issues/103264">Clarify and simplify description of print&#39;s flush param</a>.</li>
   </ul></li>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 16.0-1</h3>
 <ul>
