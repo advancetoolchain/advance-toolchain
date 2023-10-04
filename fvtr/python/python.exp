@@ -140,7 +140,7 @@ if { [string match 3.* $pyver] } {
 	set spawn_cmd "spawn $env(AT_DEST)/bin/python $test_script"
 }
 
-set env(TMPDIR) "$FULLPATH/tmp[pid]"
+set env(TMPDIR) "/tmp/python-tests-[pid]"
 exec mkdir $env(TMPDIR)
 printit "TMPDIR=\"$env(TMPDIR)\""
 global ERROR
