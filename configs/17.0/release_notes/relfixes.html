@@ -1,5 +1,6 @@
 <li>Power10 enablement.</li>
 <li>Power9 enablement.</li>
+<li>Power10-optimized instruction scheduling in GCC.</li>
 <li>Power9-optimized instruction scheduling in GCC.</li>
 <li>Requires at least Power9 for ppc64le on RHEL 9 and Ubuntu 22.04.</li>
 <li>Requires at least Power8 for ppc64le on SLES 15 and Debian 12.</li>
@@ -9,6 +10,61 @@
 <li>_Float128 enablement as specified by ISO/IEC TS 18661-3, for Power9 and Power10.</li>
 <li>GCC creates binaries using -mcpu=power8 -mtune=power10 by default.</li>
 </ul>
+
+<h3>New features in 17.0-1</h3>
+<ul>
+  <li>GCC provides:
+  <ul>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102109">Associate to construct compound object results in incorrect type inferred</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102532">ICE in gfc_get_corank, at fortran/expr.c:5769</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109948">ICE(segfault) in gfc_expression_rank() from gfc_op_rank_conformable()</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110488">deferred constant wrongly rejected</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110741">vec_ternarylogic intrinsic generates incorrect code on POWER10 target when compiled with GCC</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=111080">restrict qualifier causes extra debug info to happen</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=111674">Failure to finalize an allocatable subobject of a non-finalizable type</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=68155">ICE on initializing character array in type (len_lhs &lt;&gt; len_rhs)</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92586">ICE in gimplify_expr, at gimplify.c:13479 with nested allocatable derived types</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96762">ICE in extract_insn, at recog.c:2294 (error: unrecognizable insn)</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99326">ICE in gfc_build_dummy_array_decl, at fortran/trans-decl.c:1299</a>.</li>
+  </ul></li>
+  <li>GNU C Library provides:
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=19519">iconv(1) with -c option hangs on illegal multi-byte sequences (CVE-2016-10228)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22787">_dl_check_caller returns false when libc is linked through an absolute DT_NEEDED path</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30694">The iconv program no longer tells the user which given encoding name was wrong</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30723">Poor posix_memalign performance with long free lists</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30804">F_GETLK, F_SETLK, and F_SETLKW value change for powerpc64 with -D_FILE_OFFSET_BITS=64</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30842">Stack read overflow in getaddrinfo in no-aaaa mode (CVE-2023-4527)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30843">potential use-after-free in getcanonname (CVE-2023-4806)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30884">Memory leak in getaddrinfo after fix for bug 30843 (CVE-2023-5156)</a>.</li>
+  </ul></li>
+  <li>Binutils provides:
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30794">PowerPC port of gold fails with:  internal error in add_output_section_to_load, at gold/output.cc:4097</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30856">Regression: operand size mismatch for `push'</a>.</li>
+  </ul></li>
+  <li>OpenSSL provides:
+  <ul>
+    <li>Version 3.1.3, see the <a href="https://www.openssl.org/news/cl31.txt">release notes</a> for details.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/21909">Unable to set entropy seed source for FIPS provider</a>.</li>
+  </ul></li>
+  <li>Python provides:
+  <ul>
+    <li>Version 3.11.6, see the <a href="https://www.python.org/downloads/release/python-3116/">release notes</a> for details.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/109360">Fix test_gdb tests on ppc64le with clang</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/110284">Add tests for pickling and copying PyStructSequence objects (GH-110272)</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/110306">Fix test instability in test_concurrent_futures</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/110331">Fix gdb CFunctionFullTests on ppc64le clang build</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/110366">Fix error overwrite in `termios.tcsetattr`</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/110413">Increase support.LOOPBACK_TIMEOUT to 10 seconds</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/110428">Fix multiprocessing test_waitfor_timeout()</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/110433">Fix race condition in &quot;make regen-all&quot;</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/110465">Fix subprocess test_pipesize_default()</a>.</li>
+  </ul></li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
 
 <h3>New features in 17.0-0</h3>
 <ul>
@@ -84,10 +140,6 @@
     <li>Version 1.3, see the <a href="https://github.com/madler/zlib/blob/v1.3/ChangeLog">release notes</a> for details.</li>
   </ul></li>
 </ul>
-
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 16.0-2</h3>
 <ul>
