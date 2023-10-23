@@ -51,6 +51,11 @@ AT_GPG_REPO_KEYIDL := 6976A827
 # Options required by the command to update the repository metadata
 AT_REPOCMD_OPTS := -p -s sha256 --simple-md-filenames --no-database
 
+# Override generic values from build.mk (RHEL 9 requires a power9)
+BUILD_LOAD_ARCH := power9
+BUILD_BASE_ARCH := power9
+BUILD_ACTIVE_MULTILIBS := power10
+
 # Moved here from build.mk since the value for this variable
 # depends on the distro.
 # For a cross build the executables in the toolchain (gcc, ld, etc.)
