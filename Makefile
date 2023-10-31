@@ -1099,6 +1099,7 @@ $(RCPTS)/package.rcpt: $(RCPTS)/$(pack-sys).rcpt $(RCPTS)/source_tarball.rcpt
 $(RCPTS)/monitor.rcpt: $(RCPTS)/toolchain.rcpt $(RCPTS)/ldconfig_3.rcpt
 	@echo "$$($(TIME)) Preparing the system's ld.so.cache monitor"
 	@+{ $(AT_DEST)/bin/gcc -O2 -DAT_LDCONFIG_PATH=$(AT_DEST)/sbin/ldconfig \
+	         -Wno-implicit-function-declaration \
 	         $(SCRIPTS_ROOT)/utilities/watch_ldconfig.c -o $(AT_DEST)/bin/watch_ldconfig; \
 	    echo "Monitor sucesfully compiled."; \
 	    echo "Updating the SPEC files"; \
