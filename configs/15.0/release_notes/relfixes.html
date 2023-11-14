@@ -1,5 +1,6 @@
 <li>Power10 enablement.</li>
 <li>Power9 enablement.</li>
+<li>Power10-optimized instruction scheduling in GCC.</li>
 <li>Power9-optimized instruction scheduling in GCC.</li>
 <li>Requires at least Power8 for ppc64le.</li>
 <li>Power8 Transactional Memory enablement.</li>
@@ -11,6 +12,61 @@
 
 <h3>Debian 10 (buster) end of support</h3>
 <p>Debian 10 (buster) reached EOL in August 2022. Advance Toolchain packages won't be provided for Debian 10 (buster) with Advance Toolchain 15.0-4 and later. </p>
+
+<h3>New features in 15.0-6</h3>
+<ul>
+  <li>GCC provides:
+  <ul>
+    <li>Version 11.4, see the <a href="https://gcc.gnu.org/gcc-11/changes.html">release notes</a> for details.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100607">ICE with SELECT RANK</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103506">ICE in gfc_free_namespace, at fortran/symbol.c:4039 since r10-2798-ge68a35ae4a65d2b3</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105325">power10: Error: operand out of range</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107397">ICE in gfc_arith_plus, at fortran/arith.cc:654</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108842">Cannot use enum array with -fno-druntime</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109932">ICE in in extract_insn, at recog.cc:2791 on ppc64le with -mno-vsx</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110011">-mfull-toc (-mfp-in-toc) yields incorrect _Float128 constants on power9</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110288">Regression: segfault in findloc with allocatable array of allocatable characters</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110516">core.volatile.volatileLoad discarded if result is unused</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110585">ICE in gfc_compare_expr for findloc with complex literal array</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110658">MINVAL/MAXVAL and deferred-length character arrays</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110741">vec_ternarylogic intrinsic generates incorrect code on POWER10 target when compiled with GCC</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=111367">Error: operand out of range (0x1391c is not between 0xffffffffffff8000 and 0x7fff)</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=111837">Out of bounds access with optimization inside io-implied-do-control</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=66005">libgomp make check time is excessive</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95947">PACK intrinsic returns blank strings when an allocatable character array with allocatable length is used</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96024">ICE in mio_name_expr_t, at fortran/module.c:2159</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96762">ICE in extract_insn, at recog.c:2294 (error: unrecognizable insn)</a>.</li>
+  </ul></li>
+  <li>GNU C Library provides:
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=20975">Deferred cancellation triggers in __check_pf and looses lock leading to deadlock.</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28852">getaddrinfo leaks memory with AI_ALL</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28931">hosts lookup broken for SUCCESS=CONTINUE and SUCCESS=MERGE (CVE-2023-4813)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30745">Slight bug in cache info codes for x86</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30842">Stack read overflow in getaddrinfo in no-aaaa mode (CVE-2023-4527)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30843">potential use-after-free in getcanonname (CVE-2023-4806)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30884">Memory leak in getaddrinfo after fix for bug 30843 (CVE-2023-5156)</a>.</li>
+  </ul></li>
+  <li>OpenSSL provides:
+  <ul>
+    <li>Version 1.1.1w, see the <a href="https://www.openssl.org/news/openssl-1.1.1-notes.html">release notes</a> for details.</li>
+  </ul></li>
+  <li>Python provides:
+  <ul>
+    <li>Version 3.9.18, see the <a href="https://www.python.org/downloads/release/python-3918/">release notes</a> for details.</li>
+  </ul></li>
+  <li>Userspace RCU provides:
+  <ul>
+    <li>Fix urcu-bp: misaligned reader accesses.</li>
+    <li>rculfhash: Use caa_container_of_check_null in cds_lfht_entry.</li>
+    <li>compiler.h: Introduce caa_container_of_check_null.</li>
+    <li>compiler.h: Introduce caa_unqual_scalar_typeof.</li>
+    <li>Avoid calling caa_container_of on NULL pointer in cds_lfht macros.</li>
+  </ul></li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
 
 <h3>New features in 15.0-5</h3>
 <ul>
@@ -77,9 +133,6 @@
     <li>Fix for <a href="https://github.com/python/cpython/issues/102666">Replace address pointing toward malicious web page (GH-102630)</a>.</li>
   </ul></li>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 15.0-4</h3>
 <ul>
