@@ -101,7 +101,9 @@ function pkg_build_rpms()
 	# Unfortunately, the rpm project does not provide an easy way to change
 	# the installation path of the debug information. Thus, we patch
 	# find-debuginfo.sh in order to be able to do so.
-	cp /usr/lib/rpm/find-debuginfo.sh ${rpmdir}/find-debuginfo.sh
+	local debuginfo_src="/usr/bin/find-debuginfo"
+	[[ ! -e ${debuginfo_src} ]] && debuginfo_src="/usr/lib/rpm/find-debuginfo.sh"
+	cp ${debuginfo_src} ${rpmdir}/find-debuginfo.sh
 	sed ${rpmdir}/find-debuginfo.sh -i -e "/usr\/lib/s/\$RPM_BUILD_ROOT/\${RPM_BUILD_ROOT}/g"
 	sed ${rpmdir}/find-debuginfo.sh -i -e "/RPM_BUILD_ROOT/s@/usr/lib/debug@__AT_DEST__&@"
 	sed ${rpmdir}/find-debuginfo.sh -i -e "/d \".{RPM_BUILD_ROOT}\/usr\/lib\"/s@/usr/lib@__AT_DEST__&@"
@@ -135,6 +137,9 @@ function pkg_build_rpms()
 
 	# From RHEL8, set path to call rpm scripts (debugedit, sepdebugcrcfix...)
 	sed ${rpmdir}/find-debuginfo.sh -i -e "/lib_rpm_dir=/s/=.*$/=\/usr\/lib\/rpm/"
+
+	# From RHEL9, set path to call rpm scripts (debugedit, sepdebugcrcfix...)
+	sed ${rpmdir}/find-debuginfo.sh -i -e "/install_dir=/s/=.*$/=\/usr\/bin/"
 
 	# Final step to support debuginfo under /opt.
 	sed ${rpmdir}/find-debuginfo.sh -i -e "s@__AT_DEST__@${at_dest}@"
