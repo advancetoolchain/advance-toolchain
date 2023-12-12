@@ -50,18 +50,12 @@ atsrc_get_patches ()
 	        https://raw.githubusercontent.com/powertechpreview/powertechpreview/b9f88b42e734110e69873ea810272facc85b97c0/Python%20Fixes/python-3.9-timeout-test_subprocess.patch \
 	        92cfc34136fafb9420655b4bd3ef39d1 || return ${?}
 
-	# Disable zlib version check (test_zlib).
-	at_get_patch \
-		https://raw.githubusercontent.com/powertechpreview/powertechpreview/1fa3a5896a6ce15e8b85fcf24109db5c1ea5548a/Python%20Fixes/python-3.7-disable-zlib-version-check.patch \
-		f52555a37aec6cb7f43eb052990e051b || return ${?}
-
 	return 0
 }
 
 atsrc_apply_patches ()
 {
 	patch -p1 < python-3.9-timeout-test_subprocess.patch || return ${?}
-	patch -p1 < python-3.7-disable-zlib-version-check.patch || return ${?}
 }
 
 atsrc_package_verify_make_log ()
