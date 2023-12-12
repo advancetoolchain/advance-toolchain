@@ -8,9 +8,53 @@
 <li>Power8 Crypto Operations enablement.</li>
 <li>Power8, Power9, and Power10 optimized system libraries.</li>
 <li>_Float128 enablement as specified by ISO/IEC TS 18661-3, for Power9 and Power10.</li>
+<li>Power10 Matrix-Math Assist enablement.</i>
 <li>GCC creates binaries using -mcpu=power9 -mtune=power10 on RHEL 9 and Ubuntu 22.04.</li>
 <li>GCC creates binaries using -mcpu=power8 -mtune=power10 on SLES 15 and Debian 11.</li>
 </ul>
+
+<h3>New features in 16.0-4</h3>
+<ul>
+  <li>GCC provides:
+  <ul>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=111315">libstdc++ stacktrace testsuite failures with --enable-default-pie</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=111366">error: inlining failed in call to 'always_inline' 'hwy::PreventElision&lt;int&amp;&gt;(int&amp;)void': target specific option mismatch</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=111367">Error: operand out of range (0x1391c is not between 0xffffffffffff8000 and 0x7fff)</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=111380">Inconsistent behaviors between non-LTO and LTO</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=111837">Out of bounds access with optimization inside io-implied-do-control</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=112263">std::stacktrace does not identify symbols in shared library</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=112270">ICE: in verify_gimple_in_seq on powerpc-darwin9</a>.</li>
+  </ul></li>
+  <li>GNU C Library provides:
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30785">Always call destructors in reverse constructor order</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30842">Stack read overflow in getaddrinfo in no-aaaa mode (CVE-2023-4527)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30843">potential use-after-free in getcanonname (CVE-2023-4806)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30884">Memory leak in getaddrinfo after fix for bug 30843 (CVE-2023-5156)</a>.</li>
+  </ul></li>
+  <li>Userspace RCU provides:
+  <ul>
+   <li>Fix urcu-bp: misaligned reader accesses.</li>
+  </ul></li>
+  <li>OpenSSL provides:
+  <ul>
+    <li>Version 3.0.12, see the <a href="https://www.openssl.org/news/cl30.txt">release notes</a> for details.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/12247">Multiple Strict-Aliasing Violations</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/21110">BN_mod_inverse incorrect result when parameters are aliased</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/22336">Leak of los after ossl_X509_ALGOR_from_nid() failure in rsa_cms_encrypt()</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/22594">openssl 3.x compilation errors with icx and nvc</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/22664">DTLS use-after-free triggered by error injection</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/22700">Potential use after free in callers of X509v3_asid_add_id_or_range()</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/22842">SIGSEGV from EVP_MAC_CTX_get_mac_size()</a>.</li>
+  </ul></li>
+  <li>Python provides:
+  <ul>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/111779">Fix a bug where iso2022_jp_3 and iso2022_jp_2004 codecs read out of bounds (gh-111695)</a>.</li>
+  </ul></li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
 
 <h3>New features in 16.0-3</h3>
 <ul>
@@ -80,9 +124,6 @@
     <li>Version 3.10.13, see the <a href="https://www.python.org/downloads/release/python-31013/">release notes</a> for details.</li>
   </ul></li>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 16.0-2</h3>
 <ul>
