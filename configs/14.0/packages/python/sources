@@ -63,8 +63,8 @@ atsrc_get_patches ()
 
 	# Disable zlib version check (test_zlib).
 	at_get_patch \
-		https://raw.githubusercontent.com/powertechpreview/powertechpreview/1fa3a5896a6ce15e8b85fcf24109db5c1ea5548a/Python%20Fixes/python-3.7-disable-zlib-version-check.patch \
-		f52555a37aec6cb7f43eb052990e051b || return ${?}
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/3539865c7bd2654724909f56407664e9937398e4/Python%20Fixes/python-3.7-disable-zlib-version-check.patch \
+		4042518c0f3d97f1850aec26ef8f7acd || return ${?}
 
 	return 0
 }
