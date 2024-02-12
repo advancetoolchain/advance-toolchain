@@ -13,6 +13,34 @@
 <h3>Debian 10 (buster) end of support</h3>
 <p>Debian 10 (buster) reached EOL in August 2022. Advance Toolchain packages won't be provided for Debian 10 (buster) with Advance Toolchain 15.0-4 and later. </p>
 
+<h3>New features in 15.0-7</h3>
+<ul>
+  <li>GCC provides:
+  <ul>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110295">ICE in dwarf2out_finish with local class with inherited operator delete in a templated function and -g</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=111880">False positive warning of obsolescent COMMON block with Fortran submodule</a>.</li>
+  </ul></li>
+  <li>GNU C Library provides:
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29039">Corrupt DTV after reuse of a TLS module ID following dlclose with unused TLS</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30843">(CVE-2023-4806) potential use-after-free in getcanonname (CVE-2023-4806)</a>.</li>
+  </ul></li>
+  <li>Userspace RCU provides:
+  <ul>
+    <li>ppc.h: use mftb on ppc.</li>
+    <li>Fix -Walloc-size.</li>
+  </ul></li>
+  <li>Python provides:
+  <ul>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/112600">Fix the error handling in socket.if_indextoname() (GH-13503)</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/113915">Protect zipfile from &quot;quoted-overlap&quot; zipbomb (GH-110016)</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/114146">Skip hidden .pth files (GH-113660)</a>.</li>
+  </ul></li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 15.0-6</h3>
 <ul>
   <li>GCC provides:
@@ -64,9 +92,6 @@
     <li>Avoid calling caa_container_of on NULL pointer in cds_lfht macros.</li>
   </ul></li>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 15.0-5</h3>
 <ul>
