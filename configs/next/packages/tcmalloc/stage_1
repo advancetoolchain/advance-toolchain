@@ -119,7 +119,7 @@ atcfg_configure ()
 	AR="${configure_ar}" \
 	RANLIB="${configure_ranlib}" \
 	CFLAGS="-g -m${AT_BIT_SIZE} -O3" \
-	CXXFLAGS="-g -m${AT_BIT_SIZE} -O3 -std=gnu++11" \
+	CXXFLAGS="-g -m${AT_BIT_SIZE} -O3" \
 	LDFLAGS="-Wl,-Bsymbolic" \
 	./configure \
 		--build=${configure_build} \
