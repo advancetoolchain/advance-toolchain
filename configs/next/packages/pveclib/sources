@@ -21,7 +21,7 @@
 
 ATSRC_PACKAGE_NAME="Power Vector Library"
 ATSRC_PACKAGE_VER=master
-ATSRC_PACKAGE_REV=7cddb170a358
+ATSRC_PACKAGE_REV=aca8b7428a9b
 ATSRC_PACKAGE_LICENSE="Apache License 2.0"
 ATSRC_PACKAGE_DOCLINK="https://github.com/open-power-sdk/pveclib/wiki"
 ATSRC_PACKAGE_RELFIXES=
