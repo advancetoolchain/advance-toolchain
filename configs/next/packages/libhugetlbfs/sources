@@ -20,7 +20,7 @@
 #
 ATSRC_PACKAGE_NAME="Libhugetlbfs"
 ATSRC_PACKAGE_VER=master
-ATSRC_PACKAGE_REV=6b126a4d7da9
+ATSRC_PACKAGE_REV=1322884fb0d5
 ATSRC_PACKAGE_LICENSE="Lesser GPL 2.1"
 ATSRC_PACKAGE_DOCLINK="https://github.com/libhugetlbfs/libhugetlbfs"
 ATSRC_PACKAGE_RELFIXES=
@@ -43,25 +43,16 @@ ATSRC_PACKAGE_BUNDLE=toolchain_extra
 
 atsrc_get_patches ()
 {
-    # Disable usage of morecore
-    at_get_patch \
-	'https://github.com/libhugetlbfs/libhugetlbfs/commit/959d74fd0fbbff310943096e15024a84e8f5cba4.patch' \
-	abdba133bea898e4c2b4ff723c26743f disable-morecore.patch || return ${?}
-
     # Always use bash as the shell for make
     at_get_patch \
-	'https://raw.githubusercontent.com/powertechpreview/powertechpreview/3c37c1a4031b272dcb3c80d4688436f28744f654/Libhugetlbfs%20Patches/always-use-bash.patch' \
-	7be7a8d9c2a00ffaa0b59f5fd60fd80d || return ${?}
+	'https://raw.githubusercontent.com/powertechpreview/powertechpreview/532614e32f0c8d2b1d5200930258268ba5677179/Libhugetlbfs%20Patches/always-use-bash.patch' \
+	83fec04a2a51c8ecfe408b58059d0883 || return ${?}
 
     return 0
 }
 
 atsrc_apply_patches ()
 {
-    patch -p1 \
-	  < disable-morecore.patch \
-	|| return ${?}
-
     patch -p1 \
 	  < always-use-bash.patch \
 	|| return ${?}
