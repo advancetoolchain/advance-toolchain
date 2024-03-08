@@ -43,8 +43,8 @@ atsrc_get_patches ()
 {
     # Disable usage of morecore
     at_get_patch \
-	'https://github.com/libhugetlbfs/libhugetlbfs/commit/959d74fd0fbbff310943096e15024a84e8f5cba4.patch' \
-	abdba133bea898e4c2b4ff723c26743f disable-morecore.patch || return ${?}
+	'https://github.com/libhugetlbfs/libhugetlbfs/commit/7ba91d2256d2834b7d92e510782b8f7543daf678.patch' \
+	45155ccd0b4b2333a62342cf8583d9e5 disable-morecore.patch || return ${?}
 
     # Always use bash as the shell for make
     at_get_patch \
