@@ -505,10 +505,9 @@ EOF
 				    --data "@${out}")
 
 		if [[ ${status} -eq 201 ]]; then
-			print_msg 0 "Pull request creation successful!"
-			# Disabling auto-merge.
-			# Auto-merge will be re-enabled once a replacement for AT_request is found.
-			if [[ 0 -eq 1 ]]; then
+                        # Enabling auto-merge if the version wasn't updated.
+                        if [[ -z "${3}" ]]; then
+				print_msg 0 "Pull request creation successful!"
 				pr_number=$(grep -oE '"number": [0-9]+' ${out} | cut -d' ' -f2)
 
 				# Enabling auto-merge on a PR is only available through
