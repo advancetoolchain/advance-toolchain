@@ -38,3 +38,24 @@ ATSRC_PACKAGE_DISTRIB=yes
 ATSRC_PACKAGE_BUNDLE=main_toolchain
 ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://sourceware.org/git/?p=glibc.git;a=blob_plain;f=version.h;hb=__REVISION__" | grep -w "VERSION" | sed "s/^.*\"\([0-9\.][0-9\.]*\)\".*$/\1/"'
 
+
+atsrc_get_patches ()
+{
+	if [[ "$DISTRO_ID" == "redhat-9" ]]; then
+		# Disabling ldconfig aux-cache file.
+		at_get_patch \
+			'https://raw.githubusercontent.com/powertechpreview/powertechpreview/2d147b2b9c38c0cb105eb3c5aee02d1b403ab607/GLIBC%20PowerPC%20Backport/2.36/glibc-disabling-aux-cache.patch' \
+			0d753c5c637ed48fba506813007183ac || return ${?}
+	fi
+
+	return 0
+}
+
+atsrc_apply_patches ()
+{
+	if [[ "$DISTRO_ID" == "redhat-9" ]]; then
+		patch -p1 \
+		     < glibc-disabling-aux-cache.patch \
+			|| return ${?}
+	fi
+}
