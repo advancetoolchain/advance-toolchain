@@ -45,7 +45,13 @@ atsrc_get_patches ()
 	# Backport the option to influence hwcaps used by PowerPC.
 	at_get_patch \
 		'https://sourceware.org/git/?p=glibc.git;a=patch;h=21841f0d562f0e944c4d267a28cc3ebd19c847e9' \
-		8c54a62656aa74be5cd84d66faf1d235 influence-cpu-hwcap-features.patch || return ${?}
+		c8e2c8d1563499ab6a362d0693e88919 influence-cpu-hwcap-features.patch || return ${?}
+	if [[ "$DISTRO_ID" == "redhat-9" ]]; then
+		# Disabling ldconfig aux-cache file.
+		at_get_patch \
+			'https://raw.githubusercontent.com/powertechpreview/powertechpreview/2d147b2b9c38c0cb105eb3c5aee02d1b403ab607/GLIBC%20PowerPC%20Backport/2.36/glibc-disabling-aux-cache.patch' \
+			0d753c5c637ed48fba506813007183ac || return ${?}
+	fi
 
 	return 0
 }
@@ -55,4 +61,9 @@ atsrc_apply_patches ()
 	patch -p1 \
 	     < influence-cpu-hwcap-features.patch \
 		|| return ${?}
+	if [[ "$DISTRO_ID" == "redhat-9" ]]; then
+		patch -p1 \
+		     < glibc-disabling-aux-cache.patch \
+			|| return ${?}
+	fi
 }
