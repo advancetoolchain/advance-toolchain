@@ -2,15 +2,80 @@
 <li>Power9 enablement.</li>
 <li>Power10-optimized instruction scheduling in GCC.</li>
 <li>Power9-optimized instruction scheduling in GCC.</li>
-<li>Requires at least Power9 for ppc64le on RHEL 9 and Ubuntu 22.04.</li>
-<li>Requires at least Power8 for ppc64le on SLES 15 and Debian 12.</li>
+<li>Requires at least Power9 for ppc64le on RHEL 9 and Ubuntu 22.04.
+<ul><li>GCC creates binaries using -mcpu=power9 -mtune=power10</li></ul></li>
+<li>Requires at least Power8 for ppc64le on SLES 15 and Debian 12.
+<ul><li>GCC creates binaries using -mcpu=power8 -mtune=power10</li></ul></li>
 <li>Power8 Transactional Memory enablement.</li>
 <li>Power8 Crypto Operations enablement.</li>
 <li>Power8, Power9, and Power10 optimized system libraries.</li>
 <li>_Float128 enablement as specified by ISO/IEC TS 18661-3, for Power9 and Power10.</li>
-<li>GCC creates binaries using -mcpu=power9 -mtune=power10 on RHEL 9 and Ubuntu 22.04.</li>
-<li>GCC creates binaries using -mcpu=power8 -mtune=power10 on SLES 15 and Debian 12.</li>
 </ul>
+
+<h3>New features in 17.0-2</h3>
+<ul>
+  <li>GCC provides:
+  <ul>
+    <li>Version 13.3.1, see the <a href="https://gcc.gnu.org/gcc-13/changes.html">release notes</a> for details.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110415">(Re)allocation on assignment to allocatable polymorphic variable from allocatable polymorphic function result</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=114662">new test case c_lto_pr113359-2 from r14-9841-g1e3312a25a7b34 fails</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=114827">Valgrind reports errors with class(*) assignment</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=115039">Statement function with inquiry refs rejected</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=115150">SHAPE of zero-sized array yields a negative value</a>.</li>
+  </ul></li>
+  <li>GNU C Library provides:
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=15722">Verify that all internal sockets opened with SOCK_CLOEXEC</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=17522">`fputws' errors out when writing wide characters to unbuffered stream</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29039">Corrupt DTV after reuse of a TLS module ID following dlclose with unused TLS</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30785">Always call destructors in reverse constructor order</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30789">sem_open will fail on multithreaded scenarios when semaphore file doesn't exist (O_CREAT)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30843">potential use-after-free in getcanonname (CVE-2023-4806)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30945">Core affinity setting incurs lock contentions between threads</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=31163">getaddrinfo returns EAI_NONAME in oom situation</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=31183">Wide stream buffer size reduced MB_LEN_MAX bytes after bug 17522 fix</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=31479">Missing #include &lt;sys/rseq.h&gt; in sched_getcpu.c may result in a loss of rseq acceleration</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=31677">nscd: netgroup cache: invalid memcpy under low memory/storage conditions (CVE-2024-33599)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=31678">nscd: Null pointer dereferences after failed netgroup cache insertion (CVE-2024-33600)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=31679">nscd: netgroup cache may terminate daemon on memory allocation failure (CVE-2024-33601)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=31680">nscd: netgroup cache assumes NSS callback uses in-buffer strings (CVE-2024-33602)</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=31719">--enable-hardcoded-path-in-tests doesn't work with -Wl,--enable-new-dtags</a>.</li>
+  </ul></li>
+  <li>Binutils provides:
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30699">objcopy: '--only-keep-debug for ELF relocatables' test fails</a>.</li>
+  </ul></li>
+  <li>Userspace RCU provides:
+  <ul>
+    <li>Fix for handle EINTR correctly in get_cpu_mask_from_sysfs.</li>
+    <li>ppc.h: use mftb on ppc.</li>
+  </ul></li>
+  <li>OpenSSL provides:
+  <ul>
+    <li>Version 3.1.5, see the <a href="https://www.openssl.org/news/cl31.txt">release notes</a> for details.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/904">openssl creates empty private key file, overwriting existing file, when no file should be created</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/22945">Private key loaded via ENGINE_load_private_key is not usable due to &quot;pkey-&gt;pmeth_engine&quot; becomes NULL</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/23171">SSL_add_dir_cert_subjects_to_stack(): Return values undocumented</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/23363">buf2hexstr_sep ebcdic2ascii translation off by 1</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/23532">KDF_CTX_new API has incorrect signature (const should not be there)</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/23580">micalg mismatch in EVP_MD_CTX_settable_params</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/23657">&quot;Error finalizing cipher loop&quot; when running openssl speed -evp -decrypt</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/24020">Cannot lazy load providers specified in configuration file correctly</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/24098">There is a memory leak defect on line 413 of the file /openssl/crypto/x509/v3_addr.c.</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/24110">There is a memory leak defect at line 1234 in the file list.c in /openssl/apps.</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/24130">EVP_PKEY_CTX_add1_hkdf_info no longer accept empty argument</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/24300">`ERR_reason_error_string()` returns `NULL` for `no_application_protocol` alert</a>.</li>
+  </ul></li>
+  <li>Python provides:
+  <ul>
+    <li>Version 3.11.9, see the <a href="https://www.python.org/downloads/release/python-3119/">release notes</a> for details.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/117076">Using pathlib to compare prefixes in test_venv</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/118177">Fix &quot;private&quot; (non-global) IP address ranges (GH-113179) (GH-113186)</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/119099">Fix AttributeError in the email module</a>.</li>
+  </ul></li>
+</ul>
+<a name="previous"></a>
+<h2>Previous releases</h2>
 
 <h3>New features in 17.0-1</h3>
 <ul>
@@ -63,9 +128,6 @@
     <li>Fix for <a href="https://github.com/python/cpython/issues/110465">Fix subprocess test_pipesize_default()</a>.</li>
   </ul></li>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 17.0-0</h3>
 <ul>
