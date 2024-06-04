@@ -1,1 +1,0 @@
-../../17.0/distros/ubuntu-22.mk

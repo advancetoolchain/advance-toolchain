@@ -1,1 +1,1 @@
-../../../17.0/packages/boost/boost.mk
+../../../18.0/packages/boost/boost.mk

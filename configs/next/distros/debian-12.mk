@@ -1,1 +1,1 @@
-../../17.0/distros/debian-12.mk
+../../18.0/distros/debian-12.mk

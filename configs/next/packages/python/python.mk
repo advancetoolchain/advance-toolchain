@@ -1,1 +1,1 @@
-../../../17.0/packages/python/python.mk
+../../../18.0/packages/python/python.mk

@@ -1,1 +1,1 @@
-../../17.0/specs/main.spec
+../../18.0/specs/main.spec

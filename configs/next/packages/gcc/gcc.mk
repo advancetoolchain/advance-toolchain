@@ -1,1 +1,1 @@
-../../../17.0/packages/gcc/gcc.mk
+../../../18.0/packages/gcc/gcc.mk

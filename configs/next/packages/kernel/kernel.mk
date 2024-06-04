@@ -1,1 +1,1 @@
-../../../17.0/packages/kernel/kernel.mk
+../../../18.0/packages/kernel/kernel.mk

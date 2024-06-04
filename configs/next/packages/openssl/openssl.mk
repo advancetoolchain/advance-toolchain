@@ -1,1 +1,1 @@
-../../../17.0/packages/openssl/openssl.mk
+../../../18.0/packages/openssl/openssl.mk
