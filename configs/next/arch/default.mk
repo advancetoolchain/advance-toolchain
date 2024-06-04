@@ -1,1 +1,1 @@
-../../17.0/arch/default.mk
+../../18.0/arch/default.mk

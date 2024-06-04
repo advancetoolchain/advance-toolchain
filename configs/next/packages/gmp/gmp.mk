@@ -1,1 +1,1 @@
-../../../17.0/packages/gmp/gmp.mk
+../../../18.0/packages/gmp/gmp.mk
