@@ -23,11 +23,11 @@ ATSRC_PACKAGE_NAME="Userspace RCU"
 ATSRC_PACKAGE_VER=master
 ATSRC_PACKAGE_REV=9922f33e2986
 ATSRC_PACKAGE_LICENSE="Lesser GPL 2.1"
-ATSRC_PACKAGE_DOCLINK="http://lttng.org/urcu"
+ATSRC_PACKAGE_DOCLINK="https://lttng.org/urcu"
 ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
 ATSRC_PACKAGE_PRE="test -d userspace-rcu-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
-ATSRC_PACKAGE_CO=([0]="git clone git://git.liburcu.org/userspace-rcu.git liburcu")
+ATSRC_PACKAGE_CO=([0]="git clone https://git.liburcu.org/userspace-rcu.git liburcu")
 ATSRC_PACKAGE_GIT="git checkout -b userspace-rcu-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV} ${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_POST="mv liburcu userspace-rcu-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_SRC="${AT_BASE}/sources/userspace-rcu-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"

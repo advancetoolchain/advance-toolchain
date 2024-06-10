@@ -24,11 +24,11 @@ ATSRC_PACKAGE_VER=0.13.3
 ATSRC_PACKAGE_REV=99226445c6dd
 ATSRC_PACKAGE_BRANCH=stable-0.13
 ATSRC_PACKAGE_LICENSE="Lesser GPL 2.1"
-ATSRC_PACKAGE_DOCLINK="http://lttng.org/urcu"
+ATSRC_PACKAGE_DOCLINK="https://lttng.org/urcu"
 ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
 ATSRC_PACKAGE_PRE="test -d userspace-rcu-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
-ATSRC_PACKAGE_CO=([0]="git clone git://git.liburcu.org/userspace-rcu.git liburcu")
+ATSRC_PACKAGE_CO=([0]="git clone https://git.liburcu.org/userspace-rcu.git liburcu")
 ATSRC_PACKAGE_GIT="git checkout -b userspace-rcu-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV} ${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_POST="mv liburcu userspace-rcu-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_SRC="${AT_BASE}/sources/userspace-rcu-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
@@ -36,4 +36,4 @@ ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/userspace-rcu
 ATSRC_PACKAGE_MAKE_CHECK=""
 ATSRC_PACKAGE_DISTRIB=yes
 ATSRC_PACKAGE_BUNDLE=mcore-libs
-ATSRC_PACKAGE_UPSTREAM='wget -qO - "http://git.liburcu.org/?p=userspace-rcu.git;a=blob_plain;f=configure.ac;hb=__REVISION__" | grep "urcu_version_[mp][a-z]*]" | sort | sed "s/^.* \[\([0-9]*\)].*$/\1/" | tr "\n" "." | cut -d. -f1-3'
+ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://git.liburcu.org/?p=userspace-rcu.git;a=blob_plain;f=configure.ac;hb=__REVISION__" | grep "urcu_version_[mp][a-z]*]" | sort | sed "s/^.* \[\([0-9]*\)].*$/\1/" | tr "\n" "." | cut -d. -f1-3'
