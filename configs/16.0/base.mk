@@ -48,8 +48,8 @@
 #
 AT_NAME := at
 AT_MAJOR_VERSION := 16.0
-AT_REVISION_NUMBER := 4
-AT_INTERNAL := none
+AT_REVISION_NUMBER := 5
+AT_INTERNAL := rc1
 AT_PREVIOUS_VERSION := 15.0
 
 # Minimum kernel version distributed on supported distros by this AT version,
