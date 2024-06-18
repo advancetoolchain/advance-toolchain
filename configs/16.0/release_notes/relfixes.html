@@ -2,16 +2,70 @@
 <li>Power9 enablement.</li>
 <li>Power10-optimized instruction scheduling in GCC.</li>
 <li>Power9-optimized instruction scheduling in GCC.</li>
-<li>Requires at least Power9 for ppc64le on RHEL 9 and Ubuntu 22.04.</li>
-<li>Requires at least Power8 for ppc64le on SLES 15 and Debian 11.</li>
+<li>Requires at least Power9 for ppc64le on RHEL 9 and Ubuntu 22.04.
+<ul><li>GCC creates binaries using -mcpu=power9 -mtune=power10</li></ul></li>
+<li>Requires at least Power8 for ppc64le on SLES 15 and Debian 11.
+<ul><li>GCC creates binaries using -mcpu=power8 -mtune=power10</li></ul></li>
 <li>Power8 Transactional Memory enablement.</li>
 <li>Power8 Crypto Operations enablement.</li>
 <li>Power8, Power9, and Power10 optimized system libraries.</li>
 <li>_Float128 enablement as specified by ISO/IEC TS 18661-3, for Power9 and Power10.</li>
 <li>Power10 Matrix-Math Assist enablement.</i>
-<li>GCC creates binaries using -mcpu=power9 -mtune=power10 on RHEL 9 and Ubuntu 22.04.</li>
-<li>GCC creates binaries using -mcpu=power8 -mtune=power10 on SLES 15 and Debian 11.</li>
 </ul>
+
+<h3>New features in 16.0-5</h3>
+<ul>
+  <li>GCC provides:
+  <ul>
+    <li>Version 12.4.1, see the <a href=" https://gcc.gnu.org/gcc-12/changes.html">release notes</a> for details.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101865">_ARCH_PWR8 is not defined when using -mcpu=power8</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106069">wrong code with -O -fno-tree-forwprop -maltivec on ppc64le</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=114846">powerpc: epilogue in _Unwind_RaiseException corrupts return value due to __builtin_eh_return</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=115290">tree check fail in c_tree_printer, at c/c-objc-common.cc:330</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=115355">vectorization exposes wrong code on P9 LE starting from r12-4496</a>.</li>
+    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=115440">unrecognized command-line option '--c++17'; did you mean '--stdc++17'?</a>.</li>
+  </ul></li>
+  <li>GNU C Library provides:
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29039">Corrupt DTV after reuse of a TLS module ID following dlclose with unused TLS</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30843">(CVE-2023-4806) potential use-after-free in getcanonname</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30945">Core affinity setting incurs lock contentions between threads</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=31479">Missing #include &lt;sys/rseq.h&gt; in sched_getcpu.c may result in a loss of rseq acceleration</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=31677">(CVE-2024-33599) nscd: netgroup cache: invalid memcpy under low memory/storage conditions</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=31678">(CVE-2024-33600) nscd: Null pointer dereferences after failed netgroup cache insertion</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=31679">(CVE-2024-33601) nscd: netgroup cache may terminate daemon on memory allocation failure</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=31680">(CVE-2024-33602) nscd: netgroup cache assumes NSS callback uses in-buffer strings</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=31719">--enable-hardcoded-path-in-tests doesn't work with -Wl,--enable-new-dtags</a>.</li>
+  </ul></li>
+  <li>Userspace RCU provides:
+  <ul>
+    <li>Fix for handle EINTR correctly in get_cpu_mask_from_sysfs</li>
+    <li>ppc.h: use mftb on ppc</li>
+  </ul></li>
+  <li>OpenSSL provides:
+  <ul>
+    <li>Version 3.0.14, see the <a href="https://www.openssl.org/news/cl30.txt">release notes</a> for details.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/18121">maxfraglen and psk and tls1_3 does not work together</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/23915">Segfault in readbuffer_gets()</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/24106">There is a memory leak defect on line 28 of the file /openssl/test/prov_config_test.c.</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/24453">There is a memory leak vulnerability at line 250 in the /openssl/crypto/pkcs12/p12_crt.c file.</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/24575">In OpenSSL 3, ASN1_item_verify*() can return 2 on error.</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/24611">EVP_PKEY_CTX_add1_hkdf_info() no longer works with providers that do not expose gettable parameters in ossl_kdf_hkdf_keyexch_functions array</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/24678">OSSL_STORE_LOADER_free()  has conflicting documentation</a>.</li>
+    <li>Fix for <a href="https://github.com/openssl/openssl/issues/24729">memory leak in OPENSSL_config</a>.</li>
+  </ul></li>
+  <li>Python provides:
+  <ul>
+    <li>Version 3.10.14, see the <a href="https://www.python.org/downloads/release/python-31014/">release notes</a> for details.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/112771">test_zlib: Fix comparison of ZLIB_RUNTIME_VERSION with non-int suffix</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/117079">Fix overlapped memory corruption crash (GH-116774)</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/118004">Clarify implicit launching of shells by subprocess (GH-117996)</a>.</li>
+    <li>Fix for <a href="https://github.com/python/cpython/issues/118229">Fix &quot;private&quot; (non-global) IP address ranges (GH-113179) (GH-113186) (GH-118177)</a>.</li>
+  </ul></li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
 
 <h3>New features in 16.0-4</h3>
 <ul>
@@ -52,9 +106,6 @@
     <li>Fix for <a href="https://github.com/python/cpython/issues/111779">Fix a bug where iso2022_jp_3 and iso2022_jp_2004 codecs read out of bounds (gh-111695)</a>.</li>
   </ul></li>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 16.0-3</h3>
 <ul>
