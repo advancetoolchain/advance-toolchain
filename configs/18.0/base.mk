@@ -49,7 +49,7 @@
 AT_NAME := at
 AT_MAJOR_VERSION := 18.0
 AT_REVISION_NUMBER := 0
-AT_INTERNAL := alpha
+AT_INTERNAL := alpha1
 AT_PREVIOUS_VERSION := 17.0
 
 # Minimum kernel version distributed on supported distros by this AT version,
