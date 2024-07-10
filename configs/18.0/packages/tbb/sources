@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2023 IBM Corporation
+# Copyright 2024 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@
 #
 
 ATSRC_PACKAGE_NAME="Thread Building Blocks"
-ATSRC_PACKAGE_VER=master
-ATSRC_PACKAGE_REV=9cb1b454fa98
+ATSRC_PACKAGE_VER=2021.13.0
+ATSRC_PACKAGE_REV=1c4c93fc5398
 ATSRC_PACKAGE_BRANCH=onetbb_2021
 ATSRC_PACKAGE_LICENSE="GPL 2.0"
 ATSRC_PACKAGE_DOCLINK="https://www.threadingbuildingblocks.org/"
@@ -42,8 +42,6 @@ ATSRC_PACKAGE_TARS=""
 ATSRC_PACKAGE_MAKE_CHECK=none
 ATSRC_PACKAGE_DISTRIB=yes
 ATSRC_PACKAGE_BUNDLE=mcore-libs
-# Not needed because file follows a branch
-# ATSRC_PACKAGE_UPSTREAM=
 
 # This is a package function to verify the make_check log.
 # In some cases 'make check' will return 0 even though the log shows that
