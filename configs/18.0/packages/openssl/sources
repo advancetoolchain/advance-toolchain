@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2023 IBM Corporation
+# Copyright 2024 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@
 #
 
 ATSRC_PACKAGE_NAME="Open Secure Sockets Layer"
-ATSRC_PACKAGE_VER=3.1.6
-ATSRC_PACKAGE_REV=ea592691d89f
-ATSRC_PACKAGE_BRANCH=openssl-3.1
+ATSRC_PACKAGE_VER=3.2.2
+ATSRC_PACKAGE_REV=607e186d070d
+ATSRC_PACKAGE_BRANCH=openssl-3.2
 ATSRC_PACKAGE_LICENSE="Apache 2.0"
 ATSRC_PACKAGE_DOCLINK="http://www.openssl.org/docs/"
 ATSRC_PACKAGE_RELFIXES=
