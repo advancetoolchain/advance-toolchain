@@ -923,30 +923,6 @@ collect-artifacts:
 	  unset pkg; \
 	}
 
-
-# This rule updates the revision of all "config/source" files of AT to the
-# latest commit. Alternatively, you may update a specific package, passing
-# the name as a parameter. See update_revision.sh for more information.
-#
-# usage:
-#      make DESTDIR=~ AT_CONFIGSET=next update-revision <package_name>
-update-revision:
-	@+{ packages=$(filter-out $@,$(MAKECMDGOALS)); \
-	    if [[ -z "$${packages}" ]]; then \
-	        packages="$(filter-out kernel,$(FETCH_PACKAGE_LIST))"; \
-	    fi; \
-	    for pkg in $${packages}; do \
-	        . $(UTILITIES_ROOT)/update_revision.sh $(CONFIG)/packages/$${pkg}/sources; \
-	    done; \
-	}
-
-# Defining an empty rule whenever update-revision is defined. This allows us to
-# pass parameters to the update-revision rule.
-ifeq (update-revision,$(firstword $(MAKECMDGOALS)))
-%:
-	@:
-endif
-
 clone:
 	@+{ if [[ -n "$(FROM)" && -n "$(TO)" ]]; then \
 	        echo "$$($(TIME)) Cloning config from $(FROM) to $(TO)..."; \
