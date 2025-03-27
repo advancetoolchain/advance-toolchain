@@ -57,6 +57,7 @@ EOF
 		--enable-shared \
 		--enable-loadable-sqlite-extensions \
 		--with-openssl="${at_dest}" \
+		--with-openssl-rpath="${at_dest}/lib${compiler##32}" \
 		--with-ssl-default-suites=openssl \
 		--with-lto ${cross_build}
 	res=$?

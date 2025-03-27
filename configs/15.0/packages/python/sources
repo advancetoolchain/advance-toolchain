@@ -20,8 +20,8 @@
 #
 
 ATSRC_PACKAGE_NAME="Python"
-ATSRC_PACKAGE_VER=3.9.19
-ATSRC_PACKAGE_REV=9e9c71d09e68
+ATSRC_PACKAGE_VER=3.9.22
+ATSRC_PACKAGE_REV=558e27abf1f
 ATSRC_PACKAGE_BRANCH=3.9
 ATSRC_PACKAGE_LICENSE="Python Software Foundation License 2"
 ATSRC_PACKAGE_DOCLINK="https://docs.python.org/${ATSRC_PACKAGE_VER%\.*}/"
@@ -55,6 +55,11 @@ atsrc_get_patches ()
 		https://raw.githubusercontent.com/powertechpreview/powertechpreview/0c3bcb23ce08b6a9d9e7080545e948454b98adb1/Python%20Fixes/python-3.7-disable-zlib-version-check.patch \
 		cce2eed57b59cbd81d8c4164e4096054 || return ${?}
 
+	# Backport configure option from python 3.10.
+	at_get_patch \
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/c0df1e80b142b50585563a16031a0b856b266208/Python%20Fixes/python-3.9-add-with-openssl-rpath-configure-option.patch \
+		7acdabc6f6b318a708e94ab42a9ae830 || return ${?}
+
 	return 0
 }
 
@@ -62,6 +67,7 @@ atsrc_apply_patches ()
 {
 	patch -p1 < python-3.9-timeout-test_subprocess.patch || return ${?}
 	patch -p1 < python-3.7-disable-zlib-version-check.patch || return ${?}
+	patch -p1 < python-3.9-add-with-openssl-rpath-configure-option.patch || return ${?}
 }
 
 atsrc_package_verify_make_log ()
