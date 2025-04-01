@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2022 IBM Corporation
+# Copyright 2025 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 # ==================================
 #
 ATSRC_PACKAGE_NAME="Boost"
-ATSRC_PACKAGE_VER=1.82.0
+ATSRC_PACKAGE_VER=1.86.0
 ATSRC_PACKAGE_VERID="${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
 ATSRC_PACKAGE_DOCLINK="http://www.boost.org/doc/libs/${ATSRC_PACKAGE_VER//./_}/"
 ATSRC_PACKAGE_RELFIXES=
