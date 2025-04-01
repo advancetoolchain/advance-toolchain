@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2023 IBM Corporation
+# Copyright 2025 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,9 +20,8 @@
 #
 
 ATSRC_PACKAGE_NAME="GNU C Library"
-ATSRC_PACKAGE_VER=2.40
-ATSRC_PACKAGE_REV=3d1aed874918
-ATSRC_PACKAGE_BRANCH=release/2.40/master
+ATSRC_PACKAGE_VER=master
+ATSRC_PACKAGE_REV=7f163bd2106f
 ATSRC_PACKAGE_LICENSE="LGPL 2.1"
 ATSRC_PACKAGE_DOCLINK="http://www.gnu.org/software/libc/manual/html_node/index.html"
 ATSRC_PACKAGE_RELFIXES=
@@ -37,7 +36,8 @@ ATSRC_PACKAGE_MAKE_CHECK=
 ATSRC_PACKAGE_PORTS=
 ATSRC_PACKAGE_DISTRIB=yes
 ATSRC_PACKAGE_BUNDLE=main_toolchain
-ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://sourceware.org/git/?p=glibc.git;a=blob_plain;f=version.h;hb=__REVISION__" | grep -w "VERSION" | sed "s/^.*\"\([0-9\.][0-9\.]*\)\".*$/\1/"'
+# Not needed because file follows master branch
+# ATSRC_PACKAGE_UPSTREAM=
 
 
 atsrc_get_patches ()
