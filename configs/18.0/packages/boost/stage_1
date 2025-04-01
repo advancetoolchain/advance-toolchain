@@ -85,6 +85,7 @@ atcfg_pre_hacks ()
 		  address-model=${AT_BIT_SIZE} \
 		  cflags=-O3 \
 		  cxxflags=-O3 \
+		  cxxflags=-std=c++11 \
 		  link=static,shared \
 		  ${linker_flags}"
 }
