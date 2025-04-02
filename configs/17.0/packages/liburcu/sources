@@ -28,7 +28,7 @@ ATSRC_PACKAGE_DOCLINK="https://lttng.org/urcu"
 ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
 ATSRC_PACKAGE_PRE="test -d userspace-rcu-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
-ATSRC_PACKAGE_CO=([0]="git clone https://git.liburcu.org/userspace-rcu.git liburcu")
+ATSRC_PACKAGE_CO=([0]="git clone https://git.lttng.org/userspace-rcu.git liburcu")
 ATSRC_PACKAGE_GIT="git checkout -b userspace-rcu-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV} ${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_POST="mv liburcu userspace-rcu-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_SRC="${AT_BASE}/sources/userspace-rcu-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
