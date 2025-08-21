@@ -12,6 +12,69 @@
 <li>_Float128 enablement as specified by ISO/IEC TS 18661-3, for Power9 and Power10.</li>
 </ul>
 
+<h3>New features in 18.0-0</h3>
+<ul>
+  <li>GCC provides:
+  <ul>
+    <li>Version 14.2, see the <a href="https://gcc.gnu.org/gcc-14/changes.html">release notes</a> for details.</li>
+  </ul></li>
+  <li>GNU C Library provides:
+  <ul>
+    <li>Version 2.40, see the <a href="https://lists.gnu.org/archive/html/info-gnu/2024-07/msg00013.html">release notes</a> for details.</li>
+  </ul></li>
+  <li>Binutils provides:
+  <ul>
+    <li>Version 2.43, see the <a href="https://lists.gnu.org/archive/html/info-gnu/2024-08/msg00001.html">release notes</a> for details.</li>
+  </ul></li>
+  <li>GNU Debugger provides:
+  <ul>
+    <li>Version 14.2, see the <a href="https://lists.gnu.org/archive/html/info-gnu/2024-03/msg00000.html">release notes</a> for details.</li>
+  </ul></li>
+  <li>OpenSSL provides:
+  <ul>
+    <li>Version 3.3.4, see the <a href="https://openssl-library.org/news/openssl-3.3-notes/">release notes</a> for details.</li>
+  </ul></li>
+  <li>Expat provides:
+  <ul>
+    <li>Version 2.6.2, see the <a href="https://github.com/libexpat/libexpat/blob/R_2_6_2/expat/Changes">release notes</a> for details.</li>
+  </ul></li>
+  <li>Python provides:
+  <ul>
+    <li>Version 3.12.11, see the <a href="https://www.python.org/downloads/release/python-31211/">release notes</a> for details.</li>
+  </ul></li>
+  <li>Boost provides:
+  <ul>
+    <li>Version 1.86.0, see the <a href="https://www.boost.org/users/history/version_1_86_0.html">release notes</a> for details.</li>
+  </ul></li>
+  <li>GMP provides:
+  <ul>
+    <li>Version 6.3, see the <a href="https://gmplib.org/list-archives/gmp-announce/2023-July/000050.html">release notes</a> for details.</li>
+  </ul></li>
+  <li>MPFR provides:
+  <ul>
+    <li>Version 4.2.1, see the <a href="https://www.mpfr.org/mpfr-current/#changes">release notes</a> for details.</li>
+  </ul></li>
+  <li>TBB provides:
+  <ul>
+    <li>Version 2021.13.0, see the <a href="https://github.com/oneapi-src/oneTBB/blob/v2021.13.0/RELEASE_NOTES.md">release notes</a> for details.</li>
+  </ul></li>
+  <li>TCmalloc provides:
+  <ul>
+    <li>Version 2.15, see the <a href="https://github.com/gperftools/gperftools/releases/tag/gperftools-2.15">release notes</a> for details.</li>
+  </ul></li>
+  <li>Valgrind provides:
+  <ul>
+    <li>Version 3.23.0, see the <a href="http://valgrind.org/docs/manual/dist.news.html">release notes</a> for details.</li>
+  </ul></li>
+  <li>zlib provides:
+  <ul>
+    <li>Version 1.3.1, see the <a href="https://github.com/madler/zlib/blob/v1.3.1/ChangeLog">release notes</a> for details.</li>
+  </ul></li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 17.0-2</h3>
 <ul>
   <li>GCC provides:
@@ -72,255 +135,5 @@
     <li>Fix for <a href="https://github.com/python/cpython/issues/117076">Using pathlib to compare prefixes in test_venv</a>.</li>
     <li>Fix for <a href="https://github.com/python/cpython/issues/118177">Fix &quot;private&quot; (non-global) IP address ranges (GH-113179) (GH-113186)</a>.</li>
     <li>Fix for <a href="https://github.com/python/cpython/issues/119099">Fix AttributeError in the email module</a>.</li>
-  </ul></li>
-</ul>
-<a name="previous"></a>
-<h2>Previous releases</h2>
-
-<h3>New features in 17.0-1</h3>
-<ul>
-  <li>GCC provides:
-  <ul>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102109">Associate to construct compound object results in incorrect type inferred</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102532">ICE in gfc_get_corank, at fortran/expr.c:5769</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109948">ICE(segfault) in gfc_expression_rank() from gfc_op_rank_conformable()</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110488">deferred constant wrongly rejected</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110741">vec_ternarylogic intrinsic generates incorrect code on POWER10 target when compiled with GCC</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=111080">restrict qualifier causes extra debug info to happen</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=111674">Failure to finalize an allocatable subobject of a non-finalizable type</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=68155">ICE on initializing character array in type (len_lhs &lt;&gt; len_rhs)</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92586">ICE in gimplify_expr, at gimplify.c:13479 with nested allocatable derived types</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96762">ICE in extract_insn, at recog.c:2294 (error: unrecognizable insn)</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99326">ICE in gfc_build_dummy_array_decl, at fortran/trans-decl.c:1299</a>.</li>
-  </ul></li>
-  <li>GNU C Library provides:
-  <ul>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=19519">iconv(1) with -c option hangs on illegal multi-byte sequences (CVE-2016-10228)</a>.</li>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=22787">_dl_check_caller returns false when libc is linked through an absolute DT_NEEDED path</a>.</li>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30694">The iconv program no longer tells the user which given encoding name was wrong</a>.</li>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30723">Poor posix_memalign performance with long free lists</a>.</li>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30804">F_GETLK, F_SETLK, and F_SETLKW value change for powerpc64 with -D_FILE_OFFSET_BITS=64</a>.</li>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30842">Stack read overflow in getaddrinfo in no-aaaa mode (CVE-2023-4527)</a>.</li>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30843">potential use-after-free in getcanonname (CVE-2023-4806)</a>.</li>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30884">Memory leak in getaddrinfo after fix for bug 30843 (CVE-2023-5156)</a>.</li>
-  </ul></li>
-  <li>Binutils provides:
-  <ul>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30794">PowerPC port of gold fails with:  internal error in add_output_section_to_load, at gold/output.cc:4097</a>.</li>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30856">Regression: operand size mismatch for `push'</a>.</li>
-  </ul></li>
-  <li>OpenSSL provides:
-  <ul>
-    <li>Version 3.1.3, see the <a href="https://www.openssl.org/news/cl31.txt">release notes</a> for details.</li>
-    <li>Fix for <a href="https://github.com/openssl/openssl/issues/21909">Unable to set entropy seed source for FIPS provider</a>.</li>
-  </ul></li>
-  <li>Python provides:
-  <ul>
-    <li>Version 3.11.6, see the <a href="https://www.python.org/downloads/release/python-3116/">release notes</a> for details.</li>
-    <li>Fix for <a href="https://github.com/python/cpython/issues/109360">Fix test_gdb tests on ppc64le with clang</a>.</li>
-    <li>Fix for <a href="https://github.com/python/cpython/issues/110284">Add tests for pickling and copying PyStructSequence objects (GH-110272)</a>.</li>
-    <li>Fix for <a href="https://github.com/python/cpython/issues/110306">Fix test instability in test_concurrent_futures</a>.</li>
-    <li>Fix for <a href="https://github.com/python/cpython/issues/110331">Fix gdb CFunctionFullTests on ppc64le clang build</a>.</li>
-    <li>Fix for <a href="https://github.com/python/cpython/issues/110366">Fix error overwrite in `termios.tcsetattr`</a>.</li>
-    <li>Fix for <a href="https://github.com/python/cpython/issues/110413">Increase support.LOOPBACK_TIMEOUT to 10 seconds</a>.</li>
-    <li>Fix for <a href="https://github.com/python/cpython/issues/110428">Fix multiprocessing test_waitfor_timeout()</a>.</li>
-    <li>Fix for <a href="https://github.com/python/cpython/issues/110433">Fix race condition in &quot;make regen-all&quot;</a>.</li>
-    <li>Fix for <a href="https://github.com/python/cpython/issues/110465">Fix subprocess test_pipesize_default()</a>.</li>
-  </ul></li>
-</ul>
-
-<h3>New features in 17.0-0</h3>
-<ul>
-  <li>GCC provides:
-  <ul>
-    <li>Version 13.2, see the <a href="https://gcc.gnu.org/gcc-13/changes.html">release notes</a> for details.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108961">Segfault when associating to pointer from C_F_POINTER</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110825">TYPE(*) dummy argument to generate an unused hidden argument</a>.</li>
-  </ul></li>
-  <li>GNU C Library provides:
-  <ul>
-    <li>Version 2.38, see the <a href="https://lists.gnu.org/archive/html/info-gnu/2023-07/msg00010.html">release notes</a> for details.</li>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30709">nscd fails to build with cleanup handler if built with -fexceptions</a>.</li>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=30721">2.38 build fails for  --disable-multi-arch --enable-fortify-source , undefined reference to `__GI___memset_chk' and others</a>.</li>
-    <li>Add an option to influence hwcaps used by PowerPC.</li>
-  </ul></li>
-  <li>Binutils provides:
-  <ul>
-    <li>Version 2.41, see the <a href="https://lists.gnu.org/archive/html/info-gnu/2023-07/msg00010.html">release notes</a> for details.</li>
-  </ul></li>
-  <li>GNU Debugger provides:
-  <ul>
-    <li>Version 13.2, see the <a href="https://lists.gnu.org/archive/html/info-gnu/2023-05/msg00011.html">release notes</a> for details.</li>
-  </ul></li>
-  <li>OpenSSL provides:
-  <ul>
-    <li>Version 3.1.2, see the <a href="https://www.openssl.org/news/cl31.txt">release notes</a> for details.</li>
-    <li>Fix for <a href="https://github.com/openssl/openssl/issues/21493">OpenSSL 3: x25519 a decode from and then encode to a pem file corrupts the key if fips+base provider is used</a>.</li>
-    <li>Fix for <a href="https://github.com/openssl/openssl/issues/21588">PEM_read_bio_Parameters(BIO *bp, EVP_PKEY **x) : something has changed since v3.0 ! </a>.</li>
-  </ul></li>
-  <li>Expat provides:
-  <ul>
-    <li>Version 2.5.0, see the <a href="https://github.com/libexpat/libexpat/blob/R_2_5_0/expat/Changes">release notes</a> for details.</li>
-  </ul></li>
-  <li>Python provides:
-  <ul>
-    <li>Version 3.11.4, see the <a href="https://www.python.org/downloads/release/python-3114/">release notes</a> for details.</li>
-  </ul></li>
-  <li>Boost provides:
-  <ul>
-    <li>Version 1.82.0, see the <a href="https://www.boost.org/users/history/version_1_82_0.html">release notes</a> for details.</li>
-  </ul></li>
-  <li>GMP provides:
-  <ul>
-    <li>Version 6.2.1, see the <a href="https://gmplib.org/list-archives/gmp-announce/2020-November/000049.html">release notes</a> for details.</li>
-  </ul></li>
-  <li>MPC provides:
-  <ul>
-    <li>Version 1.3.1, see the <a href="https://gitlab.inria.fr/mpc/mpc/-/blob/master/NEWS">release notes</a> for details.</li>
-  </ul></li>
-  <li>MPFR provides:
-  <ul>
-    <li>Version 4.2.0, see the <a href="https://www.mpfr.org/mpfr-current/#changes">release notes</a> for details.</li>
-  </ul></li>
-  <li>Power Vector Library provides:
-  <ul>
-    <li>Version 1.0.4.5, see the <a href="https://github.com/open-power-sdk/pveclib/releases/tag/v1.0.4.5">release notes</a> for details.</li>
-  </ul></li>
-  <li>TBB provides:
-  <ul>
-    <li>Version 2021.10.0, see the <a href="https://github.com/oneapi-src/oneTBB/blob/v2021.10.0/RELEASE_NOTES.md">release notes</a> for details.</li>
-  </ul></li>
-  <li>TCmalloc provides:
-  <ul>
-    <li>Version 2.10, see the <a href="https://github.com/gperftools/gperftools/releases/tag/gperftools-2.10">release notes</a> for details.</li>
-  </ul></li>
-  <li>Valgrind provides:
-  <ul>
-    <li>Version 3.21.0, see the <a href="http://valgrind.org/docs/manual/dist.news.html">release notes</a> for details.</li>
-  </ul></li>
-  <li>zlib provides:
-  <ul>
-    <li>Version 1.3, see the <a href="https://github.com/madler/zlib/blob/v1.3/ChangeLog">release notes</a> for details.</li>
-  </ul></li>
-</ul>
-
-<h3>New features in 16.0-2</h3>
-<ul>
-  <li>GCC provides:
-  <ul>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102331">ICE in attr_decl1, at fortran/decl.c:8691</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103259">ICE in resolve_common_vars, at fortran/resolve.c:956 since r11-3866-g4d2a56a0f7135469</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103506">ICE in gfc_free_namespace, at fortran/symbol.c:4039 since r10-2798-ge68a35ae4a65d2b3</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=104332">ICE in resolve_symbol, at fortran/resolve.cc:15815</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=104554">ICE in check_assumed_size_reference, at fortran/resolve.cc:1650</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105659">error: #error You must define PREFERRED_DEBUGGING_TYPE if DWARF is not supported</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105784">-Wanalyzer-use-of-uninitialized-value false positive on partly initialized array</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106209">ICE in add_init_expr_to_sym, at fortran/decl.cc:2132</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106325">-Wanalyzer-null-dereference false positive due to analyzer not making assumptions for  `__attribute__((nonnull))`</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106573">Missing -Wanalyzer-use-of-uninitialized-value on calls handled by state machines</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106624">LTO plugin fails to build in parallel builds: xgcc: fatal error: cannot execute '/build/build/./prev-gcc/collect2': execv: Bad address since r13-2011-g53e3b2bf16a486</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106731">ICE on automatic array of derived type with DTIO</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106945">ICE: 'verify_gimple' failed</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107127">Long compile times on code with C complex since r11-3299-gcba079f354a55363</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107345">-Wanalyzer-null-dereference false positive with  giving weird path infomation</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107465">Bogus warning: promoted bitwise complement of an unsigned value is always nonzero</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107576">ICE in gfc_conv_procedure_call, at fortran/trans-expr.cc:6193</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107582">-Wanalyzer-use-of-uninitialized-value false positive with while loop in pthread_cleanup_push</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107592">ICE: gdc segfault on label continue</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107872">ICE on recursive DT with DTIO since r7-4096-gbf9f15ee55f5b291</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107925">ICE in update_specialized_profile at gcc/ipa-cp.cc:5082 for 531.deepsjeng_r benchmark</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107944">ICE in cgraph_node::get_untransformed_body since r13-48-g27ee75dbe81bb7</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107948">GCC Static Analyzer doesn't realize `0 - width &lt;= 0` is always true when `width &gt; 0` and `width is int` type，</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108025">Duplicate CONTIGUOUS attribute should be diagnosed</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108056">backward compatibility issue between 11 and 12</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108060">UBsan missed an out-of-bound bug at -O0 since r7-1900-g8a1b7b7fd75a3847</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108079">-Wunused-variable gives misleading duplicate warning for unused static local variable</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108131">Incorrect bound calculation when bound intrinsic used in size expression</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108349">LTO mismatch for __builtin_realloc between glibc and gfortran frontend</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108396">PPCLE: vec_vsubcuq missing since r12-5752-gd08236359eb229</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108420">ICE in check_charlen_present, at fortran/iresolve.cc:98 since r13-4394-g3832c6f7e672e76b</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108421">ICE in get_expr_storage_size, at fortran/interface.cc:2862</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108434">ICE in class_allocatable, at fortran/expr.cc:5000</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108450">ICE in sort_actual, at fortran/intrinsic.cc:4380 since r12-5793-g689407ef916503b2</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108451">ICE in check_complete_insertion, at hash-table.h:578</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108453">ICE in gfc_trans_use_stmts, at fortran/trans-decl.cc:5361 since r6-3704-g2b3f52a2d0fb22ba</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108501">ICE in get_expr_storage_size, at fortran/interface.cc:2941</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108502">ICE in gfc_check_dependency, at fortran/dependency.cc:1295</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108527">ICE in compare_bound_int(): Bad expression</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108529">ICE in transformational_result, at fortran/simplify.cc:478</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108560">builtin_va_arg_pack_len is documented to return size_t, but actually returns int</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108704">Many -Wanalyzer-use-of-uninitialized-value false positives seen in qemu's softfloat.c</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108716">Incorrect DW_AT_decl_{line,column} in DW_TAG_imported_decl</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108733">-Wanalyzer-use-of-uninitialized-value false positives seen with __attribute__((cleanup))</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108834">LTO: ltrans temporary file is used as module name in ASAN</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108877">Explicit immutable struct import internal compiler error</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108880">slow compilation with &quot;-fsanitize=undefined&quot;</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108923">memory leak of get_intrinsic_dummy_arg result</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108937">Intrinsic IBITS(I,POS,LEN) fails when LEN equals to BIT_SIZE(I).</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108968">fanalyzer false positive with the uninitalised-ness of the stack pointer</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108973">Sufficiently narrow terminal window causes selftest failure</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108986">Incorrect warning for [static] array parameter</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109050">UBsan failed to detect out-of-bound at -O0/1/2/s</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109067">Powerpc GCC does not support __ibm128 complex multiply/divide if long double is IEEE 128-bit.</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109094">Uninit false positive from -fanalyzer when longjmp unwinds frames with return stmts</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109151">UBsan misses a divide-by-zero</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109178">ICE using __builtin_vec_xst_trunc built-in</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109186">nearest(huge(x),-1.0_kind(x)) half of correct value</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85877">ICE in fold_convert_loc, at fold-const.c:2449</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87127">External function not recognised from within an associate block</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=87204">strtoflt128 produces different results for subnormals with -m32 and -m64</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95107">ICE in hash_operand, at fold-const.c:3768</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96024">ICE in mio_name_expr_t, at fortran/module.c:2159</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96025">ICE in expr_check_typed_help, at fortran/expr.c:5437</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=98487">ICE: tree check: expected identifier_node, have tree_list in is_attribute_p, at attribs.h:155 [C2X or C++11 attribute syntax, gnu::format and -Wsuggest-attribute=format] or a suggest warning (release checking)</a>.</li>
-    <li>Fix for <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99036">ICE in gfc_current_interface_head, at fortran/interface.c:4699</a>.</li>
-  </ul></li>
-  <li>GNU C Library provides:
-  <ul>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=19444">build failures with -O1 due to -Wmaybe-uninitialized</a>.</li>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=27087">PowerPC: Redefinition error with Clang from IEEE redirection headers</a>.</li>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=27749">Data race __run_exit_handlers</a>.</li>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29402">nscd: No such file or directory</a>.</li>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29576">librtld.os: in function `_dl_start_profile': (.text+0x9444): undefined reference to `strcpy'</a>.</li>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29591">wcsnlen length can overflow in page cross case.</a>.</li>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29776">elf/tst-tlsopt-powerpc fails when compiled with -mcpu=power10</a>.</li>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29863">Segmentation fault in memcmp-sse2.S if memory contents can concurrently change</a>.</li>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29864">__libc_start_main() should obtain program headers address (_dl_phdr) from the auxv, not the ELF header.</a>.</li>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=29951">daylight variable not set correctly if last DST change coincides with offset change</a>.</li>
-  </ul></li>
-  <li>GNU Debugger provides:
-  <ul>
-    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=28275">commit_resumed_state assertion failure when killing running inferior and running again</a>.</li>
-    <li>Fix disable commit resumed in target_kill.</li>
-    <li>Fix switch to right process in find_one_thread.</li>
-    <li>Fix assert when quitting GDB while a thread is stepping.</li>
-  </ul></li>
-  <li>Userspace RCU provides:
-  <ul>
-    <li>Version 0.14.0, see the <a href="https://github.com/urcu/userspace-rcu/commit/d1252aeb22cc8dbd9b1806afd66ffaf9ad6d7d07#diff-91c5b46dc84a94604a4e4d0caed9bf85590a2eddbb12d2e8dc80badf324a9dfb">change log</a> for details.</li>
-    <li>Fix for warning 'noreturn' function does return on ppc.</li>
-    <li>Fix for use __noreturn__ for C11-compatibility.</li>
-  </ul></li>
-  <li>OpenSSL provides:
-  <ul>
-    <li>Version 3.0.8, see the <a href="https://www.openssl.org/news/cl30.txt">release notes</a> for details.</li>
-    <li>Fix for <a href="https://github.com/openssl/openssl/issues/19543">Provider decoder man and header file mismatch</a>.</li>
-    <li>Fix for <a href="https://github.com/openssl/openssl/issues/19580">ossl_ecx_key_op not able to access in openssl3.0 Engine</a>.</li>
-    <li>Fix for <a href="https://github.com/openssl/openssl/issues/19975">Null Ptr Deref in CMS_decrypt_set1_pkey_and_peer</a>.</li>
-    <li>Fix for <a href="https://github.com/openssl/openssl/issues/20197">fix ignored clearold flag</a>.</li>
-    <li>Fix for <a href="https://github.com/openssl/openssl/issues/20212">Openssl-3.0.7 Error while running speed test for DES-EDE (ECB, CBC, CFB , OFB modes )</a>.</li>
-    <li>Fix for <a href="https://github.com/openssl/openssl/issues/20238">Duplicate symbols libssl.a and libcrypto.a (3.0.8 regression)</a>.</li>
-    <li>Fix for <a href="https://github.com/openssl/openssl/issues/20268">DSA_sign hangs with invalid parameters</a>.</li>
-    <li>Fix for <a href="https://github.com/openssl/openssl/issues/20278">a double free bug in crypto/http/http_client.c</a>.</li>
-    <li>Fix for <a href="https://github.com/openssl/openssl/issues/20377">early_data and CCM ciphersuite (openssl 3.0.5)</a>.</li>
-    <li>Fix for <a href="https://github.com/openssl/openssl/issues/20424">Incorrect cast sign?</a>.</li>
-    <li>Fix for <a href="https://github.com/openssl/openssl/issues/20435">size_t vs int confusion in recent commits</a>.</li>
-    <li>Fix for <a href="https://github.com/openssl/openssl/issues/20497">EVP_PKEY_(get_)id not returning an OID (for provider PKEYs)</a>.</li>
-    <li>Fix for <a href="https://github.com/openssl/openssl/issues/20597">DTLS 1.2 Application Data prior to CCS/Finish</a>.</li>
-  </ul></li>
-  <li>Python provides:
-  <ul>
-    <li>Version 3.10.11, see the <a href="https://www.python.org/downloads/release/python-31011/">release notes</a> for details.</li>
-    <li>Fix for <a href="https://github.com/python/cpython/issues/103264">Clarify and simplify description of print&#39;s flush param</a>.</li>
   </ul></li>
 </ul>
