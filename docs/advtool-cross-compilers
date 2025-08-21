@@ -139,7 +139,7 @@
 </div>
 
 <div class="ibm-band-fluid ibm-flex ibm-padding-top-2  ibm-padding-bottom-1">
-<p class="custom-padding-left-12px ibm-h4">IBM Advance Toolchain for Linux on Power 16.0-5 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at16.0-5" target="_blank">Learn more</a></p>
+<p class="custom-padding-left-12px ibm-h4">IBM Advance Toolchain for Linux on Power 18.0-0 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at18.0-0" target="_blank">Learn more</a></p>
 </div>
 
 <div class="ibm-band-fluid ibm-flex ibm-nospacing ibm-flex--wrap">
@@ -163,15 +163,10 @@
 <p class="ibm-light">Use these steps to download the public key, create a repository configuration file, and install the cross-compiler package.</p>
 
 <ol>
-	<li>The <code>gpg</code> public key is provided in the IBM repositories. This public key is used to verify the authenticity of both the Advance Toolchain packages and the repository contents. Download the <code>gpg</code> public key for your Linux distribution and import it by using the following commands, replacing <em>RHELX</em> with the Red Hat release that you are using and <em>PUBKEY</em> with its respective value.
-	<ul>
-		<li>For RHEL8, the <code>gpg</code> public key is: <code>gpg-pubkey-6976a827-5164221b</code></li>
-		<li>For RHEL9, the <code>gpg</code> public key is: <code>gpg-pubkey-615d762f-62f504a1</code></li>
-	</ul>
-
+	<li>The <code>gpg</code> public key is provided in the IBM repositories. This public key is used to verify the authenticity of both the Advance Toolchain packages and the repository contents. Download the <code>gpg</code> public key for your Linux distribution and import it by using the following commands.
 	<pre>
-wget https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/<em>RHELX</em>/<em>PUBKEY</em>
-sudo rpm --import <em>PUBKEY</em>
+wget https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL9/gpg-pubkey-615d762f-62f504a1
+sudo rpm --import gpg-pubkey-615d762f-62f504a1
 </pre>
 	</li>
 	<li>Create a configuration file for the Advance Toolchain repository configuration file: <code>/etc/yum.repos.d/<em>advance-toolchain.repo</em></code>. Add the following content:
@@ -179,10 +174,10 @@ sudo rpm --import <em>PUBKEY</em>
 # Begin of configuration file
 [advance-toolchain]
 name=Advance Toolchain IBM FTP
-baseurl=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/<em>RHELX</em>
+baseurl=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL9
 enabled=1
 gpgcheck=1
-gpgkey=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/<em>RHELX</em>/<em>PUBKEY</em>
+gpgkey=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL9/gpg-pubkey-615d762f-62f504a1
 # End of configuration file
 </pre>
 	</li>
@@ -200,7 +195,7 @@ gpgkey=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redha
 	<li>The <code>gpg</code> public key <code>gpg-pubkey-6976a827-5164221b</code> is provided in the IBM repositories. This public key is used to verify the authenticity of both the Advance Toolchain packages and the repository contents. Download the <code>gpg</code> public key for your Linux distribution and import it by using the following commands:
 
 	<pre>
-wget https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL8/gpg-pubkey-6976a827-5164221b
+wget https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_15/gpg-pubkey-6976a827-5164221b
 rpm --import gpg-pubkey-6976a827-5164221b
 </pre>
 	</li>
@@ -251,28 +246,18 @@ zypper addrepo https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/
 <ol>
 	<li>The <code>gpg</code> public key is provided in the IBM repositories. This public key is used to verify the authenticity of both the Advance Toolchain packages and the repository contents. Download the <code>gpg</code> public key for your Linux distribution and import it by using the following commands:
 
-	<ul>
-		<li>For Ubuntu 20.04:
-		<pre>
-wget https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists/focal/6976a827.gpg.key
-sudo apt-key add 6976a827.gpg.key
-</pre>
-		</li>
-		<li>For Debian 11, Debian 12 or Ubuntu 22.04:
 		<pre>
 wget -qO- https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists/jammy/615d762f.gpg.key | sudo tee -a /etc/apt/trusted.gpg.d/615d762f.asc
 </pre>
-		</li>
-	</ul>
 	</li>
 	<li>Configure the Advance Toolchain repositories by adding the following line to <code>/etc/apt/sources.list</code>:
 	<p>On ppc64el or amd64:</p>
 
 	<ul>
-		<li>When you install on Ubuntu 22.04 (jammy) or Ubuntu 20.04 (focal), point to its respective repository:
+		<li>When you install on Ubuntu 24.04 (noble) or Ubuntu 22.04 (jammy), point to its respective repository:
 		<pre>
+deb [signed-by=/etc/apt/trusted.gpg.d/615d762f.asc] https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu noble atX.X
 deb [signed-by=/etc/apt/trusted.gpg.d/615d762f.asc] https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu jammy atX.X
-deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu focal atX.X
 </pre>
 		</li>
 		<li>When you install on Debian 12 (bookworm) or Debian 11 (bullseye), point to its respective repository:
