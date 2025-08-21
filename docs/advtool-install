@@ -140,7 +140,7 @@ function myFunction() {
 </div>
 
 <div class="ibm-band-fluid ibm-flex ibm-padding-top-2  ibm-padding-bottom-1">
-<p class="custom-padding-left-12px ibm-h4">IBM Advance Toolchain for Linux on Power 16.0-5 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at16.0-5" target="_blank">Learn more</a></p>
+<p class="custom-padding-left-12px ibm-h4">IBM Advance Toolchain for Linux on Power 18.0-0 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at18.0-0" target="_blank">Learn more</a></p>
 </div>
 
 <div class="ibm-band-fluid ibm-flex ibm-nospacing ibm-flex--wrap ibm-padding-top-2 ibm-padding-bottom-1"><!--Get started-->
@@ -157,9 +157,9 @@ function myFunction() {
 	<thead>
 		<tr>
 			<th></th>
+			<th><strong>Advance Toolchain 18.0</strong></th>
 			<th><strong>Advance Toolchain 17.0</strong></th>
 			<th><strong>Advance Toolchain 16.0</strong></th>
-			<th><strong>Advance Toolchain 15.0</strong></th>
 		</tr>
 	</thead>
 	<thead>
@@ -168,16 +168,22 @@ function myFunction() {
 		<tr>
 			<td><strong>Debian 11</strong></td>
 			<td></td>
+			<td></td>
 			<td>
 			<ul class="ibm-small">
 				<li><a href="#installUbuntu">Installation instructions</a></li>
 				<li><a href="https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian/dists/bullseye/at16.0/" rel="noopener" target="_blank">Repository and release notes</a></li>
 			</ul>
 			</td>
-			<td></td>
 		</tr>
                 <tr>
                         <td><strong>Debian 12</strong></td>
+                        <td>
+                        <ul class="ibm-small">
+                                <li><a href="#installUbuntu">Installation instructions</a></li>
+                                <li><a href="https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/debian/dists/bookworm/at18.0/" rel="noopener" target="_blank">Repository and release notes</a></li>
+                        </ul>
+                        </td>
                         <td>
                         <ul class="ibm-small">
                                 <li><a href="#installUbuntu">Installation instructions</a></li>
@@ -185,21 +191,15 @@ function myFunction() {
                         </ul>
                         </td>
                         <td></td>
-                        <td></td>
                 </tr>
 		<tr>
-			<td><strong>RHEL 8</strong></td>
-			<td></td>
-			<td></td>
+			<td><strong>RHEL 9</strong></td>
 			<td>
 			<ul class="ibm-small">
 				<li><a href="#redhatinstalltabs">Installation instructions</a></li>
-				<li><a href="https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL8/at15.0" rel="noopener" target="_blank">Repository and release notes</a></li>
+				<li><a href="https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL9/at18.0" rel="noopener" target="_blank">Repository and release notes</a></li>
 			</ul>
 			</td>
-		</tr>
-		<tr>
-			<td><strong>RHEL 9</strong></td>
 			<td>
 			<ul class="ibm-small">
 				<li><a href="#redhatinstalltabs">Installation instructions</a></li>
@@ -212,10 +212,15 @@ function myFunction() {
 				<li><a href="https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL9/at16.0" rel="noopener" target="_blank">Repository and release notes</a></li>
 			</ul>
 			</td>
-			<td></td>
 		</tr>
 		<tr>
 			<td><strong>SLES 15</strong></td>
+			<td>
+			<ul class="ibm-small">
+				<li><a href="#slesinstallation">Installation instructions</a></li>
+				<li><a href="https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_15/at18.0" rel="noopener" target="_blank">Repository and release notes</a></li>
+			</ul>
+			</td>
 			<td>
 			<ul class="ibm-small">
 				<li><a href="#slesinstallation">Installation instructions</a></li>
@@ -228,26 +233,10 @@ function myFunction() {
 				<li><a href="https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_15/at16.0" rel="noopener" target="_blank">Repository and release notes</a></li>
 			</ul>
 			</td>
-			<td>
-			<ul class="ibm-small">
-				<li><a href="#slesinstallation">Installation instructions</a></li>
-				<li><a href="https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_15/at15.0" rel="noopener" target="_blank">Repository and release notes</a></li>
-			</ul>
-			</td>
-		</tr>
-		<tr>
-			<td><strong>Ubuntu 20.04</strong></td>
-			<td></td>
-			<td></td>
-			<td>
-			<ul class="ibm-small">
-				<li><a href="#installUbuntu">Installation instructions</a></li>
-				<li><a href="https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists/focal/at15.0" rel="noopener" target="_blank">Repository and release notes</a></li>
-			</ul>
-			</td>
 		</tr>
 		<tr>
 			<td><strong>Ubuntu 22.04</strong></td>
+			<td></td>
 			<td>
 			<ul class="ibm-small">
 				<li><a href="#installUbuntu">Installation instructions</a></li>
@@ -260,6 +249,16 @@ function myFunction() {
 				<li><a href="https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists/jammy/at16.0" rel="noopener" target="_blank">Repository and release notes</a></li>
 			</ul>
 			</td>
+		</tr>
+		<tr>
+			<td><strong>Ubuntu 24.04</strong></td>
+			<td>
+			<ul class="ibm-small">
+				<li><a href="#installUbuntu">Installation instructions</a></li>
+				<li><a href="https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists/noble/at18.0" rel="noopener" target="_blank">Repository and release notes</a></li>
+			</ul>
+			</td>
+			<td></td>
 			<td></td>
 		</tr>
 	</tbody>
@@ -294,15 +293,11 @@ function myFunction() {
 <p class="ibm-light">Use these steps to download the public key, create a repository configuration file, and install the Advance Toolchain packages.</p>
 
 <ol>
-	<li>The <code>gpg</code> public key is provided in the IBM repositories. This public key is used to verify the authenticity of both the Advance Toolchain packages and the repository contents. Download the <code>gpg</code> public key for your Linux distribution and import it by using the following commands, replacing <em>RHELX</em> with the Red Hat release that you are using and <em>PUBKEY</em> with its respective value.
-	<ul>
-		<li>For RHEL8, the <code>gpg</code> public key is: <code>gpg-pubkey-6976a827-5164221b</code></li>
-		<li>For RHEL9, the <code>gpg</code> public key is: <code>gpg-pubkey-615d762f-62f504a1</code></li>
-	</ul>
+	<li>The <code>gpg</code> public key is provided in the IBM repositories. This public key is used to verify the authenticity of both the Advance Toolchain packages and the repository contents. Download the <code>gpg</code> public key for your Linux distribution and import it by using the following commands.
 
 	<pre>
-wget https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/<em>RHELX</em>/<em>PUBKEY</em>
-sudo rpm --import <em>PUBKEY</em>
+wget https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL9/gpg-pubkey-615d762f-62f504a1
+sudo rpm --import gpg-pubkey-615d762f-62f504a1
 </pre>
 	</li>
 	<li>Create a configuration file for the Advance Toolchain repository configuration file: <code>/etc/yum.repos.d/<em>advance-toolchain.repo</em></code>. Add the following content:
@@ -310,10 +305,10 @@ sudo rpm --import <em>PUBKEY</em>
 # Begin of configuration file
 [advance-toolchain]
 name=Advance Toolchain IBM FTP
-baseurl=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/<em>RHELX</em>
+baseurl=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL9
 enabled=1
 gpgcheck=1
-gpgkey=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/<em>RHELX</em>/<em>PUBKEY</em>
+gpgkey=https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/redhat/RHEL9/gpg-pubkey-615d762f-62f504a1
 # End of configuration file
 </pre>
 	</li>
@@ -425,10 +420,8 @@ rpm --import gpg-pubkey-6976a827-5164221b
 	<li>Under Server name, enter <code>public.dhe.ibm.com</code>.</li>
 	<li>Under Directory on Server, enter:
 	<pre>
-/software/server/POWER/Linux/toolchain/at/suse/<em>SLES_X</em>
+/software/server/POWER/Linux/toolchain/at/suse/SLES_15
 </pre>
-
-	<p>Replace <em>SLES_X</em> with the SLES release that you are using.</p>
 
 	<p>You will get a warning about there being no product information available. This is because the <code>repomd-based</code> repository does not contain the <code>YaST</code> product information. This is not a bug. Select [Continue].</p>
 	</li>
@@ -461,10 +454,8 @@ rpm --import gpg-pubkey-6976a827-5164221b
 	</li>
 	<li>Add IBM FTP to the repository list:
 	<pre>
-zypper addrepo https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/<em>SLES_X</em> "Advance Toolchain"
+zypper addrepo https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/suse/SLES_15 "Advance Toolchain"
 </pre>
-
-	<p>Replace <em>SLES_X</em> with the SLES release that you are using.</p>
 
 	<p>This command creates a new repository entry called "Advance Toolchain" pointing to the IBM FTP site.</p>
 	</li>
@@ -567,27 +558,17 @@ rpm -ivh ibm-power-repo-latest.noarch.rpm
 <ol>
 	<li>The <code>gpg</code> public key is provided in the IBM repositories. This public key is used to verify the authenticity of both the Advance Toolchain packages and the repository contents. Download the <code>gpg</code> public key for your Linux distribution and import it by using the following commands:
 
-	<ul>
-		<li>For Ubuntu 20.04:
-		<pre>
-wget https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists/focal/6976a827.gpg.key
-sudo apt-key add 6976a827.gpg.key
-</pre>
-		</li>
-		<li>For Debian 12, Debian 11 or Ubuntu 22.04:
 		<pre>
 wget -qO- https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists/jammy/615d762f.gpg.key | sudo tee -a /etc/apt/trusted.gpg.d/615d762f.asc
 </pre>
-		</li>
-	</ul>
 	</li>
 	<li>Configure the Advance Toolchain repositories by adding the following line to <code>/etc/apt/sources.list</code>:
 	<p>On ppc64el or amd64:</p>
 	<ul>
-		<li>When you install on Ubuntu 22.04 (jammy) or Ubuntu 20.04 (focal), point to its respective repository:
+		<li>When you install on Ubuntu 24.04 (noble) or Ubuntu 22.04 (jammy), point to its respective repository:
 		<pre>
+deb [signed-by=/etc/apt/trusted.gpg.d/615d762f.asc] https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu noble atX.X
 deb [signed-by=/etc/apt/trusted.gpg.d/615d762f.asc] https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu jammy atX.X
-deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu focal atX.X
 </pre>
 		</li>
 		<li>When you install on Debian 12 (bookworm) or Debian 11 (bullseye), point to its respective repository:
@@ -626,27 +607,17 @@ advance-toolchain-atX.X-mcore-libs
 <ol>
 	<li>The <code>gpg</code> public key is provided in the IBM repositories. This public key is used to verify the authenticity of both the Advance Toolchain packages and the repository contents. Download the <code>gpg</code> public key for your Linux distribution and import it by using the following commands:
 
-	<ul>
-		<li>For Ubuntu 20.04:
-		<pre>
-wget https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists/focal/6976a827.gpg.key
-sudo apt-key add 6976a827.gpg.key
-</pre>
-		</li>
-		<li>For Debian 12, Debian 11 or Ubuntu 22.04:
 		<pre>
 wget -qO- https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists/jammy/615d762f.gpg.key | sudo tee -a /etc/apt/trusted.gpg.d/615d762f.asc
 </pre>
-		</li>
-	</ul>
 	</li>
 	<li>Configure the Advance Toolchain repositories by adding the following line to <code>/etc/apt/sources.list</code>:
 	<p>On ppc64el or amd64:</p>
 	<ul>
-		<li>When you install on Ubuntu 22.04 (jammy) or Ubuntu 20.04 (focal), point to its respective repository:
+		<li>When you install on Ubuntu 24.04 (noble) or Ubuntu 22.04 (jammy), point to its respective repository:
 		<pre>
+deb [signed-by=/etc/apt/trusted.gpg.d/615d762f.asc] https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu noble atX.X
 deb [signed-by=/etc/apt/trusted.gpg.d/615d762f.asc] https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu jammy atX.X
-deb https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu focal atX.X
 </pre>
 		</li>
 		<li>When you install on Debain 12 (bookworm) or Debian 11 (bullseye), point to its respective repository:
