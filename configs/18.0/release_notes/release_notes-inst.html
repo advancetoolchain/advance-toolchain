@@ -48,7 +48,7 @@ dnf install advance-toolchain-__VERSION__-runtime /
 				<p>Answer <span class="code">y</span> when DNF prompts for confirmation.</p>
 endif_RHEL9 -->
 
-<!-- if_ubuntu-22
+<!-- if_ubuntu-24
                         <p>The gpg public key <span class="code">xxxxxxxx.gpg.key</span> will be provided in the repository where these release notes were found.  The public key can be used to verify the authenticity of both the Advance Toolchain install packages and the repository contents. It can be imported as follows:</p>
                         <p class="code">wget -qO- https://public.dhe.ibm.com/software/server/POWER/Linux/toolchain/at/ubuntu/dists/jammy/xxxxxxxx.gpg.key | sudo tee -a /etc/apt/trusted.gpg.d/xxxxxxxx.asc</p>
                         <h3>Using aptitude or apt</h3>
@@ -79,7 +79,7 @@ sudo apt install advance-toolchain-__VERSION__-runtime \
                  advance-toolchain-__VERSION__-mcore-libs
                                 </pre>
                                 <p>Aptitude and apt support package upgrades for new revision releases (i.e. 10.0-0 to 10.0-1).  For new major releases, install as if a new installation.</p>
-endif_ubuntu-22 -->
+endif_ubuntu-24 -->
 
 <!-- if_debian-12
 			<p>The gpg public key <span class="code">xxxxxxxx.gpg.key</span> will be provided in the repository where these release notes were found.  The public key can be used to verify the authenticity of both the Advance Toolchain install packages and the repository contents. It can be imported as follows:</p>
