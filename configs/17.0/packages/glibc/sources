@@ -21,7 +21,7 @@
 
 ATSRC_PACKAGE_NAME="GNU C Library"
 ATSRC_PACKAGE_VER=2.38
-ATSRC_PACKAGE_REV=5a6276d97aa6
+ATSRC_PACKAGE_REV=a921ae4701f3
 ATSRC_PACKAGE_BRANCH=release/2.38/master
 ATSRC_PACKAGE_LICENSE="LGPL 2.1"
 ATSRC_PACKAGE_DOCLINK="http://www.gnu.org/software/libc/manual/html_node/index.html"
@@ -45,7 +45,7 @@ atsrc_get_patches ()
 	# Backport the option to influence hwcaps used by PowerPC.
 	at_get_patch \
 		'https://sourceware.org/git/?p=glibc.git;a=patch;h=21841f0d562f0e944c4d267a28cc3ebd19c847e9' \
-		 e0080d7d2acce3bba761376658f6a064 influence-cpu-hwcap-features.patch || return ${?}
+		 3e7da6d6026bf6e23184622f852524a1 influence-cpu-hwcap-features.patch || return ${?}
 	if [[ "$DISTRO_ID" == "redhat-9" ]]; then
 		# Disabling ldconfig aux-cache file.
 		at_get_patch \
