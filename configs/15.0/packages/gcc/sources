@@ -74,6 +74,12 @@ atsrc_get_patches ()
 		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/GCC%20PowerPC%20Backport/11/0001-powerpc-Remove-forced-runpath-from-with-advance-tool.patch' \
 		2a4d7864672f6227f33687a834e7dca4 || return ${?}
 
+	if [[ "$(uname -m)" == *"ppc64"* ]]; then
+		at_get_patch \
+			'https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/GCC%20PowerPC%20Backport/14/skip-glibc-fix-on-fixincludes.patch' \
+			54ba637650b7386746cd4968cfec9864 || return ${?}
+	fi
+
 	return 0
 }
 
@@ -94,4 +100,10 @@ atsrc_apply_patches ()
 	patch -p1 \
 	      < 0001-powerpc-Remove-forced-runpath-from-with-advance-tool.patch \
 		|| return ${?}
+
+	if [[ "$(uname -m)" == *"ppc64"* ]]; then
+		patch -p1 \
+		      < skip-glibc-fix-on-fixincludes.patch \
+			|| return ${?}
+	fi
 }
