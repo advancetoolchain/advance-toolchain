@@ -42,3 +42,20 @@ ATSRC_PACKAGE_DISTRIB=no
 ATSRC_PACKAGE_BUNDLE=toolchain_extra
 # Not needed because file follows master branch
 # ATSRC_PACKAGE_UPSTREAM=
+
+atsrc_get_patches ()
+{
+	# Avoid a misconfiguration of tuned libraries as seen in issue #204.
+	at_get_patch \
+        "https://www.17o2.net/stuff/AT/pveclib_gcc15.patch" \
+		1aee02e88ce3c1f52e389ca93efdc32a || return ${?}
+
+	return 0
+}
+
+atsrc_apply_patches ()
+{
+	patch -p1 \
+	      < pveclib_gcc15.patch \
+		|| return ${?}
+}
