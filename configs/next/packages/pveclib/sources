@@ -42,3 +42,20 @@ ATSRC_PACKAGE_DISTRIB=no
 ATSRC_PACKAGE_BUNDLE=toolchain_extra
 # Not needed because file follows master branch
 # ATSRC_PACKAGE_UPSTREAM=
+
+atsrc_get_patches ()
+{
+	# Avoid a misconfiguration of tuned libraries as seen in issue #204.
+	at_get_patch \
+        "https://raw.githubusercontent.com/powertechpreview/powertechpreview/fa85fbe60c10de4d18ff65f9cb51b9f02bce1e74/pvecLib/build_with_gcc15.patch" \
+		3e6c1bb06e90bc64cdc5da59ca7fa384 || return ${?}
+
+	return 0
+}
+
+atsrc_apply_patches ()
+{
+	patch -p1 \
+	      < build_with_gcc15.patch \
+		|| return ${?}
+}

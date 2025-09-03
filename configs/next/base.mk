@@ -56,7 +56,7 @@ AT_DIR_NAME := at-next-$(AT_MAJOR_VERSION)-$(AT_REVISION_NUMBER)-$(AT_INTERNAL)
 # Minimum kernel version distributed on supported distros by this AT version,
 # i.e. minimum kernel version required in order to run software linked to this
 # AT version.
-AT_KERNEL := 5.13.19
+AT_KERNEL := 6.16.3
 
 # Set the last day of support for this AT version.
 # Update it every year for the new AT release.
