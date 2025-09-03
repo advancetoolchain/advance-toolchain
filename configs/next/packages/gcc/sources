@@ -22,10 +22,11 @@
 ATSRC_PACKAGE_NAME="GCC (GNU Compiler Collection)"
 ATSRC_PACKAGE_SUBPACKAGE_NAME_0="GNU Standard C++ Library v3 (Libstdc++-v3)"
 ATSRC_PACKAGE_SUBPACKAGE_NAME_1="GNU Libgomp"
-ATSRC_PACKAGE_VER=15.0.0
-ATSRC_PACKAGE_REV=390c3e4ed28f
+ATSRC_PACKAGE_VER=15.1.1
+ATSRC_PACKAGE_REV=066115a7a44a
+ATSRC_PACKAGE_BRANCH=gcc-15-branch
 ATSRC_PACKAGE_LICENSE="GPL 3.0"
-ATSRC_PACKAGE_DOCLINK="https://gcc.gnu.org/onlinedocs/gcc/"
+ATSRC_PACKAGE_DOCLINK="https://gcc.gnu.org/onlinedocs/gcc-${ATSRC_PACKAGE_VER%.*}.0/gcc/"
 ATSRC_PACKAGE_SUBPACKAGE_DOCLINK_0="https://gcc.gnu.org/libstdc++/"
 ATSRC_PACKAGE_SUBPACKAGE_DOCLINK_1="https://gcc.gnu.org/onlinedocs/libgomp/"
 ATSRC_PACKAGE_RELFIXES=
@@ -33,7 +34,9 @@ ATSRC_PACKAGE_NAMESUFFIX="[C, C++ (g++), fortran, Go]"
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}-ibm-r${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_PRE="test -d gcc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_CO=([0]="git clone git://gcc.gnu.org/git/gcc.git")
-ATSRC_PACKAGE_GIT="git checkout -b gcc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV} ${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_GIT=([0]="git config --local remote.origin.fetch +refs/vendors/ibm/heads/*:refs/remotes/origin/ibm/*" \
+                   [1]="git fetch origin" \
+                   [2]="git checkout -b gcc-${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}} ${ATSRC_PACKAGE_REV}")
 ATSRC_PACKAGE_POST="mv gcc gcc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_SRC=${AT_BASE}/sources/gcc-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}
 ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/gcc
@@ -58,6 +61,11 @@ atsrc_get_patches ()
 		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/GCC%20libstdc%2B%2B%20PowerPC%20Patches/9/0001-libstdc-Prevent-LD_LIBRARY_PATH-from-leaking-to-msgf.patch' \
 		9cba9a9b94ca9c1b8958c0d722a9c06b || return ${?}
 
+	# Backport a fix to build with glibc 2.42
+	at_get_patch \
+		'https://gcc.gnu.org/git/?p=gcc.git;a=patch;h=3d15aa4f2b756e89bf155e0c35861dd960ef3b80' \
+		6219d8e8a425178e7998452d158a1c07 sanitizer_fix.patch || return ${?}
+
 	if [[ "$(uname -m)" == *"ppc64"* ]]; then
 		at_get_patch \
 			'https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/GCC%20PowerPC%20Backport/14/skip-glibc-fix-on-fixincludes.patch' \
@@ -75,6 +83,10 @@ atsrc_apply_patches ()
 
 	patch -p1 \
 	      < 0001-libstdc-Prevent-LD_LIBRARY_PATH-from-leaking-to-msgf.patch \
+		|| return ${?}
+
+	patch -p1 \
+	      < sanitizer_fix.patch \
 		|| return ${?}
 
 	if [[ "$(uname -m)" == *"ppc64"* ]]; then
