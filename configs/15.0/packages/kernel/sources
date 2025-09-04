@@ -1,1 +1,46 @@
-../../../14.0/packages/kernel/sources
+#!/usr/bin/env bash
+#
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+
+# Internal variables to find download path
+# ========================================
+ATSRC_PACKAGE_SRC_PATH=$( (( "$(expr ${AT_KERNEL} : '\([0-9]\)*')" >= "3" )) && \
+                            echo "v$(expr ${AT_KERNEL} : '\([0-9]\)*').x" || \
+                            echo "v$(expr ${AT_KERNEL} : '\([0-9][.][0-9]\)*')")
+
+# KERNEL source package and build info
+# ====================================
+ATSRC_PACKAGE_NAME="Linux kernel"
+ATSRC_PACKAGE_VER=${AT_KERNEL}
+ATSRC_PACKAGE_LICENSE="GPL 2.0"
+ATSRC_PACKAGE_DOCLINK="https://www.kernel.org/doc/"
+ATSRC_PACKAGE_RELFIXES=
+ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
+ATSRC_PACKAGE_PRE="test -d linux-${ATSRC_PACKAGE_VER}"
+ATSRC_PACKAGE_CO=([0]="wget -N https://www.kernel.org/pub/linux/kernel/${ATSRC_PACKAGE_SRC_PATH}/linux-${ATSRC_PACKAGE_VER}.tar.gz" \
+		  [1]="wget -N http://kernel.c3sl.ufpr.br/pub/linux/kernel/${ATSRC_PACKAGE_SRC_PATH}/linux-${ATSRC_PACKAGE_VER}.tar.gz")
+ATSRC_PACKAGE_POST="tar -xzf linux-${ATSRC_PACKAGE_VER}.tar.gz"
+ATSRC_PACKAGE_SRC=${AT_BASE}/sources/linux-${ATSRC_PACKAGE_VER}
+ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/kernel
+ATSRC_PACKAGE_MLS=
+ATSRC_PACKAGE_ALOC=
+ATSRC_PACKAGE_PATCHES=
+ATSRC_PACKAGE_TARS=
+ATSRC_PACKAGE_DISTRIB=yes
+ATSRC_PACKAGE_INCLUDED=yes
+ATSRC_PACKAGE_BUNDLE=main_toolchain
+ATSRC_PACKAGE_EXCLUDE_RN=yes

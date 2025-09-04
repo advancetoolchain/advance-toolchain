@@ -1,1 +1,132 @@
-../../../14.0/deb/monolithic/buster_dh_change_dest.patch
+# Copyright 2020 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+--- a/dh_strip	2019-02-23
++++ b/dh_strip	2020-07-31
+@@ -15,7 +15,7 @@
+ 
+ =head1 SYNOPSIS
+ 
+-B<dh_strip> [S<I<debhelper options>>] [B<-X>I<item>] [B<--dbg-package=>I<package>] [B<--keep-debug>]
++B<dh_strip> [S<I<debhelper options>>] [B<-X>I<item>] [B<--dbg-package=>I<package>] [B<--keep-debug>] [B<--dest=>I<dest>]
+ 
+ =head1 DESCRIPTION
+ 
+@@ -45,6 +45,18 @@
+ stripped. You may use this option multiple times to build up a list of
+ things to exclude.
+ 
++=item B<--dest=>I<dest>
++
++Typically, debug information is always placed under /usr/lib/debug on debian
++packages. However, it is sometimes desirable to install to an alternative
++prefix, such as /opt. The value passed through B<dest> is prepended to
++/lib/debug (notice that the 'usr' part has been removed), and becomes the
++installation path for debug information. For instance, the following command
++will install all debug information into a package named foo-deb.deb and under
++I</opt/lib/debug>.
++
++	dh_strip --dbg-package=foo-dbg --dest=/opt
++
+ =item B<--dbg-package=>I<package>
+ 
+ B<This option is a now special purpose option that you normally do not
+@@ -76,7 +88,7 @@
+ option.
+ 
+ Debug symbols will be retained, but split into an independent
+-file in F<usr/lib/debug/> in the package build directory. B<--dbg-package>
++file in F<lib/debug/> in the package build directory. B<--dbg-package>
+ is easier to use than this option, but this option is more flexible.
+ 
+ This option implies B<--no-automatic-dbgsym> and I<cannot> be used
+@@ -136,8 +148,10 @@
+ 
+ =cut
+ 
++my $dest;
+ init(options => {
+ 	'keep-debug|keep|k'  => \$dh{K_FLAG},
++	"dest=s"             => \$dest,
+ 	'dbgsym-migration=s' => \$dh{MIGRATE_DBGSYM},
+ 	'automatic-dbgsym!'  => \$dh{ENABLE_DBGSYM},
+     # Deprecated variants
+@@ -282,31 +296,44 @@
+ 	my $file_info = get_file_type($file, $use_build_id ? 1 : 0);
+ 	return unless $file_info =~ /not stripped/;
+ 
++	my ($base_file)=$file=~/^\Q$tmp\E(.*)/;
++	my ($base_debug_path, $debug_symlink, $debug_dir);
++
++	$debug_path=$desttmp."${dest}/lib/debug/".$base_file;
++	$base_debug_path="${dest}/lib/debug/".$base_file;
++       
++	# Make symlinks based on the build-ID
++
+ 	if ($use_build_id) {
+ 		if ($file_info =~ m/BuildID\[sha1]\s*=\s*([0-9a-f]{2})([0-9a-f]+)/ or
+ 			  `LC_ALL=C readelf -n $file`=~ /^\s+Build ID: ([0-9a-f]{2})([0-9a-f]+)$/m) {
+-			$debug_path=$desttmp."/usr/lib/debug/.build-id/$1/$2.debug";
++			$debug_symlink=$desttmp."${dest}/lib/debug/.build-id/$1/$2";
+ 			$debug_build_id="${1}${2}";
+ 			push(@build_ids, $debug_build_id);
+-		} else {
+-			# For dbgsyms, we need build-id (else it will not be
+-			# co-installable).
+-			warning("Could not find the BuildID in $file");
+-			return if $use_build_id > 1;
++	
++			# Create the directory
++			$debug_dir=dirname($debug_symlink);
++			if(! -d $debug_dir) {
++			        doit("install", "-d", $debug_dir);
++			}
++
++			# Create the symlinks
++			if(! -l "$debug_symlink") {
++				doit("ln", "-s", "$base_file", "$debug_symlink");
++			}
++			if(! -l "$debug_symlink.debug") {
++				doit("ln", "-s", "$base_debug_path", "$debug_symlink.debug");
++			}
+ 		}
+ 	}
+-	if (not $debug_path) {
+-		# Either not using build_id OR no build-id available
+-		my ($base_file)=$file=~/^\Q$tmp\E(.*)/;
+-		$debug_path=$desttmp."/usr/lib/debug/".$base_file;
+-	}
++	# Create the build-id directory
+ 	install_dir(dirname($debug_path));
+ 	if (compat(8) && $use_build_id < 2) {
+ 		doit($objcopy, "--only-keep-debug", $file, $debug_path);
+ 	}
+ 	else {
+ 		# Compat 9 OR a dbgsym package.
+-		doit($objcopy, "--only-keep-debug", "--compress-debug-sections", $file, $debug_path) unless -e $debug_path;
++		doit($objcopy, "--only-keep-debug", $file, $debug_path) unless -e $debug_path;
+ 	}
+ 
+ 	# No reason for this to be executable.
+@@ -324,8 +351,8 @@
+ sub process_packages {
+ 	foreach my $package (@_) {
+ 		my $tmp=tmpdir($package);
+-		my $objcopy = cross_command($package, "objcopy");
+-		my $strip = cross_command($package, "strip");
++		my $objcopy = cross_command($package,"__AT_BIN__"."objcopy");
++		my $strip = cross_command($package, "__AT_BIN__"."strip");
+ 
+ 		# Support for keeping the debugging symbols in a detached file.
+ 		my $keep_debug=$dh{K_FLAG};

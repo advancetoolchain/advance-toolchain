@@ -1,1 +1,211 @@
-../../../14.0/packages/gcc/stage_1
+#!/usr/bin/env bash
+#
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# GCC build parameters for stage 1
+# ================================
+#
+
+ATCFG_HOLD_TEMP_INSTALL='no'
+ATCFG_HOLD_TEMP_BUILD='no'
+# Build in a new directory
+ATCFG_BUILD_STAGE_T='dir'
+
+# Required pre build hacks
+atcfg_pre_hacks() {
+	# Overwrite the existing DEV-PHASE with Advance-Toolchain XX.Y-Z-rcW.
+	mv ${ATSRC_PACKAGE_WORK}/gcc/DEV-PHASE \
+	   ${ATSRC_PACKAGE_WORK}/gcc/DEV-PHASE.back
+	echo "Advance-Toolchain ${at_full_ver}" \
+	     > ${ATSRC_PACKAGE_WORK}/gcc/DEV-PHASE
+
+	# Expand REVISION with the requested revision.
+	mv ${ATSRC_PACKAGE_WORK}/gcc/REVISION \
+	   ${ATSRC_PACKAGE_WORK}/gcc/REVISION.back
+	echo "[${ATSRC_PACKAGE_REV}]" \
+	     > ${ATSRC_PACKAGE_WORK}/gcc/REVISION
+
+	# The following lines patch the release timestamp (gcc/DATESTAMP)
+	# with the date of latest entry in the IBM branch ChangeLog.
+	# When working on non-IBM branch, they should not be changed.
+	if [[ -e "${ATSRC_PACKAGE_WORK}/gcc/ChangeLog.ibm" ]]; then
+		mv ${ATSRC_PACKAGE_WORK}/gcc/DATESTAMP \
+		   ${ATSRC_PACKAGE_WORK}/gcc/DATESTAMP.back
+		echo "$(head -n 1 ${ATSRC_PACKAGE_WORK}/gcc/ChangeLog.ibm | cut -f 1 -d " " | sed "s/-//g")" \
+		     > ${ATSRC_PACKAGE_WORK}/gcc/DATESTAMP
+	fi
+}
+
+# Pre configure settings or commands to run
+atcfg_pre_configure() {
+	cc_64=${system_cc}
+	cxx_64=${system_cxx}
+	libdir="${at_dest}/lib"
+	if [[ "${cross_build}" == "no" ]]; then
+		if [[ "${build_arch}" == ppc64* ]]; then
+			if [[ "${default_compiler}" == "32" ]]; then
+				cc_64="${gcc64}"
+				cxx_64="${gpp64}"
+			fi
+			libdir="${at_dest}/lib64"
+		fi
+	fi
+}
+
+# Conditional configure command
+atcfg_configure() {
+	if [[ "${cross_build}" == "no" ]]; then
+		if [[ ("${distro_fm}" == "ubuntu") || ("${distro_fm}" == "debian") ]]; then
+			# Ubuntu and Debian requires a different path for include and libs
+			# due to its solution for multiarch support.
+			multiarch=yes
+		fi
+
+		# Configure command for native builds
+		CC="${cc_64}" \
+		CXX="${cxx_64}" \
+		AS="${at_dest}/bin/as" \
+		LD="${at_dest}/bin/ld" \
+		${ATSRC_PACKAGE_WORK}/configure \
+			--build=${host} \
+			--host=${host} \
+			--target=${target} \
+			--with-cpu=${default_cpu} \
+			--prefix="${at_dest}" \
+			${secure_plt:+--enable-secureplt} \
+			${disable_multilib:+--disable-multilib} \
+			--disable-threads \
+			--disable-shared \
+			--disable-libmudflap \
+			--disable-libssp \
+			--disable-bootstrap \
+			--disable-libgomp \
+			--disable-lto \
+			--disable-plugin \
+			--with-mpfr-include="${at_dest}/include" \
+			--with-mpfr-lib="${libdir}" \
+			--with-gmp-include="${at_dest}/include" \
+			--with-gmp-lib="${libdir}" \
+			--with-mpc-include="${at_dest}/include" \
+			--with-mpc-lib="${libdir}" \
+			--enable-languages=c,c++ \
+			--with-as="${at_dest}/bin/as" \
+			--with-ld="${at_dest}/bin/ld" \
+			${multiarch:+--enable-multiarch}
+	else
+		# Configure command for cross builds
+		CC="${cc_64}" \
+		CXX="${cxx_64}" \
+		LD_FOR_TARGET="${at_dest}/bin/${target}-ld" \
+		AS_FOR_TARGET="${at_dest}/bin/${target}-as" \
+		AR_FOR_TARGET="${at_dest}/bin/${target}-ar" \
+		RANLIB_FOR_TARGET="${at_dest}/bin/${target}-ranlib" \
+		${ATSRC_PACKAGE_WORK}/configure \
+			--build=${host} \
+			--host=${host} \
+			--target=${target64:-${target}} \
+			--with-cpu=${default_cpu} \
+			--prefix="${at_dest}" \
+			${with_longdouble:+--with-long-double-128} \
+			${secure_plt:+--enable-secureplt} \
+			${disable_multilib:+--disable-multilib} \
+			--disable-threads \
+			--disable-shared \
+			--disable-libmudflap \
+			--disable-libssp \
+			--disable-bootstrap \
+			--disable-libgomp \
+			--disable-libatomic \
+			--disable-decimal-float \
+			--disable-libquadmath \
+			--disable-libcc1 \
+			--disable-plugin \
+			--with-mpfr-include="${tmp_dir}/include" \
+			--with-mpfr-lib="${tmp_dir}/lib" \
+			--with-gmp-include="${tmp_dir}/include" \
+			--with-gmp-lib="${tmp_dir}/lib" \
+			--with-mpc-include="${tmp_dir}/include" \
+			--with-mpc-lib="${tmp_dir}/lib" \
+			--enable-languages=c \
+			--with-as="${at_dest}/bin/${target}-as" \
+			--with-ld="${at_dest}/bin/${target}-ld" \
+			--with-newlib \
+			--without-headers
+	fi
+}
+
+# Make build command
+atcfg_make() {
+	# gcc_cv_libc_provides_ssp=yes - GCC needs glibc headers in order to
+	#	detect if the standard C library supports stack protection.
+	#	However, the glibc headers aren't available at this stage.
+	${SUB_MAKE} all \
+		gcc_cv_libc_provides_ssp=yes
+}
+
+# Pre install settings or commands to run
+atcfg_pre_install() {
+	# The gcc install recipe must be able to find the following folders
+	# so that it can perform its tasks properly, as installing target
+	# host binaries on cross builds. The binutils package will create
+	# this folders on its install. As our installs are atomic, we need
+	# to provide them before hand, so GCC finds it and its install
+	# recipe can perform properly.
+	[[ -d "${install_place}/${at_dest}/${target}/bin" ]] || \
+		mkdir -p "${install_place}/${at_dest}/${target}/bin"
+	[[ -d "${install_place}/${at_dest}/${target}/lib" ]] || \
+		mkdir -p "${install_place}/${at_dest}/${target}/lib"
+}
+
+# Install build command
+atcfg_install() {
+	make install -j1 DESTDIR=${install_place}
+}
+
+# Post install settings or commands to run
+atcfg_post_install() {
+	# Create the required symlinks to install
+	if [[ "${cross_build}" == "no" ]]; then
+		pushd ${install_place}/${at_dest}/bin
+		if [[ ! -e ${target}-gcc ]]; then
+			echo -e "#!/bin/bash\nexec ${at_dest}/bin/gcc \"${@}\"" > ${target}-gcc
+			chmod a+x ${target}-gcc
+		fi
+		if [[ ! -e ${target}-g++ ]]; then
+			echo -e "#!/bin/bash\nexec ${at_dest}/bin/g++ \"${@}\"" > ${target}-g++
+			chmod a+x ${target}-g++
+		fi
+		if [[ ! -e ${target}-c++ ]]; then
+			ln -f ${target}-g++ ${target}-c++
+		fi
+		popd
+
+		# This hack isn't necessary on ppc64le.
+		if [[ "${build_arch}" == "ppc64" ]]; then
+			# The following files will be installed by GLIBC, so no
+			# need to have them properly mapped into the filelist
+			# (not installed into ${install_place} for mapping)
+			if [[ ! -e "${at_dest}/lib/ld.so.1" ]]; then
+				ln -s /lib/ld.so.1 "${at_dest}/lib/ld.so.1"
+			fi
+			if [[ ! -e "${at_dest}/lib/libc.so.6" ]]; then
+				ln -s /lib/libc.so.6 "${at_dest}/lib/libc.so.6"
+			fi
+		fi
+		# Remove unnecessary python scripts
+		find "${install_place}/${at_dest}" -name "libstdc++.so.*-gdb.py" -print -delete
+	fi
+}

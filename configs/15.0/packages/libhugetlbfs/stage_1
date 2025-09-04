@@ -1,1 +1,101 @@
-../../../14.0/packages/libhugetlbfs/stage_1
+#!/usr/bin/env bash
+#
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# Libhugetlbfs build parameters for stage 1
+# =================================================
+#
+
+ATCFG_HOLD_TEMP_INSTALL='no'
+# Tell the build system to hold the temp build folder
+ATCFG_HOLD_TEMP_BUILD='no'
+# Build in a new directory
+ATCFG_BUILD_STAGE_T='link'
+
+
+atcfg_configure()
+{
+	if [ ! -f "version" ]; then
+		echo "${ATSRC_PACKAGE_VER}" > version
+	fi
+	if [[ "${cross_build}" == 'no' ]]; then
+		cc_path="${at_dest}/bin/gcc"
+		prefix=${at_dest}
+	else
+		cc_path="${at_dest}/bin/${target64:-${target}}-gcc"
+		prefix="${dest_cross}/usr"
+	fi
+	cat Makefile | \
+		sed "/PREFIX =/s/^PREFIX =/PREFIX \?=/" | \
+		sed "/EXEDIR =/s/^EXEDIR =/EXEDIR \?=/" | \
+		sed "/DOCDIR =/s/^DOCDIR =/DOCDIR \?=/" | \
+		sed "/MANDIR[0-9]/s/PREFIX/MANDIR/" | \
+		sed "/MANDIR[0-9]/s/share\/man\///" | \
+		sed "/^MANDIR1/iMANDIR \?= \$(PREFIX)\/share\/man/" | \
+		sed "/ARCH =/s/^ARCH =/ARCH ?=/" | \
+		sed "/CC =/s/^CC =/CC ?=/" > Makefile.temp
+	[[ ${?} -eq 0 ]] && mv Makefile.temp Makefile || exit 1
+	# Patch the use of the reserved word 'restrict'
+	sed -i -e "s/restrict/restrict_exe/g" hugeutils.c
+}
+
+
+# Libhugetlbfs doesn't support parallel builds
+atcfg_make()
+{
+	if [[ "${cross_build}" == 'no' ]]; then
+		PATH="${at_dest}/bin:${PATH}" \
+		CC="${cc_path}" \
+		PREFIX="${prefix}" \
+		EXEDIR="${prefix}/bin" \
+			make -j1
+	else
+		# Make all runs "libs test tools".
+		# test uses options in ld that need to be run by the wrapper
+		# script on libhugetlbfs top tree, this script cannot be run on
+		# cross, so we need to do a make libs tools.
+		PATH="${at_dest}/bin:${PATH}" \
+		CC="${cc_path}" \
+		ARCH="${build_arch}" \
+		PREFIX="${prefix}" \
+		EXEDIR="${prefix}/bin" \
+			make libs tools -j1
+	fi
+}
+
+
+atcfg_make_check()
+{
+	# Package testing not done for a cross build
+	if [[ "${cross_build}" == 'no' ]]; then
+		PATH="${at_dest}/bin:${PATH}" \
+		PREFIX="${at_dest}" \
+		EXEDIR="${at_dest}/bin" \
+			make -j1 tests
+	fi
+}
+
+
+atcfg_install()
+{
+	PATH="${at_dest}/bin:${PATH}" \
+	ARCH="${build_arch}" \
+	PREFIX="${prefix}" \
+	EXEDIR="${prefix}/bin" \
+	DOCDIR="${at_dest}/share/doc/libhugetlbfs" \
+	MANDIR="${at_dest}/share/man" \
+		make -j1 install DESTDIR="${install_place}"
+}
