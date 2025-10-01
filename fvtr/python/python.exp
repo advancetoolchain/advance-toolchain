@@ -131,6 +131,7 @@ if { [string match 3.* $pyver] } {
                                       test_socket \
                                       test_ssl \
                                       test_subprocess \
+                                      test_sundry \
                                       test_tempfile \
                                       test_threading \
                                       test_time"
