@@ -104,7 +104,9 @@ ghapi_call ()
 	shift 2
 
 	curl ${url} -si -o ${outfile} -w '%{http_code}' \
-	     -H "Authorization: token $GITHUB_TOKEN" ${@}
+	     -H "Authorization: Bearer $GITHUB_TOKEN" \
+             -H "Content-Type: application/vnd.github+json" \
+             -H "X-GitHub-Api-Version: 2022-11-28" ${@}
 }
 
 # This function makes a request to the GitHub GraphQL API. It returns the HTTP
@@ -117,7 +119,7 @@ ghapi_call ()
 ghapi_gql_call ()
 {
 	if [[ ${#} -lt 2 ]]; then
-		echo "Function ghapi_call expects at least 2 parameters."
+		echo "Function ghapi_gql_call expects at least 2 parameters."
 		return 1
 	fi
 
@@ -127,7 +129,10 @@ ghapi_gql_call ()
 	shift 2
 
 	curl ${url} -s -X POST -o ${outfile} -w '%{http_code}' \
-	     -H "Authorization: bearer $GITHUB_TOKEN" -d "@${jsonfile}" ${@}
+	     -H "Authorization: Bearer $GITHUB_TOKEN" \
+             -H "Content-Type: application/vnd.github+json" \
+             -H "X-GitHub-Api-Version: 2022-11-28" \
+             -d "@${jsonfile}" ${@}
 }
 
 # This function returns the latest revision from a git/svn repository
@@ -415,6 +420,9 @@ EOF
 						print_msg 0 "Failed to enable auto-merge for pull request."
 						cat ${out}
 					fi
+				else
+					print_msg 0 "Failed to get pull request data."
+					cat ${out}
 				fi
 			fi
 		else
