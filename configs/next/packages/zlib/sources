@@ -21,7 +21,8 @@
 
 ATSRC_PACKAGE_NAME="ZLIB Compression Library"
 ATSRC_PACKAGE_VER=master
-ATSRC_PACKAGE_REV=545f19496359
+ATSRC_PACKAGE_REV=570720b0c24f
+ATSRC_PACKAGE_BRANCH=develop
 ATSRC_PACKAGE_LICENSE="Zlib License"
 ATSRC_PACKAGE_DOCLINK="http://www.zlib.net/manual.html"
 ATSRC_PACKAGE_RELFIXES=
@@ -47,8 +48,8 @@ atsrc_get_patches ()
 {
 	# Patch to add optimized functions using vector instructions.
 	at_get_patch \
-		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/14c0fde265187db7025c8d81f72979028222e9ce/Zlib%20Patches/zlib-power-optimizations.patch' \
-		a970d2062959fdd11726c04ded6efa60 || return ${?}
+		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/efa00d190d1e4b2f0449b88286deaded297d2a76/Zlib%20Patches/zlib-power-optimizations.patch' \
+		90b09b4497cbbbb722472c0d05b456d0 || return ${?}
 
 	return 0
 }
