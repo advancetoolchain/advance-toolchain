@@ -21,7 +21,7 @@
 
 ATSRC_PACKAGE_NAME="GNU Binutils"
 ATSRC_PACKAGE_VER=2.45.50
-ATSRC_PACKAGE_REV=0ef3fc29d09e
+ATSRC_PACKAGE_REV=5f69c00a6e07
 ATSRC_PACKAGE_LICENSE="GPL 2.0"
 ATSRC_PACKAGE_DOCLINK="http://sourceware.org/binutils/docs/"
 ATSRC_PACKAGE_RELFIXES=
@@ -45,8 +45,8 @@ ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://sourceware.org/git/?p=binutils-gdb.g
 atsrc_get_patches ()
 {
 	at_get_patch \
-		https://raw.githubusercontent.com/powertechpreview/powertechpreview/master/GNU%20Binutils%20Patches/workaround-to-build-with-gcc9.patch \
-		eaff715dac80052ff8181e4d6ae1f694 || return ${?}
+		https://raw.githubusercontent.com/powertechpreview/powertechpreview/ff2f93f623ceff503d67734411716f11d654fe04/GNU%20Binutils%20Patches/workaround-to-build-with-gcc9.patch \
+		e4e245f2e0d7d50ca4dee7e54022ee67 || return ${?}
 }
 
 atsrc_apply_patches ()
