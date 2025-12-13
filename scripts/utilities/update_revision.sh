@@ -104,9 +104,10 @@ ghapi_call ()
 	shift 2
 
 	curl ${url} -si -o ${outfile} -w '%{http_code}' \
+	     -H "User-Agent: Buildbot" \
 	     -H "Authorization: Bearer $GITHUB_TOKEN" \
-             -H "Content-Type: application/vnd.github+json" \
-             -H "X-GitHub-Api-Version: 2022-11-28" ${@}
+	     -H "Content-Type: application/vnd.github+json" \
+	     -H "X-GitHub-Api-Version: 2022-11-28" ${@}
 }
 
 # This function makes a request to the GitHub GraphQL API. It returns the HTTP
@@ -129,10 +130,11 @@ ghapi_gql_call ()
 	shift 2
 
 	curl ${url} -s -X POST -o ${outfile} -w '%{http_code}' \
+	     -H "User-Agent: Buildbot" \
 	     -H "Authorization: Bearer $GITHUB_TOKEN" \
-             -H "Content-Type: application/vnd.github+json" \
-             -H "X-GitHub-Api-Version: 2022-11-28" \
-             -d "@${jsonfile}" ${@}
+	     -H "Content-Type: application/vnd.github+json" \
+	     -H "X-GitHub-Api-Version: 2022-11-28" \
+	     -d "@${jsonfile}" ${@}
 }
 
 # This function returns the latest revision from a git/svn repository
@@ -250,27 +252,37 @@ send_to_github ()
 		print_msg 0 "SSH is okay."
 	fi
 
-	if [[ ! -z "$GITHUB_TOKEN" ]]; then
+	if [[ -n "$GITHUB_TOKEN" ]]; then
 		print_msg 2 "Checking if the token provided grants pull request creation \
 rights"
 
-                status=$(ghapi_call ${out} "user")
-		if [[ $? -ne 0 ]]; then
-			print_msg 0 "cURL to GitHub API exited with non zero status."
-			return 1
-		elif [[ ${status} -eq 200 ]]; then
-			if [[ $(grep -i 'x-oauth-scopes:' ${out}\
-				| grep -cE -e "public_repo" -e "repo([[:cntrl:]]*$|,)") -gt 0 ]]; then
-				print_msg 0 "The token provides the necessary rights!"
-			else
-				print_msg 0 "Please make sure the provided token has the \
+		while true; do
+	                status=$(ghapi_call ${out} "user")
+			if [[ $? -ne 0 ]]; then
+				print_msg 0 "cURL to GitHub API exited with non zero status."
+				return 1
+			elif [[ ${status} -eq 200 ]]; then
+				if [[ $(grep -i 'x-oauth-scopes:' ${out}\
+					| grep -cE -e "public_repo" -e "repo([[:cntrl:]]*$|,)") -gt 0 ]]; then
+					print_msg 0 "The token provides the necessary rights!"
+					break
+				else
+					print_msg 0 "Please make sure the provided token has the \
 public_repo scope enabled."
+					return 1
+				fi
+			elif [[ ${status} -eq 403 ]]; then
+				delay=$(grep -i "x-ratelimit-reset: " ${out} | tr -d " " | cut -d: -f2)
+				if [[ -z "${delay}" ]]; then
+					print_msg 0 "Unexpected error. Here's the status GitHub API returned: ${status}"
+					return 1
+				fi
+				sleep $((${delay} - $(date +%s) + 5))
+			else
+				print_msg 0 "Unexpected error. Here's the status GitHub API returned: ${status}"
 				return 1
 			fi
-		else
-			print_msg 0 "Unexpected error. Here's the status GitHub API returned: ${status}"
-			return 1
-		fi
+		done
 
 		print_msg 2 "Checking if a pull request to update this package \
 already exists, to avoid overwriting."
@@ -285,25 +297,33 @@ already exists, to avoid overwriting."
 		searchparams=$(printf "+%s" "${searchparamslist[@]}")
 		searchparams=${searchparams:1}
 
-                status=$(ghapi_call ${out} "search/issues?q=$searchparams")
-
-		if [[ $? -ne 0 ]]; then
-			print_msg 0 "cURL to GitHub API exited with non zero status."
-			return 1
-		elif [[ ${status} -eq 200 ]]; then
-			if [[ $(grep -m 1 "total_count" ${out} \
-			   | grep -oE "[0-9]+") -gt 0 ]]; then
-				print_msg 0 "There already is an open pull request for $pkg on AT \
-$cfg. Aborting operation..."
+		while true; do
+	                status=$(ghapi_call ${out} "search/issues?q=$searchparams")
+			if [[ $? -ne 0 ]]; then
+				print_msg 0 "cURL to GitHub API exited with non zero status."
 				return 1
-			else
-				print_msg 0 "No open pull request for this package and configset \
+			elif [[ ${status} -eq 200 ]]; then
+				if [[ $(grep -m 1 "total_count" ${out} \
+				   | grep -oE "[0-9]+") -gt 0 ]]; then
+					print_msg 0 "There already is an open pull request for $pkg on AT \
+$cfg. Aborting operation..."
+					return 1
+				else
+					print_msg 0 "No open pull request for this package and configset \
 exists!"
+				fi
+			elif [[ ${status} -eq 403 ]]; then
+				delay=$(grep -i "x-ratelimit-reset: " ${out} | tr -d " " | cut -d: -f2)
+				if [[ -z "${delay}" ]]; then
+					print_msg 0 "Unexpected error. Here's the status GitHub API returned: ${status}"
+					return 1
+				fi
+				sleep $((${delay} - $(date +%s) + 5))
+			else
+				print_msg 0 "Unexpected error. Here's the status GitHub API returned: ${status}"
+				return 1
 			fi
-		else
-			print_msg 0 "Unexpected error. Here's the status GitHub API returned: ${status}"
-			return 1
-		fi
+		done
 	fi
 	print_msg 0 "Connection can be established."
 
@@ -361,8 +381,9 @@ ${GITHUB_SIGNATURE:+Signed-off-by: ${GITHUB_SIGNATURE}}"
 	git push --force ${target_remote} HEAD:${target_branch}
 
 
-	if [[ ! -z "$GITHUB_TOKEN" ]]; then
-		cat > ${out} <<EOF
+	if [[ -n "$GITHUB_TOKEN" ]]; then
+		while true; do
+			cat > ${out} <<EOF
 {
 "title": "Update ${pkg} on AT ${cfg}",
 "body": "${version_str}Bump to revision ${2}",
@@ -370,19 +391,17 @@ ${GITHUB_SIGNATURE:+Signed-off-by: ${GITHUB_SIGNATURE}}"
 "base": "master"
 }
 EOF
-
-		status=$(ghapi_call ${out} "repos/advancetoolchain/advance-toolchain/pulls"\
+			status=$(ghapi_call ${out} "repos/advancetoolchain/advance-toolchain/pulls"\
 				    --data "@${out}")
+			if [[ ${status} -eq 201 ]]; then
+				# Enabling auto-merge if the version wasn't updated.
+				if [[ -z "${3}" ]]; then
+					print_msg 0 "Pull request creation successful!"
+					pr_number=$(grep -oE '"number": [0-9]+' ${out} | cut -d' ' -f2)
 
-		if [[ ${status} -eq 201 ]]; then
-                        # Enabling auto-merge if the version wasn't updated.
-                        if [[ -z "${3}" ]]; then
-				print_msg 0 "Pull request creation successful!"
-				pr_number=$(grep -oE '"number": [0-9]+' ${out} | cut -d' ' -f2)
-
-				# Enabling auto-merge on a PR is only available through
-				# the GraphQL API. First we need to get the PR's id
-				cat > payload.json <<EOF
+					# Enabling auto-merge on a PR is only available through
+					# the GraphQL API. First we need to get the PR's id
+					cat > payload.json <<EOF
 {
   "query": "query FindPullRequestID {
     repository(owner: \"advancetoolchain\", name: \"advance-toolchain\") {
@@ -394,13 +413,12 @@ EOF
 }
 EOF
 
-				status=$(ghapi_gql_call ${out} 'payload.json')
+					status=$(ghapi_gql_call ${out} 'payload.json')
+					if [[ ${status} -eq 200 ]]; then
+						pr_id="$(cat ${out} | jq -r '.data.repository.pullRequest.id')"
+						echo "PR ID: ${pr_id}"
 
-				if [[ ${status} -eq 200 ]]; then
-					pr_id="$(cat ${out} | jq -r '.data.repository.pullRequest.id')"
-					echo "PR ID: ${pr_id}"
-
-					cat > payload.json <<EOF
+						cat > payload.json <<EOF
 {
   "query": "mutation EnableAutoMerge {
     enablePullRequestAutoMerge(input: {pullRequestId: \"${pr_id}\", mergeMethod: REBASE}){
@@ -412,23 +430,32 @@ EOF
 }
 EOF
 
-					status=$(ghapi_gql_call ${out} 'payload.json')
-
-					if [[ ${status} -eq 200 ]]; then
-						print_msg 0 "Successfully enabled auto-merge for pull request."
+						status=$(ghapi_gql_call ${out} 'payload.json')
+						if [[ ${status} -eq 200 ]]; then
+							print_msg 0 "Successfully enabled auto-merge for pull request."
+						else
+							print_msg 0 "Failed to enable auto-merge for pull request."
+							cat ${out}
+						fi
 					else
-						print_msg 0 "Failed to enable auto-merge for pull request."
+						print_msg 0 "Failed to get pull request data."
 						cat ${out}
 					fi
-				else
-					print_msg 0 "Failed to get pull request data."
-					cat ${out}
 				fi
+				break
+			elif [[ ${status} -eq 403 ]]; then
+				delay=$(grep -i "x-ratelimit-reset: " ${out} | tr -d " " | cut -d: -f2)
+				if [[ -z "${delay}" ]]; then
+					print_msg 0 "Unexpected error. Here's the status GitHub API returned: ${status}"
+					break
+				fi
+				sleep $((${delay} - $(date +%s) + 5))
+			else
+				print_msg 0 "Pull request creation failed. cURL message:"
+				cat ${out}
+				break
 			fi
-		else
-			print_msg 0 "Pull request creation failed. cURL message:"
-			cat ${out}
-		fi
+		done
 	fi
 
 	# Switch back to original branch
