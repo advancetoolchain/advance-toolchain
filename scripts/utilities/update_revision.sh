@@ -311,6 +311,7 @@ $cfg. Aborting operation..."
 				else
 					print_msg 0 "No open pull request for this package and configset \
 exists!"
+					break
 				fi
 			elif [[ ${status} -eq 403 ]]; then
 				delay=$(grep -i "x-ratelimit-reset: " ${out} | tr -d " " | cut -d: -f2)
