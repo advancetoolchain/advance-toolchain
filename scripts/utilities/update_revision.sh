@@ -236,7 +236,7 @@ send_to_github ()
 	pkg=$(echo ${1} | awk -F "/" '{ print $(NF-1) }')
 	cfg=$(echo ${1} | awk -F "/" '{ print $(NF-3) }')
 
-        # Temp file to save output of REST calls to the GitHub API
+	# Temp file to save output of REST calls to the GitHub API
 	out=$(mktemp '/tmp/ghapi-XXXXX.out')
         trap '{ rm -f -- ${out}; }' EXIT
 
@@ -253,11 +253,10 @@ send_to_github ()
 	fi
 
 	if [[ -n "$GITHUB_TOKEN" ]]; then
-		print_msg 2 "Checking if the token provided grants pull request creation \
-rights"
+		print_msg 2 "Checking if the token provided grants pull request creation rights"
 
 		while true; do
-	                status=$(ghapi_call ${out} "user")
+			status=$(ghapi_call ${out} "user")
 			if [[ $? -ne 0 ]]; then
 				print_msg 0 "cURL to GitHub API exited with non zero status."
 				return 1
@@ -298,13 +297,12 @@ already exists, to avoid overwriting."
 		searchparams=${searchparams:1}
 
 		while true; do
-	                status=$(ghapi_call ${out} "search/issues?q=$searchparams")
+			status=$(ghapi_call ${out} "search/issues?q=$searchparams")
 			if [[ $? -ne 0 ]]; then
 				print_msg 0 "cURL to GitHub API exited with non zero status."
 				return 1
 			elif [[ ${status} -eq 200 ]]; then
-				if [[ $(grep -m 1 "total_count" ${out} \
-				   | grep -oE "[0-9]+") -gt 0 ]]; then
+				if [[ $(grep -m 1 "total_count" ${out} | grep -oE "[0-9]+") -gt 0 ]]; then
 					print_msg 0 "There already is an open pull request for $pkg on AT \
 $cfg. Aborting operation..."
 					return 1
@@ -395,51 +393,56 @@ EOF
 			status=$(ghapi_call ${out} "repos/advancetoolchain/advance-toolchain/pulls"\
 				    --data "@${out}")
 			if [[ ${status} -eq 201 ]]; then
+				print_msg 0 "Pull request creation successful!"
 				# Enabling auto-merge if the version wasn't updated.
 				if [[ -z "${3}" ]]; then
-					print_msg 0 "Pull request creation successful!"
-					pr_number=$(grep -oE '"number": [0-9]+' ${out} | cut -d' ' -f2)
-
 					# Enabling auto-merge on a PR is only available through
 					# the GraphQL API. First we need to get the PR's id
-					cat > payload.json <<EOF
-{
-  "query": "query FindPullRequestID {
-    repository(owner: \"advancetoolchain\", name: \"advance-toolchain\") {
-      pullRequest(number: ${pr_number}) {
-        id
-      }
-    }
-  }"
-}
-EOF
-
-					status=$(ghapi_gql_call ${out} 'payload.json')
-					if [[ ${status} -eq 200 ]]; then
-						pr_id="$(cat ${out} | jq -r '.data.repository.pullRequest.id')"
-						echo "PR ID: ${pr_id}"
-
+					pr_number=$(grep -oE '"number": ?[0-9]+' ${out} | tr -d ' ' | cut -d':' -f2)
+					if [[ -n "${pr_number}" ]]; then
 						cat > payload.json <<EOF
 {
-  "query": "mutation EnableAutoMerge {
-    enablePullRequestAutoMerge(input: {pullRequestId: \"${pr_id}\", mergeMethod: REBASE}){
-      actor {
-        login
-      }
-    }
-  }"
+"query": "query FindPullRequestID {
+	repository(owner: \"advancetoolchain\", name: \"advance-toolchain\") {
+	pullRequest(number: ${pr_number}) {
+		id
+	}
+	}
+}"
 }
 EOF
-
 						status=$(ghapi_gql_call ${out} 'payload.json')
 						if [[ ${status} -eq 200 ]]; then
-							print_msg 0 "Successfully enabled auto-merge for pull request."
+							pr_id="$(cat ${out} | jq -r '.data.repository.pullRequest.id')"
+							if [[ "${pr_id}" != "null" ]]; then
+								cat > payload.json <<EOF
+{
+"query": "mutation EnableAutoMerge {
+	enablePullRequestAutoMerge(input: {pullRequestId: \"${pr_id}\", mergeMethod: REBASE}){
+	actor {
+		login
+	}
+	}
+}"
+}
+EOF
+								status=$(ghapi_gql_call ${out} 'payload.json')
+								if [[ ${status} -eq 200 ]]; then
+									print_msg 0 "Successfully enabled auto-merge for pull request."
+								else
+									print_msg 0 "Failed to enable auto-merge for pull request."
+									cat ${out}
+								fi
+							else
+								print_msg 0 "Failed to get pull request id."
+								cat ${out}
+							fi
 						else
-							print_msg 0 "Failed to enable auto-merge for pull request."
+							print_msg 0 "Failed to get pull request data."
 							cat ${out}
 						fi
 					else
-						print_msg 0 "Failed to get pull request data."
+						print_msg 0 "Failed to get pull request number."
 						cat ${out}
 					fi
 				fi
