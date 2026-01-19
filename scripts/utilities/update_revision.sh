@@ -403,11 +403,11 @@ EOF
 						cat > payload.json <<EOF
 {
 "query": "query FindPullRequestID {
-	repository(owner: \"advancetoolchain\", name: \"advance-toolchain\") {
-	pullRequest(number: ${pr_number}) {
-		id
-	}
-	}
+  repository(owner: \"advancetoolchain\", name: \"advance-toolchain\") {
+    pullRequest(number: ${pr_number}) {
+      id
+    }
+  }
 }"
 }
 EOF
@@ -418,11 +418,11 @@ EOF
 								cat > payload.json <<EOF
 {
 "query": "mutation EnableAutoMerge {
-	enablePullRequestAutoMerge(input: {pullRequestId: \"${pr_id}\", mergeMethod: REBASE}){
-	actor {
-		login
-	}
-	}
+  enablePullRequestAutoMerge(input: {pullRequestId: \"${pr_id}\", mergeMethod: REBASE}){
+    actor {
+      login
+    }
+  }
 }"
 }
 EOF
