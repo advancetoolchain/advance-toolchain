@@ -1,1 +1,24 @@
-../../../15.0/deb/monolithic/mcore-libs.postrm
+#!/bin/bash
+#
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+if [[ "${1}" == configure ]]; then
+	# Update the loader cache after uninstall
+	# We never know the order rpm is going to remove/update AT's packages.
+	# So we only need to update the ldconf cache when ldconfig is still
+	# available
+	[[ -f __AT_DEST__/sbin/ldconfig ]] && __AT_DEST__/sbin/ldconfig
+fi

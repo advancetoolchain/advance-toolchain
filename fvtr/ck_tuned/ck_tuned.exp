@@ -15,11 +15,7 @@ if { $env(AT_CROSS_BUILD) == "yes" } {
 set libs {libc.so libcrypto.so libdfp.so libgcc_s.so libz.so}
 set libs2 {}
 
-# AT 15.0 moved processor-optimized libraries into glibc-hwcaps subdirectories.
-set hwcaps ""
-if { $::env(AT_MAJOR_VERSION) >= 15.0 } {
-	set hwcaps glibc-hwcaps/
-}
+set hwcaps glibc-hwcaps/
 
 # Firstly, list the files affecting BZ #96899.
 # In this scenario, we have to provide a directory for the processor required

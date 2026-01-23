@@ -67,13 +67,7 @@ proc process_deb {package expected} {
 
 	set at_full_ver [append_at_internal ${at_ver_rev}]
 	set version "(= ${at_full_ver})"
-
-	# On AT 15.0, all Pre-Depends have been replaced with Depends.
-	if { $::env(AT_MAJOR_VERSION) >= 15.0 } {
-		set depends_str "Depends"
-	} else {
-		set depends_str "Pre-Depends"
-	}
+	set depends_str "Depends"
 
 	if { ![info exists ::env(AT_WD)] } {
 		if { [catch {exec dpkg-query --status ${expected}}] } {

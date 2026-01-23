@@ -1,1 +1,191 @@
-../../../15.0/deb/monolithic/control
+# Copyright 2021 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+Source: advance-toolchain-__AT_MAJOR_INTERNAL__
+Section: devel
+Priority: optional
+Maintainer: Advance Toolchain
+
+Package: advance-toolchain-runtime
+Architecture: ppc64el
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__)
+Description: Advance Toolchain
+ The IBM Advance Toolchain is a self-contained toolchain that provides
+ open-source compilers, runtime libraries, and development tools to take
+ advantage of the latest IBM Power hardware features on Linux.
+
+Package: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime
+Architecture: ppc64el
+Build-Depends: dh-systemd
+Depends: ${shlibs:Depends} ${misc:Depends}
+Description: Advance Toolchain
+ The IBM Advance Toolchain is a self-contained toolchain that provides
+ open-source compilers, runtime libraries, and development tools to take
+ advantage of the latest IBM Power hardware features on Linux.
+
+Package: advance-toolchain-runtime-dbg
+Architecture: ppc64el
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime-dbg (= __AT_FULL_VER__)
+Description: Advance Toolchain
+ The Advance Toolchain debugging information.
+
+Package: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime-dbg
+Architecture: ppc64el
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__),
+         ${shlibs:Depends} ${misc:Depends}
+Description: Advance Toolchain
+ The Advance Toolchain debugging information.
+
+Package: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime-compat
+Architecture: ppc64el
+Conflicts: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime
+Depends: ${shlibs:Depends}
+Description: Advance Toolchain
+ The IBM Advance Toolchain is a self-contained toolchain that provides
+ open-source compilers, runtime libraries, and development tools to take
+ advantage of the latest IBM Power hardware features on Linux.
+
+Package: advance-toolchain-devel
+Architecture: ppc64el
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-devel (= __AT_FULL_VER__),
+         ${shlibs:Depends} ${misc:Depends}
+Description: Advance Toolchain
+ The IBM Advance Toolchain is a self-contained toolchain that provides
+ open-source compilers, runtime libraries, and development tools to take
+ advantage of the latest IBM Power hardware features on Linux.
+ This package provides the packages necessary to build applications that use the
+ features provided by the Advance Toolchain.
+
+Package: advance-toolchain-__AT_MAJOR_INTERNAL__-devel
+Architecture: ppc64el
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__),
+         ${shlibs:Depends} ${misc:Depends}
+Suggests: environment-modules
+Description: Advance Toolchain
+ The IBM Advance Toolchain is a self-contained toolchain that provides
+ open-source compilers, runtime libraries, and development tools to take
+ advantage of the latest IBM Power hardware features on Linux.
+ This package provides the packages necessary to build applications that use the
+ features provided by the Advance Toolchain.
+
+Package: advance-toolchain-devel-dbg
+Architecture: ppc64el
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-devel-dbg (= __AT_FULL_VER__)
+Description: Advance Toolchain
+ The Advance Toolchain debugging information.
+
+Package: advance-toolchain-__AT_MAJOR_INTERNAL__-devel-dbg
+Architecture: ppc64el
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-devel (= __AT_FULL_VER__),
+         ${shlibs:Depends} ${misc:Depends}
+Description: Advance Toolchain
+ The Advance Toolchain debugging information.
+
+Package: advance-toolchain-mcore-libs
+Architecture: ppc64el
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-mcore-libs (= __AT_FULL_VER__)
+Description: Advance Toolchain
+ The IBM Advance Toolchain is a self-contained toolchain that provides
+ open-source compilers, runtime libraries, and development tools to take
+ advantage of the latest IBM Power hardware features on Linux.
+ This package provides the necessary libraries to build multi-threaded
+ applications.
+
+Package: advance-toolchain-__AT_MAJOR_INTERNAL__-mcore-libs
+Architecture: ppc64el
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__),
+         ${shlibs:Depends} ${misc:Depends}
+Description: Advance Toolchain
+ The IBM Advance Toolchain is a self-contained toolchain that provides
+ open-source compilers, runtime libraries, and development tools to take
+ advantage of the latest IBM Power hardware features on Linux.
+ This package provides the necessary libraries to build multi-threaded
+ applications.
+
+Package: advance-toolchain-mcore-libs-dbg
+Architecture: ppc64el
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-mcore-libs-dbg (= __AT_FULL_VER__)
+Description: Advance Toolchain
+ The Advance Toolchain debugging information.
+
+Package: advance-toolchain-__AT_MAJOR_INTERNAL__-mcore-libs-dbg
+Architecture: ppc64el
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-mcore-libs (= __AT_FULL_VER__),
+         ${shlibs:Depends} ${misc:Depends}
+Description: Advance Toolchain
+ The Advance Toolchain debugging information.
+
+Package: advance-toolchain-perf
+Architecture: ppc64el
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-perf (= __AT_FULL_VER__)
+Description: Advance Toolchain
+ The IBM Advance Toolchain is a self-contained toolchain that provides
+ open-source compilers, runtime libraries, and development tools to take
+ advantage of the latest IBM Power hardware features on Linux.
+ This package contains the performance library install targets for Valgrind.
+
+Package: advance-toolchain-__AT_MAJOR_INTERNAL__-perf
+Architecture: ppc64el
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__),
+         ${shlibs:Depends} ${misc:Depends}
+Description: Advance Toolchain
+ The IBM Advance Toolchain is a self-contained toolchain that provides
+ open-source compilers, runtime libraries, and development tools to take
+ advantage of the latest IBM Power hardware features on Linux.
+ This package contains the performance library install targets for Valgrind.
+
+Package: advance-toolchain-perf-dbg
+Architecture: ppc64el
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-perf-dbg (= __AT_FULL_VER__)
+Description: Advance Toolchain
+ The Advance Toolchain debugging information.
+
+Package: advance-toolchain-__AT_MAJOR_INTERNAL__-perf-dbg
+Architecture: ppc64el
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-perf (= __AT_FULL_VER__),
+         ${shlibs:Depends} ${misc:Depends}
+Description: Advance Toolchain
+ The Advance Toolchain debugging information.
+
+Package: advance-toolchain-libnxz
+Architecture: ppc64el
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz (= __AT_FULL_VER__)
+Description: Advance Toolchain
+ The IBM Advance Toolchain is a self-contained toolchain that provides
+ open-source compilers, runtime libraries, and development tools to take
+ advantage of the latest IBM Power hardware features on Linux.
+ This package contains the NX GZIP Library.
+
+Package: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz
+Architecture: ppc64el
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__),
+         ${shlibs:Depends} ${misc:Depends}
+Description: Advance Toolchain
+ The IBM Advance Toolchain is a self-contained toolchain that provides
+ open-source compilers, runtime libraries, and development tools to take
+ advantage of the latest IBM Power hardware features on Linux.
+ This package contains the NX GZIP Library.
+
+Package: advance-toolchain-libnxz-dbg
+Architecture: ppc64el
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz-dbg (= __AT_FULL_VER__)
+Description: Advance Toolchain
+ This package contains the NX GZIP Library debugging information.
+
+Package: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz-dbg
+Architecture: ppc64el
+Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz (= __AT_FULL_VER__),
+         ${shlibs:Depends} ${misc:Depends}
+Description: Advance Toolchain
+ This package contains the NX GZIP Library debugging information.
