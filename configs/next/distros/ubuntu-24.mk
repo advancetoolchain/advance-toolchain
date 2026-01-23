@@ -1,1 +1,1 @@
-../../18.0/distros/ubuntu-24.mk
+../../19.0/distros/ubuntu-24.mk

@@ -1,1 +1,1 @@
-../../../18.0/packages/glibc/glibc.mk
+../../../19.0/packages/glibc/glibc.mk

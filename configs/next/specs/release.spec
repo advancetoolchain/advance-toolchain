@@ -1,1 +1,1 @@
-../../18.0/specs/release.spec
+../../19.0/specs/release.spec
