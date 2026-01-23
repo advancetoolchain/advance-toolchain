@@ -1,1 +1,1 @@
-../../18.0/arch/ppc64.ppc64.mk
+../../19.0/arch/ppc64.ppc64.mk
