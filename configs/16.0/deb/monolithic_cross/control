@@ -1,1 +1,117 @@
-../../../15.0/deb/monolithic_cross/control
+# Copyright 2017 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+Source: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__
+Section: devel
+Priority: optional
+Maintainer: Advance Toolchain
+
+Package: advance-toolchain-cross__BUILD_ARCH__
+Architecture: any
+Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__ (= __AT_FULL_VER__)
+Description: Advance Toolchain cross compiler
+ The IBM Advance Toolchain is a self-contained toolchain that provides
+ open-source compilers, runtime libraries, and development tools to take
+ advantage of the latest IBM Power hardware features on Linux.
+
+Package: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__
+Architecture: any
+Depends: ${shlibs:Depends}, advance-toolchain-__AT_MAJOR_INTERNAL__-cross-common (= __AT_FULL_VER__)
+Description: Advance Toolchain cross compiler
+ The IBM Advance Toolchain is a self-contained toolchain that provides
+ open-source compilers, runtime libraries, and development tools to take
+ advantage of the latest IBM Power hardware features on Linux.
+Multi-Arch: foreign
+
+Package: advance-toolchain-cross-common
+Architecture: any
+Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross-common (= __AT_FULL_VER__)
+Description: Advance Toolchain cross compiler common files
+ The IBM Advance Toolchain is a self-contained toolchain that provides
+ open-source compilers, runtime libraries, and development tools to take
+ advantage of the latest IBM Power hardware features on Linux.
+ This package provides common files for the Advance Toolchain.
+
+Package: advance-toolchain-__AT_MAJOR_INTERNAL__-cross-common
+Architecture: any
+Pre-Depends: info
+Depends: ${shlibs:Depends}, info
+Description: Advance Toolchain cross compiler common files
+ The IBM Advance Toolchain is a self-contained toolchain that provides
+ open-source compilers, runtime libraries, and development tools to take
+ advantage of the latest IBM Power hardware features on Linux.
+ This package provides common files for the Advance Toolchain.
+Multi-Arch: foreign
+
+Package: advance-toolchain-cross__BUILD_ARCH__-runtime-extras
+Architecture: any
+Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__-runtime-extras (= __AT_FULL_VER__)
+Description: Advance Toolchain cross compiler runtime extras files
+ The IBM Advance Toolchain is a self-contained toolchain that provides
+ open-source compilers, runtime libraries, and development tools to take
+ advantage of the latest IBM Power hardware features on Linux.
+ This package contains the runtime libraries to run programs built with the
+ Advance Toolchain that are not present in the main cross compiler package.
+
+Package: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__-runtime-extras
+Architecture: any
+Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__ (= __AT_FULL_VER__)
+Depends: ${shlibs:Depends}
+Description: Advance Toolchain cross compiler runtime extras files
+ The IBM Advance Toolchain is a self-contained toolchain that provides
+ open-source compilers, runtime libraries, and development tools to take
+ advantage of the latest IBM Power hardware features on Linux.
+ This package contains the runtime libraries to run programs built with the
+ Advance Toolchain that are not present in the main cross compiler package.
+Multi-Arch: foreign
+
+Package: advance-toolchain-cross__BUILD_ARCH__-mcore-libs
+Architecture: any
+Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__-mcore-libs (= __AT_FULL_VER__)
+Description: Advance Toolchain
+ The IBM Advance Toolchain is a self-contained toolchain that provides
+ open-source compilers, runtime libraries, and development tools to take
+ advantage of the latest IBM Power hardware features on Linux.
+ This package provides the necessary libraries to build multi-threaded
+ applications.
+
+Package: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__-mcore-libs
+Architecture: any
+Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__ (= __AT_FULL_VER__)
+Depends: ${shlibs:Depends} ${misc:Depends}
+Description: Advance Toolchain
+ The IBM Advance Toolchain is a self-contained toolchain that provides
+ open-source compilers, runtime libraries, and development tools to take
+ advantage of the latest IBM Power hardware features on Linux.
+ This package provides the necessary libraries to build multi-threaded
+ applications.
+
+Package: advance-toolchain-cross__BUILD_ARCH__-libnxz
+Architecture: any
+Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__-libnxz (= __AT_FULL_VER__)
+Description: Advance Toolchain
+ The IBM Advance Toolchain is a self-contained toolchain that provides
+ open-source compilers, runtime libraries, and development tools to take
+ advantage of the latest IBM Power hardware features on Linux.
+ This package contains the NX GZIP Library.
+
+Package: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__-libnxz
+Architecture: any
+Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__ (= __AT_FULL_VER__)
+Depends: ${shlibs:Depends} ${misc:Depends}
+Description: Advance Toolchain
+ The IBM Advance Toolchain is a self-contained toolchain that provides
+ open-source compilers, runtime libraries, and development tools to take
+ advantage of the latest IBM Power hardware features on Linux.
+ This package contains the NX GZIP Library.

@@ -1,1 +1,84 @@
-../../../15.0/packages/python/stage_1
+#!/usr/bin/env bash
+#
+# Copyright 2021 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# Python build parameters for stage 1 32 bits
+# ===========================================
+#
+
+# Tell the build system to hold the temp install folder
+ATCFG_HOLD_TEMP_INSTALL='no'
+# Tell the build system to hold the temp build folder
+ATCFG_HOLD_TEMP_BUILD='no'
+# Build in a new directory
+ATCFG_BUILD_STAGE_T='dir'
+
+atcfg_post_hacks() {
+	rm -f ${install_transfer}/lib/libstdc++.so.6.0.*-gdb.py \
+	      ${install_transfer}/lib64/libstdc++.so.6.0.*-gdb.py
+}
+
+atcfg_configure() {
+	PATH=${at_dest}/bin:${PATH} \
+	CC="${at_dest}/bin/gcc -m${compiler}" \
+	CXX="${at_dest}/bin/g++ -m${compiler}" \
+	CFLAGS="-g -O3 -Wformat" \
+	CXXFLAGS="-g -O3" \
+	${ATSRC_PACKAGE_WORK}/configure \
+		--build=${target} \
+		--host=${target} \
+		--target=${target} \
+		--prefix=${at_dest} \
+		--exec-prefix=${at_dest} \
+		--libdir="${at_dest}/lib${compiler##32}" \
+		--with-platlibdir="lib${compiler##32}" \
+		--enable-shared \
+		--enable-loadable-sqlite-extensions \
+		--with-openssl="${at_dest}" \
+		--with-openssl-rpath="${at_dest}/lib${compiler##32}" \
+		--with-ssl-default-suites=openssl \
+		--enable-optimizations \
+		--with-lto
+}
+
+atcfg_make() {
+	PATH=${at_dest}/bin:${PATH} ${SUB_MAKE}
+}
+
+atcfg_make_check() {
+	# Package testing not done on a cross build.
+
+	if [[ "${cross_build}" == 'no' ]]; then
+		PATH=${at_dest}/bin:${PATH} ${SUB_MAKE} test
+	fi
+}
+
+atcfg_install() {
+	PATH=${at_dest}/bin:${PATH} \
+		${SUB_MAKE} DESTDIR="${install_place}" install libainstall
+}
+
+atcfg_post_install() {
+	# Some projects (Boost) can't identify the Python headers directory
+	# when it's named pythonX.Ym.  So, it's necessary to create the
+	# symlink pythonX.Y -> pythonX.Ym.
+	if [ -d ${install_transfer}/include/python*m ]; then
+		pushd ${install_transfer}/include > /dev/null
+		local dir=$(ls -1d python*m | head -n 1)
+		ln -s ${dir} ${dir/%m/}
+		popd
+	fi
+}
