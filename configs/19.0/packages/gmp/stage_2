@@ -39,7 +39,7 @@ atcfg_configure () {
 	PATH=${at_dest}/bin:${PATH} \
 	CC="${at_dest}/bin/gcc -m${compiler}" \
 	CXX="${at_dest}/bin/g++ -m${compiler}" \
-	CFLAGS="-g -O3" \
+	CFLAGS="-g -O3 -std=gnu17" \
 	CXXFLAGS="-g -O3" \
 	${ATSRC_PACKAGE_WORK}/configure --build=${target} \
 									--host=${target} \

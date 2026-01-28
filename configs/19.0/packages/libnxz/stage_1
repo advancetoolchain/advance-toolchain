@@ -60,6 +60,7 @@ atcfg_configure() {
 	# definitions -fcommon is needed.
 	AR="${at_ar}" \
 	CC="${at_dest}/bin/${target64:-${target}}-gcc" \
+	CFLAGS="-Wno-error=old-style-definition" \
 	${ATSRC_PACKAGE_WORK}/configure --build="${configure_build}" \
 					--host="${configure_host}" \
 					--prefix="${configure_prefix}" \
