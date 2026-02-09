@@ -21,7 +21,7 @@
 
 ATSRC_PACKAGE_NAME="TCMalloc"
 ATSRC_PACKAGE_VER=master
-ATSRC_PACKAGE_REV=f1b20bd65ba5
+ATSRC_PACKAGE_REV=6ff72d3a7f29
 ATSRC_PACKAGE_LICENSE="BSD License"
 ATSRC_PACKAGE_DOCLINK="http://htmlpreview.github.io/?https://github.com/gperftools/gperftools/blob/master/docs/tcmalloc.html"
 ATSRC_PACKAGE_RELFIXES=
@@ -42,16 +42,3 @@ ATSRC_PACKAGE_DISTRIB=no
 ATSRC_PACKAGE_BUNDLE=toolchain_extra
 # Not needed because file follows master branch
 # ATSRC_PACKAGE_UPSTREAM=
-
-atsrc_get_patches ()
-{
-        at_get_patch \
-                https://raw.githubusercontent.com/powertechpreview/powertechpreview/b171d9bd555e19d4c28ce5106dce03a636a02dc2/TCMalloc%20Patches/workaround-to-build-tcmalloc-2.18.patch \
-                1988f309d06e6f75ba2c4a72ab12d5a8 || return ${?}
-}
-
-atsrc_apply_patches ()
-{
-        patch -p1 < workaround-to-build-tcmalloc-2.18.patch \
-                || return ${?}
-}
