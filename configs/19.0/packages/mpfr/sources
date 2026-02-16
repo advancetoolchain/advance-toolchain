@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2024 IBM Corporation
+# Copyright 2026 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 #
 
 ATSRC_PACKAGE_NAME="GNU MPFR Library"
-ATSRC_PACKAGE_VER=4.2.1
+ATSRC_PACKAGE_VER=4.2.2
 ATSRC_PACKAGE_REV=
 ATSRC_PACKAGE_LICENSE="GPL 3.0"
 ATSRC_PACKAGE_DOCLINK="http://www.mpfr.org/mpfr-current/mpfr.html"
