@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2022 IBM Corporation
+# Copyright 2026 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@
 #
 
 ATSRC_PACKAGE_NAME="Expat XML Parser"
-ATSRC_PACKAGE_VER=2.6.2
-ATSRC_PACKAGE_REV=fa75b96546c0
+ATSRC_PACKAGE_VER=2.7.4
+ATSRC_PACKAGE_REV=f5c2890d8ff9
 ATSRC_PACKAGE_DOCLINK="https://libexpat.github.io/doc/"
 ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
