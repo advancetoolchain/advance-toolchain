@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2022 IBM Corporation
+# Copyright 2026 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@
 #
 
 ATSRC_PACKAGE_NAME="Python"
-ATSRC_PACKAGE_VER=3.12.12
-ATSRC_PACKAGE_REV=dc353959be7d
-ATSRC_PACKAGE_BRANCH=3.12
+ATSRC_PACKAGE_VER=3.13.12
+ATSRC_PACKAGE_REV=1cbe48183475
+ATSRC_PACKAGE_BRANCH=3.13
 ATSRC_PACKAGE_LICENSE="Python Software Foundation License 2"
 ATSRC_PACKAGE_DOCLINK="https://docs.python.org/${ATSRC_PACKAGE_VER%\.*}/"
 ATSRC_PACKAGE_RELFIXES=
