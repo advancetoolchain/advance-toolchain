@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2021 IBM Corporation
+# Copyright 2026 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@
 #
 
 ATSRC_PACKAGE_NAME="Decimal Floating Point C Library"
-ATSRC_PACKAGE_VER=1.0.16
-ATSRC_PACKAGE_REV=ff629deadfd1
+ATSRC_PACKAGE_VER=1.0.17
+ATSRC_PACKAGE_REV=44d4445c1f95
 ATSRC_PACKAGE_LICENSE="Lesser GPL 2.1"
 ATSRC_PACKAGE_DOCLINK="https://raw.github.com/libdfp/libdfp/master/README.user"
 ATSRC_PACKAGE_RELFIXES=
