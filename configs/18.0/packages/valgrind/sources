@@ -22,6 +22,7 @@
 ATSRC_PACKAGE_NAME="Valgrind"
 ATSRC_PACKAGE_VER=3.23.0
 ATSRC_PACKAGE_REV=c54d3161248f
+ATSRC_PACKAGE_BRANCH=VALGRIND_3_23_BRANCH
 ATSRC_PACKAGE_LICENSE="GPL 2.0"
 ATSRC_PACKAGE_DOCLINK="http://valgrind.org/docs/"
 ATSRC_PACKAGE_RELFIXES=
@@ -40,6 +41,7 @@ ATSRC_PACKAGE_TARS=''
 ATSRC_PACKAGE_MAKE_CHECK=
 ATSRC_PACKAGE_DISTRIB=yes
 ATSRC_PACKAGE_BUNDLE=profile
+ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://sourceware.org/git/?p=valgrind.git;a=blob_plain;f=configure.ac;hb=__REVISION__" | grep "m4_define.*v_m.*_ver" | cut -d, -f2 | tr "\n" "." | sed "s/^[^0-9]*\([0-9]*\)[^0-9]*\([0-9]*\)[^0-9]*\([0-9]*\).*$/\1.\2.\3/"'
 
 atsrc_get_patches ()
 {
