@@ -48,13 +48,13 @@ set tmp_file [exec mktemp]
 if { $TARGET32 } {
 	printit "Testing target 32 linking..."
 	compile "${CXX} -m32 -static ${CFLAGS} -lboost_random $FULLPATH/test.cpp $install_prefix/lib/libboost_random.a -o ${tmp_file}"
-	compile "${CXX} -m32 ${CFLAGS} $FULLPATH/test.cpp -lboost_random -lboost_system -o ${tmp_file}"
+	compile "${CXX} -m32 ${CFLAGS} $FULLPATH/test.cpp -lboost_random -lboost_thread -L$install_prefix/lib -o ${tmp_file}"
 	printit "Successfully built 32 bit static and dynamic executables"
 }
 if { $TARGET64 } {
 	printit "Testing target 64 linking..."
 	compile "${CXX} -m64 -static ${CFLAGS} -lboost_random $FULLPATH/test.cpp $install_prefix/lib64/libboost_random.a -o ${tmp_file}"
-	compile "${CXX} -m64 ${CFLAGS} $FULLPATH/test.cpp -lboost_random -lboost_system -o ${tmp_file}"
+	compile "${CXX} -m64 ${CFLAGS} $FULLPATH/test.cpp -lboost_random -lboost_thread -L$install_prefix/lib64 -o ${tmp_file}"
 	printit "Successfully built 64 bit static and dynamic executables"
 }
 
