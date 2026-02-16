@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2021 IBM Corporation
+# Copyright 2026 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@
 #
 
 ATSRC_PACKAGE_NAME="Userspace RCU"
-ATSRC_PACKAGE_VER=0.14.2
-ATSRC_PACKAGE_REV=c559cdd31975
-ATSRC_PACKAGE_BRANCH=stable-0.14
+ATSRC_PACKAGE_VER=0.15.6
+ATSRC_PACKAGE_REV=d8bd37fb288a
+ATSRC_PACKAGE_BRANCH=stable-0.15
 ATSRC_PACKAGE_LICENSE="Lesser GPL 2.1"
 ATSRC_PACKAGE_DOCLINK="https://lttng.org/urcu"
 ATSRC_PACKAGE_RELFIXES=
