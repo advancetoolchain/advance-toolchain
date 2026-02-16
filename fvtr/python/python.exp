@@ -119,6 +119,7 @@ if { [string match 3.* $pyver] } {
                                       test_faulthandler \
                                       test_ftplib \
                                       test_gdb \
+                                      test_httplib \
                                       test_httpservers \
                                       test_imaplib \
                                       test_logging \
@@ -134,7 +135,8 @@ if { [string match 3.* $pyver] } {
                                       test_sundry \
                                       test_tempfile \
                                       test_threading \
-                                      test_time"
+                                      test_time \
+                                      test_urllib2_localnet"
 
 	set spawn_cmd "spawn $env(AT_DEST)/bin/python3 $test_script \
 		-j$CORES -x $common_exclude_tests"
