@@ -1,4 +1,4 @@
-# Copyright 2024 IBM Corporation
+# Copyright 2026 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@
 AT_NAME := at
 AT_MAJOR_VERSION := 19.0
 AT_REVISION_NUMBER := 0
-AT_INTERNAL := alpha
+AT_INTERNAL := alpha1
 AT_PREVIOUS_VERSION := 18.0
 AT_DIR_NAME := at-next-$(AT_MAJOR_VERSION)-$(AT_REVISION_NUMBER)-$(AT_INTERNAL)
 
