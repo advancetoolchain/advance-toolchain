@@ -1,1 +1,50 @@
-../../../18.0/packages/openssl/sources
+#!/usr/bin/env bash
+#
+# Copyright 2026 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# OpenSSL source package and build info
+# =====================================
+#
+
+ATSRC_PACKAGE_NAME="Open Secure Sockets Layer"
+ATSRC_PACKAGE_VER=3.5.5
+ATSRC_PACKAGE_REV=67b5686b4419
+ATSRC_PACKAGE_BRANCH=openssl-3.5
+ATSRC_PACKAGE_LICENSE="Apache 2.0"
+ATSRC_PACKAGE_DOCLINK="http://www.openssl.org/docs/"
+ATSRC_PACKAGE_RELFIXES=
+ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}"
+ATSRC_PACKAGE_PRE="test -d openssl-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_CO=([0]="git clone https://github.com/openssl/openssl.git openssl")
+ATSRC_PACKAGE_GIT="git checkout -b openssl-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV} ${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_POST="mv openssl openssl-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_SRC="${AT_BASE}/sources/openssl-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/openssl
+ATSRC_PACKAGE_MLS=
+ATSRC_PACKAGE_MAKE_CHECK=
+ATSRC_PACKAGE_TARS=
+ATSRC_PACKAGE_DISTRIB=no
+ATSRC_PACKAGE_BUNDLE=toolchain_extra
+ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://raw.githubusercontent.com/openssl/openssl/__REVISION__/CHANGES.md" | grep -m1 "Changes between .*and .*xx XXX xxxx" | sed "s/^.* \([0-9\.][0-9\.]*\) and .*$/\1/"'
+
+atsrc_apply_patches ()
+{
+	# Remove unwanted crypto algorithms.
+	rm -rf crypto/idea include/openssl/idea.h
+	rm -rf crypto/rc5 include/openssl/rc5.h
+
+	return 0
+}
