@@ -46,8 +46,8 @@ ATSRC_PACKAGE_BUNDLE=profile
 atsrc_get_patches ()
 {
 	at_get_patch \
-		https://github.com/powertechpreview/powertechpreview/raw/07c79e0f6534069c5655083dc978e450a45d59fe/Valgrind%20iTrace%20Patches/3.11/vg-3110-itrace.v1.tgz \
-		9b44cb5beb15fd89bde3f8fa3030d8ce || return ${?}
+		https://github.com/powertechpreview/powertechpreview/raw/92788e70e34985d36a218af976be23ff5fe65ae6/Valgrind%20iTrace%20Patches/vg-itrace.v2.tgz \
+		5f768fb4ae0290fd1c936e3f20240974 || return ${?}
 
 	# Update itrace to Valgrind 3.14.
 	at_get_patch \
@@ -64,13 +64,14 @@ atsrc_get_patches ()
 
 atsrc_apply_patches ()
 {
-	tar xzf vg-3110-itrace.v1.tgz || return ${?}
+	tar xzf vg-itrace.v2.tgz || return ${?}
 
 	# Apply these patches to hook the itrace subdirectories into the
 	# valgrind makefile and configure scripts.
 	patch -p0 < add-itrace-bits-to-Makefile.am.diff || return ${?}
 	patch -p0 < add-itrace-bits-to-configure.ac.diff || return ${?}
 	patch -p0 < add-itrace-bits-to-check_headers_and_includes.diff || return ${?}
+	patch -p0 < add-itrace-bits-to-docs.diff || return ${?}
 
 	# Update itrace to Valgrind 3.14.
 	patch -p1 < update_itrace_to_use_epoch.v2.diff || return ${?}
