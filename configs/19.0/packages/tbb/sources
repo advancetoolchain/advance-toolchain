@@ -1,1 +1,59 @@
-../../../18.0/packages/tbb/sources
+#!/usr/bin/env bash
+#
+# Copyright 2026 IBM Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# TBB source package and build info
+# =======================================
+#
+
+ATSRC_PACKAGE_NAME="Thread Building Blocks"
+ATSRC_PACKAGE_VER=2022.3.0
+ATSRC_PACKAGE_REV=f1862f38f835
+ATSRC_PACKAGE_BRANCH=onetbb_2022
+ATSRC_PACKAGE_LICENSE="GPL 2.0"
+ATSRC_PACKAGE_DOCLINK="https://www.threadingbuildingblocks.org/"
+ATSRC_PACKAGE_RELFIXES=
+ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_VERID="${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
+ATSRC_PACKAGE_PRE="test -d tbb-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_CO=([0]="git clone https://github.com/uxlfoundation/oneTBB.git tbb")
+ATSRC_PACKAGE_GIT="git checkout -b tbb-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV} ${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_POST="mv tbb tbb-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}"
+ATSRC_PACKAGE_SRC=${AT_BASE}/sources/tbb-${ATSRC_PACKAGE_VER}-${ATSRC_PACKAGE_REV}
+ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/tbb
+ATSRC_PACKAGE_MLS=""
+ATSRC_PACKAGE_ALOC=""
+ATSRC_PACKAGE_PATCHES=""
+ATSRC_PACKAGE_TARS=""
+# Disable make check testing due to failures
+ATSRC_PACKAGE_MAKE_CHECK=none
+ATSRC_PACKAGE_DISTRIB=yes
+ATSRC_PACKAGE_BUNDLE=mcore-libs
+
+# This is a package function to verify the make_check log.
+# In some cases 'make check' will return 0 even though the log shows that
+# there some failures did occur.  Define this function for
+# packages where that has happened.  Due to differences in the implementations
+# of 'make check' or 'make test' the strings that indicate failure could
+# be different.
+
+atsrc_package_verify_make_check_log ()
+{
+	if [[ -n "${1}" ]]; then
+		grep -i "error[: ]" "${1}" > /dev/null
+		return ${?}
+	fi
+}
