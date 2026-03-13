@@ -75,10 +75,17 @@ set env(PYTHON_SKIP_TESTS) "test_ssl.test_random_fork"
 # and test_epoll) fail intermittently; disabling them reduces the
 # maintenance burden (someone would have to restart builds) at the cost
 # of loosing some test coverage.
-set common_exclude_tests "test_doctest test_doctest2 test_asyncio \
-			  test_asyncore test_concurrent_futures	\
-			  test_buffer test_tarball test_venv test_pty \
-			  test_epoll test_signal"
+set common_exclude_tests " test_asyncio \
+			   test_asyncore \
+			   test_buffer \
+			   test_concurrent_futures \
+			   test_doctest \
+			   test_doctest2 \
+			   test_epoll \
+			   test_pty \
+			   test_signal \
+			   test_tarball \
+			   test_venv "
 
 # The following tests take almost 1 hour to execute:
 # test_multiprocessing_fork test_multiprocessing_forkserver
@@ -137,6 +144,15 @@ if { [string match 3.* $pyver] } {
                                       test_threading \
                                       test_time \
                                       test_urllib2_localnet"
+
+	# Exclude more unreliable tests on SUSE.
+	set distro [get_distro]
+	if { ${distro} == "suse" } {
+		append common_exclude_tests " test_docxmlrpc \
+					      test_pydoc \
+					      test_readline \
+					      test_robotparser "
+	}
 
 	set spawn_cmd "spawn $env(AT_DEST)/bin/python3 $test_script \
 		-j$CORES -x $common_exclude_tests"
