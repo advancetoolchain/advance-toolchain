@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2024 IBM Corporation
+# Copyright 2026 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@
 #
 
 ATSRC_PACKAGE_NAME="Open Secure Sockets Layer"
-ATSRC_PACKAGE_VER=3.5.6
-ATSRC_PACKAGE_REV=8e06fae94cf2
-ATSRC_PACKAGE_BRANCH=openssl-3.5
+ATSRC_PACKAGE_VER=master
+ATSRC_PACKAGE_REV=4d0cffd118cd
+ATSRC_PACKAGE_BRANCH=openssl-4.0
 ATSRC_PACKAGE_LICENSE="Apache 2.0"
 ATSRC_PACKAGE_DOCLINK="http://www.openssl.org/docs/"
 ATSRC_PACKAGE_RELFIXES=
@@ -38,7 +38,9 @@ ATSRC_PACKAGE_MAKE_CHECK=
 ATSRC_PACKAGE_TARS=
 ATSRC_PACKAGE_DISTRIB=no
 ATSRC_PACKAGE_BUNDLE=toolchain_extra
-ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://raw.githubusercontent.com/openssl/openssl/__REVISION__/CHANGES.md" | grep -m1 "Changes between .*and .*xx XXX xxxx" | sed "s/^.* \([0-9\.][0-9\.]*\) and .*$/\1/"'
+# Not needed because file follows master branch
+# ATSRC_PACKAGE_UPSTREAM=
+
 
 atsrc_apply_patches ()
 {
