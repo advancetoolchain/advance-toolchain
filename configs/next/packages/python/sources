@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2022 IBM Corporation
+# Copyright 2026 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@
 #
 
 ATSRC_PACKAGE_NAME="Python"
-ATSRC_PACKAGE_VER=3.13.13
-ATSRC_PACKAGE_REV=c0e40601d7f4
-ATSRC_PACKAGE_BRANCH=3.13
+ATSRC_PACKAGE_VER=3.15.0
+ATSRC_PACKAGE_REV=b48c208bb03e
+ATSRC_PACKAGE_BRANCH=3.15
 ATSRC_PACKAGE_LICENSE="Python Software Foundation License 2"
 ATSRC_PACKAGE_DOCLINK="https://docs.python.org/${ATSRC_PACKAGE_VER%\.*}/"
 ATSRC_PACKAGE_RELFIXES=
@@ -42,6 +42,7 @@ ATSRC_PACKAGE_MAKE_CHECK=
 ATSRC_PACKAGE_DISTRIB=no
 ATSRC_PACKAGE_BUNDLE=toolchain_extra
 ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://raw.githubusercontent.com/python/cpython/__REVISION__/README.rst" | head -n1 | grep "This is Python version " | sed "s/^.* version \([0-9\.][0-9\.]*\).*$/\1/"'
+
 
 atsrc_get_patches ()
 {
