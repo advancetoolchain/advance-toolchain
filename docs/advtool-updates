@@ -1,9 +1,8 @@
-<style type="text/css">/* Add a black background color to the top navigation */
+<script></script><style type="text/css">/* Add a black background color to the top navigation */
     .topnav {
  background-color: #333;
  overflow: hidden;
 }
-
 /* Style the links inside the navigation bar */
 .topnav a {
  float: left;
@@ -14,24 +13,20 @@
  text-decoration: none;
  font-size: 17px;
 }
-
 /* Add an active class to highlight the current page */
 .active {
  background-color: #4CAF50;
  color: white;
 }
-
 /* Hide the link that should open and close the topnav on small screens */
 .topnav .icon {
  display: none;
 }
-
 /* Dropdown container - needed to position the dropdown content */
 .dropdown {
  float: left;
  overflow: hidden;
 }
-
 /* Style the dropdown button to fit inside the topnav */
 .dropdown .dropbtn {
  font-size: 17px;
@@ -43,7 +38,6 @@
  font-family: inherit;
  margin: 0;
 }
-
 /* Style the dropdown content (hidden by default) */
 .dropdown-content {
  display: none;
@@ -53,7 +47,6 @@
  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
  z-index: 1;
 }
-
 /* Style the links inside the dropdown */
 .dropdown-content a {
  float: none;
@@ -63,19 +56,16 @@
  display: block;
  text-align: left;
 }
-
 /* Add a dark background on topnav links and the dropdown button on hover */
 .topnav a:hover, .dropdown:hover .dropbtn {
  background-color: #555;
  color: white;
 }
-
 /* Add a grey background to dropdown links on hover */
 .dropdown-content a:hover {
  background-color: #ddd;
  color: black;
 }
-
 /* Show the dropdown menu when the user moves the mouse over the dropdown button */
 .dropdown:hover .dropdown-content {
  display: block;
@@ -83,7 +73,6 @@
 .custom-padding-left-12px{
     padding-left:10px;
 }
-
 /* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
 @media screen and (max-width: 1100px) {
  .topnav a:not(:first-child), .dropdown .dropbtn {
@@ -97,8 +86,6 @@
     padding-left:10px;
 }
 }
-
-
 /* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
 @media screen and (max-width:1100px) {
  .topnav.responsive {position: relative;}
@@ -120,8 +107,7 @@
    text-align: left;
  }
 }
-</style>
-<script>
+</style><script>
 function myFunction() {
  var x = document.getElementById("myTopnav");
  if (x.className === "topnav") {
@@ -131,197 +117,348 @@ function myFunction() {
  }
 }
 </script><!--start menu -->
-<div class="topnav" id="myTopnav" style="background-color: black;"><span><a href="https://www.ibm.com/support/pages/advance-toolchain-linux-power">Get started</a> <a href="https://www.ibm.com/support/pages/advtool-install">Installation</a> <a href="https://www.ibm.com/support/pages/advtool-usage">Usage</a> <a href="https://www.ibm.com/support/pages/advtool-faq">FAQ</a> <a href="https://www.ibm.com/support/pages/advtool-cross-compilers">Cross-compiler</a> <a href="#">Release updates</a> <span> <span><a class="icon" href="javascript:void(0);" onclick="myFunction()">☰</a></span></span></span></div>
+<div class="topnav" style="background-color:black;" id="myTopnav">
+    <a href="https://www.ibm.com/support/pages/advance-toolchain-linux-power"><span>Get started</span></a><span> </span><a href="https://www.ibm.com/support/pages/advtool-install"><span>Installation</span></a><span> </span><a href="https://www.ibm.com/support/pages/advtool-usage"><span>Usage</span></a><span> </span><a href="https://www.ibm.com/support/pages/advtool-faq"><span>FAQ</span></a><span> </span><a href="https://www.ibm.com/support/pages/advtool-cross-compilers"><span>Cross-compiler</span></a><span> </span><a href="#"><span>Release updates</span></a><span> </span><a class="icon" href="javascript:void(0);" onclick="myFunction()"><span>â°</span></a>
+</div>
 <!-- start header content -->
-
 <div class="ibm-band-fluid ibm-flex ibm-nospacing ibm-flex--wrap ibm-no-border ibm-padding-top-2 ibm-background-gray-80">
-<div class="ibm-col-12-12 ibm-padding-top-1 ibm-padding-bottom-1 ibm-alternate-background">
-<p class="ibm-h1">Advance Toolchain for Linux on Power release updates</p>
+    <div class="ibm-col-12-12 ibm-padding-top-1 ibm-padding-bottom-1 ibm-alternate-background">
+        <p class="ibm-h1">
+            Advance Toolchain for Linux on Power release updates
+        </p>
+    </div>
 </div>
+<div class="ibm-band-fluid ibm-flex ibm-flex--wrap ibm-padding-top-2 ibm-padding-bottom-1">
+    <div class="ibm-col-12-12">
+        <p class="ibm-h4">
+            IBM Advance Toolchain for Linux on Power 18.0-0 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at18.0-0" target="_blank">Learn more</a>
+        </p>
+        <p class="ibm-h4">
+            We frequently release updates to each of the Advance Toolchain versions. Find links to the release notes (from year 2020) for the updates, newest to oldest, in the following table.
+        </p>
+    </div>
 </div>
-
-<div class="ibm-band-fluid ibm-flex  ibm-flex--wrap ibm-padding-top-2 ibm-padding-bottom-1">
-<div class="ibm-col-12-12">
-<p class="ibm-h4">IBM Advance Toolchain for Linux on Power 18.0-0 is now available! <a class="ibm-forward-link ibm-inlinelink" href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at18.0-0" target="_blank">Learn more</a></p>
-&nbsp;
-
-<p class="ibm-h4">We frequently release updates to each of the Advance Toolchain versions. Find links to the release notes (from year 2020) for the updates, newest to oldest, in the following table.</p>
-</div>
-</div>
-
 <div class="ibm-band-fluid ibm-flex ibm-nospacing ibm-flex--wrap ibm-padding-top-2 ibm-padding-bottom-1">
-<div class="ibm-col-12-12">
-<p class="ibm-h3">Release updates by date</p>
+    <div class="ibm-col-12-12">
+        <p class="ibm-h3">
+            Release updates by date
+        </p>
+    </div>
 </div>
+<div class="ibm-band-fluid ibm-flex ibm-flex--wrap ibm-padding-bottom-1">
+    <div class="ibm-col-12-9">
+        <table class="table bx--data-table" data-order="[[1,&quot;dsc&quot;],[0,&quot;dsc&quot;]]" data-ordering="true" data-widget="datatable">
+            <thead>
+                <tr>
+                    <th>
+                        <strong>Release series</strong>
+                    </th>
+                    <th>
+                        <strong>Release date</strong>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at18.0-0" target="_blank">Advance Toolchain 18.0-0</a>
+                    </td>
+                    <td>
+                        08/27/2025
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at16.0-5" target="_blank">Advance Toolchain 16.0-5</a>
+                    </td>
+                    <td>
+                        07/19/2024
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at17.0-2" target="_blank">Advance Toolchain 17.0-2</a>
+                    </td>
+                    <td>
+                        06/14/2024
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-7" target="_blank">Advance Toolchain 15.0-7</a>
+                    </td>
+                    <td>
+                        02/16/2024
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at16.0-4" target="_blank">Advance Toolchain 16.0-4</a>
+                    </td>
+                    <td>
+                        12/15/2023
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-6" target="_blank">Advance Toolchain 15.0-6</a>
+                    </td>
+                    <td>
+                        11/17/2023
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at17.0-1" target="_blank">Advance Toolchain 17.0-1</a>
+                    </td>
+                    <td>
+                        10/20/2023
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at16.0-3" target="_blank">Advance Toolchain 16.0-3</a>
+                    </td>
+                    <td>
+                        09/29/2023
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at17.0-0" target="_blank">Advance Toolchain 17.0-0</a>
+                    </td>
+                    <td>
+                        08/31/2023
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-5" target="_blank">Advance Toolchain 15.0-5</a>
+                    </td>
+                    <td>
+                        05/25/2023
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at16.0-2" target="_blank">Advance Toolchain 16.0-2</a>
+                    </td>
+                    <td>
+                        04/28/2023
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at14.0-7" target="_blank">Advance Toolchain 14.0-7</a>
+                    </td>
+                    <td>
+                        03/30/2023
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-4" target="_blank">Advance Toolchain 15.0-4</a>
+                    </td>
+                    <td>
+                        02/07/2023
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at16.0-1" target="_blank">Advance Toolchain 16.0-1</a>
+                    </td>
+                    <td>
+                        11/25/2022
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at14.0-6" target="_blank">Advance Toolchain 14.0-6</a>
+                    </td>
+                    <td>
+                        09/16/2022
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at16.0-0" target="_blank">Advance Toolchain 16.0-0</a>
+                    </td>
+                    <td>
+                        09/02/2022
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-3" target="_blank">Advance Toolchain 15.0-3</a>
+                    </td>
+                    <td>
+                        05/19/2022
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at14.0-5" target="_blank">Advance Toolchain 14.0-5</a>
+                    </td>
+                    <td>
+                        04/22/2022
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at13.0-6" target="_blank">Advance Toolchain 13.0-6</a>
+                    </td>
+                    <td>
+                        03/25/2022
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-2" target="_blank">Advance Toolchain 15.0-2</a>
+                    </td>
+                    <td>
+                        03/04/2022
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at14.0-4" target="_blank">Advance Toolchain 14.0-4</a>
+                    </td>
+                    <td>
+                        02/03/2022
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at13.0-5" target="_blank">Advance Toolchain 13.0-5</a>
+                    </td>
+                    <td>
+                        12/03/2021
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-1" target="_blank">Advance Toolchain 15.0-1</a>
+                    </td>
+                    <td>
+                        10/22/2021
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-0" target="_blank">Advance Toolchain 15.0-0</a>
+                    </td>
+                    <td>
+                        08/27/2021
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at14.0-3" target="_blank">Advance Toolchain 14.0-3</a>
+                    </td>
+                    <td>
+                        05/12/2021
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at13.0-4" target="_blank">Advance Toolchain 13.0-4</a>
+                    </td>
+                    <td>
+                        04/08/2021
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at13.0-2" target="_blank">Advance Toolchain 13.0-2</a>
+                    </td>
+                    <td>
+                        06/12/2020
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at13.0-1" target="_blank">Advance Toolchain 13.0-1</a>
+                    </td>
+                    <td>
+                        02/14/2020
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at12.0-5" target="_blank">Advance Toolchain 12.0-5</a>
+                    </td>
+                    <td>
+                        03/18/2021
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at14.0-2" target="_blank">Advance Toolchain 14.0-2</a>
+                    </td>
+                    <td>
+                        01/29/2021
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at13.0-3" target="_blank">Advance Toolchain 13.0-3</a>
+                    </td>
+                    <td>
+                        12/18/2020
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at12.0-4" target="_blank">Advance Toolchain 12.0-4</a>
+                    </td>
+                    <td>
+                        11/06/2020
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at12.0-3" target="_blank">Advance Toolchain 12.0-3</a>
+                    </td>
+                    <td>
+                        05/14/2020
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at14.0-1" target="_blank">Advance Toolchain 14.0-1</a>
+                    </td>
+                    <td>
+                        10/16/2020
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at14.0-0" target="_blank">Advance Toolchain 14.0-0</a>
+                    </td>
+                    <td>
+                        08/28/2020
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at11.0-6" target="_blank">Advance Toolchain 11.0-6</a>
+                    </td>
+                    <td>
+                        04/01/2020
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-
-<div class="ibm-band-fluid ibm-flex ibm-flex--wrap  ibm-padding-bottom-1">
-<div class="ibm-col-12-9">
-<table class="bx--data-table" data-order="[[1,&quot;dsc&quot;],[0,&quot;dsc&quot;]]" data-ordering="true" data-widget="datatable">
-	<thead>
-		<tr>
-			<th><strong>Release series</strong></th>
-			<th><strong>Release date</strong></th>
-		</tr>
-	</thead>
-	<thead>
-	</thead>
-	<tbody>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at18.0-0" target="_blank">Advance Toolchain 18.0-0</a></td>
-			<td>08/27/2025</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at16.0-5" target="_blank">Advance Toolchain 16.0-5</a></td>
-			<td>07/19/2024</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at17.0-2" target="_blank">Advance Toolchain 17.0-2</a></td>
-			<td>06/14/2024</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-7" target="_blank">Advance Toolchain 15.0-7</a></td>
-			<td>02/16/2024</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at16.0-4" target="_blank">Advance Toolchain 16.0-4</a></td>
-			<td>12/15/2023</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-6" target="_blank">Advance Toolchain 15.0-6</a></td>
-			<td>11/17/2023</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at17.0-1" target="_blank">Advance Toolchain 17.0-1</a></td>
-			<td>10/20/2023</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at16.0-3" target="_blank">Advance Toolchain 16.0-3</a></td>
-			<td>09/29/2023</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at17.0-0" target="_blank">Advance Toolchain 17.0-0</a></td>
-			<td>08/31/2023</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-5" target="_blank">Advance Toolchain 15.0-5</a></td>
-			<td>05/25/2023</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at16.0-2" target="_blank">Advance Toolchain 16.0-2</a></td>
-			<td>04/28/2023</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at14.0-7" target="_blank">Advance Toolchain 14.0-7</a></td>
-			<td>03/30/2023</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-4" target="_blank">Advance Toolchain 15.0-4</a></td>
-			<td>02/07/2023</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at16.0-1" target="_blank">Advance Toolchain 16.0-1</a></td>
-			<td>11/25/2022</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at14.0-6" target="_blank">Advance Toolchain 14.0-6</a></td>
-			<td>09/16/2022</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at16.0-0" target="_blank">Advance Toolchain 16.0-0</a></td>
-			<td>09/02/2022</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-3" target="_blank">Advance Toolchain 15.0-3</a></td>
-			<td>05/19/2022</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at14.0-5" target="_blank">Advance Toolchain 14.0-5</a></td>
-			<td>04/22/2022</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at13.0-6" target="_blank">Advance Toolchain 13.0-6</a></td>
-			<td>03/25/2022</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-2" target="_blank">Advance Toolchain 15.0-2</a></td>
-			<td>03/04/2022</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at14.0-4" target="_blank">Advance Toolchain 14.0-4</a></td>
-			<td>02/03/2022</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at13.0-5" target="_blank">Advance Toolchain 13.0-5</a></td>
-			<td>12/03/2021</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-1" target="_blank">Advance Toolchain 15.0-1</a></td>
-			<td>10/22/2021</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at15.0-0" target="_blank">Advance Toolchain 15.0-0</a></td>
-			<td>08/27/2021</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at14.0-3" target="_blank">Advance Toolchain 14.0-3</a></td>
-			<td>05/12/2021</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at13.0-4" target="_blank">Advance Toolchain 13.0-4</a></td>
-			<td>04/08/2021</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at13.0-2" target="_blank">Advance Toolchain 13.0-2</a></td>
-			<td>06/12/2020</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at13.0-1" target="_blank">Advance Toolchain 13.0-1</a></td>
-			<td>02/14/2020</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at12.0-5" target="_blank">Advance Toolchain 12.0-5</a></td>
-			<td>03/18/2021</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at14.0-2" target="_blank">Advance Toolchain 14.0-2</a></td>
-			<td>01/29/2021</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at13.0-3" target="_blank">Advance Toolchain 13.0-3</a></td>
-			<td>12/18/2020</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at12.0-4" target="_blank">Advance Toolchain 12.0-4</a></td>
-			<td>11/06/2020</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at12.0-3" target="_blank">Advance Toolchain 12.0-3</a></td>
-			<td>05/14/2020</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at14.0-1" target="_blank">Advance Toolchain 14.0-1</a></td>
-			<td>10/16/2020</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at14.0-0" target="_blank">Advance Toolchain 14.0-0</a></td>
-			<td>08/28/2020</td>
-		</tr>
-		<tr>
-			<td><a href="https://github.com/advancetoolchain/advance-toolchain/releases/tag/at11.0-6" target="_blank">Advance Toolchain 11.0-6</a></td>
-			<td>04/01/2020</td>
-		</tr>
-	</tbody>
-</table>
+<div class="ibm-band-fluid ibm-flex ibm-padding-top-1 ibm-padding-bottom-1">
+    <div class="ibm-col-12-12">
+        <p class="ibm-h4">
+            You can also find release updates published before year 2020. Click <strong>Next</strong> at the bottom of the page to navigate through the pages and find the release you need.<br>
+            <a href="https://github.com/advancetoolchain/advance-toolchain/releases" target="_blank">https://github.com/advancetoolchain/advance-toolchain/releases</a>
+        </p>
+        <p class="ibm-h4">
+            Let us know if you have any questions in the Advance Toolchain for Linux on Power <a href="https://www.ibm.com/mysupport/s/forumsproduct?language=en_US&amp;name=Advanced+Toolchain+for+Linux&amp;id=0TO50000000QkyUGAS" target="_blank">support forum</a>.
+        </p>
+    </div>
 </div>
-</div>
-
-<div class="ibm-band-fluid ibm-flex ibm-padding-top-1  ibm-padding-bottom-1">
-<div class="ibm-col-12-12">
-<p class="ibm-h4">You can also find release updates published before year 2020. Click <strong>Next</strong> at the bottom of the page to navigate through the pages and find the release you need.<br />
-<a href="https://github.com/advancetoolchain/advance-toolchain/releases" target="_blank">https://github.com/advancetoolchain/advance-toolchain/releases</a></p>
-
-<p class="ibm-h4">Let us know if you have any questions in the Advance Toolchain for Linux on Power <a href="https://www.ibm.com/mysupport/s/forumsproduct?language=en_US&amp;name=Advanced+Toolchain+for+Linux&amp;id=0TO50000000QkyUGAS" target="_blank">support forum</a>.</p>
-</div>
-</div>
-
