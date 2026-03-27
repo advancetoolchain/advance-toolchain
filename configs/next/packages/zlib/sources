@@ -20,7 +20,7 @@
 #
 
 ATSRC_PACKAGE_NAME="ZLIB Compression Library"
-ATSRC_PACKAGE_VER=master
+ATSRC_PACKAGE_VER=1.3.2.1
 ATSRC_PACKAGE_REV=09a1572aa624
 ATSRC_PACKAGE_BRANCH=develop
 ATSRC_PACKAGE_LICENSE="Zlib License"
@@ -41,8 +41,7 @@ ATSRC_PACKAGE_TARS=""
 ATSRC_PACKAGE_MAKE_CHECK=""
 ATSRC_PACKAGE_DISTRIB=no
 ATSRC_PACKAGE_BUNDLE=toolchain_extra
-# Not needed because file follows master branch
-# ATSRC_PACKAGE_UPSTREAM=
+ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://raw.githubusercontent.com/madler/zlib/__REVISION__/zlib.h" | grep "define ZLIB_VERSION" | sed "s+^.*\"\([\.0-9]*\)-.*$+\1+"'
 
 atsrc_get_patches ()
 {
