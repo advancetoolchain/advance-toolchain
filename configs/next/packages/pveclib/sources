@@ -20,7 +20,7 @@
 #
 
 ATSRC_PACKAGE_NAME="Power Vector Library"
-ATSRC_PACKAGE_VER=master
+ATSRC_PACKAGE_VER=1.0.4
 ATSRC_PACKAGE_REV=11c16a14486b
 ATSRC_PACKAGE_LICENSE="Apache License 2.0"
 ATSRC_PACKAGE_DOCLINK="https://github.com/open-power-sdk/pveclib/wiki"
@@ -40,8 +40,7 @@ ATSRC_PACKAGE_TARS=
 ATSRC_PACKAGE_MAKE_CHECK=
 ATSRC_PACKAGE_DISTRIB=no
 ATSRC_PACKAGE_BUNDLE=toolchain_extra
-# Not needed because file follows master branch
-# ATSRC_PACKAGE_UPSTREAM=
+ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://raw.githubusercontent.com/open-power-sdk/pveclib/__REVISION__/configure.ac" | grep "AC_INIT.*pveclib" | sed "s:^.*\[\([0-9][\.0-9]*\)\].*$:\1:"'
 
 atsrc_get_patches ()
 {

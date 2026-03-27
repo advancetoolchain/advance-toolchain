@@ -19,7 +19,7 @@
 # ==========================================
 #
 ATSRC_PACKAGE_NAME="Libhugetlbfs"
-ATSRC_PACKAGE_VER=master
+ATSRC_PACKAGE_VER=2.24
 ATSRC_PACKAGE_REV=a83fbb243a65
 ATSRC_PACKAGE_LICENSE="Lesser GPL 2.1"
 ATSRC_PACKAGE_DOCLINK="https://github.com/libhugetlbfs/libhugetlbfs"
@@ -38,8 +38,7 @@ ATSRC_PACKAGE_TARS=""
 ATSRC_PACKAGE_MAKE_CHECK=
 ATSRC_PACKAGE_DISTRIB=yes
 ATSRC_PACKAGE_BUNDLE=toolchain_extra
-# Not needed because file follows master branch
-# ATSRC_PACKAGE_UPSTREAM=
+ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://raw.githubusercontent.com/libhugetlbfs/libhugetlbfs/__REVISION__/configure.ac" | grep "AC_INIT.*libhugetlbfs" | sed "s+^.*\[\([\.0-9]*\)\].*$+\1+"'
 
 atsrc_get_patches ()
 {
