@@ -20,8 +20,8 @@
 #
 
 ATSRC_PACKAGE_NAME="TCMalloc"
-ATSRC_PACKAGE_VER=2.18
-ATSRC_PACKAGE_REV=56d6c8d984ea
+ATSRC_PACKAGE_VER=2.18.1
+ATSRC_PACKAGE_REV=07c5e9226bda
 ATSRC_PACKAGE_LICENSE="BSD License"
 ATSRC_PACKAGE_DOCLINK="http://htmlpreview.github.io/?https://github.com/gperftools/gperftools/blob/master/docs/tcmalloc.html"
 ATSRC_PACKAGE_RELFIXES=
