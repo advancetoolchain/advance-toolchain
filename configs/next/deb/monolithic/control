@@ -1,4 +1,4 @@
-# Copyright 2021 IBM Corporation
+# Copyright 2026 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
 Source: advance-toolchain-__AT_MAJOR_INTERNAL__
 Section: devel
 Priority: optional
-Maintainer: Advance Toolchain
 
 Package: advance-toolchain-runtime
 Architecture: ppc64el
