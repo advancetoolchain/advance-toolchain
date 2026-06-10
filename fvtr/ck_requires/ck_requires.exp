@@ -26,6 +26,7 @@ proc process_rpm_packages { packages cross_bld at_dest ldd_path objdump_path } {
 	set rc 0
 	set ignored ${FULLPATH}/ignored.tmp.out
 	set TMP_FILE ${FULLPATH}/requirements.tmp.out
+	set rpm_path $env(AT_WD)/rpms/$env(AT_HOST_ARCH)/
 
 	foreach package $packages {
 		# Ignore debuginfo packages.

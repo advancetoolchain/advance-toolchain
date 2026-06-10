@@ -232,7 +232,7 @@ function find_dependencies()
 		# Collect selected file info
 		file_info=$(file "${file}")
 		# Continue only if its a dynamically linked executable
-		echo "${file_info}" | grep "dynamically linked" &> /dev/null
+		echo "${file_info}" | grep -qs "dynamically linked"
 		if [[ ${?} -ne 0 ]]; then
 			continue
 		fi
@@ -245,7 +245,7 @@ function find_dependencies()
 			fi
 		fi
 		# Check the bit size of the dynamically linked executable
-		wordsize=$(echo "${file_info}" | sed -e 's/^.*ELF //g' -e 's/-bit.*$//')
+		wordsize=$(echo "${file_info}" | sed 's/^.*ELF \([0-9]*\)-bit.*$/\1/')
 		if [[ ${wordsize} -eq 32 ]]; then
 			suffix=
 		elif [[ ${wordsize} -eq 64 ]]; then
