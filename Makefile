@@ -89,6 +89,8 @@ endif
 
 # Set the proper shell to use
 SHELL := /bin/bash
+# Set the proper characters set to use
+export LC_ALL := C
 # Some shells don't load all the standard values (Ubuntu), so we have to
 # manually set all those we need.
 USER  ?= $(shell whoami)
