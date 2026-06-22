@@ -20,7 +20,7 @@
 #
 
 ATSRC_PACKAGE_NAME="Expat XML Parser"
-ATSRC_PACKAGE_VER=master
+ATSRC_PACKAGE_VER=2.8.1
 ATSRC_PACKAGE_REV=94ae0b5cc4be
 ATSRC_PACKAGE_DOCLINK="https://libexpat.github.io/doc/"
 ATSRC_PACKAGE_RELFIXES=
@@ -40,5 +40,4 @@ ATSRC_PACKAGE_TARS=
 ATSRC_PACKAGE_MAKE_CHECK=
 ATSRC_PACKAGE_DISTRIB=no
 ATSRC_PACKAGE_BUNDLE=main_toolchain
-# Not needed because file follows master branch
-# ATSRC_PACKAGE_UPSTREAM=
+ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://raw.githubusercontent.com/libexpat/libexpat/__REVISION__/expat/lib/expat.h" | grep "XML_M.*_VERSION" | sed "s/^.*VERSION //" | paste -d "." - - -'
