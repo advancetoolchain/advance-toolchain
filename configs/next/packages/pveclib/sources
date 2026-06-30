@@ -21,7 +21,7 @@
 
 ATSRC_PACKAGE_NAME="Power Vector Library"
 ATSRC_PACKAGE_VER=1.0.4
-ATSRC_PACKAGE_REV=8423e7c77b15
+ATSRC_PACKAGE_REV=0fec23a66bb7
 ATSRC_PACKAGE_LICENSE="Apache License 2.0"
 ATSRC_PACKAGE_DOCLINK="https://github.com/open-power-sdk/pveclib/wiki"
 ATSRC_PACKAGE_RELFIXES=
@@ -41,21 +41,3 @@ ATSRC_PACKAGE_MAKE_CHECK=
 ATSRC_PACKAGE_DISTRIB=no
 ATSRC_PACKAGE_BUNDLE=toolchain_extra
 ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://raw.githubusercontent.com/open-power-sdk/pveclib/__REVISION__/configure.ac" | grep "AC_INIT.*pveclib" | sed "s:^.*\[\([0-9][\.0-9]*\)\].*$:\1:"'
-
-
-atsrc_get_patches ()
-{
-	# Avoid a misconfiguration of tuned libraries as seen in issue #204.
-	at_get_patch \
-        "https://raw.githubusercontent.com/powertechpreview/powertechpreview/ec5887209f981d8839edd62ed1fde1e38da4ccd3/pvecLib/build_with_gcc15.patch" \
-		639c91393b28bc43fba96b23a979ef40 || return ${?}
-
-	return 0
-}
-
-atsrc_apply_patches ()
-{
-	patch -p1 \
-	      < build_with_gcc15.patch \
-		|| return ${?}
-}
