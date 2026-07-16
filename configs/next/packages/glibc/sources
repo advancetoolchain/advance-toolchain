@@ -21,7 +21,7 @@
 
 ATSRC_PACKAGE_NAME="GNU C Library"
 ATSRC_PACKAGE_VER=2.43.9000
-ATSRC_PACKAGE_REV=ccd4cd5324ca
+ATSRC_PACKAGE_REV=5396eb704531
 ATSRC_PACKAGE_LICENSE="LGPL 2.1"
 ATSRC_PACKAGE_DOCLINK="http://www.gnu.org/software/libc/manual/html_node/index.html"
 ATSRC_PACKAGE_RELFIXES=
@@ -44,8 +44,8 @@ atsrc_get_patches ()
 	if [[ "$DISTRO_ID" == "redhat-9" ]]; then
 		# Disabling ldconfig aux-cache file.
 		at_get_patch \
-			'https://raw.githubusercontent.com/powertechpreview/powertechpreview/2d147b2b9c38c0cb105eb3c5aee02d1b403ab607/GLIBC%20PowerPC%20Backport/2.36/glibc-disabling-aux-cache.patch' \
-			0d753c5c637ed48fba506813007183ac || return ${?}
+			'https://raw.githubusercontent.com/powertechpreview/powertechpreview/5bd2a4ba5a298e028b03dccc24569b9ae2e25970/GLIBC%20PowerPC%20Backport/2.36/glibc-disabling-aux-cache.patch' \
+			a6091e5607cf986b082f3eca004c8394 || return ${?}
 	fi
 
 	return 0
