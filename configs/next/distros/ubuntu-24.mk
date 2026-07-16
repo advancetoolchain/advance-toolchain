@@ -1,1 +1,0 @@
-../../19.0/distros/ubuntu-24.mk
