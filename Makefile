@@ -113,8 +113,8 @@ AT_TODAY := $(shell date "+%Y%m%d")
 # Define the format of the running timestamp
 TIME := date -u +%Y-%m-%d_%H.%M.%S
 
-# Only set build environment for targets other the 'clone', 'edit' and 'pack'
-ifeq (,$(findstring $(MAKECMDGOALS),clone edit pack))
+# Only set build environment for targets other than 'clone' and 'pack'
+ifeq (,$(findstring $(MAKECMDGOALS),clone pack))
 
     # Begin setting build environment                     *****
     # *********************************************************
@@ -813,7 +813,7 @@ endif
 # *********************************************************
 # Finish setting build environment                    *****
 
-# Continue processing for targets 'clone', 'edit' and 'pack'
+# Continue processing for targets 'clone' and 'pack'
 
 # Directories where artifacts created by this system will be saved after
 # running collect-artifacts.
@@ -823,7 +823,7 @@ ARTIFACTS := $(strip $(shell $(call mkpath,$(AT_BASE)/artifacts,yes)))
 build_targets :=
 .DEFAULT_GOAL := all
 
-.PHONY: all test destclean cleanall clean collect clone edit pack
+.PHONY: all test destclean cleanall clean collect clone pack
 
 all: package release
 
@@ -926,52 +926,58 @@ collect-artifacts:
 	}
 
 clone:
-	@+{ if [[ -n "$(FROM)" && -n "$(TO)" ]]; then \
-	        echo "$$($(TIME)) Cloning config from $(FROM) to $(TO)..."; \
-	        { pushd "$(CONFIG_ROOT)"; \
-	          find $(FROM) -type d -print | sed 's/^$(FROM)*/$(TO)/g' | xargs mkdir -p; \
-	          contents=$$(find $(FROM) ! -type d -print); \
-	          for source in $${contents}; do \
-	              target=$$(echo $${source} | sed 's/^$(FROM)/$(TO)/g'); \
-	              if [[ -n "$$(echo $${source} | grep '\/distros\/.*$$')" ]]; then \
-	                  if [[ -n "$$(ls -l $${source} | grep '^l')" ]]; then \
-	                      if [[ -z "$$(readlink $${source} | grep -E '^\.\.\/')" ]]; then \
-	                          cp -a $${source} $${target}; \
-	                          continue; \
-	                      fi; \
-	                  fi; \
-	              fi; \
-	              if [[ -n "$$(echo $${source} | grep -e '\/base.mk' -e '\/build.mk' -e '\/sanity.mk')" ]]; then \
-	                  cp -a $${source} $${target}; \
-	                  continue; \
-	              fi; \
-	              prefix=$$(dirname $$(echo $${source} | sed -e 's/[^\/]\+\//\.\.\//g')); \
-	              ln -sf $${prefix}/$${source} $${target}; \
-	          done; \
-	          popd; \
-	        }  > /dev/null 2>&1; \
+	@+{ if [[ -n "$(TO)" ]]; then \
+	        VERSION="$(TO)"; \
+	        NEXT_DIR="$(CONFIG_ROOT)/next"; \
+	        NEW_VERSION_DIR="$(CONFIG_ROOT)/$${VERSION}"; \
+	        echo "$$($(TIME)) Cloning config from next to $${VERSION}..."; \
+	        if [[ ! -d "$(CONFIG_ROOT)" ]]; then \
+	            echo "Error: configs directory not found. Please run this from the advance-toolchain root directory."; \
+	            exit 1; \
+	        fi; \
+	        if [[ ! -d "$${NEXT_DIR}" ]]; then \
+	            echo "Error: $${NEXT_DIR} directory not found."; \
+	            exit 1; \
+	        fi; \
+	        echo "Copying $${NEXT_DIR} to $${NEW_VERSION_DIR}..."; \
+	        if [[ -d "$${NEW_VERSION_DIR}" ]]; then \
+	            echo "Warning: $${NEW_VERSION_DIR} already exists. Removing it first..."; \
+	            rm -rf "$${NEW_VERSION_DIR}"; \
+	        fi; \
+	        cp -r "$${NEXT_DIR}" "$${NEW_VERSION_DIR}"; \
+	        echo "Copy completed."; \
+	        echo "Converting files and symlinks in $${NEXT_DIR} to point to $${NEW_VERSION_DIR}..."; \
+	        cd "$${NEXT_DIR}"; \
+	        find . -type f -o -type l | while read -r item; do \
+	            item="$${item#./}"; \
+	            if [[ "$${item}" == "base.mk" ]]; then \
+	                echo "Skipping base.mk (keeping as regular file)"; \
+	                continue; \
+	            fi; \
+	            depth=$$(echo "$${item}" | tr -cd '/' | wc -c); \
+	            rel_prefix=""; \
+	            for ((i=0; i<=depth; i++)); do \
+	                rel_prefix="../$${rel_prefix}"; \
+	            done; \
+	            target="$${rel_prefix}$${VERSION}/$${item}"; \
+	            rm -f "$${item}"; \
+	            ln -s "$${target}" "$${item}"; \
+	            echo "Created symlink: $${item} -> $${target}"; \
+	        done; \
+	        cd ../..; \
+	        echo "Done! All files and symlinks in $${NEXT_DIR} now point to $${NEW_VERSION_DIR}"; \
+	        echo "Directory structure in $${NEXT_DIR} has been preserved."; \
+	        echo ""; \
+	        echo "IMPORTANT: Don't forget to update base.mk in both directories:"; \
+	        echo "  - $${NEXT_DIR}/base.mk"; \
+	        echo "  - $${NEW_VERSION_DIR}/base.mk"; \
 	    else \
-	        echo "Please inform FROM=<version> TO=<version>."; \
+	        echo "Please inform TO=<version>."; \
+	        echo "Usage: make clone TO=<version>"; \
+	        echo "Example: make clone TO=20.0"; \
 	    fi; \
 	}
 
-edit:
-	@+{ if [[ -n "$(FROM)" && -n "$(TYPE)" ]]; then \
-	        echo "$$($(TIME)) Materializing config files of type $(TYPE) of config version $(FROM)..."; \
-	        { pushd "$(CONFIG_ROOT)/$(FROM)/$(TYPE)"; \
-	          if [[ -n "$(FILE)" ]]; then \
-	              cp -L $(FILE) $(FILE).orig && rm -rf $(FILE) && mv $(FILE).orig $(FILE); \
-	          else \
-	              for file in $$(find . -type l -print); do \
-	                  cp -L $${file} $${file}.orig && rm -rf $${file} && mv $${file}.orig $${file}; \
-	              done; \
-	          fi; \
-	          popd; \
-	        } > /dev/null 2>&1; \
-	    else \
-	        echo "Please inform at least FROM=<version> TYPE=<sublevel_type>."; \
-	    fi; \
-	}
 
 # Generate a pack for usage on a build pack area
 pack: hash
@@ -1048,8 +1054,8 @@ debug: $(RCPTS)/debug.rcpt
 
 tuned: $(RCPTS)/tuned.rcpt
 
-# Only append specific rules for targets other the 'clone', 'edit' and 'pack'
-ifeq (,$(findstring $(MAKECMDGOALS),clone edit pack))
+# Only append specific rules for targets other than 'clone' and 'pack'
+ifeq (,$(findstring $(MAKECMDGOALS),clone pack))
 
     # Include the rules for specific packages
     include $(CONFIG)/packages/*/*.mk
