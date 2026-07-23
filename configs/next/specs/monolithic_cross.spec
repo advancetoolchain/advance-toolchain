@@ -1,1 +1,1 @@
-../../19.0/specs/monolithic_cross.spec
+../../20.0/specs/monolithic_cross.spec

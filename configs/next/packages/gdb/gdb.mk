@@ -1,1 +1,1 @@
-../../../19.0/packages/gdb/gdb.mk
+../../../20.0/packages/gdb/gdb.mk

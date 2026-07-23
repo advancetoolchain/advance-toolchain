@@ -1,1 +1,1 @@
-../../19.0/arch/i686.ppc64le.mk
+../../20.0/arch/i686.ppc64le.mk

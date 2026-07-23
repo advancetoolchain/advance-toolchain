@@ -1,1 +1,1 @@
-../../../19.0/packages/zlib/zlib.mk
+../../../20.0/packages/zlib/zlib.mk
