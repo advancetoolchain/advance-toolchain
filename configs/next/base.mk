@@ -1,4 +1,4 @@
-# Copyright 2024 IBM Corporation
+# Copyright 2026 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,10 +47,10 @@
 #                       further restricted by distro specific settings)
 #
 AT_NAME := at
-AT_MAJOR_VERSION := 20.0
+AT_MAJOR_VERSION := 21.0
 AT_REVISION_NUMBER := 0
 AT_INTERNAL := alpha
-AT_PREVIOUS_VERSION := 19.0
+AT_PREVIOUS_VERSION := 20.0
 AT_DIR_NAME := at-next-$(AT_MAJOR_VERSION)-$(AT_REVISION_NUMBER)-$(AT_INTERNAL)
 
 # Minimum kernel version distributed on supported distros by this AT version,
@@ -60,4 +60,4 @@ AT_KERNEL := 6.16.3
 
 # Set the last day of support for this AT version.
 # Update it every year for the new AT release.
-AT_END_OF_LIFE := 2029-08-31
+AT_END_OF_LIFE := 2030-08-31

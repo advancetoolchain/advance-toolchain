@@ -1,1 +1,1 @@
-../../../19.0/packages/liburcu/liburcu.mk
+../../../20.0/packages/liburcu/liburcu.mk
