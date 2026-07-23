@@ -68,10 +68,8 @@
 #	pack - Create a tarball with all the source code necessary to build AT
 #		on another server.
 #
-#	clone - Clone a config set, copying or symlinking its files.
-#		Options:
-#			FROM - Name of the config set being cloned.
-#
+#	clone - Clone next config set into a new one, copying or symlinking its files.
+#		Option:
 #			TO - Name of config set being create.
 #
 #
@@ -944,7 +942,7 @@ clone:
 	            echo "Warning: $${NEW_VERSION_DIR} already exists. Removing it first..."; \
 	            rm -rf "$${NEW_VERSION_DIR}"; \
 	        fi; \
-	        cp -r "$${NEXT_DIR}" "$${NEW_VERSION_DIR}"; \
+	        cp -R "$${NEXT_DIR}" "$${NEW_VERSION_DIR}"; \
 	        echo "Copy completed."; \
 	        echo "Converting files and symlinks in $${NEXT_DIR} to point to $${NEW_VERSION_DIR}..."; \
 	        cd "$${NEXT_DIR}"; \
