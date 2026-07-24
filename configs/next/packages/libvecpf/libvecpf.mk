@@ -1,1 +1,1 @@
-../../../19.0/packages/libvecpf/libvecpf.mk
+../../../20.0/packages/libvecpf/libvecpf.mk
