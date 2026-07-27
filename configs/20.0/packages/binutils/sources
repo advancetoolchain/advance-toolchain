@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2022 IBM Corporation
+# Copyright 2026 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,8 +20,9 @@
 #
 
 ATSRC_PACKAGE_NAME="GNU Binutils"
-ATSRC_PACKAGE_VER=2.47.50
-ATSRC_PACKAGE_REV=705b16039e6f
+ATSRC_PACKAGE_VER=2.46.1
+ATSRC_PACKAGE_REV=a9c090db342a
+ATSRC_PACKAGE_BRANCH=binutils-2_46-branch
 ATSRC_PACKAGE_LICENSE="GPL 2.0"
 ATSRC_PACKAGE_DOCLINK="http://sourceware.org/binutils/docs/"
 ATSRC_PACKAGE_RELFIXES=
