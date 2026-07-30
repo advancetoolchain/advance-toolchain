@@ -1,4 +1,4 @@
-#! /usr/bin/expect
+#!/usr/bin/expect
 # Copyright 2017 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,81 +13,68 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# Tests for lock elision
 #
-# Check if glibc has been configured, built and installed with lock elision
-# support enabled on libpthread.
 
 source ./shared.exp
+
+set rc 0
 
 set CC [compiler_path]
 set CFLAGS "-O2 -Wall -pthread"
 
-printit "Checking if lock elision is enabled on libpthread..."
-
 if { $env(AT_CROSS_BUILD) == "yes" } {
 	printit "Lock elision testing can only be performed on a supported host."
-	exit $ENOSYS
+	exit ${ENOSYS}
 }
 
 #
-# Lock elision
-#
+# Check if glibc has been configured, built and installed with lock elision
 # The configuration switch --enable-lock-elision on glibc enables lock elision
-# support on libpthread. In order to check if the build actually enabled lock
-# elision, we check whether a standard lock is promoted an elided lock. This
-# requires a runtime check on a supported hardware.
+# support on libpthread. We check whether a standard lock is promoted to an
+# elided lock. This requires a runtime check on supported hardware.
 #
-
-# Build and run a small example
 set tmp_file [exec mktemp]
-set rc 0
-
-# Helper script to enable TLE
 set tle_exec $env(AT_DEST)/scripts/tle_on.sh
 
 if { $TARGET32 } {
-	printit "Testing 32 bit pthread libraries for TLE."
-	compile "${CC} -m32 ${CFLAGS} $FULLPATH/tle_supported.c -o ${tmp_file}"
+	printit "Testing 32 bit pthread libraries for TLE..."
+	compile "${CC} -m32 ${CFLAGS} ${FULLPATH}/tle_supported.c -o ${tmp_file}"
 	set status [catch {exec ${tle_exec} ${tmp_file}} msg]
-	if { $status != 0 && [lindex $::errorCode 2] != $ENOSYS } {
-		printit "Error: Expected 32b TLE support, did not find it: " \
-			$msg
+	if { $status != 0 && [lindex $::errorCode 2] != ${ENOSYS} } {
+		printit "Error: Expected 32b TLE support, did not find it: ${msg}"
 		set rc 1
-	} elseif { $status != 0 && [lindex $::errorCode 2] == $ENOSYS } {
+	} elseif { $status != 0 && [lindex $::errorCode 2] == ${ENOSYS} } {
 		printit "Warning: TLE not supported on this host"
-		set rc $ENOSYS
+		set rc ${ENOSYS}
 	} else {
 		# Also verify TLE is disabled by default.
 		set status [catch {exec ${tmp_file}} msg]
 		if { $status == 0 } {
-			printit "Error: 32b TLE should not be enabled by default: " \
-				$msg
+			printit "Error: 32b TLE should not be enabled by default: ${msg}"
 			set rc 1
 		}
 	}
 }
 if { $TARGET64 } {
-	printit "Testing 64 bit pthread libraries for TLE."
-	compile "${CC} -m64 ${CFLAGS} $FULLPATH/tle_supported.c -o ${tmp_file}"
+	printit "Testing 64 bit pthread libraries for TLE..."
+	compile "${CC} -m64 ${CFLAGS} ${FULLPATH}/tle_supported.c -o ${tmp_file}"
 	set status [catch {exec ${tle_exec} ${tmp_file}} msg]
-	if { $status != 0 && [lindex $::errorCode 2] != $ENOSYS } {
-		printit "Error: Expected 64b TLE support, did not find it: " \
-			$msg
+	if { $status != 0 && [lindex $::errorCode 2] != ${ENOSYS} } {
+		printit "Error: Expected 64b TLE support, did not find it: ${msg}"
 		set rc 1
-	} elseif { $status != 0 && [lindex $::errorCode 2] == $ENOSYS } {
+	} elseif { $status != 0 && [lindex $::errorCode 2] == ${ENOSYS} } {
 		printit "Warning: TLE not supported on this host"
-		set rc $ENOSYS
+		set rc ${ENOSYS}
 	} else {
 		# Also verify TLE is disabled by default.
 		set status [catch {exec ${tmp_file}} msg]
 		if { $status == 0 } {
-			printit "Error: 64b TLE should not be enabled by default: " \
-				$msg
+			printit "Error: 64b TLE should not be enabled by default: ${msg}"
 			set rc 1
 		}
 	}
 }
 
-exec rm -f ${tmp_file}
+file delete -force ${tmp_file}
 exit $rc
-

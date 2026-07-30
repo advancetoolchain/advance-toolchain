@@ -1,4 +1,4 @@
-#! /usr/bin/expect
+#!/usr/bin/expect
 # Copyright 2017 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,13 +24,13 @@ source config_parser.exp
 
 if { $env(AT_CROSS_BUILD) == "yes" } {
 	printit "Skipping dynamic linking: this is a cross compiler\t\[SUCCESS\]"
-	exit $ENOSYS
+	exit ${ENOSYS}
 }
 
 if {[info exists env(AT_WD)]} {
 	printit "Skipping dynamic linking: running test suite on a compatible\
 mode with the build system.\t\[SUCCESS\]"
-	exit $ENOSYS
+	exit ${ENOSYS}
 }
 
 if { $BLD_ARCH_PPC64LE } {
@@ -46,7 +46,7 @@ if { ${err} != 0 } {
 set CC [compiler_path]
 set tmp_file [exec mktemp]
 
-compile "${CC} $FULLPATH/timezone.c -o ${tmp_file}"
+compile "${CC} ${FULLPATH}/test.c -o ${tmp_file}"
 set err [catch {exec ${tmp_file}} at_tz]
 if { ${err} != 0 } {
 	fvtr_error "Failed to get AT timezone: ${at_tz}"

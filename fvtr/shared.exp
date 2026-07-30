@@ -1,4 +1,4 @@
-#! /usr/bin/expect
+#!/usr/bin/expect
 # Copyright 2017 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -543,7 +543,7 @@ proc check_minimum_version {minversion errmsg} {
     if { $::env(AT_MAJOR_VERSION) < $minversion } {
 	printit $errmsg $WARNING
 	printit "Skipping..."
-	exit $ENOSYS
+	exit ${ENOSYS}
     }
 }
 
@@ -567,11 +567,11 @@ set HOST32 [ expr $BLD_HOST_PPC || $BLD_HOST_I686 ]
 set HOST64 [ expr $BLD_HOST_PPC64 || $BLD_HOST_PPC64LE || $BLD_HOST_X86_64 ]
 
 if { $DIRECTOUTPUT != "stdout" } {
-	set OUTPUT [open $FULLPATH/$DIRECTOUTPUT "a+"]
+	set OUTPUT [open ${FULLPATH}/$DIRECTOUTPUT "a+"]
 	# Don't send spawned processes' output to the user
 	log_user 0
 	# Save them to $OUTPUT
-	log_file -a $FULLPATH/$DIRECTOUTPUT
+	log_file -a ${FULLPATH}/$DIRECTOUTPUT
 } else {
 	set OUTPUT $DIRECTOUTPUT
 }

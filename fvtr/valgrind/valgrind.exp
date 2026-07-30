@@ -1,4 +1,4 @@
-#! /usr/bin/expect
+#!/usr/bin/expect
 # Copyright 2017 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,10 +48,10 @@ if {![regexp "(\[^\.\]*)\.(\[^\.\]*)\..*" $version \
 set test_exec "${FULLPATH}/valgrind_test"
 printit "Building test valgrind executables..."
 if { ${TARGET32} } {
-	compile "${CC} -m32 ${CFLAGS} ${FULLPATH}/valgrind.c -o ${test_exec}-32"
+	compile "${CC} -m32 ${CFLAGS} ${FULLPATH}/test.c -o ${test_exec}-32"
 }
 if { ${TARGET64} } {
-	compile "${CC} -m64 ${CFLAGS} ${FULLPATH}/valgrind.c -o ${test_exec}-64"
+	compile "${CC} -m64 ${CFLAGS} ${FULLPATH}/test.c -o ${test_exec}-64"
 }
 printit "Successfully built test valgrind executables"
 
@@ -181,7 +181,7 @@ exec mv {*}[glob ./massif.out*] ${FULLPATH}/
 if { ${rc} == 0} {
 	printit "All libraries are available"
 	# Remove sample valgrind test binary and logs
-	exec rm -f {*}[glob ${test_exec}*]
+	file delete -force {*}[glob ${test_exec}*]
 }
 
 # Return final test result

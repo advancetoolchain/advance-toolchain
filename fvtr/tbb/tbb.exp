@@ -1,4 +1,4 @@
-#! /usr/bin/expect
+#!/usr/bin/expect
 # Copyright 2017 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-#
 # Tests for TBB
 #
 
@@ -22,22 +21,14 @@ source ./shared.exp
 set rc 0
 
 set CXX [compiler_path g++]
-set CFLAGS "-O2 -Wall"
 # In TBB 2019_U9, a pragma in tbb/tbb.h warns about deprecated functions.
-# The following line avoids the warning to break the test.
-set CFLAGS "$CFLAGS -DTBB_SUPPRESS_DEPRECATED_MESSAGES"
-set TBBLIBS "-ltbb -ltbbmalloc_proxy -ltbbmalloc"
+set CFLAGS "-O2 -Wall -DTBB_SUPPRESS_DEPRECATED_MESSAGES"
+set LIBS "-ltbb -ltbbmalloc_proxy -ltbbmalloc"
 
 if { [array names env -exact "AT_TBB_VER"] == "" } {
-	# The variable has a different name on old config files.
-	if { [array names env -exact "AT_INTEL_TBB_VER"] == "" } {
-		printit "WARNING: TBB is not configured in the config file."
-		printit "Skipping..."
-		exit $ENOSYS
-	} else {
-		# This allows the test to run with old config files.
-		set env(AT_TBB_VER)  $env(AT_INTEL_TBB_VER)
-	}
+	printit "WARNING: TBB is not configured in the config file."
+	printit "Skipping..."
+	exit ${ENOSYS}
 }
 
 # Look for TBB's major and minor version.
@@ -47,62 +38,54 @@ if { $env(AT_TBB_VER) != "master" } {
 	}
 }
 
-
 proc memtest {} {
 	global TARGET32
 	global TARGET64
 	global CXX
 	global CFLAGS
-	global TBBLIBS
+	global LIBS
 	global tmp_file
 	global FULLPATH
 
 	printit "Testing malloc/free usage..."
 	if { $TARGET32 } {
-		printit "Testing dynamic 32 link..."
-		compile "${CXX} -m32 ${CFLAGS} $FULLPATH/mem-test.cpp \
-${TBBLIBS} -o ${tmp_file}"
-		printit "Successfully built and linked 32 bit library"
+		printit "Testing target 32 linking..."
+		compile "${CXX} -m32 ${CFLAGS} ${FULLPATH}/mem-test.cpp ${LIBS} -o ${tmp_file}"
+		printit "Successfully built 32 bit dynamic executable"
 	}
 	if { $TARGET64 } {
-		printit "Testing dynamic 64 link..."
-		compile "${CXX} -m64 ${CFLAGS} $FULLPATH/mem-test.cpp \
-${TBBLIBS} -o ${tmp_file}"
-		printit "Successfully built and linked 64 bit library"
+		printit "Testing target 64 linking..."
+		compile "${CXX} -m64 ${CFLAGS} ${FULLPATH}/mem-test.cpp ${LIBS} -o ${tmp_file}"
+		printit "Successfully built 64 bit dynamic executable"
 	}
 }
 
-
-#
-# Check if AT is able to build and link against basic TBB libraries
-# This test checks for important headers and dynamic libs as we don't provide
-# static libs.
-#
 proc parallel_test {} {
 	global TARGET32
 	global TARGET64
 	global CXX
 	global CFLAGS
-	global TBBLIBS
+	global LIBS
 	global tmp_file
 	global FULLPATH
 
 	printit "Testing parallel execution..."
 	if { $TARGET32 } {
-		printit "Testing dynamic 32 link..."
-		compile "${CXX} -m32 ${CFLAGS} $FULLPATH/par-test.cpp \
-${TBBLIBS} -o ${tmp_file}"
-		printit "Successfully built and linked 32 bit library"
+		printit "Testing target 32 linking..."
+		compile "${CXX} -m32 ${CFLAGS} ${FULLPATH}/par-test.cpp ${LIBS} -o ${tmp_file}"
+		printit "Successfully built 32 bit dynamic executable"
 	}
 	if { $TARGET64 } {
-		printit "Testing dynamic 64 link..."
-		compile "${CXX} -m64 ${CFLAGS} $FULLPATH/par-test.cpp \
-${TBBLIBS} -o ${tmp_file}"
-		printit "Successfully built and linked 64 bit library"
+		printit "Testing target 64 linking..."
+		compile "${CXX} -m64 ${CFLAGS} ${FULLPATH}/par-test.cpp ${LIBS} -o ${tmp_file}"
+		printit "Successfully built 64 bit dynamic executable"
 	}
 }
 
-printit "Testing TBB..."
+#
+# Check if AT is able to build and link against TBB libraries
+# This test checks for important headers and dynamic libs
+#
 set tmp_file [exec mktemp]
 
 # Run memtest for all TBB versions.
@@ -114,4 +97,4 @@ if { ($env(AT_TBB_VER) == "master") || (${major_ver} >= 4 && ${minor_ver} >= 3) 
 	parallel_test
 }
 
-exec rm -f ${tmp_file}
+file delete -force ${tmp_file}

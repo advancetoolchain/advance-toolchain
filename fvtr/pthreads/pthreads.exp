@@ -1,4 +1,4 @@
-#! /usr/bin/expect
+#!/usr/bin/expect
 # Copyright 2017 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,23 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-#
-# Check if AT can build and run multi-thread software.
+# Tests for pthreads
 #
 
 source ./shared.exp
 
+set rc 0
+
 set CC [compiler_path]
 set CFLAGS "-mcpu=power7 -mtune=power7"
-
 set LIBS "-lpthread"
 
-set tmp_file "$FULLPATH/pthread_test"
-
+# Disable static linking on ppc476-tools, because it doesn't provide static libraries
 switch $env(AT_NAME) {
 	"ppc476-tools" {
-		# Disable static linking on ppc476-tools, because it doesn't
-		# provide static libraries.
 		set static_link 0
 	}
 	default {
@@ -37,41 +34,41 @@ switch $env(AT_NAME) {
 	}
 }
 
+#
+# Check if AT is able to build and link against pthreads libraries
+# This test checks for important headers and both static and dynamic libs
+#
+set tmp_file [exec mktemp]
+
 if { $TARGET32 } {
 	if { ${static_link} } {
-		printit "Testing 32-bit static linking..."
-		compile "${CC} -m32 -static ${CFLAGS} $FULLPATH/pthread_test.c \
-${LIBS} -o ${tmp_file}"
+		printit "Testing target 32 static linking..."
+		compile "${CC} -m32 -static ${CFLAGS} ${FULLPATH}/test.c ${LIBS} -o ${tmp_file}"
 		if { $env(AT_CROSS_BUILD) != yes } {
 			exec ${tmp_file}
 		}
 	}
-
-	printit "Testing 32-bit dynamic linking..."
-	compile "${CC} -m32 ${CFLAGS} $FULLPATH/pthread_test.c ${LIBS} \
--o ${tmp_file}"
+	printit "Testing target 32 dynamic linking..."
+	compile "${CC} -m32 ${CFLAGS} ${FULLPATH}/test.c ${LIBS} -o ${tmp_file}"
 	if { $env(AT_CROSS_BUILD) != yes } {
 		exec ${tmp_file}
 	}
-
+	printit "Successfully built 32 bit executables"
 }
-
 if { $TARGET64 } {
 	if { ${static_link} } {
-		printit "Testing 64-bit static linking..."
-		compile "${CC} -m64 -static ${CFLAGS} $FULLPATH/pthread_test.c \
-${LIBS} -o ${tmp_file}"
+		printit "Testing target 64 static linking..."
+		compile "${CC} -m64 -static ${CFLAGS} ${FULLPATH}/test.c ${LIBS} -o ${tmp_file}"
 		if { $env(AT_CROSS_BUILD) != yes } {
 			exec ${tmp_file}
 		}
 	}
-
-	printit "Testing 64-bit dynamic linking..."
-	compile "${CC} -m64 ${CFLAGS} $FULLPATH/pthread_test.c ${LIBS} \
--o ${tmp_file}"
+	printit "Testing target 64 dynamic linking..."
+	compile "${CC} -m64 ${CFLAGS} ${FULLPATH}/test.c ${LIBS} -o ${tmp_file}"
 	if { $env(AT_CROSS_BUILD) != yes } {
 		exec ${tmp_file}
 	}
+	printit "Successfully built 64 bit executables"
 }
 
 file delete -force ${tmp_file}

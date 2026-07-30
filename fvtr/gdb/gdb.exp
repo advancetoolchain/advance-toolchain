@@ -1,4 +1,4 @@
-#! /usr/bin/expect
+#!/usr/bin/expect
 # Copyright 2017 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,7 @@ source gdb/gdbtest.exp
 if { [array names env -exact "AT_GDB_VER"] == "" } {
 	printit "GDB is not configured in the config file." $WARNING
 	printit "Skipping..."
-	exit $ENOSYS
+	exit ${ENOSYS}
 }
 
 # Get GDB version in the format: X.Y.Z
@@ -48,7 +48,7 @@ set fail 0
 
 if { $TARGET32} {
 	printit "Starting 32-bit compile..."
-	compile "${CC} -m32 ${CFLAGS} ${FULLPATH}/gdbtest.c -o \
+	compile "${CC} -m32 ${CFLAGS} ${FULLPATH}/test.c -o \
 ${FULLPATH}/at-gdbtest-32"
 
 	printit "Running 32 bit gdb testcase"
@@ -63,7 +63,7 @@ ${FULLPATH}/at-gdbtest-32"
 }
 if { $TARGET64 } {
 	printit "Starting 64-bit compile..."
-	compile "${CC} -m64 ${CFLAGS} ${FULLPATH}/gdbtest.c -o \
+	compile "${CC} -m64 ${CFLAGS} ${FULLPATH}/test.c -o \
 ${FULLPATH}/at-gdbtest-64"
 
 	printit "Running 64 bit gdb testcase"
