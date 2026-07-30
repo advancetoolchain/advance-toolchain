@@ -1,4 +1,4 @@
-#! /usr/bin/expect
+#!/usr/bin/expect
 # Copyright 2017 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,7 @@ source ./shared.exp
 # gotools is not available in cross compilers
 if { $env(AT_CROSS_BUILD) == "yes" } {
 	printit "Skipping gotools tests: this is a cross compiler\t\[SUCCESS\]"
-	exit $ENOSYS
+	exit ${ENOSYS}
 }
 
 printit "Running go tools tests..."
@@ -38,10 +38,10 @@ if { ![file exists $at_dir/bin/go] } {
 }
 
 set test_files {hello.go hello_cgo.go}
-set env(GOPATH) $FULLPATH
+set env(GOPATH) ${FULLPATH}
 
 foreach test $test_files {
-	spawn $GOTOOL run $FULLPATH/$test
+	spawn $GOTOOL run ${FULLPATH}/$test
 	expect {
 		-re ".*FAIL.*" { fvtr_error "go tools test failed" }
 		-re ".*fail.*" { fvtr_error "go tools test failed" }

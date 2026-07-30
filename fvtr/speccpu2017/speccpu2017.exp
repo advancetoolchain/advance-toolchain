@@ -23,7 +23,7 @@ if { [array names env -exact SPEC] == "" || ! [regexp "cpu2017" $env(SPEC)] } {
 	printit "Skipping: Didn't find an installed SPEC CPU 2017."
 	printit "The directory needs to have \"cpu2017\" in its name ."
 	printit "Check if it's environment is loaded."
-	exit $ENOSYS
+	exit ${ENOSYS}
 }
 
 if { [file exists $env(SPEC)] == 0 } {

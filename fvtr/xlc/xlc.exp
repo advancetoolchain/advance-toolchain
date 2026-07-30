@@ -1,4 +1,4 @@
-#! /usr/bin/expect
+#!/usr/bin/expect
 # Copyright 2017 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,7 @@ set rc 0
 if {[info exists env(AT_WD)]} {
 	printit "Skipping: running test suite on a compatible mode with the\
 build system.\t\[SUCCESS\]"
-	exit $ENOSYS
+	exit ${ENOSYS}
 }
 
 # Run the commands to compile with xlc and link with AT

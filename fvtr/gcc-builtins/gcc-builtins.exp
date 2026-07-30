@@ -1,4 +1,4 @@
-#! /usr/bin/expect
+#!/usr/bin/expect
 #
 # Test if GCC is providing mandatory built-ins.
 #
@@ -36,5 +36,5 @@ if { ${rc} == 0 } {
 	printit "All mandatory built-ins are available"
 }
 
-exec rm -f ${tmp_file}
+file delete -force ${tmp_file}
 exit ${rc}

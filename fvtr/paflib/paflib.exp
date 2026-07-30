@@ -1,4 +1,4 @@
-#! /usr/bin/expect
+#!/usr/bin/expect
 # Copyright 2017 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-#
 # Tests for PAFlib
 #
 
@@ -23,31 +22,31 @@ set rc 0
 
 set GCC [compiler_path]
 set CFLAGS "-O2 -Wall"
+set LIBS "-lpaf-dsc -lpaf-ebb"
 
 if { [array names env -exact "AT_PAFLIB_VER"] == "" } {
 	printit "WARNING: PAFlib is not configured in the config file."
 	printit "Skipping..."
-	exit $ENOSYS
+	exit ${ENOSYS}
 }
 
 #
-# Check if AT is able to build and link against basic PAFlib libraries
-# This test checks for important headers and dynamic libs as we don't provide
-# static libs.
+# Check if AT is able to build and link against PAFlib libraries
+# This test checks for important headers and both static and dynamic libs
 #
 set tmp_file [exec mktemp]
 
 if { $TARGET32 } {
-	printit "Testing 32 bit linking..."
-	compile "${GCC} -m32 ${CFLAGS} $FULLPATH/test.c -lpaf-dsc -lpaf-ebb -o ${tmp_file}"
-	compile "${GCC} -m32 -static ${CFLAGS} $FULLPATH/test.c -lpaf-dsc -lpaf-ebb -o ${tmp_file}"
-	printit "Successfully built and linked against 32 bit library"
+	printit "Testing target 32 linking..."
+	compile "${GCC} -m32 -static ${CFLAGS} ${FULLPATH}/test.c ${LIBS} -o ${tmp_file}"
+	compile "${GCC} -m32 ${CFLAGS} ${FULLPATH}/test.c ${LIBS} -o ${tmp_file}"
+	printit "Successfully built 32 bit static and dynamic executables"
 }
 if { $TARGET64 } {
-	printit "Testing 64 bit linking..."
-	compile "${GCC} -m64 ${CFLAGS} $FULLPATH/test.c -lpaf-dsc -lpaf-ebb -o ${tmp_file}"
-	compile "${GCC} -m64 -static ${CFLAGS} $FULLPATH/test.c -lpaf-dsc -lpaf-ebb -o ${tmp_file}"
-	printit "Successfully built and linked against 64 bit library"
+	printit "Testing target 64 linking..."
+	compile "${GCC} -m64 -static ${CFLAGS} ${FULLPATH}/test.c ${LIBS} -o ${tmp_file}"
+	compile "${GCC} -m64 ${CFLAGS} ${FULLPATH}/test.c ${LIBS} -o ${tmp_file}"
+	printit "Successfully built 64 bit static and dynamic executables"
 }
 
-exec rm -f ${tmp_file}
+file delete -force ${tmp_file}

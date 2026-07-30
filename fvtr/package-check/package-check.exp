@@ -1,4 +1,4 @@
-#! /usr/bin/expect
+#!/usr/bin/expect
 # Copyright 2017 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -360,7 +360,7 @@ proc test_all_packages {} {
 		set get_pkg_files get_deb_files
 	} else {
 		printit "Unsupported package system..."
-		exit $ENOSYS
+		exit ${ENOSYS}
 	}
 
 	# Iterate through the packages found
@@ -422,7 +422,7 @@ if {[info exists env(AT_WD)]} {
 	} else {
 		printit "Skipping: this test should be run on a compatible mode at the\
 				build system.\t\[SUCCESS\]"
-		exit $ENOSYS
+		exit ${ENOSYS}
 	}
 }
 

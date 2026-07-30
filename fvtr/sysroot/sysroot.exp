@@ -1,4 +1,4 @@
-#! /usr/bin/expect
+#!/usr/bin/expect
 # Copyright 2017 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,12 +33,12 @@ if { $env(AT_CROSS_BUILD) == "yes" } {
 }
 
 printit "Testing --sysroot option..."
-if [ compile "${CC} ${CFLAGS} $FULLPATH/test.c -o ${tmp_file}" ] {
+if [ compile "${CC} ${CFLAGS} ${FULLPATH}/test.c -o ${tmp_file}" ] {
 	set rc 1
 } else {
 	printitcont "\t\t\t Use of sysroot successful."
 }
 
 
-exec rm -f ${tmp_file}
+file delete -force ${tmp_file}
 exit $rc

@@ -1,4 +1,4 @@
-#! /usr/bin/expect
+#!/usr/bin/expect
 # Copyright 2017 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,29 +12,32 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 #
-# Check if libgomp works.
+# Tests for libgomp
 #
-
-set at_dir $env(AT_DEST)
 
 source ./shared.exp
+
+set rc 0
 
 set CC [compiler_path]
 set CFLAGS "-O2 -Wall -fopenmp -pthread"
 
+#
+# Check if AT is able to build and link against libgomp
+# This test checks for OpenMP support
+#
 set tmp_file [exec mktemp]
 
 if { $TARGET32 } {
-	printitnonewline "Testing 32-bit dynamic linking..."
-	compile "${CC} -m32 ${CFLAGS} $FULLPATH/test.c -o ${tmp_file}"
-	printitcont "\t\t\t\t\t\[SUCCESS\]"
+	printit "Testing 32 bit linking..."
+	compile "${CC} -m32 ${CFLAGS} ${FULLPATH}/test.c -o ${tmp_file}"
+	printit "Successfully built 32 bit executable"
 }
 if { $TARGET64 } {
-	printitnonewline "Testing 64-bit dynamic linking..."
-	compile "${CC} ${CFLAGS} $FULLPATH/test.c -o ${tmp_file}"
-	printitcont "\t\t\t\t\t\[SUCCESS\]"
+	printit "Testing 64 bit linking..."
+	compile "${CC} -m64 ${CFLAGS} ${FULLPATH}/test.c -o ${tmp_file}"
+	printit "Successfully built 64 bit executable"
 }
 
-exec rm -f ${tmp_file}
+file delete -force ${tmp_file}

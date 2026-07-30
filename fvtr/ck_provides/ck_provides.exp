@@ -1,4 +1,4 @@
-#! /usr/bin/expect
+#!/usr/bin/expect
 # Copyright 2017 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,7 @@ source config_parser.exp
 
 if { $env(AT_CROSS_BUILD) == "yes" } {
 	printit "Skipping: this is a cross compiler\t\[SUCCESS\]"
-	exit $ENOSYS
+	exit ${ENOSYS}
 }
 
 # Get the strings in Provides information and filter only the string

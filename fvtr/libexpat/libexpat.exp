@@ -1,4 +1,4 @@
-#! /usr/bin/expect
+#!/usr/bin/expect
 # Copyright 2017 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,34 +13,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-#
-# Check if AT provides headers and static and shared libraries for libexpat.
+# Check if AT provides headers and static libraries for libexpat.
 # Test only for 64-bit versions as AT doesn't provide 32-bit.
 #
 
 source ./shared.exp
 
 set rc 0
-set tmp_file [exec mktemp]
-
-if { $env(AT_CROSS_BUILD) == "yes" } {
-	printit "Skipping libexpat tests: this is a cross \
-compiler\t\[SUCCESS\]"
-	exit $ENOSYS
-}
 
 set CC [compiler_path]
-set CFLAGS "-m64 -O2 -Wall"
-set LIB_PATH " "
-set INCLUDE_PATH " "
+set CFLAGS "-O2 -Wall"
+set LIBS "-lexpat"
 
-printit "Testing static linking..."
-if [ compile "${CC} ${CFLAGS} -static $LIB_PATH $INCLUDE_PATH $FULLPATH/test.c \
-    -lexpat -o ${tmp_file}" ] {
-	set rc 1
-} else {
-	printitcont "\t\t\t Statically linking libexpat successful"
+# libexpat isn't available in cross compilers
+if { $env(AT_CROSS_BUILD) == "yes" } {
+	printit "Skipping libexpat tests: this is a cross compiler"
+	exit ${ENOSYS}
 }
 
-exec rm -f ${tmp_file}
-exit $rc
+#
+# Check if AT is able to build and link against libexpat libraries
+# This test checks for important headers and static libs
+#
+set tmp_file [exec mktemp]
+
+printit "Testing target 64 linking..."
+compile "${CC} -m64 -static ${CFLAGS} ${FULLPATH}/test.c ${LIBS} -o ${tmp_file}"
+printit "Successfully built 64 bit static executable"
+
+file delete -force ${tmp_file}

@@ -1,4 +1,4 @@
-#! /usr/bin/expect
+#!/usr/bin/expect
 # Copyright 2017 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -121,7 +121,7 @@ if { $BLD_ARCH_PPC64LE } {
 		set rc 1
 		printitcont "Program ${test_exec} not marked as ppc64le"
 	}
-	exec rm -f ${test_exec}
+	file delete -force ${test_exec}
 }
 
 exit $rc
