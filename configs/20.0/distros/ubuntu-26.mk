@@ -53,7 +53,7 @@ AT_REPOCMD_OPTS := -p -s sha256 --simple-md-filenames --no-database
 # Override generic values from build.mk (Ubuntu >= 22.04 requires a power9)
 BUILD_LOAD_ARCH := power9
 BUILD_BASE_ARCH := power9
-BUILD_ACTIVE_MULTILIBS := power10
+BUILD_ACTIVE_MULTILIBS := power10 power11
 
 # As some distros have special requirements for configuration upon final
 # AT installation, put in this macro, the final configurations required
