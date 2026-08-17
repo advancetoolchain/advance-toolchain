@@ -64,7 +64,6 @@ fi
 
 # Copy configuration files
 pushd ${spec} > /dev/null
-go_dest="/usr/local/go"
 for f in *; do
 	echo "Setting up ${deb_d}/${f}"
 	sed -e "s/__AT_DEST__/${at_dest//\//\\/}/g" \
@@ -78,7 +77,6 @@ for f in *; do
 	    -e "s/__AT_VER_ALTERNATIVE__/${at_ver_rev_internal//./}/g" \
 	    -e "s/__AT_DIR_NAME__/${at_dir_name}/g" \
 	    -e "s/__TMP_DIR__/${tmp_dir//\//\\/}/g" \
-	    -e "s/__GO_DEST__/${go_dest//\//\\/}/g" \
 	    -e "s/__SYSTEMD_UNIT__/${systemd_unit//\//\\/}/g" \
 	    -e "s/__SYSTEMD_PRESET__/${systemd_preset//\//\\/}/g" \
 	    -e "s/__USE_SYSTEMD__/${use_systemd}/g" \
@@ -124,8 +122,7 @@ fi
 for pkg in $(awk '/^Package:/ { print $2 }' ${deb_d}/control | grep -v dbg); do
 	# Get if this is a runtime, devel, compat, etc.
 	apkg=$(echo ${pkg} \
-	       | sed -e 's/^.*'${at_major_internal}'-//g' \
-		     -e 's/^.*golang.*$/golang/g')
+	       | sed 's/^.*'${at_major_internal}'-//g')
 
 	echo "Preparing files to package ${pkg}"
 
@@ -159,9 +156,6 @@ for pkg in $(awk '/^Package:/ { print $2 }' ${deb_d}/control | grep -v dbg); do
 			else
 				apkg="cross_files"
 			fi
-			;;
-		golang)
-			# Golang package already has the right apkg value.
 			;;
 		*)
 			# The version-agnostic packages are dummy and don't

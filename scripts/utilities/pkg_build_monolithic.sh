@@ -173,13 +173,6 @@ function build_monolithic_spec()
 				   "${rpmspecs}/advance-toolchain_at-compat.spec" || exit 1
 		fi
 
-		if [[ "${build_arch}" == "ppc64le" \
-		      && -e "${config_spec}/monolithic_golang.spec" ]]; then
-			echo "Prepare the golang spec."
-			cat "${config_spec}/monolithic_golang.spec" > \
-			    "${rpmspecs}/advance-toolchain_golang.spec"
-		fi
-
 		echo "Continue to prepare the base spec file."
 		cat "${config_spec}/monolithic.spec" >> \
 			"${rpmspecs}/advance-toolchain.spec"

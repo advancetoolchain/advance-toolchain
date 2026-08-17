@@ -40,18 +40,12 @@ install_native ()
 			sudo dpkg -i advance-toolchain-at*libnxz_* || return ${?}
 		fi
 		sudo dpkg -i advance-toolchain-at*dbg* || return ${?}
-		if [ -e advance-toolchain-golang* ]; then
-			sudo dpkg -i advance-toolchain-golang* || return ${?}
-		fi
 	else
 		sudo rpm -${2}v advance-toolchain-*runtime-${version}* \
 			advance-toolchain-*runtime-debuginfo* \
 			advance-toolchain-*devel* \
 			advance-toolchain-*mcore* \
 			advance-toolchain-*perf* || return ${?}
-		if [ -e advance-toolchain-golang* ]; then
-			sudo rpm -${2}v advance-toolchain-golang* || return ${?}
-		fi
 		if [ -e advance-toolchain-*libnxz-${version}* ]; then
 			sudo rpm -${2}v advance-toolchain-*libnxz* || return ${?}
 		fi
