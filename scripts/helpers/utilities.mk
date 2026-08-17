@@ -328,6 +328,8 @@ define deb_setenv
     export debs="$(DEBS)"; \
     echo "  - Setting use_systemd to $(USE_SYSTEMD)"; \
     export use_systemd="$(USE_SYSTEMD)"; \
+    echo "  - Setting at_maintainer to $(AT_MAINTAINER)"; \
+    export at_maintainer="$(AT_MAINTAINER)"; \
     echo "* Finished deb env variables."
 endef
 

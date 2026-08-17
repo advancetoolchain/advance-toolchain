@@ -69,6 +69,7 @@ for f in *; do
 	sed -e "s/__AT_DEST__/${at_dest//\//\\/}/g" \
 	    -e "s/__AT_FULL_VER__/${at_full_ver}/g" \
 	    -e "s/__AT_MAJOR_INTERNAL__/${at_major_internal}/g" \
+	    -e "s/__AT_MAINTAINER__/${at_maintainer}/g" \
 	    -e "s/__DATE__/$(date -R)/g" \
 	    -e "s/__DEST_CROSS__/${dest_cross//\//\\/}/g" \
 	    -e "s/__TARGET__/${target}/g" \
