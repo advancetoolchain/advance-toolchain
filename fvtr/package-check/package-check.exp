@@ -365,9 +365,8 @@ proc test_all_packages {} {
 
 	# Iterate through the packages found
 	foreach package ${package_list} {
-		if { [string match *selinux* "${package}"] || \
-			 [string match *golang* "${package}"] } {
-			# TODO Implement a content validation for golang and selinux packages
+		if { [string match *selinux* "${package}"] } {
+			# TODO Implement a content validation for selinux package
 			printitcont "Skipping ${package}..."
 			continue
 		}
