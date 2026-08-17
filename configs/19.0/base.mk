@@ -51,7 +51,6 @@ AT_MAJOR_VERSION := 19.0
 AT_REVISION_NUMBER := 0
 AT_INTERNAL := none
 AT_PREVIOUS_VERSION := 18.0
-AT_DIR_NAME := at-next-$(AT_MAJOR_VERSION)-$(AT_REVISION_NUMBER)-$(AT_INTERNAL)
 
 # Minimum kernel version distributed on supported distros by this AT version,
 # i.e. minimum kernel version required in order to run software linked to this
