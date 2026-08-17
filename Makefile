@@ -627,11 +627,10 @@ ifeq (,$(findstring $(MAKECMDGOALS),clone pack))
     # Canonicalize DESTDIR path
     DESTDIR := $(shell readlink -m "${DESTDIR}")
 
+    AT_MAJOR_INTERNAL := $(AT_MAJOR)
     ifneq ($(AT_INTERNAL),none)
-        AT_MAJOR_INTERNAL := $(AT_MAJOR)-$(AT_INTERNAL)
         AT_DIR_NAME ?= $(AT_VER_REV_INTERNAL)
     else
-        AT_MAJOR_INTERNAL := $(AT_MAJOR)
         AT_DIR_NAME ?= $(AT_MAJOR)
     endif
 
@@ -669,13 +668,8 @@ ifeq (,$(findstring $(MAKECMDGOALS),clone pack))
     DYNAMIC_SPEC := $(strip $(shell $(call mkpath,$(DYNAMIC_ROOT)/spec,no)))
     DYNAMIC_LOAD := $(strip $(shell $(call mkpath,$(DYNAMIC_ROOT)/load,no)))
     TEMP_INSTALL := $(strip $(shell $(call mkpath,$(TEMP_INSTALL),no)))
-    ifeq ($(AT_USE_FEDORA_RELNAM),yes)
-        RELNOT_FILE  := $(RPMS)/release_notes.$(AT_NAME)-$(AT_FULL_VER).tmp
-        SRC_TAR_FILE := $(PACKS)/$(AT_NAME)-src-$(AT_FULL_VER).tgz
-    else
-        RELNOT_FILE  := $(RPMS)/release_notes.$(AT_MAJOR_INTERNAL)-$(AT_VER_REV).tmp
-        SRC_TAR_FILE := $(PACKS)/advance-toolchain-$(AT_MAJOR_INTERNAL)-src-$(AT_VER_REV).tgz
-    endif
+    RELNOT_FILE  := $(RPMS)/release_notes.$(AT_MAJOR_INTERNAL)-$(AT_FULL_VER).tmp
+    SRC_TAR_FILE := $(PACKS)/advance-toolchain-$(AT_MAJOR_INTERNAL)-src-$(AT_FULL_VER).tgz
     # Name of the exported config file.
     CONFIG_EXPT := $(DYNAMIC_ROOT)/config_$(AT_VER_REV_INTERNAL).$(BUILD_ID)
     # Define some fetch folder structure
