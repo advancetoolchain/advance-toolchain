@@ -1,1 +1,0 @@
-../../20.0/distros/suse-15.mk
