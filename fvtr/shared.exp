@@ -475,9 +475,8 @@ proc get_packaging_system {} {
 
 proc get_packages_list { system } {
 	set at_ver_rev [append_at_internal $::env(AT_MAJOR_VERSION)-$::env(AT_REVISION_NUMBER)]
-	printit "Using AT version: ${at_ver_rev}"
-	# Example of $pkg_name: at14.0-5-rc2
 	set pkg_name $::env(AT_NAME)$::env(AT_MAJOR_VERSION)
+	printit "Using AT version: ${pkg_name} ${at_ver_rev}"
 
 	# Get the list of packages.
 	set packages ""
@@ -495,14 +494,10 @@ proc get_packages_list { system } {
 		}
 	} else {
 		if { ${system} == "deb" } {
-			set at_ver_rev [append_at_internal ${at_ver_rev}]
-
 			if { [catch {exec dpkg --list | grep -E "${pkg_name}" \
 			      | grep -E " ${at_ver_rev} " | \
-			      awk "{print \$2}"} \
-			packages] } {
-				fvtr_error "Unable to find packages for \
-${pkg_name}."
+			      awk "{print \$2}"} packages] } {
+				fvtr_error "Unable to find packages for ${pkg_name}."
 			}
 		} else {
 			# Force RPM output format, because it may vary between
@@ -515,8 +510,7 @@ ${pkg_name}."
 					grep "${pkg_name}" | \
 					grep -- "-${at_ver_rev}\."} \
 				packages] } {
-					fvtr_error "Unable to find packages for \
-${pkg_name}."
+					fvtr_error "Unable to find packages for ${pkg_name}."
 				}
 			} else {
 				# If there is no internal version then be sure to exclude
@@ -528,8 +522,7 @@ ${pkg_name}."
 					grep -- "-${at_ver_rev}\." | \
 					grep -vE "(-rc|-alpha|-beta)"} \
 				packages] } {
-					fvtr_error "Unable to find packages for \
-${pkg_name}."
+					fvtr_error "Unable to find packages for ${pkg_name}."
 					}
 			}
 		}

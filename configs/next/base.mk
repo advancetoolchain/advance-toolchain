@@ -59,7 +59,7 @@ AT_DIR_NAME := at-next-$(AT_MAJOR_VERSION)-$(AT_REVISION_NUMBER)-$(AT_INTERNAL)
 AT_KERNEL := 6.16.3
 
 # Name and email that will appear in the maintainer field of the AT packages.
-AT_MAINTAINER := "Erwan Prioul <erwan@linux.ibm.com>"
+AT_MAINTAINER := Erwan Prioul <erwan@linux.ibm.com>
 
 # Set the last day of support for this AT version.
 # Update it every year for the new AT release.

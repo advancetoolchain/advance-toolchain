@@ -13,11 +13,11 @@
 # limitations under the License.
 #
 Source: advance-toolchain-__AT_MAJOR_INTERNAL__
+Maintainer: __AT_MAINTAINER__
 Section: devel
 Priority: optional
 
 Package: advance-toolchain-runtime
-Maintainer: __AT_MAINTAINER__
 Architecture: ppc64el
 Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__)
 Description: Advance Toolchain
@@ -26,7 +26,6 @@ Description: Advance Toolchain
  advantage of the latest IBM Power hardware features on Linux.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime
-Maintainer: __AT_MAINTAINER__
 Architecture: ppc64el
 Build-Depends: dh-systemd
 Depends: ${shlibs:Depends} ${misc:Depends}
@@ -36,14 +35,12 @@ Description: Advance Toolchain
  advantage of the latest IBM Power hardware features on Linux.
 
 Package: advance-toolchain-runtime-dbg
-Maintainer: __AT_MAINTAINER__
 Architecture: ppc64el
 Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime-dbg (= __AT_FULL_VER__)
 Description: Advance Toolchain
  The Advance Toolchain debugging information.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime-dbg
-Maintainer: __AT_MAINTAINER__
 Architecture: ppc64el
 Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__),
          ${shlibs:Depends} ${misc:Depends}
@@ -51,7 +48,6 @@ Description: Advance Toolchain
  The Advance Toolchain debugging information.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime-compat
-Maintainer: __AT_MAINTAINER__
 Architecture: ppc64el
 Conflicts: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime
 Depends: ${shlibs:Depends}
@@ -61,7 +57,6 @@ Description: Advance Toolchain
  advantage of the latest IBM Power hardware features on Linux.
 
 Package: advance-toolchain-devel
-Maintainer: __AT_MAINTAINER__
 Architecture: ppc64el
 Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-devel (= __AT_FULL_VER__),
          ${shlibs:Depends} ${misc:Depends}
@@ -73,7 +68,6 @@ Description: Advance Toolchain
  features provided by the Advance Toolchain.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-devel
-Maintainer: __AT_MAINTAINER__
 Architecture: ppc64el
 Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__),
          ${shlibs:Depends} ${misc:Depends}
@@ -86,14 +80,12 @@ Description: Advance Toolchain
  features provided by the Advance Toolchain.
 
 Package: advance-toolchain-devel-dbg
-Maintainer: __AT_MAINTAINER__
 Architecture: ppc64el
 Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-devel-dbg (= __AT_FULL_VER__)
 Description: Advance Toolchain
  The Advance Toolchain debugging information.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-devel-dbg
-Maintainer: __AT_MAINTAINER__
 Architecture: ppc64el
 Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-devel (= __AT_FULL_VER__),
          ${shlibs:Depends} ${misc:Depends}
@@ -101,7 +93,6 @@ Description: Advance Toolchain
  The Advance Toolchain debugging information.
 
 Package: advance-toolchain-mcore-libs
-Maintainer: __AT_MAINTAINER__
 Architecture: ppc64el
 Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-mcore-libs (= __AT_FULL_VER__)
 Description: Advance Toolchain
@@ -112,7 +103,6 @@ Description: Advance Toolchain
  applications.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-mcore-libs
-Maintainer: __AT_MAINTAINER__
 Architecture: ppc64el
 Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__),
          ${shlibs:Depends} ${misc:Depends}
@@ -124,14 +114,12 @@ Description: Advance Toolchain
  applications.
 
 Package: advance-toolchain-mcore-libs-dbg
-Maintainer: __AT_MAINTAINER__
 Architecture: ppc64el
 Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-mcore-libs-dbg (= __AT_FULL_VER__)
 Description: Advance Toolchain
  The Advance Toolchain debugging information.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-mcore-libs-dbg
-Maintainer: __AT_MAINTAINER__
 Architecture: ppc64el
 Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-mcore-libs (= __AT_FULL_VER__),
          ${shlibs:Depends} ${misc:Depends}
@@ -139,7 +127,6 @@ Description: Advance Toolchain
  The Advance Toolchain debugging information.
 
 Package: advance-toolchain-perf
-Maintainer: __AT_MAINTAINER__
 Architecture: ppc64el
 Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-perf (= __AT_FULL_VER__)
 Description: Advance Toolchain
@@ -149,7 +136,6 @@ Description: Advance Toolchain
  This package contains the performance library install targets for Valgrind.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-perf
-Maintainer: __AT_MAINTAINER__
 Architecture: ppc64el
 Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__),
          ${shlibs:Depends} ${misc:Depends}
@@ -160,14 +146,12 @@ Description: Advance Toolchain
  This package contains the performance library install targets for Valgrind.
 
 Package: advance-toolchain-perf-dbg
-Maintainer: __AT_MAINTAINER__
 Architecture: ppc64el
 Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-perf-dbg (= __AT_FULL_VER__)
 Description: Advance Toolchain
  The Advance Toolchain debugging information.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-perf-dbg
-Maintainer: __AT_MAINTAINER__
 Architecture: ppc64el
 Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-perf (= __AT_FULL_VER__),
          ${shlibs:Depends} ${misc:Depends}
@@ -175,7 +159,6 @@ Description: Advance Toolchain
  The Advance Toolchain debugging information.
 
 Package: advance-toolchain-libnxz
-Maintainer: __AT_MAINTAINER__
 Architecture: ppc64el
 Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz (= __AT_FULL_VER__)
 Description: Advance Toolchain
@@ -185,7 +168,6 @@ Description: Advance Toolchain
  This package contains the NX GZIP Library.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz
-Maintainer: __AT_MAINTAINER__
 Architecture: ppc64el
 Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-runtime (= __AT_FULL_VER__),
          ${shlibs:Depends} ${misc:Depends}
@@ -196,14 +178,12 @@ Description: Advance Toolchain
  This package contains the NX GZIP Library.
 
 Package: advance-toolchain-libnxz-dbg
-Maintainer: __AT_MAINTAINER__
 Architecture: ppc64el
 Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz-dbg (= __AT_FULL_VER__)
 Description: Advance Toolchain
  This package contains the NX GZIP Library debugging information.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz-dbg
-Maintainer: __AT_MAINTAINER__
 Architecture: ppc64el
 Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-libnxz (= __AT_FULL_VER__),
          ${shlibs:Depends} ${misc:Depends}
