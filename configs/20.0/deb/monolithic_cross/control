@@ -13,11 +13,11 @@
 # limitations under the License.
 #
 Source: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__
+Maintainer: __AT_MAINTAINER__
 Section: devel
 Priority: optional
 
 Package: advance-toolchain-cross__BUILD_ARCH__
-Maintainer: __AT_MAINTAINER__
 Architecture: any
 Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__ (= __AT_FULL_VER__)
 Description: Advance Toolchain cross compiler
@@ -26,7 +26,6 @@ Description: Advance Toolchain cross compiler
  advantage of the latest IBM Power hardware features on Linux.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__
-Maintainer: __AT_MAINTAINER__
 Architecture: any
 Depends: ${shlibs:Depends}, advance-toolchain-__AT_MAJOR_INTERNAL__-cross-common (= __AT_FULL_VER__)
 Description: Advance Toolchain cross compiler
@@ -36,7 +35,6 @@ Description: Advance Toolchain cross compiler
 Multi-Arch: foreign
 
 Package: advance-toolchain-cross-common
-Maintainer: __AT_MAINTAINER__
 Architecture: any
 Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross-common (= __AT_FULL_VER__)
 Description: Advance Toolchain cross compiler common files
@@ -46,7 +44,6 @@ Description: Advance Toolchain cross compiler common files
  This package provides common files for the Advance Toolchain.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-cross-common
-Maintainer: __AT_MAINTAINER__
 Architecture: any
 Pre-Depends: info
 Depends: ${shlibs:Depends}, info
@@ -58,7 +55,6 @@ Description: Advance Toolchain cross compiler common files
 Multi-Arch: foreign
 
 Package: advance-toolchain-cross__BUILD_ARCH__-runtime-extras
-Maintainer: __AT_MAINTAINER__
 Architecture: any
 Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__-runtime-extras (= __AT_FULL_VER__)
 Description: Advance Toolchain cross compiler runtime extras files
@@ -69,7 +65,6 @@ Description: Advance Toolchain cross compiler runtime extras files
  Advance Toolchain that are not present in the main cross compiler package.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__-runtime-extras
-Maintainer: __AT_MAINTAINER__
 Architecture: any
 Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__ (= __AT_FULL_VER__)
 Depends: ${shlibs:Depends}
@@ -82,7 +77,6 @@ Description: Advance Toolchain cross compiler runtime extras files
 Multi-Arch: foreign
 
 Package: advance-toolchain-cross__BUILD_ARCH__-mcore-libs
-Maintainer: __AT_MAINTAINER__
 Architecture: any
 Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__-mcore-libs (= __AT_FULL_VER__)
 Description: Advance Toolchain
@@ -93,7 +87,6 @@ Description: Advance Toolchain
  applications.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__-mcore-libs
-Maintainer: __AT_MAINTAINER__
 Architecture: any
 Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__ (= __AT_FULL_VER__)
 Depends: ${shlibs:Depends} ${misc:Depends}
@@ -105,7 +98,6 @@ Description: Advance Toolchain
  applications.
 
 Package: advance-toolchain-cross__BUILD_ARCH__-libnxz
-Maintainer: __AT_MAINTAINER__
 Architecture: any
 Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__-libnxz (= __AT_FULL_VER__)
 Description: Advance Toolchain
@@ -115,7 +107,6 @@ Description: Advance Toolchain
  This package contains the NX GZIP Library.
 
 Package: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__-libnxz
-Maintainer: __AT_MAINTAINER__
 Architecture: any
 Pre-Depends: advance-toolchain-__AT_MAJOR_INTERNAL__-cross__BUILD_ARCH__ (= __AT_FULL_VER__)
 Depends: ${shlibs:Depends} ${misc:Depends}
