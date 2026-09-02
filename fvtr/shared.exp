@@ -474,8 +474,8 @@ proc get_packaging_system {} {
 }
 
 proc get_packages_list { system } {
-	set at_ver_rev [append_at_internal $::env(AT_MAJOR_VERSION)-$::env(AT_REVISION_NUMBER)]
-	set pkg_name $::env(AT_NAME)$::env(AT_MAJOR_VERSION)
+	set at_ver_rev $::env(AT_MAJOR_VERSION)-$::env(AT_REVISION_NUMBER)
+	set pkg_name [append_at_internal "$::env(AT_NAME)$::env(AT_MAJOR_VERSION)"]
 	printit "Using AT version: ${pkg_name} ${at_ver_rev}"
 
 	# Get the list of packages.
@@ -494,6 +494,7 @@ proc get_packages_list { system } {
 		}
 	} else {
 		if { ${system} == "deb" } {
+			set at_ver_rev [append_at_internal ${at_ver_rev}]
 			if { [catch {exec dpkg --list | grep -E "${pkg_name}" \
 			      | grep -E " ${at_ver_rev} " | \
 			      awk "{print \$2}"} packages] } {
