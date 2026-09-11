@@ -167,7 +167,7 @@ get_latest_revision ()
 		fi
 		# Since GCC moved to git (January 2020), extra git commands have
 		# been needed to get IBM branches.
-		if [[ $package == "gcc" ]] && [[ $configset != "next" ]]; then
+		if [[ $package == "gcc" ]] && [[ $configset != "next" ]] && [[ $configset != "20.0" ]]; then
 		    git config --local remote.origin.fetch +refs/vendors/ibm/heads/*:refs/remotes/origin/ibm/*
 		    git fetch origin
 		fi
@@ -176,7 +176,7 @@ get_latest_revision ()
 		[[ -z "$branch" ]] && branch="HEAD"
 		# Since GCC moved to git (January 2020), the IBM branches have been
 		# relocated within the vendors directory.
-		if [[ $package == "gcc" ]] && [[ $configset != "next" ]]; then
+		if [[ $package == "gcc" ]] && [[ $configset != "next" ]] && [[ $configset != "20.0" ]]; then
 		    branch="refs/vendors/ibm/heads/${branch}"
 		fi
 		hash=$(git ls-remote ${url} ${branch} | cut -f1)
