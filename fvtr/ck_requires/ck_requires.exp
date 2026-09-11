@@ -26,6 +26,7 @@ proc process_rpm_packages { packages cross_bld at_dest ldd_path objdump_path } {
 	set rc 0
 	set ignored ${FULLPATH}/ignored.tmp.out
 	set TMP_FILE ${FULLPATH}/requirements.tmp.out
+	set rpm_path $env(AT_WD)/rpms/$env(AT_HOST_ARCH)/
 
 	foreach package $packages {
 		# Ignore debuginfo packages.
@@ -33,32 +34,24 @@ proc process_rpm_packages { packages cross_bld at_dest ldd_path objdump_path } {
                         continue
                 }
 
-		if { ![info exists env(AT_WD)] } {
-			printit "Processing package:  ${package}"
-			set files [exec rpm -ql $package 2>/dev/null]
-		} else {
-			printit "Processing package:  ${package}"
-			set rpm_path $env(AT_WD)/rpms/$env(AT_HOST_ARCH)/
-			set files [exec rpm -qlp $rpm_path/$package 2>/dev/null]
-		}
-
 		set requi ${FULLPATH}/$package.req.out
 		set diff ${FULLPATH}/$package.diff.out
-
 		file delete $TMP_FILE $requi $ignored
-
-		exec touch $requi
 		exec touch $TMP_FILE
 
+		printit "Processing package:  ${package}"
+		if { ![info exists env(AT_WD)] } {
+			set pkg_arg $package
+		} else {
+			set pkg_arg $rpm_path/$package
+		}
+		set files [exec rpm -qlp $pkg_arg 2>/dev/null]
 		foreach file $files {
-			set suffix ""
-
 			# Ignore ld.so, because when you run ldd on ld.so it
 			# outputs errors.
 			if {[regexp "ld\[^\ \]*\.so" $file]} {
 				continue
 			}
-
 			if {![file executable $file] || ![file readable $file]} {
 				continue
 			}
@@ -66,7 +59,6 @@ proc process_rpm_packages { packages cross_bld at_dest ldd_path objdump_path } {
 			if { [string first "dynamically linked" $file_info] < 0 } {
 				continue
 			}
-
 			if { $cross_bld == "yes" } {
 				set readelf_path [exec which readelf]
 				set readelf_info [exec $readelf_path -h $file \
@@ -82,47 +74,38 @@ proc process_rpm_packages { packages cross_bld at_dest ldd_path objdump_path } {
 			} elseif { $wordsize == 64 } {
 				set suffix ()(64bit)
 			} else {
-				fvtr_error "Can't recognize ${file} word size: \
-\"${wordsize}\"."
+				fvtr_error "Can't recognize ${file} word size: \"${wordsize}\"."
 			}
 
 			# Grab the libraries provided by the system
-			catch {exec $ldd_path $file | sed s://:/: | \
-					  grep -E "$at_dest|ld-.*\.so" \
-					  | awk "{ print \$1 }" \
-					  | xargs -r -n 1 basename >> $ignored}
+			catch {exec $ldd_path $file | sed s://:/: \
+				| grep -E "$at_dest|ld-.*\.so" \
+				| awk "{ print \$1 }" \
+				| xargs -r -n 1 basename >> $ignored}
 			catch {exec $objdump_path -p $file | grep NEEDED \
-					 | grep -vf $ignored | \
-					 awk "{ print \$2 \"$suffix\" }" >> \
-					 $TMP_FILE}
-
-			# TODO: Need to add versioned libs to the list
-			# objdump -p operf | awk '/required from/ {sub(/:/, "", $3); lib=$3} (lib!="") && ($4!="") { print lib "(" $4 ")";}' | sort -u
+				| grep -vf $ignored \
+				| awk "{ print \$2 \"$suffix\" }" >> $TMP_FILE}
 		}
-		catch {exec cat $TMP_FILE | sort -u > $requi}
-
-		# Compare with the installed rpm packages
-		if { ![info exists ::env(AT_WD)] } {
-			catch {exec rpm -qR $package 2>/dev/null | grep -E "^lib" | \
-				sort -u > $TMP_FILE}
-		} else {
-			catch {exec rpm -qRp $rpm_path/$package 2>/dev/null | \
-				grep -E "^lib" | sort -u > $TMP_FILE}
+		catch {exec sort -u $TMP_FILE | grep "^lib.*\.so" > $requi}
+		set ret [catch {file size $requi} size]
+		if {$ret == 0 && $size == 0} {
+			continue
 		}
-		if {[catch {exec diff -wB $TMP_FILE $requi > $diff}]} {
-			printit "Inconsistencies found on package $package\
-requirements."
+		# Build the list of libs from the RPM packages required by $package
+		catch {exec rpm -qRp $pkg_arg 2>/dev/null \
+			| grep -vE "^rpmlib|advance-toolchain" \
+			| awk "{ print \$1 }" \
+			| xargs -r rpm -q --whatprovides \
+			| xargs -r rpm -ql \
+			| xargs -n1 basename \
+			| grep -E "^lib.*\.so" \
+			| sort -u > $TMP_FILE}
+		set ret [catch {exec grep -vf $TMP_FILE $requi} missing]
+		if {$ret == 0 && $missing != ""} {
+			printit "$package is missing the following requirements:"
+			printit "$missing"
 			set rc 1
-			catch {exec awk "/^>/ \{print \$2\}" $diff} missing
-			if {$missing != ""} {
-				printit "$package is missing the following \
-requirements: $missing"
-			}
-			catch {exec awk "/^</ \{print \$2\}" $diff} extra
-			if {$extra != ""} {
-				printit "$package has the following extra \
-requirements: $extra"
-			}
+			break
 		}
 	}
 	return $rc
@@ -143,6 +126,8 @@ proc process_deb_packages { packages cross_bld at_dest ldd_path objdump_path } {
                         continue
                 }
 
+		file delete $TMP_FILE $ignored
+
 		printit "Processing package: $package"
 		# Set up a hash of the libraries provided by the
 		# package dependencies
@@ -156,22 +141,20 @@ proc process_deb_packages { packages cross_bld at_dest ldd_path objdump_path } {
 			unset ldd_lib_hash
 		}
 
-		# Find the list of files in the package
-		if { ![info exists env(AT_WD)] } {
+		# Find the list of files in the package, and
+		# initialize the hash of libraries found in the dependent
+		# packages for the current package
+		if { ![info exists ::env(AT_WD)] } {
 			set files [exec dpkg --listfiles $package]
+
+			set dep_pkgs [exec apt-cache depends $package \
+					  | grep "Depends"]
 		} else {
 			set deb_path $env(AT_WD)/debs/
 			set files [exec dpkg -c $deb_path/$package | \
 					tr " " "\n" | grep $at_dest | \
 					sed "s/^.//" ]
-		}
 
-		# Initialize the hash of libraries found in the dependent
-		# packages for the current package
-		if { ![info exists ::env(AT_WD)] } {
-			set dep_pkgs [exec apt-cache depends $package \
-					  | grep "Depends"]
-		} else {
 			set dep_pkgs [exec dpkg-deb -f $deb_path/$package \
 					  | grep "Depends" \
 					  | sed {s/\(([^,]*)\)//g} \
@@ -188,7 +171,7 @@ proc process_deb_packages { packages cross_bld at_dest ldd_path objdump_path } {
 			}
 		}
 		foreach pdep $dep_pkgs {
-			if {[regexp "Depends" $pdep match]} {
+			if {[regexp "Depends" $pdep]} {
 				continue
 			}
 			set dep_libs [exec dpkg --listfiles $pdep | \
@@ -252,8 +235,6 @@ proc process_deb_packages { packages cross_bld at_dest ldd_path objdump_path } {
 
 		}
 
-		file delete $TMP_FILE $ignored
-
 		# Looking through the ldd_lib_hash, make sure that the lib is
 		# provided as part of one of the package's dependent packages
 		set found 1
@@ -261,8 +242,7 @@ proc process_deb_packages { packages cross_bld at_dest ldd_path objdump_path } {
 			set keys [array names pkg_lib_hash]
 			if {[lsearch $keys $ldd_lib] < 0} {
 				if {$found == 1} {
-					printit "Missing dependencies for \
-package: $package"
+					printit "$package is missing the following requirements:"
 					set found 0
 				}
 				printit "  $ldd_lib"
@@ -272,6 +252,7 @@ package: $package"
 		# If a package had a missing dependency, the test fails
 		if {$found == 0} {
 			set rc 1
+			break
 		}
 
 	}
