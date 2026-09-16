@@ -101,9 +101,16 @@ function pkg_build_rpms()
 	# Unfortunately, the rpm project does not provide an easy way to change
 	# the installation path of the debug information. Thus, we patch
 	# find-debuginfo.sh in order to be able to do so.
-	local debuginfo_src="/usr/bin/find-debuginfo"
-	[[ ! -e ${debuginfo_src} ]] && debuginfo_src="/usr/lib/rpm/find-debuginfo.sh"
-	cp ${debuginfo_src} ${rpmdir}/find-debuginfo.sh
+	for debuginfo_src in /usr/bin/find-debuginfo /usr/lib/rpm/find-debuginfo.sh /usr/lib/rpm/find-debuginfo; do
+		if [[ -e ${debuginfo_src} ]]; then
+			cp ${debuginfo_src} ${rpmdir}/find-debuginfo.sh
+			break
+		fi
+	done
+	if [[ ! -e ${rpmdir}/find-debuginfo.sh ]]; then
+		echo "Error, can't find the script find-debuginfo."
+		exit 1
+	fi
 	sed ${rpmdir}/find-debuginfo.sh -i -e "/usr\/lib/s/\$RPM_BUILD_ROOT/\${RPM_BUILD_ROOT}/g"
 	sed ${rpmdir}/find-debuginfo.sh -i -e "/RPM_BUILD_ROOT/s@/usr/lib/debug@__AT_DEST__&@"
 	sed ${rpmdir}/find-debuginfo.sh -i -e "/d \".{RPM_BUILD_ROOT}\/usr\/lib\"/s@/usr/lib@__AT_DEST__&@"
@@ -123,8 +130,8 @@ function pkg_build_rpms()
 	sed ${rpmdir}/find-debuginfo.sh -i -e "/sepdebugcrcfix/s/ usr\/lib/ lib/"
 
 	# Do not create .debug symlinks on RHEL. This copies the behaviour from SLES.
-	sed ${rpmdir}/find-debuginfo.sh -i -e "/make a .debug symlink to that file/i#Do nothing (copied from SLES)"
-	sed ${rpmdir}/find-debuginfo.sh -i -e "/make a .debug symlink to that file/,+11d"
+	sed ${rpmdir}/find-debuginfo.sh -i -e "/make a .debug symlink to that file/i# Do nothing (copied from SLES)"
+	sed ${rpmdir}/find-debuginfo.sh -i -e "/make a .debug symlink to that file/,+12d"
 
 	# Do not strip getconf
 	sed ${rpmdir}/find-debuginfo.sh -i -e "/perm/s/)/& ! -path \"*getconf*\"/"
