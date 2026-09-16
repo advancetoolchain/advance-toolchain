@@ -22,37 +22,38 @@ do
   case $key in
     --rpmdir)
       rpmdir="$2"
-      shift
       ;;
     --dynamic)
       dynamic="$2"
-      shift
       ;;
     --subpackage)
       subpackage="$2"
-      shift
       ;;
     *)
+      break
       ;;
   esac
-  shift
+  shift 2
 done
 
 # Print usage instructions
 usage() {
   cat << EOF
-usage: $0 [options]
+usage: $0 [options] [<directory with debug files>]
 
 Options (all options must be set):
-  --rpmdir        Points to the directory where the RPMs are being built.
+  --rpmdir        Points to the top directory where the RPMs are being built.
   --dynamic       Points to the directory that contains the spec files.
   --subpackage    Selects subpackage (runtime, devel, etc.) to split.
 EOF
 exit 1
 }
 
+builddir=${rpmdir}/BUILD
+[ -n "$1" ] && builddir="$1"
+
 # Check if the required debugfiles.list exists.
-debugfiles=${rpmdir}/BUILD/debugfiles.list
+debugfiles=${builddir}/debugfiles.list
 if [ ! -f ${debugfiles} ]; then
   echo "List of debug files (${debugfiles}) not found."
   usage
@@ -67,7 +68,7 @@ fi
 
 # For each file listed as a debug files (i.e.: files listed in debugfiles.list)
 # check if it belongs to the subpackage being parsed (i.e.: to --subpackage).
-rm -f ${rpmdir}/BUILD/debugfiles-${subpackage}.list
+rm -f ${builddir}/debugfiles-${subpackage}.list
 for item in `cat ${debugfiles} | grep -E '\.debug$'`; do
   # Get the non-debuginfo filename
   if echo $item | grep -E "\.build-id" > /dev/null ; then
@@ -95,13 +96,13 @@ for item in `cat ${debugfiles} | grep -E '\.debug$'`; do
       fi
     fi
 
-    echo ${item} >> ${rpmdir}/BUILD/debugfiles-${subpackage}.list
+    echo ${item} >> ${builddir}/debugfiles-${subpackage}.list
     # For files under /opt/atx.x/lib/debug/.build-id, also add the symbolic
     # link without the '.debug' extension, because the files under
     # /opt/atx.x/lib/debug/.build-id always come in pairs.
     if echo $item | grep -E "\.build-id" > /dev/null ; then
       echo ${item} | sed -e 's/\.debug//' \
-           >> ${rpmdir}/BUILD/debugfiles-${subpackage}.list
+           >> ${builddir}/debugfiles-${subpackage}.list
     fi
   fi
 done

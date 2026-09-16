@@ -112,11 +112,10 @@ proc get_pkg_flavor { package_name } {
 	global ERROR
 
 	set prefix "at$::env(AT_MAJOR_VERSION)-"
-
-	set ver_rev "$::env(AT_MAJOR_VERSION)-$::env(AT_REVISION_NUMBER)"
 	if { ! [string equal "$::env(AT_INTERNAL)" "none" ] } {
-		append ver_rev "-$::env(AT_INTERNAL)"
+		append prefix "$::env(AT_INTERNAL)-"
 	}
+	set ver_rev "$::env(AT_MAJOR_VERSION)-$::env(AT_REVISION_NUMBER)"
 
 	# Cross compiled packages have different name patterns so that flavor
 	# should be parsed a bit different than native packages.
