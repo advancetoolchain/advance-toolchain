@@ -815,7 +815,7 @@ ARTIFACTS := $(strip $(shell $(call mkpath,$(AT_BASE)/artifacts,yes)))
 build_targets :=
 .DEFAULT_GOAL := all
 
-.PHONY: all test destclean cleanall clean collect clone pack
+.PHONY: all test destclean cleanall clean collect clone pack update-copyright
 
 all: package release
 
@@ -996,6 +996,17 @@ hash:
 	        echo "values."; \
 	    fi; \
 	}
+
+# Update copyright year in all source files (run once a year)
+update-copyright:
+	@echo "Updating copyright year to $$(date +%Y) in all project files..."
+	@grep -rlI --exclude-dir=".git" --exclude-dir=".bob" \
+	    -E "[Cc]opyright(\s+\([Cc]\))?\s+[0-9]{4}(-[0-9]{4})?\s+IBM\s+Corporation" $(AT_BASE) | \
+	while read -r f; do \
+	    sed -i -E "s/[Cc]opyright([[:space:]]+\([CcCc]\))?[[:space:]]+[0-9]{4}(-[0-9]{4})?[[:space:]]+IBM[[:space:]]+Corporation/Copyright 2017-$$(date +%Y) IBM Corporation/g" "$${f}"; \
+	    echo "  updated: $${f}"; \
+	done
+	@echo "Copyright year update complete."
 
 # Clean targets definitions
 release: $(RCPTS)/release-notes.rcpt
