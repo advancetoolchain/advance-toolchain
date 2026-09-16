@@ -49,6 +49,11 @@ if [[ ${#} -lt  2 ]] || [[ ${#} -gt 4 ]]; then
 	exit 1
 fi
 
+if ! command -v jq > /dev/null 2>&1; then
+	echo "update_revision.sh requires jq but it was not found."
+	exit 1
+fi
+
 # TODO: adjust following variables.
 # Assume user access GitHub password-lessly
 GITHUB_USER=${2}
@@ -397,52 +402,24 @@ EOF
 				# Enabling auto-merge if the version wasn't updated.
 				if [[ -z "${3}" ]]; then
 					# Enabling auto-merge on a PR is only available through
-					# the GraphQL API. First we need to get the PR's id
-					pr_number=$(grep -oE '"number": ?[0-9]+' ${out} | tr -d ' ' | cut -d':' -f2)
-					if [[ -n "${pr_number}" ]]; then
-						cat > payload.json <<EOF
-{
-"query": "query FindPullRequestID {
-  repository(owner: \"advancetoolchain\", name: \"advance-toolchain\") {
-    pullRequest(number: ${pr_number}) {
-      id
-    }
-  }
-}"
-}
-EOF
-						status=$(ghapi_gql_call ${out} 'payload.json')
-						if [[ ${status} -eq 200 ]]; then
-							pr_id="$(cat ${out} | jq -r '.data.repository.pullRequest.id')"
-							if [[ "${pr_id}" != "null" ]]; then
-								cat > payload.json <<EOF
-{
-"query": "mutation EnableAutoMerge {
-  enablePullRequestAutoMerge(input: {pullRequestId: \"${pr_id}\", mergeMethod: REBASE}){
-    actor {
-      login
-    }
-  }
-}"
-}
-EOF
-								status=$(ghapi_gql_call ${out} 'payload.json')
-								if [[ ${status} -eq 200 ]]; then
-									print_msg 0 "Successfully enabled auto-merge for pull request."
-								else
-									print_msg 0 "Failed to enable auto-merge for pull request."
-									cat ${out}
-								fi
-							else
-								print_msg 0 "Failed to get pull request id."
-								cat ${out}
-							fi
+					# the GraphQL API. First we need to get the PR's node_id
+					# (global GraphQL ID) returned directly in the PR creation response.
+					pr_id=$(jq -r '.node_id' ${out})
+					if [[ -n "${pr_id}" && "${pr_id}" != "null" ]]; then
+						payload=$(mktemp '/tmp/ghapi-gql-XXXXX.json')
+						jq -n --arg id "${pr_id}" \
+							'{"query": "mutation EnableAutoMerge { enablePullRequestAutoMerge(input: {pullRequestId: \"\($id)\", mergeMethod: REBASE}) { pullRequest { number } } }"}' \
+							> "${payload}"
+						status=$(ghapi_gql_call ${out} "${payload}")
+						rm -f "${payload}"
+						if [[ ${status} -eq 200 ]] && ! jq -e '.errors' ${out} > /dev/null 2>&1; then
+							print_msg 0 "Successfully enabled auto-merge for pull request."
 						else
-							print_msg 0 "Failed to get pull request data."
+							print_msg 0 "Failed to enable auto-merge for pull request."
 							cat ${out}
 						fi
 					else
-						print_msg 0 "Failed to get pull request number."
+						print_msg 0 "Failed to get pull request node_id."
 						cat ${out}
 					fi
 				fi
