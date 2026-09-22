@@ -404,7 +404,7 @@ EOF
 					# Enabling auto-merge on a PR is only available through
 					# the GraphQL API. First we need to get the PR's node_id
 					# (global GraphQL ID) returned directly in the PR creation response.
-					pr_id=$(jq -r '.node_id' ${out})
+					pr_id=$(grep node_id ${out} | jq -r '.node_id')
 					if [[ -n "${pr_id}" && "${pr_id}" != "null" ]]; then
 						payload=$(mktemp '/tmp/ghapi-gql-XXXXX.json')
 						jq -n --arg id "${pr_id}" \
