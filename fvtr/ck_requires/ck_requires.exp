@@ -26,7 +26,6 @@ proc process_rpm_packages { packages cross_bld at_dest ldd_path objdump_path } {
 	set rc 0
 	set ignored ${FULLPATH}/ignored.tmp.out
 	set TMP_FILE ${FULLPATH}/requirements.tmp.out
-	set rpm_path $env(AT_WD)/rpms/$env(AT_HOST_ARCH)/
 
 	foreach package $packages {
 		# Ignore debuginfo packages.
@@ -43,7 +42,7 @@ proc process_rpm_packages { packages cross_bld at_dest ldd_path objdump_path } {
 		if { ![info exists env(AT_WD)] } {
 			set pkg_arg $package
 		} else {
-			set pkg_arg $rpm_path/$package
+			set pkg_arg $env(AT_WD)/rpms/$env(AT_HOST_ARCH)/$package
 		}
 		set files [exec rpm -qlp $pkg_arg 2>/dev/null]
 		foreach file $files {
