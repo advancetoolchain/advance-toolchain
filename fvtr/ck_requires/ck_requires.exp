@@ -41,10 +41,12 @@ proc process_rpm_packages { packages cross_bld at_dest ldd_path objdump_path } {
 		printit "Processing package:  ${package}"
 		if { ![info exists env(AT_WD)] } {
 			set pkg_arg $package
+			set rpm_option ""
 		} else {
 			set pkg_arg $env(AT_WD)/rpms/$env(AT_HOST_ARCH)/$package
+			set rpm_option "p"
 		}
-		set files [exec rpm -qlp $pkg_arg 2>/dev/null]
+		set files [exec rpm -ql$rpm_option $pkg_arg 2>/dev/null]
 		foreach file $files {
 			# Ignore ld.so, because when you run ldd on ld.so it
 			# outputs errors.
@@ -91,7 +93,7 @@ proc process_rpm_packages { packages cross_bld at_dest ldd_path objdump_path } {
 			continue
 		}
 		# Build the list of libs from the RPM packages required by $package
-		catch {exec rpm -qRp $pkg_arg 2>/dev/null \
+		catch {exec rpm -qR$rpm_option $pkg_arg 2>/dev/null \
 			| grep -vE "^rpmlib|advance-toolchain" \
 			| awk "{ print \$1 }" \
 			| xargs -r rpm -q --whatprovides \
