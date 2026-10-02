@@ -59,6 +59,14 @@ atsrc_get_patches ()
 		'https://raw.githubusercontent.com/powertechpreview/powertechpreview/0496d9de5cf3d441787d413367c5ec514a64b2ae/Valgrind%20iTrace%20Patches/3.15/Fix-itrace-initialization-of-guest_chase-variable.patch' \
 		0410d828116d20ffdae3182c514c04bb || return ${?}
 
+	at_get_patch \
+		'https://github.com/powertechpreview/powertechpreview/raw/39afa621801a383ff1282dcde8f19bd325b297f3/Valgrind%20iTrace%20Patches/compiler-warning-fix.patch' \
+		f5a7360ba7561668c1622ebc030168ea || return ${?}
+
+	at_get_patch \
+		'https://github.com/powertechpreview/powertechpreview/raw/39afa621801a383ff1282dcde8f19bd325b297f3/Valgrind%20iTrace%20Patches/verbosity.patch' \
+		60a7274799582d9bb2f96eb6a2ab0a7b || return ${?}
+
 	return 0
 }
 
@@ -78,6 +86,10 @@ atsrc_apply_patches ()
 
 	# Update itrace to Valgrind 3.15.
 	patch -p1 < Fix-itrace-initialization-of-guest_chase-variable.patch || return ${?}
+
+	# Update itrace
+	patch -p1 < compiler-warning-fix.patch || return ${?}
+	patch -p1 < verbosity.patch || return ${?}
 
 	return 0
 }
