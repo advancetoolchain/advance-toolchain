@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright 2022 IBM Corporation
+# Copyright 2026 IBM Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,9 +28,10 @@ ATSRC_PACKAGE_RELFIXES=
 ATSRC_PACKAGE_STR_VER="${ATSRC_PACKAGE_NAME} ${ATSRC_PACKAGE_VER}-r${ATSRC_PACKAGE_REV}"
 ATSRC_PACKAGE_VERID="${ATSRC_PACKAGE_VER}${ATSRC_PACKAGE_REV:+-${ATSRC_PACKAGE_REV}}"
 ATSRC_PACKAGE_PRE="test -d libdfp-${ATSRC_PACKAGE_VERID}"
-ATSRC_PACKAGE_CO=([0]="git clone https://github.com/libdfp/libdfp.git libdfp")
-ATSRC_PACKAGE_GIT="git checkout -b libdfp-${ATSRC_PACKAGE_VERID} ${ATSRC_PACKAGE_REV}"
-ATSRC_PACKAGE_POST="mv libdfp libdfp-${ATSRC_PACKAGE_VERID}"
+ATSRC_PACKAGE_CO=([0]="wget -O libdfp-${ATSRC_PACKAGE_VERID}.tar.gz https://github.com/libdfp/libdfp/archive/${ATSRC_PACKAGE_REV}.tar.gz")
+ATSRC_PACKAGE_GIT=""
+# Use --transform to give a better name to Libdfp directory.
+ATSRC_PACKAGE_POST="tar xzf libdfp-${ATSRC_PACKAGE_VERID}.tar.gz --transform=s/libdfp-${ATSRC_PACKAGE_REV}[^\\/]*/libdfp-${ATSRC_PACKAGE_VERID}/"
 ATSRC_PACKAGE_SRC=${AT_BASE}/sources/libdfp-${ATSRC_PACKAGE_VERID}
 ATSRC_PACKAGE_WORK=${AT_WORK_PATH}/libdfp
 ATSRC_PACKAGE_MLS=""
@@ -40,4 +41,3 @@ ATSRC_PACKAGE_TARS=""
 ATSRC_PACKAGE_MAKE_CHECK=""
 ATSRC_PACKAGE_DISTRIB=yes
 ATSRC_PACKAGE_BUNDLE=toolchain_extra
-ATSRC_PACKAGE_UPSTREAM='wget -qO - "https://raw.githubusercontent.com/libdfp/libdfp/__REVISION__/configure.ac" | grep "AC_INIT.*libdfp" | sed "s+^.*\[\([\.0-9]*\)\].*$+\1+"'
