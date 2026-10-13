@@ -41,7 +41,7 @@ endif
 BUILD_LOAD_ARCH ?= power7
 BUILD_BASE_ARCH ?= power7
 
-BUILD_OPTIMIZATION := power11
+BUILD_OPTIMIZATION := power10
 BUILD_WITH_LONGDOUBLE := yes
 BUILD_WITH_DFP_STANDALONE := yes
 BUILD_RPM_PACKAGER :=
@@ -53,14 +53,14 @@ BUILD_GCC_LANGUAGES := c,c++,fortran,go
 # =========================================================
 # - List of valid CPUs for active and compat:
 #   * power4, power5, power5+, power6, power6x, power7, power8, power9,
-#     power10 and power11
+#     power10
 
 # CPU base on ppc64le is power8.
 # Otherwise, CPU base is power7.
 ifeq ($(BUILD_ARCH),ppc64le)
-    BUILD_ACTIVE_MULTILIBS := power9 power10 power11
+    BUILD_ACTIVE_MULTILIBS := power9 power10
 else
-    BUILD_ACTIVE_MULTILIBS := power8 power9 power10 power11
+    BUILD_ACTIVE_MULTILIBS := power8 power9 power10
 endif
 
 # Download options

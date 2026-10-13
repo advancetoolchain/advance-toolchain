@@ -54,7 +54,7 @@ AT_REPOCMD_OPTS := -p -s sha256 --simple-md-filenames --no-database
 # Override generic values from build.mk (SLES 16 requires a power10)
 BUILD_LOAD_ARCH := power10
 BUILD_BASE_ARCH := power10
-BUILD_ACTIVE_MULTILIBS := power10 power11
+BUILD_ACTIVE_MULTILIBS := power10
 
 # Moved here from build.mk since the value for this variable
 # depends on the distro.
