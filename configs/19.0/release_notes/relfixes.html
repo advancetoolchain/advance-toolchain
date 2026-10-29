@@ -12,6 +12,54 @@
 <li>_Float128 enablement as specified by ISO/IEC TS 18661-3, for Power9 and Power10.</li>
 </ul>
 
+<h3>New features in 19.0-1</h3>
+<ul>
+  <li>GNU C Library provides:
+  <ul>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=12701">scanf accepts non-matching input</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=18374">readelf fails to dump debug_loc</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=31026">Reachable assertion in resolv_conf.c:570: update_from_conf: Assertion `resolv_conf_matches (resp, conf)' failed.</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=33814">(CVE-2025-15281) wordexp with WRDE_REUSE and WRDE_APPEND may return uninitialized memory</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=33980">(CVE-2026-4046) iconv: ibm139x trigger assertion error when converting to internal while lack enough room</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=33998">(CVE-2026-5928) libio: ungetwc could be used to leak data on special conditions</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=34008">(CVE-2026-5450) stdio-common: scanf %mc pattern will cause heap overflow when width &gt; 1024</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=34033">(CVE-2026-5435) resolv/ns_print.c: ns_sprintrrf TSIG path bypasses buflen and can overflow caller buffer</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=34069">(CVE-2026-6238) Buffer overread in ns_sprintrrf with corrupted RDATA field</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=34090">(CVE-2026-6368) wordexp WRDE_APPEND rollback restores stale we_wordv, leading to invalid free in wordfree</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=34091">(CVE-2026-6791) wordepx: unbounded alloca (strndupa) in parse_tilde</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=34289">ns_sprintrrf uses p_class, p_type internally</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=34360">(CVE-2026-86805) TOCTOU race condition in processing RPATH with $ORIGIN DST for setuid/setgid binaries</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=34506">(CVE-2026-19542) Out-of-bounds stack array access in tdelete</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=34556">(CVE-2026-77117) SHIFT_JISX0213 converter hang in shift_jisx0213.c</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=34568">(CVE-2026-80489) EUC_JISX0213 converter hang in euc-jisx0213.c</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=34574">(CVE-2026-18374) Buffer overflow in fopen ,ccs= argument processing</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=34624">(CVE-2026-89092) nscd: unbound alloca use in aicache and hostcache</a>.</li>
+    <li>Fix for <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=34748">Missing compiler barriers in include/atomic.h for !USE_ATOMIC_COMPILER_BUILTINS</a>.</li>
+  </ul></li>
+  <li>OpenSSL provides:
+  <ul>
+    <li>Version 3.5.9, see the <a href="https://openssl-library.org/news/openssl-3.5-notes/">release notes</a> for details.</li>
+    <li>Fix SSL_poll() multi-reactor cleanup deadlock.</li>
+    <li>Fix use-after-free in EC_GROUP_get_ecpkparameters().</li>
+    <li>Fix set but unsued variable in lib/opt.c.</li>
+    <li>EVP_MD_demo.c, tls13secretstest.c: avoid signed-to-unsigned integer conversion.</li>
+    <li>rsa_multiprime_keygen(): Fix leak of tmp if stack insertion fails.</li>
+    <li>use proper loop index when building new cid in packet.</li>
+    <li>Fix NULL dereference in SSL_get0_group_name() before a handshake.</li>
+  </ul></li>
+  <li>Python provides:
+  <ul>
+    <li>Version 3.13.17, see the <a href="https://www.python.org/downloads/release/python-31317/">release notes</a> for details.</li>
+  </ul></li>
+  <li>Userspace RCU provides:
+  <ul>
+    <li>Version 0.15.7, see the <a href="https://raw.githubusercontent.com/urcu/userspace-rcu/refs/tags/v0.15.7/ChangeLog">change log</a> for details.</li>
+  </ul></li>
+</ul>
+
+<a name="previous"></a>
+<h2>Previous releases</h2>
+
 <h3>New features in 19.0-0</h3>
 <ul>
   <li>GCC provides:
@@ -67,9 +115,6 @@
     <li>Version 3.25.2, see the <a href="http://valgrind.org/docs/manual/dist.news.html">release notes</a> for details.</li>
   </ul></li>
 </ul>
-
-<a name="previous"></a>
-<h2>Previous releases</h2>
 
 <h3>New features in 18.0-0</h3>
 <ul>
